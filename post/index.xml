@@ -7,8 +7,100 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
     <copyright>&amp;copy; 2016. All rights reserved.</copyright>
-    <lastBuildDate>Sun, 18 Dec 2016 09:58:58 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 20 Dec 2016 10:20:54 +0800</lastBuildDate>
     <atom:link href="http://huangjunwen.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>用 iptables 来配置 port knocking</title>
+      <link>http://huangjunwen.github.io/post/2016/12/port-knocking-using-iptables/</link>
+      <pubDate>Tue, 20 Dec 2016 10:20:54 +0800</pubDate>
+      
+      <guid>http://huangjunwen.github.io/post/2016/12/port-knocking-using-iptables/</guid>
+      <description>&lt;p&gt;对于正式环境的服务器来说，每当查看到 auth.log 里头那些撞大运的 ssh 登录尝试，心里总是有点惴惴不安的。虽然 public key authentication 号称安全，但是谁说得准呢？而且不知道配置里会不会有错误，要是有多一层的防护总是好的。&lt;/p&gt;
+
+&lt;p&gt;以前听说过 &lt;a href=&#34;https://en.wikipedia.org/wiki/Port_knocking&#34;&gt;Port knocking&lt;/a&gt; 这种技术了，大致的思路就是设定一系列随机端口（例如：7421，3411，9088等等）作为暗号，用户在访问服务器之前，要依次“敲”一下这几个端口（即相继发送网络包到这几个端口上），这些端口当然是关闭状态啦，但服务器上可以侦察得到这些敲门，如果暗号对了，就给访问者 ip 开放服务端口（例如22）。&lt;/p&gt;
+
+&lt;p&gt;还有一些更高级的，例如在网络包里存放加密信息等，不过这就复杂了，暂且不表。&lt;/p&gt;
+
+&lt;p&gt;一般要实现这样的功能，需要有独立的 deamon 程序跑在后台检查日志，但有个问题，如果这个 deamon 不够健壮挂了的话，就再也没人上得去了。&lt;/p&gt;
+
+&lt;p&gt;前段时间看到 &lt;a href=&#34;https://www.digitalocean.com/&#34;&gt;DigitalOcean&lt;/a&gt; 上一篇单纯使用 iptables 就能实现 Port knocking 的教程，不需要单独开发 deamon，只要配置 iptables 的 rules 就能实现这样的功能，觉得很实用，分享在此：&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://www.digitalocean.com/community/tutorials/how-to-configure-port-knocking-using-only-iptables-on-an-ubuntu-vps&#34;&gt;https://www.digitalocean.com/community/tutorials/how-to-configure-port-knocking-using-only-iptables-on-an-ubuntu-vps&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;不过我用的时候发现个问题，就是 tcp 包在发送的时候，好像一次过会发送多个包，这样敲门的序列就会变成类似：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;7421
+7421
+3411
+9088
+9088
+9088
+...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;所以我把 rules 改成接纳每个端口可以连续 N 次，只要下一个不一样的是正确的就可以接受：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#!/bin/bash
+
+PORT1=xxxx
+PORT2=xxxx
+PORT3=xxxx
+
+# reset firewall
+iptables -F
+iptables -X
+iptables -P INPUT ACCEPT
+iptables -P FORWARD ACCEPT
+iptables -P OUTPUT ACCEPT
+
+# create new chains used by port knocking
+iptables -N KNOCKING
+iptables -N GATE1
+iptables -N GATE2
+iptables -N GATE3
+iptables -N PASSED
+
+# accept current connections (keep current SSH connections)
+iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+
+# accept local machine&#39;s connection
+iptables -A INPUT -i lo -j ACCEPT
+
+# accept http/https or other exported services
+iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+iptables -A INPUT -p tcp --dport 443 -j ACCEPT
+
+# now pass all other to the KNOCKING chain
+iptables -A INPUT -j KNOCKING
+
+# KNOCKING dispatch
+iptables -A KNOCKING -m recent --reap --rcheck --seconds 3600 --name AUTH3 -j PASSED
+iptables -A KNOCKING -m recent --reap --rcheck --seconds 10 --name AUTH2 -j GATE3
+iptables -A KNOCKING -m recent --reap --rcheck --seconds 10 --name AUTH1 -j GATE2
+iptables -A KNOCKING -j GATE1
+
+iptables -A GATE1 -p tcp --dport $PORT1 -m recent --name AUTH1 --set -j DROP
+iptables -A GATE1 -j DROP
+
+iptables -A GATE2 -p tcp --dport $PORT1 -j DROP         # allow $PORT1 duplication
+iptables -A GATE2 -m recent --name AUTH1 --remove
+iptables -A GATE2 -p tcp --dport $PORT2 -m recent --name AUTH2 --set -j DROP
+iptables -A GATE2 -j GATE1
+
+iptables -A GATE3 -p tcp --dport $PORT2 -j DROP         # allow $PORT2 duplication
+iptables -A GATE3 -m recent --name AUTH2 --remove
+iptables -A GATE3 -p tcp --dport $PORT3 -m recent --name AUTH3 --set -j DROP
+iptables -A GATE3 -j GATE1
+
+iptables -A PASSED -p tcp --dport $PORT3 -j DROP        # allow $PORT3 duplication
+iptables -A PASSED -p tcp --dport 22 -j ACCEPT
+iptables -A PASSED -j DROP
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;另外还有些修改，例如 AUTH3 的时候，允许用户有一个小时（3600秒）的时间可以随意连接 22 端口。&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>免输入密码登录 mysql</title>
