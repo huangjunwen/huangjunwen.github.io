@@ -8,7 +8,7 @@
 
 
 
-<link rel="canonical" href="http://huangjunwen.github.io/post/2016/12/port-knocking-using-iptables/">
+<link rel="canonical" href="//huangjunwen.github.io/post/2016/12/port-knocking-using-iptables/">
 
 
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
@@ -20,18 +20,18 @@
 
 <meta property="og:title" content="用 iptables 来配置 port knocking - Jayven@dev">
 <meta property="og:type" content="article">
-<meta property="og:url" content="http://huangjunwen.github.io/post/2016/12/port-knocking-using-iptables/">
-<meta property="og:image" content="http://huangjunwen.github.io/images/default.png">
+<meta property="og:url" content="//huangjunwen.github.io/post/2016/12/port-knocking-using-iptables/">
+<meta property="og:image" content="//huangjunwen.github.io/images/default.png">
 <meta property="og:site_name" content="Jayven@dev">
 <meta property="og:description" content="对于正式环境的服务器来说，每当查看到 auth.log 里头那些撞大运的 ssh 登录尝试，心里总是有点惴惴不安的。虽然 public key authentication 号称安全，但是谁说得准呢？而且不知道配置">
 <meta property="og:locale" content="ja_JP">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="Jayven@dev">
-<meta name="twitter:url" content="http://huangjunwen.github.io/post/2016/12/port-knocking-using-iptables/">
+<meta name="twitter:url" content="//huangjunwen.github.io/post/2016/12/port-knocking-using-iptables/">
 <meta name="twitter:title" content="用 iptables 来配置 port knocking - Jayven@dev">
 <meta name="twitter:description" content="对于正式环境的服务器来说，每当查看到 auth.log 里头那些撞大运的 ssh 登录尝试，心里总是有点惴惴不安的。虽然 public key authentication 号称安全，但是谁说得准呢？而且不知道配置">
-<meta name="twitter:image" content="http://huangjunwen.github.io/images/default.png">
+<meta name="twitter:image" content="//huangjunwen.github.io/images/default.png">
 
 
 <script type="application/ld+json">
@@ -40,12 +40,12 @@
     "@type": "NewsArticle",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id":"http:\/\/huangjunwen.github.io\/"
+      "@id":"\/\/huangjunwen.github.io\/"
     },
     "headline": "用 iptables 来配置 port knocking - Jayven@dev",
     "image": {
       "@type": "ImageObject",
-      "url": "http:\/\/huangjunwen.github.io\/images\/default.png",
+      "url": "\/\/huangjunwen.github.io\/images\/default.png",
       "height": 800,
       "width": 800
     },
@@ -60,7 +60,7 @@
       "name": "Jayven@dev",
       "logo": {
         "@type": "ImageObject",
-        "url": "http:\/\/huangjunwen.github.io\/images/logo.png",
+        "url": "\/\/huangjunwen.github.io\/images/logo.png",
         "width": 600,
         "height": 60
       }
@@ -70,7 +70,7 @@
 </script>
 
 
-    <link href="http://huangjunwen.github.io/css/styles.css" rel="stylesheet">
+    <link href="//huangjunwen.github.io/css/styles.css" rel="stylesheet">
   </head>
 
   <body>
@@ -88,7 +88,7 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="http://huangjunwen.github.io/">Jayven@dev</a>
+            <a class="navbar-brand" href="//huangjunwen.github.io/">Jayven@dev</a>
           </div>
 
           
@@ -125,9 +125,9 @@
 
     <nav class="p-crumb">
       <ol class="breadcrumb">
-        <li><a href="http://huangjunwen.github.io/"><i class="fa fa-home" aria-hidden="true"></i></a></li>
+        <li><a href="//huangjunwen.github.io/"><i class="fa fa-home" aria-hidden="true"></i></a></li>
         
-        <li itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb"><a href="http://huangjunwen.github.io/post/" itemprop="url"><span itemprop="title">post</span></a></li>
+        <li itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb"><a href="//huangjunwen.github.io/post/" itemprop="url"><span itemprop="title">post</span></a></li>
         
         <li class="active">用 iptables 来配置 port knocking</li>
       </ol>
@@ -137,7 +137,7 @@
   <header>
     <ul class="p-facts">
       <li><i class="fa fa-calendar" aria-hidden="true"></i><time datetime="2016-12-20T10:20:54JST">Dec 20, 2016</time></li>
-      <li><i class="fa fa-bookmark" aria-hidden="true"></i><a href="http://huangjunwen.github.io/post/">post</a></li>
+      <li><i class="fa fa-bookmark" aria-hidden="true"></i><a href="//huangjunwen.github.io/post/">post</a></li>
       
     </ul>
 
@@ -242,7 +242,7 @@ iptables -A PASSED -j DROP
       <div>
         <ul class="p-terms">
           
-          <li><a href="http://huangjunwen.github.io/categories/sa/">sa</a></li>
+          <li><a href="//huangjunwen.github.io/categories/sa/">sa</a></li>
           
         </ul>
       </div>
@@ -257,9 +257,9 @@ iptables -A PASSED -j DROP
       <div>
         <ul class="p-terms">
           
-          <li><a href="http://huangjunwen.github.io/tags/iptables/">iptables</a></li>
+          <li><a href="//huangjunwen.github.io/tags/iptables/">iptables</a></li>
           
-          <li><a href="http://huangjunwen.github.io/tags/port-knocking/">port-knocking</a></li>
+          <li><a href="//huangjunwen.github.io/tags/port-knocking/">port-knocking</a></li>
           
         </ul>
       </div>
@@ -284,9 +284,9 @@ iptables -A PASSED -j DROP
     </div>
     <div class="list-group">
       
-      <a href="http://huangjunwen.github.io/post/2016/12/port-knocking-using-iptables/" class="list-group-item">用 iptables 来配置 port knocking</a>
+      <a href="//huangjunwen.github.io/post/2016/12/port-knocking-using-iptables/" class="list-group-item">用 iptables 来配置 port knocking</a>
       
-      <a href="http://huangjunwen.github.io/post/2016/12/mysql-client-auto-login-without-password/" class="list-group-item">免输入密码登录 mysql</a>
+      <a href="//huangjunwen.github.io/post/2016/12/mysql-client-auto-login-without-password/" class="list-group-item">免输入密码登录 mysql</a>
       
     </div>
   </section>
@@ -298,7 +298,7 @@ iptables -A PASSED -j DROP
     </div>
     <div class="list-group">
       
-      <a href="http://huangjunwen.github.io/categories/sa" class="list-group-item">sa</a>
+      <a href="//huangjunwen.github.io/categories/sa" class="list-group-item">sa</a>
       
     </div>
   </section>
@@ -309,15 +309,15 @@ iptables -A PASSED -j DROP
     </div>
     <div class="list-group">
       
-      <a href="http://huangjunwen.github.io/tags/gnu-pg" class="list-group-item">gnu-pg</a>
+      <a href="//huangjunwen.github.io/tags/gnu-pg" class="list-group-item">gnu-pg</a>
       
-      <a href="http://huangjunwen.github.io/tags/iptables" class="list-group-item">iptables</a>
+      <a href="//huangjunwen.github.io/tags/iptables" class="list-group-item">iptables</a>
       
-      <a href="http://huangjunwen.github.io/tags/mysql" class="list-group-item">mysql</a>
+      <a href="//huangjunwen.github.io/tags/mysql" class="list-group-item">mysql</a>
       
-      <a href="http://huangjunwen.github.io/tags/port-knocking" class="list-group-item">port-knocking</a>
+      <a href="//huangjunwen.github.io/tags/port-knocking" class="list-group-item">port-knocking</a>
       
-      <a href="http://huangjunwen.github.io/tags/tty" class="list-group-item">tty</a>
+      <a href="//huangjunwen.github.io/tags/tty" class="list-group-item">tty</a>
       
     </div>
   </section>

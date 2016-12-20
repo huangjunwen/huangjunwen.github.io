@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Jayven@dev</title>
-    <link>http://huangjunwen.github.io/tags/port-knocking/index.xml</link>
+    <link>//huangjunwen.github.io/tags/port-knocking/index.xml</link>
     <description>Recent content on Jayven@dev</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
     <copyright>&amp;copy; 2016. All rights reserved.</copyright>
-    <atom:link href="http://huangjunwen.github.io/tags/port-knocking/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="//huangjunwen.github.io/tags/port-knocking/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>用 iptables 来配置 port knocking</title>
-      <link>http://huangjunwen.github.io/post/2016/12/port-knocking-using-iptables/</link>
+      <link>//huangjunwen.github.io/post/2016/12/port-knocking-using-iptables/</link>
       <pubDate>Tue, 20 Dec 2016 10:20:54 +0800</pubDate>
       
-      <guid>http://huangjunwen.github.io/post/2016/12/port-knocking-using-iptables/</guid>
+      <guid>//huangjunwen.github.io/post/2016/12/port-knocking-using-iptables/</guid>
       <description>&lt;p&gt;对于正式环境的服务器来说，每当查看到 auth.log 里头那些撞大运的 ssh 登录尝试，心里总是有点惴惴不安的。虽然 public key authentication 号称安全，但是谁说得准呢？而且不知道配置里会不会有错误，要是有多一层的防护总是好的。&lt;/p&gt;
 
 &lt;p&gt;以前听说过 &lt;a href=&#34;https://en.wikipedia.org/wiki/Port_knocking&#34;&gt;Port knocking&lt;/a&gt; 这种技术了，大致的思路就是设定一系列随机端口（例如：7421，3411，9088等等）作为暗号，用户在访问服务器之前，要依次“敲”一下这几个端口（即相继发送网络包到这几个端口上），这些端口当然是关闭状态啦，但服务器上可以侦察得到这些敲门，如果暗号对了，就给访问者 ip 开放服务端口（例如22）。&lt;/p&gt;
