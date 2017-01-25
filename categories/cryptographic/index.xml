@@ -22,101 +22,114 @@
 
 &lt;h3 id=&#34;rsa-原理简要笔记&#34;&gt;RSA 原理简要笔记&lt;/h3&gt;
 
-&lt;p&gt;&lt;a href=&#34;https://en.wikipedia.org/wiki/RSA_(cryptosystem)&#34;&gt;RSA 加密算法&lt;/a&gt; 的原理是在于能够找到三个很大的正整数 &lt;span&gt;
-                  
-        \({e},{d},{n}\)
-    
-&lt;/span&gt;
- 使得对于任何 &lt;span&gt;
-                  
-        \({m}\)
-    
-&lt;/span&gt;
+&lt;p&gt;&lt;a href=&#34;https://en.wikipedia.org/wiki/RSA_(cryptosystem)&#34;&gt;RSA 加密算法&lt;/a&gt; 的原理是在于能够找到三个很大的正整数 &lt;span&gt;\(e,d,n\)&lt;/span&gt;
+ 使得对于任何 &lt;span&gt;\(0\le{m}\lt{n}\)&lt;/span&gt;
 ：&lt;/p&gt;
 
-&lt;span&gt;
-       
-        $$(m^{e})^{d}\equiv m{\pmod{n}}$$
-    
-&lt;/span&gt;
+&lt;span&gt;$$(m^e)^d\equiv m\pmod{n}$$&lt;/span&gt;
 
 
-&lt;p&gt;其中公钥为 &lt;span&gt;
-                  
-        \(({e},{n})\)
-    
-&lt;/span&gt;
-，可以发送给任何人；私钥为 &lt;span&gt;
-                  
-        \(({d},{n})\)
-    
-&lt;/span&gt;
-，只能由所有者掌握。&lt;/p&gt;
+&lt;p&gt;其中公钥为 &lt;span&gt;\((n,e)\)&lt;/span&gt;
+，可以发送给任何人；私钥为 &lt;span&gt;\((n,d)\)&lt;/span&gt;
+，只能由所有者掌握。RSA 支持 4 种操作：加密／解密，签名／验证签名。&lt;/p&gt;
 
 &lt;h4 id=&#34;加密&#34;&gt;加密&lt;/h4&gt;
 
-&lt;p&gt;加密消息假设为 &lt;span&gt;
-                  
-        \({m}\)
-    
-&lt;/span&gt;
+&lt;p&gt;首先用一些编码手段把需要加密的信息转换成整数 &lt;span&gt;\(m\)&lt;/span&gt;
  ，用公钥中的两个参数计算&lt;/p&gt;
 
-&lt;span&gt;
-       
-        $${c}={m}^{e}{\pmod{n}}$$
-    
-&lt;/span&gt;
+&lt;span&gt;$$c=m^e\pmod{n}$$&lt;/span&gt;
 
 
-&lt;p&gt;&lt;span&gt;
-                  
-        \(c\)
-    
-&lt;/span&gt;
+&lt;p&gt;&lt;span&gt;\(c\)&lt;/span&gt;
  就是加密后的信息了。&lt;/p&gt;
 
 &lt;h4 id=&#34;解密&#34;&gt;解密&lt;/h4&gt;
 
 &lt;p&gt;中学知识温习时间：&lt;/p&gt;
 
-&lt;span&gt;
-       
-        $$ab{\pmod{n}}\\=(xn&amp;#43;a_r)(yn&amp;#43;b_r){\pmod{n}}\\={a_r}{b_r}{\pmod{n}}\\=(a{\pmod{n}})(b{\pmod{n}}){\pmod{n}}$$
-    
-&lt;/span&gt;
+&lt;span&gt;$$ab\pmod{n}\\=(xn&amp;#43;a_r)(yn&amp;#43;b_r)\pmod{n}\\={a_r}{b_r}\pmod{n}\\=(a\pmod{n})(b\pmod{n})\pmod{n}$$&lt;/span&gt;
 
 
 &lt;p&gt;所以：&lt;/p&gt;
 
-&lt;span&gt;
-       
-        $${x}^{y}{\pmod{n}}\\=({x}{x}...{x}){\pmod{n}}\\=(x{\pmod{n}})(x{\pmod{n}})...{\pmod{n}}\\=(x{\pmod{n}})^{y}{\pmod{n}}$$
-    
-&lt;/span&gt;
+&lt;span&gt;$$x^y\pmod{n}\\=(xx...x)\pmod{n}\\=(x\pmod{n})(x\pmod{n})...\pmod{n}\\=(x\pmod{n})^y\pmod{n}$$&lt;/span&gt;
 
 
 &lt;p&gt;即在模运算中，只要算余数就可以了。&lt;/p&gt;
 
 &lt;p&gt;由私钥所有者计算&lt;/p&gt;
 
-&lt;span&gt;
-       
-        $${c}^{d}{\pmod{n}}=({m}^{e}{\pmod{n}})^{d}{\pmod{n}}=({m}^{e})^{d}{\pmod{n}}={m}$$
-    
-&lt;/span&gt;
+&lt;span&gt;$$c^d\pmod{n}=(m^e\pmod{n})^d\pmod{n}=(m^e)^d\pmod{n}=m\pmod{n}$$&lt;/span&gt;
 
 
 &lt;p&gt;就能还原原来的信息了。&lt;del&gt;（数学差真啰嗦啊。。。）&lt;/del&gt;&lt;/p&gt;
 
-&lt;h4 id=&#34;实际算法&#34;&gt;实际算法&lt;/h4&gt;
+&lt;h4 id=&#34;签名&#34;&gt;签名&lt;/h4&gt;
 
-&lt;p&gt;&lt;a href=&#34;http://www.di-mgt.com.au/crt_rsa.html#PKCS1&#34;&gt;http://www.di-mgt.com.au/crt_rsa.html#PKCS1&lt;/a&gt; 直接上链接了，实际的 RSA 解密时不是直接计算 &lt;span&gt;
-                  
-        \(c^d{\pmod{n}}\)
-    
-&lt;/span&gt;
- 的。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;首先对要签名的信息作一个 &lt;a href=&#34;https://en.wikipedia.org/wiki/Cryptographic_hash_function&#34;&gt;message digest&lt;/a&gt;，常用的如 MD5 和 SHA 系列；&lt;/li&gt;
+&lt;li&gt;然后把这个 digest 转换成整数 &lt;span&gt;\(m\)&lt;/span&gt;
+ 使得 &lt;span&gt;\(1\le{m}\lt{n}\)&lt;/span&gt;
+；&lt;/li&gt;
+&lt;li&gt;最后用私钥 &lt;span&gt;\((n,d)\)&lt;/span&gt;
+ 计算 &lt;span&gt;\(s=m^d\pmod{n}\)&lt;/span&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&#34;验证签名&#34;&gt;验证签名&lt;/h4&gt;
+
+&lt;ol&gt;
+&lt;li&gt;用公钥 &lt;span&gt;\((n,e)\)&lt;/span&gt;
+ 计算 &lt;span&gt;\(v=s^e\pmod{n}\)&lt;/span&gt;
+&lt;/li&gt;
+&lt;li&gt;把 &lt;span&gt;\(v\)&lt;/span&gt;
+ 转换回 digest&lt;/li&gt;
+&lt;li&gt;独立对要签名的信息再作一次 digest&lt;/li&gt;
+&lt;li&gt;对比这两个 digest，如果相同的话，那这个签名就是有效的&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&#34;小结&#34;&gt;小结&lt;/h4&gt;
+
+&lt;p&gt;可以看到加解密和签名验签刚好是两个方向：前者是公钥加密发送给所有者解密，后者是用私钥签名发送给其他人用公钥验签；所以这就是为何一般&lt;a href=&#34;http://www.di-mgt.com.au/rsa_alg.html#weaknesses&#34;&gt;不建议使用相同的 key 同时用作加密和签名&lt;/a&gt;：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Using the same key for encryption and signing
+Given that the underlying mathematics is the same for encryption and signing, only in reverse, if an attacker can convince a key holder to sign an unformatted encrypted message using the same key then she gets the original.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;实际算法&#34;&gt;实际算法&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://www.di-mgt.com.au/rsa_alg.html&#34;&gt;http://www.di-mgt.com.au/rsa_alg.html&lt;/a&gt; 这个地方介绍得很详细，有兴趣可以看一下，稍微摘录一些：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;计算 &lt;span&gt;\(y=x^e\pmod{n}\)&lt;/span&gt;
+ （所谓 modular exponentiation）的复杂度大约为 &lt;span&gt;\(O(k^3)\)&lt;/span&gt;
+，其中 &lt;span&gt;\(k\)&lt;/span&gt;
+ 是 &lt;span&gt;\(n\)&lt;/span&gt;
+ 的长度（例如 1024 bits），且当 &lt;span&gt;\(e\)&lt;/span&gt;
+ 的二进制表示中 1 的数量越多则越慢。&lt;/li&gt;
+&lt;li&gt;公钥 &lt;span&gt;\(e\)&lt;/span&gt;
+ 一般选取固定的：例如
+&lt;span&gt;$$3=2^{2^0}&amp;#43;1\\5=2^{2^1}&amp;#43;1\\17=2^{2^2}&amp;#43;1\\257=2^{2^3}&amp;#43;1\\65537=2^{2^4}&amp;#43;1$$&lt;/span&gt;
+
+实际上这5个是前五个 fermat number：&lt;span&gt;\(F_x=2^{2^x}&amp;#43;1\)&lt;/span&gt;
+ ，恰好都是素数，但 &lt;span&gt;\(F_5\)&lt;/span&gt;
+ 以及后面的 fermat number 不是素数。显然这些数字的二进制表示只有两个 1，如上述原因，在加密的过程中能节省计算时间。实际应用中一般都是使用 65537 ，因为小的 &lt;span&gt;\(e\)&lt;/span&gt;
+ 不太安全。&lt;/li&gt;
+&lt;li&gt;&lt;span&gt;\(n\)&lt;/span&gt;
+ 一般是由两个( &lt;span&gt;\(n=pq\)&lt;/span&gt;
+ )或更多个（所谓 &amp;ldquo;multi-prime&amp;rdquo; RSA）大素数相乘而得&lt;/li&gt;
+&lt;li&gt;多个素数相乘结果作为模的好处是可以更快速的计算 &lt;span&gt;\(m=c^d\pmod{n}\)&lt;/span&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;使用中国剩余定理（Chinese Remainder Theorem，CRT）可以把这个计算转换成对 &lt;span&gt;\(p,q\)&lt;/span&gt;
+ 的 modular exponentiation 计算，而 &lt;span&gt;\(p, q\)&lt;/span&gt;
+ 的长度都只有 &lt;span&gt;\(n\)&lt;/span&gt;
+ 的一半，所以复杂度会降低到原来的&lt;a href=&#34;http://www.di-mgt.com.au/crt_rsa.html#crtarithmetic&#34;&gt;四分之一&lt;/a&gt;：&lt;span&gt;\(O(2(\cfrac{k}{2})^3)=O(\cfrac{k^3}{4})\)&lt;/span&gt;
+&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;h3 id=&#34;rsa-on-disk&#34;&gt;RSA on disk&lt;/h3&gt;
 

@@ -16,21 +16,21 @@
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/solarized_dark.min.css">
     <title>Public Key Infrastructure 笔记（1）-- RSA 公私钥 - Jayven@dev</title>
     
-<meta name="description" content="RSA 原理简要笔记 RSA 加密算法 的原理是在于能够找到三个很大的正整数 \({e},{d},{n}\) 使得对于任何 \({m}\) ： $$(m^{e})^{d}\equiv m{\pmod{n}}$$ 其中公钥为 \(({e},{n})\) ，可以发送给任何人；私钥为 \(({d},{n})\) ，只能由所有者掌握">
+<meta name="description" content="RSA 原理简要笔记 RSA 加密算法 的原理是在于能够找到三个很大的正整数 \(e,d,n\) 使得对于任何 \(0\le{m}\lt{n}\) ： $$(m^e)^d\equiv m\pmod{n}$$ 其中公钥为 \((n,e)\) ，可以发送给任何人；私钥为 \((n,d)\) ，只能由所有者掌握">
 
 <meta property="og:title" content="Public Key Infrastructure 笔记（1）-- RSA 公私钥 - Jayven@dev">
 <meta property="og:type" content="article">
 <meta property="og:url" content="//huangjunwen.github.io/post/2017/01/pki-notes-1/">
 <meta property="og:image" content="//huangjunwen.github.io/images/default.png">
 <meta property="og:site_name" content="Jayven@dev">
-<meta property="og:description" content="RSA 原理简要笔记 RSA 加密算法 的原理是在于能够找到三个很大的正整数 \({e},{d},{n}\) 使得对于任何 \({m}\) ： $$(m^{e})^{d}\equiv m{\pmod{n}}$$ 其中公钥为 \(({e},{n})\) ，可以发送给任何人；私钥为 \(({d},{n})\) ，只能由所有者掌握">
+<meta property="og:description" content="RSA 原理简要笔记 RSA 加密算法 的原理是在于能够找到三个很大的正整数 \(e,d,n\) 使得对于任何 \(0\le{m}\lt{n}\) ： $$(m^e)^d\equiv m\pmod{n}$$ 其中公钥为 \((n,e)\) ，可以发送给任何人；私钥为 \((n,d)\) ，只能由所有者掌握">
 <meta property="og:locale" content="ja_JP">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="Jayven@dev">
 <meta name="twitter:url" content="//huangjunwen.github.io/post/2017/01/pki-notes-1/">
 <meta name="twitter:title" content="Public Key Infrastructure 笔记（1）-- RSA 公私钥 - Jayven@dev">
-<meta name="twitter:description" content="RSA 原理简要笔记 RSA 加密算法 的原理是在于能够找到三个很大的正整数 \({e},{d},{n}\) 使得对于任何 \({m}\) ： $$(m^{e})^{d}\equiv m{\pmod{n}}$$ 其中公钥为 \(({e},{n})\) ，可以发送给任何人；私钥为 \(({d},{n})\) ，只能由所有者掌握">
+<meta name="twitter:description" content="RSA 原理简要笔记 RSA 加密算法 的原理是在于能够找到三个很大的正整数 \(e,d,n\) 使得对于任何 \(0\le{m}\lt{n}\) ： $$(m^e)^d\equiv m\pmod{n}$$ 其中公钥为 \((n,e)\) ，可以发送给任何人；私钥为 \((n,d)\) ，只能由所有者掌握">
 <meta name="twitter:image" content="//huangjunwen.github.io/images/default.png">
 
 
@@ -65,7 +65,7 @@
         "height": 60
       }
     },
-    "description": "RSA 原理简要笔记 RSA 加密算法 的原理是在于能够找到三个很大的正整数 \\({e},{d},{n}\\) 使得对于任何 \\({m}\\) ： $$(m^{e})^{d}\\equiv m{\\pmod{n}}$$ 其中公钥为 \\(({e},{n})\\) ，可以发送给任何人；私钥为 \\(({d},{n})\\) ，只能由所有者掌握"
+    "description": "RSA 原理简要笔记 RSA 加密算法 的原理是在于能够找到三个很大的正整数 \\(e,d,n\\) 使得对于任何 \\(0\\le{m}\\lt{n}\\) ： $$(m^e)^d\\equiv m\\pmod{n}$$ 其中公钥为 \\((n,e)\\) ，可以发送给任何人；私钥为 \\((n,d)\\) ，只能由所有者掌握"
   }
 </script>
 
@@ -163,101 +163,114 @@ ga('send', 'pageview');
 
 <h3 id="rsa-原理简要笔记">RSA 原理简要笔记</h3>
 
-<p><a href="https://en.wikipedia.org/wiki/RSA_(cryptosystem)">RSA 加密算法</a> 的原理是在于能够找到三个很大的正整数 <span>
-                  
-        \({e},{d},{n}\)
-    
-</span>
- 使得对于任何 <span>
-                  
-        \({m}\)
-    
-</span>
+<p><a href="https://en.wikipedia.org/wiki/RSA_(cryptosystem)">RSA 加密算法</a> 的原理是在于能够找到三个很大的正整数 <span>\(e,d,n\)</span>
+ 使得对于任何 <span>\(0\le{m}\lt{n}\)</span>
 ：</p>
 
-<span>
-       
-        $$(m^{e})^{d}\equiv m{\pmod{n}}$$
-    
-</span>
+<span>$$(m^e)^d\equiv m\pmod{n}$$</span>
 
 
-<p>其中公钥为 <span>
-                  
-        \(({e},{n})\)
-    
-</span>
-，可以发送给任何人；私钥为 <span>
-                  
-        \(({d},{n})\)
-    
-</span>
-，只能由所有者掌握。</p>
+<p>其中公钥为 <span>\((n,e)\)</span>
+，可以发送给任何人；私钥为 <span>\((n,d)\)</span>
+，只能由所有者掌握。RSA 支持 4 种操作：加密／解密，签名／验证签名。</p>
 
 <h4 id="加密">加密</h4>
 
-<p>加密消息假设为 <span>
-                  
-        \({m}\)
-    
-</span>
+<p>首先用一些编码手段把需要加密的信息转换成整数 <span>\(m\)</span>
  ，用公钥中的两个参数计算</p>
 
-<span>
-       
-        $${c}={m}^{e}{\pmod{n}}$$
-    
-</span>
+<span>$$c=m^e\pmod{n}$$</span>
 
 
-<p><span>
-                  
-        \(c\)
-    
-</span>
+<p><span>\(c\)</span>
  就是加密后的信息了。</p>
 
 <h4 id="解密">解密</h4>
 
 <p>中学知识温习时间：</p>
 
-<span>
-       
-        $$ab{\pmod{n}}\\=(xn&#43;a_r)(yn&#43;b_r){\pmod{n}}\\={a_r}{b_r}{\pmod{n}}\\=(a{\pmod{n}})(b{\pmod{n}}){\pmod{n}}$$
-    
-</span>
+<span>$$ab\pmod{n}\\=(xn&#43;a_r)(yn&#43;b_r)\pmod{n}\\={a_r}{b_r}\pmod{n}\\=(a\pmod{n})(b\pmod{n})\pmod{n}$$</span>
 
 
 <p>所以：</p>
 
-<span>
-       
-        $${x}^{y}{\pmod{n}}\\=({x}{x}...{x}){\pmod{n}}\\=(x{\pmod{n}})(x{\pmod{n}})...{\pmod{n}}\\=(x{\pmod{n}})^{y}{\pmod{n}}$$
-    
-</span>
+<span>$$x^y\pmod{n}\\=(xx...x)\pmod{n}\\=(x\pmod{n})(x\pmod{n})...\pmod{n}\\=(x\pmod{n})^y\pmod{n}$$</span>
 
 
 <p>即在模运算中，只要算余数就可以了。</p>
 
 <p>由私钥所有者计算</p>
 
-<span>
-       
-        $${c}^{d}{\pmod{n}}=({m}^{e}{\pmod{n}})^{d}{\pmod{n}}=({m}^{e})^{d}{\pmod{n}}={m}$$
-    
-</span>
+<span>$$c^d\pmod{n}=(m^e\pmod{n})^d\pmod{n}=(m^e)^d\pmod{n}=m\pmod{n}$$</span>
 
 
 <p>就能还原原来的信息了。<del>（数学差真啰嗦啊。。。）</del></p>
 
-<h4 id="实际算法">实际算法</h4>
+<h4 id="签名">签名</h4>
 
-<p><a href="http://www.di-mgt.com.au/crt_rsa.html#PKCS1">http://www.di-mgt.com.au/crt_rsa.html#PKCS1</a> 直接上链接了，实际的 RSA 解密时不是直接计算 <span>
-                  
-        \(c^d{\pmod{n}}\)
-    
-</span>
- 的。</p>
+<ol>
+<li>首先对要签名的信息作一个 <a href="https://en.wikipedia.org/wiki/Cryptographic_hash_function">message digest</a>，常用的如 MD5 和 SHA 系列；</li>
+<li>然后把这个 digest 转换成整数 <span>\(m\)</span>
+ 使得 <span>\(1\le{m}\lt{n}\)</span>
+；</li>
+<li>最后用私钥 <span>\((n,d)\)</span>
+ 计算 <span>\(s=m^d\pmod{n}\)</span>
+</li>
+</ol>
+
+<h4 id="验证签名">验证签名</h4>
+
+<ol>
+<li>用公钥 <span>\((n,e)\)</span>
+ 计算 <span>\(v=s^e\pmod{n}\)</span>
+</li>
+<li>把 <span>\(v\)</span>
+ 转换回 digest</li>
+<li>独立对要签名的信息再作一次 digest</li>
+<li>对比这两个 digest，如果相同的话，那这个签名就是有效的</li>
+</ol>
+
+<h4 id="小结">小结</h4>
+
+<p>可以看到加解密和签名验签刚好是两个方向：前者是公钥加密发送给所有者解密，后者是用私钥签名发送给其他人用公钥验签；所以这就是为何一般<a href="http://www.di-mgt.com.au/rsa_alg.html#weaknesses">不建议使用相同的 key 同时用作加密和签名</a>：</p>
+
+<pre><code>Using the same key for encryption and signing
+Given that the underlying mathematics is the same for encryption and signing, only in reverse, if an attacker can convince a key holder to sign an unformatted encrypted message using the same key then she gets the original.
+</code></pre>
+
+<h3 id="实际算法">实际算法</h3>
+
+<p><a href="http://www.di-mgt.com.au/rsa_alg.html">http://www.di-mgt.com.au/rsa_alg.html</a> 这个地方介绍得很详细，有兴趣可以看一下，稍微摘录一些：</p>
+
+<ul>
+<li>计算 <span>\(y=x^e\pmod{n}\)</span>
+ （所谓 modular exponentiation）的复杂度大约为 <span>\(O(k^3)\)</span>
+，其中 <span>\(k\)</span>
+ 是 <span>\(n\)</span>
+ 的长度（例如 1024 bits），且当 <span>\(e\)</span>
+ 的二进制表示中 1 的数量越多则越慢。</li>
+<li>公钥 <span>\(e\)</span>
+ 一般选取固定的：例如
+<span>$$3=2^{2^0}&#43;1\\5=2^{2^1}&#43;1\\17=2^{2^2}&#43;1\\257=2^{2^3}&#43;1\\65537=2^{2^4}&#43;1$$</span>
+
+实际上这5个是前五个 fermat number：<span>\(F_x=2^{2^x}&#43;1\)</span>
+ ，恰好都是素数，但 <span>\(F_5\)</span>
+ 以及后面的 fermat number 不是素数。显然这些数字的二进制表示只有两个 1，如上述原因，在加密的过程中能节省计算时间。实际应用中一般都是使用 65537 ，因为小的 <span>\(e\)</span>
+ 不太安全。</li>
+<li><span>\(n\)</span>
+ 一般是由两个( <span>\(n=pq\)</span>
+ )或更多个（所谓 &ldquo;multi-prime&rdquo; RSA）大素数相乘而得</li>
+<li>多个素数相乘结果作为模的好处是可以更快速的计算 <span>\(m=c^d\pmod{n}\)</span>
+
+
+<ul>
+<li>使用中国剩余定理（Chinese Remainder Theorem，CRT）可以把这个计算转换成对 <span>\(p,q\)</span>
+ 的 modular exponentiation 计算，而 <span>\(p, q\)</span>
+ 的长度都只有 <span>\(n\)</span>
+ 的一半，所以复杂度会降低到原来的<a href="http://www.di-mgt.com.au/crt_rsa.html#crtarithmetic">四分之一</a>：<span>\(O(2(\cfrac{k}{2})^3)=O(\cfrac{k^3}{4})\)</span>
+</li>
+</ul></li>
+</ul>
 
 <h3 id="rsa-on-disk">RSA on disk</h3>
 
