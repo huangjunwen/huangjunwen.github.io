@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+<meta name="pinterest" content="nopin">
+<meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+<meta name="generator" content="Hugo 0.17" />
+
+
+
+<link rel="canonical" href="//huangjunwen.github.io/post/2017/01/public-key-cryptography-notes-2-format-and-standard/">
+
+
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/solarized_dark.min.css">
+    <title>Public Key Cryptography 笔记（2）-- 存储格式和标准 - Jayven@dev</title>
+    
+<meta name="description" content="RSA on disk 如前所描述，RSA 的公私钥实际上就是些数字，但我们平时实际使用的是 .pem 格式（或 .der）的 key 。 .pem 格式头部和尾部的有一些标识符（-----">
+
+<meta property="og:title" content="Public Key Cryptography 笔记（2）-- 存储格式和标准 - Jayven@dev">
+<meta property="og:type" content="article">
+<meta property="og:url" content="//huangjunwen.github.io/post/2017/01/public-key-cryptography-notes-2-format-and-standard/">
+<meta property="og:image" content="//huangjunwen.github.io/images/default.png">
+<meta property="og:site_name" content="Jayven@dev">
+<meta property="og:description" content="RSA on disk 如前所描述，RSA 的公私钥实际上就是些数字，但我们平时实际使用的是 .pem 格式（或 .der）的 key 。 .pem 格式头部和尾部的有一些标识符（-----">
+<meta property="og:locale" content="ja_JP">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="Jayven@dev">
+<meta name="twitter:url" content="//huangjunwen.github.io/post/2017/01/public-key-cryptography-notes-2-format-and-standard/">
+<meta name="twitter:title" content="Public Key Cryptography 笔记（2）-- 存储格式和标准 - Jayven@dev">
+<meta name="twitter:description" content="RSA on disk 如前所描述，RSA 的公私钥实际上就是些数字，但我们平时实际使用的是 .pem 格式（或 .der）的 key 。 .pem 格式头部和尾部的有一些标识符（-----">
+<meta name="twitter:image" content="//huangjunwen.github.io/images/default.png">
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "NewsArticle",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id":"\/\/huangjunwen.github.io\/"
+    },
+    "headline": "Public Key Cryptography 笔记（2）-- 存储格式和标准 - Jayven@dev",
+    "image": {
+      "@type": "ImageObject",
+      "url": "\/\/huangjunwen.github.io\/images\/default.png",
+      "height": 800,
+      "width": 800
+    },
+    "datePublished": "2017-01-26T17:43:37JST",
+    "dateModified": "2017-01-26T17:43:37JST",
+    "author": {
+      "@type": "Person",
+      "name": "Jayven@dev"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Jayven@dev",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "\/\/huangjunwen.github.io\/images/logo.png",
+        "width": 600,
+        "height": 60
+      }
+    },
+    "description": "RSA on disk 如前所描述，RSA 的公私钥实际上就是些数字，但我们平时实际使用的是 .pem 格式（或 .der）的 key 。 .pem 格式头部和尾部的有一些标识符（-----"
+  }
+</script>
+
+
+    <link href="//huangjunwen.github.io/css/styles.css" rel="stylesheet">
+  </head>
+
+  <body>
+    
+    
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-89264111-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+    
+
+    <header class="l-header">
+      <nav class="navbar navbar-default">
+        <div class="container">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="//huangjunwen.github.io/">Jayven@dev</a>
+          </div>
+
+          
+          <div id="navbar" class="collapse navbar-collapse">
+            
+            <ul class="nav navbar-nav navbar-right">
+              
+              
+              <li><a href="/post">Posts</a></li>
+              
+              
+              
+              <li><a href="/categories">Categories</a></li>
+              
+              
+              
+              <li><a href="/tags">Tags</a></li>
+              
+              
+            </ul>
+            
+          </div>
+          
+
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <div class="container">
+        
+<div class="row">
+  <div class="col-md-8">
+
+    <nav class="p-crumb">
+      <ol class="breadcrumb">
+        <li><a href="//huangjunwen.github.io/"><i class="fa fa-home" aria-hidden="true"></i></a></li>
+        
+        <li itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb"><a href="//huangjunwen.github.io/post/" itemprop="url"><span itemprop="title">post</span></a></li>
+        
+        <li class="active">Public Key Cryptography 笔记（2）-- 存储格式和标准</li>
+      </ol>
+    </nav>
+
+    <article class="single">
+  <header>
+    <ul class="p-facts">
+      <li><i class="fa fa-calendar" aria-hidden="true"></i><time datetime="2017-01-26T17:43:37JST">Jan 26, 2017</time></li>
+      <li><i class="fa fa-bookmark" aria-hidden="true"></i><a href="//huangjunwen.github.io/post/">post</a></li>
+      
+    </ul>
+
+    <h1 class="title">Public Key Cryptography 笔记（2）-- 存储格式和标准</h1>
+  </header>
+
+  
+
+  <div class="article-body">
+
+<h3 id="rsa-on-disk">RSA on disk</h3>
+
+<p>如前所描述，RSA 的公私钥实际上就是些数字，但我们平时实际使用的是 .pem 格式（或 .der）的 key 。</p>
+
+<p>.pem 格式头部和尾部的有一些标识符（<code>-----BEGIN XXXX-----</code>）这些是为了让 parser 可以马上知道这个文件包含的是公钥私钥，或是证书等。</p>
+
+<p>中间的数据其实是 base64 编码过后的 <a href="https://en.wikipedia.org/wiki/X.690#DER_encoding">DER（Distinguished Encoding Rules）</a> 编码的 <a href="https://en.wikipedia.org/wiki/Abstract_Syntax_Notation_One">ASN.1（Abstract Syntax Notation One）</a> 数据。</p>
+
+<p>写个程序验证以下（dec.py）：</p>
+
+<pre><code>#!/usr/bin/python
+
+import sys
+from base64 import b64decode
+from pyasn1.codec.der.decoder import decode as der_decode
+
+def read_pem(f, asn1Spec=None):
+
+    return der_decode(
+        b64decode(
+            ''.join([line.strip() for line in f if not line.startswith('-----')])
+        ), asn1Spec=asn1Spec
+    )
+
+obj, _ = read_pem(open(sys.argv[1]))
+
+print obj.prettyPrint()
+</code></pre>
+
+<p>找一个 rsa private key 来跑一下：</p>
+
+<pre><code>$ ./dec.py ca-key.pem
+Sequence:
+ &lt;no-name&gt;=0
+ &lt;no-name&gt;=893023574113042040269634126903705690958192000367515749793690532339562261663040768984677949208969821111506076369919400865801870985710613745908260652498336371620343220418005606803657105824685015775676961140056140842104922723725658584469937036979589039943318206308234450689935285531106176400784666850060612721223693026581160586984891869615299748396327063287952075098361379463194619694679249727200666343866879641226753061213723029674074572257689929441761207652940540816182884905731304910753429627574542805302378789826317425085431344299593860348296475098275788724990249961382297055893837789210216811880295130941496086631466846898230102127302757337004369112580595622821486216735822235200640222222944221601570231272966140106941857253100312153098428839206633396871491965363584739634413789118376819458819246161914101471359882766752512369669989338842342284961310600856321697107602376430660404437017714184604092513856991285419405296956080590982024711058544298854586244916166800299716510005045028393869316903124931993350151904669792718044403523729143307225465547206325525108357699688142798085183620461364419641399258446567984823312671315017896056518369422953112217687200988245732031363722479836324436839592416038603174283616122293984715039728219
+ &lt;no-name&gt;=65537
+ &lt;no-name&gt;=.....
+....
+</code></pre>
+
+<p>ASN.1 中 Sequence 相当于一般语言里的 struct，所以这个 private key 里是一个结构体，包含七八个数字，但所有字段名字都是 <code>&lt;no-name&gt;</code>，这是因为没有指定 specifiction。</p>
+
+<p>修改一下：</p>
+
+<pre><code># ...
+from pyasn1_modules import rfc2437
+
+# ...
+obj, _ = read_pem(open(sys.argv[1]), asn1Spec=rfc2437.RSAPrivateKey())
+# ...
+
+</code></pre>
+
+<p>重新运行一下：</p>
+
+<pre><code>$ ./dec.py ca-key.pem
+RSAPrivateKey:
+ version=0
+ modulus=893023574113042040269634126903705690958192000367515749793690532339562261663040768984677949208969821111506076369919400865801870985710613745908260652498336371620343220418005606803657105824685015775676961140056140842104922723725658584469937036979589039943318206308234450689935285531106176400784666850060612721223693026581160586984891869615299748396327063287952075098361379463194619694679249727200666343866879641226753061213723029674074572257689929441761207652940540816182884905731304910753429627574542805302378789826317425085431344299593860348296475098275788724990249961382297055893837789210216811880295130941496086631466846898230102127302757337004369112580595622821486216735822235200640222222944221601570231272966140106941857253100312153098428839206633396871491965363584739634413789118376819458819246161914101471359882766752512369669989338842342284961310600856321697107602376430660404437017714184604092513856991285419405296956080590982024711058544298854586244916166800299716510005045028393869316903124931993350151904669792718044403523729143307225465547206325525108357699688142798085183620461364419641399258446567984823312671315017896056518369422953112217687200988245732031363722479836324436839592416038603174283616122293984715039728219
+ publicExponent=65537
+...
+</code></pre>
+
+<p>完整的定义是在 <a href="https://en.wikipedia.org/wiki/PKCS_1">PKCS#1</a> 标准中：</p>
+
+<pre><code>RSAPrivateKey ::= SEQUENCE {
+  version           Version,
+  modulus           INTEGER,  -- n
+  publicExponent    INTEGER,  -- e
+  privateExponent   INTEGER,  -- d
+  prime1            INTEGER,  -- p
+  prime2            INTEGER,  -- q
+  exponent1         INTEGER,  -- d mod (p-1)
+  exponent2         INTEGER,  -- d mod (q-1)
+  coefficient       INTEGER,  -- (inverse of q) mod p
+  otherPrimeInfos   OtherPrimeInfos OPTIONAL
+}
+
+</code></pre>
+
+<p>其中 modulus/publicExponent/privateExponent 即模／公钥幂／私钥幂，可以看到实际中的 RSA 私钥也是包含 publicExponent 的；所以这就是为什么 openssl 工具中能从私钥中导出公钥的原因。</p>
+
+<p>剩下的其它参数则是使用中国剩余定理加速计算而预先计算好的参数。</p>
+
+<h3 id="参考">参考</h3>
+
+<ul>
+<li><a href="http://luca.ntop.org/Teaching/Appunti/asn1.html">http://luca.ntop.org/Teaching/Appunti/asn1.html</a></li>
+<li><a href="https://www.emc.com/collateral/white-papers/h11300-pkcs-1v2-2-rsa-cryptography-standard-wp.pdf">https://www.emc.com/collateral/white-papers/h11300-pkcs-1v2-2-rsa-cryptography-standard-wp.pdf</a></li>
+<li><a href="https://tls.mbed.org/kb/cryptography/asn1-key-structures-in-der-and-pem">https://tls.mbed.org/kb/cryptography/asn1-key-structures-in-der-and-pem</a></li>
+<li><a href="http://crypto.stackexchange.com/questions/1729/why-does-the-pkcs1-rsa-private-key-structure-contain-more-than-just-exponent-and">http://crypto.stackexchange.com/questions/1729/why-does-the-pkcs1-rsa-private-key-structure-contain-more-than-just-exponent-and</a></li>
+<li><a href="http://stackoverflow.com/questions/16899247/how-can-i-decode-a-ssl-certificate-using-python">http://stackoverflow.com/questions/16899247/how-can-i-decode-a-ssl-certificate-using-python</a></li>
+</ul>
+</div>
+
+  <footer class="article-footer">
+    
+    
+    
+    <section class="bordered">
+      <header>
+        <div class="panel-title">CATEGORIES</div>
+      </header>
+      <div>
+        <ul class="p-terms">
+          
+          <li><a href="//huangjunwen.github.io/categories/public-key-cryptography-%E7%AC%94%E8%AE%B0/">public key cryptography 笔记</a></li>
+          
+        </ul>
+      </div>
+    </section>
+    
+    
+    
+    <section class="bordered">
+      <header>
+        <div class="panel-title">TAGS</div>
+      </header>
+      <div>
+        <ul class="p-terms">
+          
+          <li><a href="//huangjunwen.github.io/tags/rsa/">rsa</a></li>
+          
+        </ul>
+      </div>
+    </section>
+    
+    
+  </footer>
+
+</article>
+
+
+    
+  </div>
+
+  <div class="col-md-4">
+    
+<aside class="l-sidebar">
+
+  <section class="panel panel-default">
+    <div class="panel-heading">
+      <div class="panel-title">LATESTS</div>
+    </div>
+    <div class="list-group">
+      
+      <a href="//huangjunwen.github.io/post/2017/01/public-key-cryptography-notes-2-format-and-standard/" class="list-group-item">Public Key Cryptography 笔记（2）-- 存储格式和标准</a>
+      
+      <a href="//huangjunwen.github.io/post/2017/01/public-key-cryptography-notes-1-rsa/" class="list-group-item">Public Key Cryptography 笔记（1）-- RSA</a>
+      
+      <a href="//huangjunwen.github.io/post/2016/12/port-knocking-using-iptables/" class="list-group-item">用 iptables 来配置 port knocking</a>
+      
+      <a href="//huangjunwen.github.io/post/2016/12/mysql-client-auto-login-without-password/" class="list-group-item">免输入密码登录 mysql</a>
+      
+    </div>
+  </section>
+
+  
+  <section class="panel panel-default">
+    <div class="panel-heading">
+      <div class="panel-title">CATEGORY</div>
+    </div>
+    <div class="list-group">
+      
+      <a href="//huangjunwen.github.io/categories/public-key-cryptography-%E7%AC%94%E8%AE%B0" class="list-group-item">public-key-cryptography-笔记</a>
+      
+      <a href="//huangjunwen.github.io/categories/sa" class="list-group-item">sa</a>
+      
+    </div>
+  </section>
+  
+  <section class="panel panel-default">
+    <div class="panel-heading">
+      <div class="panel-title">TAG</div>
+    </div>
+    <div class="list-group">
+      
+      <a href="//huangjunwen.github.io/tags/rsa" class="list-group-item">rsa</a>
+      
+      <a href="//huangjunwen.github.io/tags/gnu-pg" class="list-group-item">gnu-pg</a>
+      
+      <a href="//huangjunwen.github.io/tags/iptables" class="list-group-item">iptables</a>
+      
+      <a href="//huangjunwen.github.io/tags/mysql" class="list-group-item">mysql</a>
+      
+      <a href="//huangjunwen.github.io/tags/port-knocking" class="list-group-item">port-knocking</a>
+      
+      <a href="//huangjunwen.github.io/tags/tty" class="list-group-item">tty</a>
+      
+    </div>
+  </section>
+  
+
+</aside>
+
+
+  </div>
+</div>
+
+      </div>
+    </main>
+
+    <footer class="l-footer">
+      <div class="container">
+        <p>&copy; 2016. All rights reserved.</p>
+        <aside>
+          <p>Powered by <a href="https://gohugo.io/">Hugo</a>.</p>
+          <p><a href="https://github.com/dim0627/hugo_theme_beg">Beg</a> designed by <a href="http://yet.unresolved.xyz/">Daisuke Tsuji</a>.</p>
+        </aside>
+      </div>
+    </footer>
+
+    <script src="//code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </body>
+</html>
+
