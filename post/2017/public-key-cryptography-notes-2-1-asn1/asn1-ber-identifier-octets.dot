@@ -1,0 +1,100 @@
+digraph {
+
+    graph [rankdir="TB"];
+
+    node [style="rounded,dashed", shape="box"];
+
+    class [label=<
+        <table border="0" cellborder="0" cellspacing="0">
+            <tr><td colspan="2">tag class</td></tr>
+            <tr><td>universal:</td><td>00</td></tr>
+            <tr><td>application:</td><td>01</td></tr>
+            <tr><td>context-specific:</td><td>10</td></tr>
+            <tr><td>private:</td><td>11</td></tr>
+        </table>
+    >];
+
+    tag_kind [label=<
+        <table border="0" cellborder="0" cellspacing="0">
+            <tr><td>primitive:</td><td>0</td></tr>
+            <tr><td>compound:</td><td>1</td></tr>
+        </table>
+    >];
+
+    tag_number [label=<
+        <table border="0" cellborder="0" cellspacing="0">
+            <tr><td>low tag number:</td><td>0~30</td></tr>
+            <tr><td>high tag number (31~):</td><td>31</td></tr>
+        </table>
+    >, group="vanguard"];
+
+    high_tag_number [label=<
+        <table border="0" cellborder="0" cellspacing="0">
+            <tr><td>仅当 tag number 是 high tag number 时需要后续字节</td></tr>
+            <tr><td>后续字节以 base 128（低 7 位） 编码 tag number </td></tr>
+            <tr><td>后续字节最高位设为 1 ，除了最后一个为 0</td></tr>
+        </table>
+    >, style="rounded,dotted", shape="box"];
+
+    node [style="solid", shape="none"];
+
+    identifier_octets [label=<
+        <table border="0" cellborder="0" cellspacing="1">
+            <tr>
+                <td>
+                    <table border="0" cellborder="1" cellspacing="0">
+                        <tr>
+                            <td port="byte1bit8_7">xx</td>
+                            <td port="byte1bit6">x</td>
+                            <td port="byte1bit5_1">xxxxx</td>
+                        </tr>
+                    </table>
+                </td>
+                <td port="byte2">
+                    <table border="0" cellborder="1" cellspacing="0">
+                        <tr>
+                            <td>1</td>
+                            <td>xxxxxxx</td>
+                        </tr>
+                    </table>
+                </td>
+                <td>...</td>
+                <td port="byten">
+                    <table border="0" cellborder="1" cellspacing="0">
+                        <tr>
+                            <td>0</td>
+                            <td>xxxxxxx</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr><td>byte 1</td><td>byte 2</td><td>...</td><td>byte n</td></tr>
+        </table>
+    >, group="vanguard"];
+
+    examples [label=<
+        <table border="0" cellborder="1" cellspacing="0">
+            <tr><td colspan="7">例子:</td></tr>
+            <tr><td>Type</td><td>Class</td><td>Tag number (decimal)</td><td>Tag number (hex)</td><td>Primitive</td><td>BER 编码(bin)</td><td>BER 编码(hex)</td></tr>
+            <tr><td>BIT STRING</td><td>Universal</td><td>3</td><td>03</td><td>yes</td><td>00-0-00011</td><td>03</td></tr>
+            <tr><td>SEQUENCE</td><td>Universal</td><td>16</td><td>10</td><td>no</td><td>00-1-10000</td><td>30</td></tr>
+            <tr><td>[0] EXPLICIT</td><td>Context-specific</td><td>0</td><td>0</td><td>no</td><td>10-1-00000</td><td>a0</td></tr>
+            <tr><td>[PRIVATE 32] EXPLICIT</td><td>PRIVATE</td><td>32</td><td>20</td><td>no</td><td>11-1-00001 0-0100000</td><td>e1 20</td></tr>
+        </table>
+    >, group="vanguard"];
+
+    class -> identifier_octets:byte1bit8_7;
+
+    tag_kind -> identifier_octets:byte1bit6;
+
+    tag_number -> identifier_octets:byte1bit5_1;
+
+    high_tag_number -> identifier_octets:byte2;
+
+    high_tag_number -> identifier_octets:byten;
+
+    // The dot layout puts nodes on different ranks if there is an edge between them.
+    // So put an invisble edge between these two.
+    identifier_octets -> examples [style="invis"];
+
+}

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Jayven@dev</title>
+    <link>//huangjunwen.github.io/tags/asn.1/index.xml</link>
+    <description>Recent content on Jayven@dev</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <copyright>&amp;copy; 2016. All rights reserved.</copyright>
+    <atom:link href="//huangjunwen.github.io/tags/asn.1/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Public Key Cryptography 笔记（2.1）-- ASN.1</title>
+      <link>//huangjunwen.github.io/post/2017/public-key-cryptography-notes-2-1-asn1/</link>
+      <pubDate>Wed, 01 Feb 2017 09:19:40 +0800</pubDate>
+      
+      <guid>//huangjunwen.github.io/post/2017/public-key-cryptography-notes-2-1-asn1/</guid>
+      <description>
+
+&lt;script type=&#34;text/javascript&#34; async src=&#34;//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML&#34;&gt;&lt;/script&gt;
+
+
+&lt;h4 id=&#34;记法和编码&#34;&gt;记法和编码&lt;/h4&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://en.wikipedia.org/wiki/Abstract_Syntax_Notation_One&#34;&gt;ASN.1（Abstract syntax notation one）&lt;/a&gt; 是一个对数据（类型／值）的记法和编码的&lt;del&gt;祖父级&lt;/del&gt;标准；制定几十年而依然健在且广泛使用。&lt;/p&gt;
+
+&lt;p&gt;对比一下 &lt;a href=&#34;https://en.wikipedia.org/wiki/JSON&#34;&gt;JSON（Javascript Object Notation）&lt;/a&gt;，JSON 中的记法和编码是等价的，即它的记法就是编码。&lt;/p&gt;
+
+&lt;p&gt;而 ASN.1 中记法和编码是不一样的，记法主要是为人类服务，用于描述，是抽象且实现无关的，例如（摘自&lt;a href=&#34;https://www.obj-sys.com/asn1tutorial/node11.html#asn1_struct&#34;&gt;这里&lt;/a&gt;）：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;AirlineFlight  ::=  SEQUENCE {
+    airline   IA5String,
+    flight    NumericString,
+    seats     SEQUENCE {
+                  maximum   INTEGER,
+                  occupied  INTEGER,
+                  vacant    INTEGER
+    },
+    airport   SEQUENCE {
+                  origin             IA5String,
+                  stop1       [0]    IA5String  OPTIONAL,
+                  stop2       [1]    IA5String  OPTIONAL,
+                  destination        IA5String
+              },
+    crewsize ENUMERATED {
+                 six    (6),
+                 eight  (8),
+                 ten    (10)
+             },
+    cancel   BOOLEAN    DEFAULT FALSE
+}.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;而编码则是具体实现序列化以及反序列化的操作，ASN.1 有很多种编码方式，例如：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Basic Encoding Rule (BER)&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Canonical Encoding Rules (CER)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Distinguished Encoding Rules (DER)&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;XML Encoding Rules (XER)&lt;/li&gt;
+&lt;li&gt;Packed Encoding Rules (PER)&lt;/li&gt;
+&lt;li&gt;&amp;hellip;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;这篇笔记主要记录 ASN.1 记法以及 BER／DER 这两种常用编码。&lt;/p&gt;
+
+&lt;h4 id=&#34;类型-tag&#34;&gt;类型／Tag&lt;/h4&gt;
+
+&lt;p&gt;ASN.1 中数据是有类型的，不同类型的数据有不同的值域，类型按特点用途可以划分成以下四种：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;simple type&lt;/strong&gt;，“原子”类型，例如 BOOLEAN，INTERGER 等本身不可分解的基本类型&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;structured type&lt;/strong&gt;，由其它类型组装而成的类型，包括 SEQUENCE，SEQUENCE OF，SET，SET OF，类似于一些计算机语言中的 struct, array, set 等&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;tagged type&lt;/strong&gt;，类似于类型别名，用于包装一个已有的类型；这在一些有歧义的场合下可作区分用&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;other type&lt;/strong&gt;，包括 CHOICE 和 ANY&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;每一种类型（除 CHOICE 和 ANY 外）都可以由一个 &lt;code&gt;tag := (class, tag number)&lt;/code&gt; 来唯一标识（所以以下 &amp;ldquo;tag&amp;rdquo; 和 “类型” 这两个词基本等价混用），其中类别 &lt;code&gt;class&lt;/code&gt;，相当于命名空间；非负整数 &lt;code&gt;tag number&lt;/code&gt;，相当于在此命名空间中的类型编号；有四种类别：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;universal&lt;/strong&gt;，内建类别，这一类别的 tag 对所有应用来说都表示相同的类型，貌似大部分（还是全部？）的 simple/structured 类型都定义在这个类别中，由 X.208 所定义，以下是一些例子：
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;End-of-Content&lt;/code&gt;: tag number 为 0，这是个特殊的类型，下面再详叙&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;BOOLEAN&lt;/code&gt;: tag number 为 1，布尔类型&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;INTERGER&lt;/code&gt;: tag number 为 2，任意精度的整数&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;BIT STRING&lt;/code&gt;: tag number 为 3，任意长度的比特串&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;OCTET STRING&lt;/code&gt;: tag number 为 4，任意长度的字节串&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;NULL&lt;/code&gt;: tag number 为 5&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;OBJECT IDENTIFIER(OID)&lt;/code&gt;: tag number 为 6，&lt;a href=&#34;https://en.wikipedia.org/wiki/Object_identifier&#34;&gt;对象标识符&lt;/a&gt;，用于为各种“东西”／“概念”起一个唯一的标识符，由机构 ITU 和 ISO/IEC 标准化；其具体形式类似于域名一样是多级树状结构的，只是每一级由一个整数表示，子级对象从属于父对象，例如：
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://oid-info.com/get/1&#34;&gt;1&lt;/a&gt; 表示的是 iso&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://oid-info.com/get/1.2&#34;&gt;1.2&lt;/a&gt; member-body，ISO member bodies&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://oid-info.com/get/1.2.840&#34;&gt;1.2.840&lt;/a&gt; us，美国&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://oid-info.com/get/1.2.840.113549&#34;&gt;1.2.840.113549&lt;/a&gt; rsadsi，即 RSA Security LLC 公司&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://oid-info.com/get/1.2.840.113549.1&#34;&gt;1.2.840.113549.1&lt;/a&gt; pkcs，即 Public-Key Cryptography Standards (PKCS)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://oid-info.com/get/1.2.840.113549.1.1&#34;&gt;1.2.840.113549.1.1&lt;/a&gt; pkcs-1，即 PKCS#1 标准&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://oid-info.com/get/1.2.840.113549.1.1.13&#34;&gt;1.2.840.113549.1.1.13&lt;/a&gt; sha512WithRSAEncryption&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;UTF8 STRING&lt;/code&gt;: tag number 为 12&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;SEQUENCE 和 SEQUENCE OF&lt;/code&gt;: tag number 为 16，有序的结构体和列表（不明白为什么不区分两个 tag 呢？）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;SET 和 SET OF&lt;/code&gt;: tag number 为 17，无序的结构体和列表（继续不明白为什么不区分两个 tag）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;PrintableString&lt;/code&gt;: tag number 为 19（有了 &lt;code&gt;OCTET STRING&lt;/code&gt; 为什么还要区分这个呢？）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;IA5String&lt;/code&gt;: tag number 为 22，大致等价于 ASCII 字符串&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;UTCTIME&lt;/code&gt;: tag number 为 23&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;application&lt;/strong&gt;，这一类别的 tag 的意义由某应用内定义，对不同的应用来说，即使相同的 tag number 对应的是不同的含义&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;private&lt;/strong&gt;，这一类别的 tag 的意义由某企业或组织定义&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;context-specific&lt;/strong&gt;，这一类别的 tag 主要用于在特定的上下文中里解决歧义问题的，例如某个 SEQUENCE 类型里面包含了两个相邻的 optional INTERGER 字段（即可以缺省的字段），假如编码过后传来一个整数，那究竟这个值是属于哪个字段呢？这时候就需要给这两个字段封装成新的 tagged 类型加以区分了&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&#34;ber-basic-encoding-rules-简介&#34;&gt;BER (Basic Encoding Rules) 简介&lt;/h4&gt;
+
+&lt;p&gt;BER 对数据的编码一般由以下三（或四）个部件按顺序构成，常简称 &lt;strong&gt;TLV&lt;/strong&gt; (Type-Length-Value)：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Identifier octets&lt;/strong&gt;：用于编码这个数据的类型／tag&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Length octets&lt;/strong&gt;：用于编码数据的长度&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Contents octets&lt;/strong&gt;：实际数据的编码，长度可以为 0&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;End-of-contents octets&lt;/strong&gt;（optional）：有些数据在编码时还不知道具体长度，例如流数据，这个时候需要有一个结束标志&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;Identifier octets&lt;/strong&gt; 对类型的编码使用 1+ 个字节，第一个字节编码包括 tag class，primitive 标志位，以及 tag number ：小于等于 30 的 tag number 直接编码在第一个字节；对于更大的 tag number，第一字节写死 31，并用后续字节的低 7 位编码实际 tag number，后续字节的最高位设为 1，除了最后一个用以标识结束；整理图示如下：&lt;/p&gt;
+
+&lt;img src=&#34;./asn1-ber-identifier-octets.png&#34; alt=&#34;Public Key Cryptography 笔记（2.1）-- ASN.1 ./asn1-ber-identifier-octets.png&#34;&gt;
+
+
+&lt;p&gt;&lt;strong&gt;Length octets&lt;/strong&gt; 对实际数据的长度进行编码，有三种形式：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;确定长度短模式，可编码 &lt;span&gt;\([0, 127]\)&lt;/span&gt;
+，仅需要一个字节编码&lt;/li&gt;
+&lt;li&gt;确定长度长模式，可编码 &lt;span&gt;\([0, 2^{1008}-1]\)&lt;/span&gt;
+，需要 1+ 字节编码&lt;/li&gt;
+&lt;li&gt;不确订长度模式，用于在编码阶段无法确定长度的数据&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;具体方法整理如下图：&lt;/p&gt;
+
+&lt;img src=&#34;./asn1-ber-length-octets.png&#34; alt=&#34;Public Key Cryptography 笔记（2.1）-- ASN.1 ./asn1-ber-length-octets.png&#34;&gt;
+
+
+&lt;p&gt;&amp;hellip;未完待续&lt;/p&gt;
+
+&lt;h4 id=&#34;参考&#34;&gt;参考&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://luca.ntop.org/Teaching/Appunti/asn1.html&#34;&gt;http://luca.ntop.org/Teaching/Appunti/asn1.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://en.wikipedia.org/wiki/Abstract_Syntax_Notation_One&#34;&gt;https://en.wikipedia.org/wiki/Abstract_Syntax_Notation_One&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://en.wikipedia.org/wiki/X.690#BER_encoding&#34;&gt;https://en.wikipedia.org/wiki/X.690#BER_encoding&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.obj-sys.com/asn1tutorial/asn1only.html&#34;&gt;https://www.obj-sys.com/asn1tutorial/asn1only.html&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
