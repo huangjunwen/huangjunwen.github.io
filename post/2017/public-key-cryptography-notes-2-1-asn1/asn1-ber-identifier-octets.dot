@@ -17,7 +17,7 @@ digraph {
     tag_kind [label=<
         <table border="0" cellborder="0" cellspacing="0">
             <tr><td>primitive:</td><td>0</td></tr>
-            <tr><td>compound:</td><td>1</td></tr>
+            <tr><td>constructed:</td><td>1</td></tr>
         </table>
     >];
 
@@ -76,10 +76,10 @@ digraph {
         <table border="0" cellborder="1" cellspacing="0">
             <tr><td colspan="7">例子:</td></tr>
             <tr><td>Type</td><td>Class</td><td>Tag number (decimal)</td><td>Tag number (hex)</td><td>Primitive</td><td>BER 编码(bin)</td><td>BER 编码(hex)</td></tr>
-            <tr><td>BIT STRING</td><td>Universal</td><td>3</td><td>03</td><td>yes</td><td>00-0-00011</td><td>03</td></tr>
-            <tr><td>SEQUENCE</td><td>Universal</td><td>16</td><td>10</td><td>no</td><td>00-1-10000</td><td>30</td></tr>
-            <tr><td>[0] EXPLICIT</td><td>Context-specific</td><td>0</td><td>0</td><td>no</td><td>10-1-00000</td><td>a0</td></tr>
-            <tr><td>[PRIVATE 32] EXPLICIT</td><td>PRIVATE</td><td>32</td><td>20</td><td>no</td><td>11-1-00001 0-0100000</td><td>e1 20</td></tr>
+            <tr><td>BIT STRING</td><td>Universal</td><td>3</td><td>03</td><td>yes</td><td align="left">00-0-00011</td><td align="left">03</td></tr>
+            <tr><td>SEQUENCE</td><td>Universal</td><td>16</td><td>10</td><td>no</td><td align="left">00-1-10000</td><td align="left">30</td></tr>
+            <tr><td>[0] EXPLICIT</td><td>Context-specific</td><td>0</td><td>0</td><td>no</td><td align="left">10-1-00000</td><td align="left">a0</td></tr>
+            <tr><td>[PRIVATE 32] EXPLICIT</td><td>PRIVATE</td><td>32</td><td>20</td><td>no</td><td align="left">11-1-00001 0-0100000</td><td align="left">e1 20</td></tr>
         </table>
     >, group="vanguard"];
 

@@ -210,7 +210,7 @@ ga('send', 'pageview');
 <p>ASN.1 中数据是有类型的，不同类型的数据有不同的值域，类型按特点用途可以划分成以下四种：</p>
 
 <ul>
-<li><strong>simple type</strong>，“原子”类型，例如 BOOLEAN，INTERGER 等本身不可分解的基本类型</li>
+<li><strong>simple type</strong>，“原子”类型，例如 BOOLEAN，INTEGER 等本身不可分解的基本类型</li>
 <li><strong>structured type</strong>，由其它类型组装而成的类型，包括 SEQUENCE，SEQUENCE OF，SET，SET OF，类似于一些计算机语言中的 struct, array, set 等</li>
 <li><strong>tagged type</strong>，类似于类型别名，用于包装一个已有的类型；这在一些有歧义的场合下可作区分用</li>
 <li><strong>other type</strong>，包括 CHOICE 和 ANY</li>
@@ -224,7 +224,7 @@ ga('send', 'pageview');
 <ul>
 <li><code>End-of-Content</code>: tag number 为 0，这是个特殊的类型，用于标识不确定长度数据的结束，下面再详叙</li>
 <li><code>BOOLEAN</code>: tag number 为 1，布尔类型</li>
-<li><code>INTERGER</code>: tag number 为 2，任意精度的整数</li>
+<li><code>INTEGER</code>: tag number 为 2，任意精度的整数</li>
 <li><code>BIT STRING</code>: tag number 为 3，任意长度的比特串</li>
 <li><code>OCTET STRING</code>: tag number 为 4，任意长度的字节串</li>
 <li><code>NULL</code>: tag number 为 5</li>
@@ -248,7 +248,7 @@ ga('send', 'pageview');
 </ul></li>
 <li><strong>application</strong>，这一类别的 tag 的意义由某应用内定义，对不同的应用来说，即使相同的 tag number 对应的是不同的含义</li>
 <li><strong>private</strong>，这一类别的 tag 的意义由某企业或组织定义</li>
-<li><strong>context-specific</strong>，这一类别的 tag 主要用于在特定的上下文中里解决歧义问题，例如某个 SEQUENCE 类型里面包含了两个相邻的可缺省的 INTERGER 字段，假如编码过后只传来一个整数（另外一个取缺省值），那究竟这个值是属于哪个字段呢？这时候就需要给这两个字段封装成新的 tagged 类型加以区分</li>
+<li><strong>context-specific</strong>，这一类别的 tag 主要用于在特定的上下文中里解决歧义问题，例如某个 SEQUENCE 类型里面包含了两个相邻的可缺省的 INTEGER 字段，假如编码过后只传来一个整数（另外一个取缺省值），那究竟这个值是属于哪个字段呢？这时候就需要给这两个字段封装成新的 tagged 类型加以区分</li>
 </ul>
 
 <h4 id="ber-basic-encoding-rules-简介">BER (Basic Encoding Rules) 简介</h4>
@@ -262,7 +262,7 @@ ga('send', 'pageview');
 <li><strong>End-of-contents octets</strong>（optional）：有些数据在编码时还不知道具体长度，例如流数据，这个时候需要有一个结束标志</li>
 </ol>
 
-<p><strong>Identifier octets</strong> 对类型的编码使用 1+ 个字节，第一个字节编码包括 tag class，primitive 标志位，以及 tag number ：小于等于 30 的 tag number 直接编码在第一个字节；对于更大的 tag number，第一字节写死 31，并用后续字节的低 7 位编码实际 tag number，后续字节的最高位设为 1，除了最后一个用以标识结束；整理图示如下：</p>
+<p><strong>Identifier octets</strong> 对类型的编码使用 1+ 个字节，第一个字节编码包括 tag class，primitive 标识位（<strong>注意：这个标识位是用来标识数据编码时的方法，跟上边所说的 simple／structured／&hellip; 类型分类没有太大关系</strong>），以及 tag number ：小于等于 30 的 tag number 直接编码在第一个字节；对于更大的 tag number，第一字节写死 31，并用后续字节的低 7 位编码实际 tag number，后续字节的最高位设为 1，除了最后一个设为 0 用以标识结束；整理图示如下：</p>
 
 <a href="./asn1-ber-identifier-octets.png"><img style="max-width: 100%; height: auto;" src="./asn1-ber-identifier-octets.png" alt="Public Key Cryptography 笔记（2.1）-- ASN.1 ./asn1-ber-identifier-octets.png"></a>
 
@@ -300,7 +300,164 @@ ga('send', 'pageview');
 
 <h4 id="一些类型的记法及编码方式">一些类型的记法及编码方式</h4>
 
-<p>&hellip;未完待续</p>
+<p>以下基本翻译自：<a href="http://luca.ntop.org/Teaching/Appunti/asn1.html">http://luca.ntop.org/Teaching/Appunti/asn1.html</a> 第五节</p>
+
+<h5 id="integer">INTEGER</h5>
+
+<p>tag number 为 2，整数类型可以是正／负的任意精度整数。 记法：</p>
+
+<pre><code>INTEGER [ '{' identifier1(value1) ... identifiern(valuen) '}' ]
+</code></pre>
+
+<p>其中 <code>identifier1</code> &hellip; <code>identifiern</code> 如果有的话，这些标识符将绑定其对应的整数值，例如：</p>
+
+<pre><code>Version ::= INTEGER { v1988(0) }
+
+...
+
+Certificate ::= ...
+  version Version DEFAULT v1988,
+  ...
+</code></pre>
+
+<p>这是 X.509 里头的版本类型，定义了 <code>v1988</code> 这个标识符，其值为 0；证书类型里头的版本默认即为这个值。</p>
+
+<p>BER 编码是 primitive 方式，使用<a href="https://zh.wikipedia.org/wiki/%E4%BA%8C%E8%A3%9C%E6%95%B8">补码</a> 来编码此整数，如：</p>
+
+<ul>
+<li>0: <code>02 01 00</code></li>
+<li>127: <code>02 01 7f</code></li>
+<li>128: <code>02 02 00 80</code></li>
+<li>-128: <code>02 01 80</code></li>
+</ul>
+
+<h5 id="bit-string">BIT STRING</h5>
+
+<p>tag number 为 3，比特串可以表示任意长度（包括0）的 0 和 1。记法：</p>
+
+<pre><code>BIT STRING
+</code></pre>
+
+<p>例如 X.509 的 SubjectPublicKeyInfo：</p>
+
+<pre><code>SubjectPublicKeyInfo ::= SEQUENCE {
+    algorithm AlgorithmIdentifier,
+    publicKey BIT STRING
+}
+</code></pre>
+
+<p>BER 编码方式可以是 primitive 或者 constructed 的，DER 只允许 primitive 编码方式：</p>
+
+<ul>
+<li>primitive 编码方式：由于 bit string 可以是任意长度，不一定是 8 的整数倍，所以第一字节编码最后一个字节中填充的比特数（0～7），BER 填充比特可以是任意东西，但 DER 则只允许填充 0</li>
+<li>constructed 编码方式：这种编码方式把原来的一个 BIT STRING 分解成多个字串，分别编码之并串联起来；字串中除了最后一个，长度都必须是 8 的整数倍</li>
+</ul>
+
+<p>例如对 <code>011011100101110111</code> 进行编码（长度为 18，<code>01101110-01011101-11 (bin)</code> <code>6e 5d c0 (hex)</code>，填充 6 位）：</p>
+
+<ul>
+<li>DER 编码：<code>03 04 06 6e 5d c0</code></li>
+<li>BER constructed 方式编码：把原比特串划分成 <code>01101110-01011101</code> 和 <code>11</code> 分别编码得 <code>03 03 00 6e 5d</code> 和 <code>03 02 06 c0</code>，这两子串一共 9 字节，故最终编码为：<code>23 09 03 03 00 6e 5d 03 02 06 c0</code>。（注意：第一个字节变成了 23，这是因为 primitive 标识位为 1）</li>
+</ul>
+
+<h5 id="octet-string">OCTET STRING</h5>
+
+<p>tag number 为 4，任意长度的字节串，记法：</p>
+
+<pre><code>OCTET STRING [ SIZE '(' size | size1 '..' size2 ')' ]
+</code></pre>
+
+<p><code>SIZE(size)</code> 形式的表示字节串长度为 size，<code>SIZE(size1..size2)</code> 形式的表示字符串长度需要在 size1 和 size2 之间，没有 <code>SIZE</code> 后缀的表示字符串可以任意长度。</p>
+
+<p>BER 编码方式可以是 primitive 或者 constructed 的，constructed 编码方式类似 BIT STRING 一样由子串串联而成；DER 只允许 primitive 编码方式</p>
+
+<h5 id="sequence">SEQUENCE</h5>
+
+<p>tag number 为 16，相当于 c 语言中的 struct，记法：</p>
+
+<pre><code>SEQUENCE {
+    [identifier1] Type1 [ '{' ( 'OPTIONAL' | 'DEFAULT' value1 ) '}' ],
+    ...,
+    [identifiern] Typen [ '{' ( 'OPTIONAL' | 'DEFAULT' valuen ) '}' ]
+}
+</code></pre>
+
+<p><code>identifierx</code> 是字段名，主要起到名称作用所以可以不写；<code>Typex</code> 则是对应字段的类型；字段如果带上 <code>OPTIONAL</code> 表明此字段可以为空，如果带上 <code>DEFAULT valuex</code> 同样表明此字段可以为空且有缺省值；相邻几个字段如果都是 <code>OPTIONAL</code> 或者 <code>DEFAULT</code> 的话，那么这几个字段以及后续的那个字段必须拥有不同的 tag 以避免歧义</p>
+
+<p>编码方式为 structured，字段按顺序编码串联而成；当某个字段空时，不用编码这个字段；假如刚好这个字段的值跟缺省值相同时，BER 编码可以也可以不包含此字段，DER 编码则不包含此字段</p>
+
+<p>例子，摘自 <a href="https://en.wikipedia.org/wiki/Abstract_Syntax_Notation_One#Example">wiki</a>：</p>
+
+<pre><code>FooQuestion ::= SEQUENCE {
+    trackingNumber INTEGER,
+    question       IA5String
+}
+
+myQuestion FooQuestion ::= {
+    trackingNumber     5,
+    question           &quot;Anybody there?&quot;
+}
+</code></pre>
+
+<p>编码为</p>
+
+<pre><code>30 — type tag indicating SEQUENCE
+13 — length in octets of value that follows
+02 — type tag indicating INTEGER
+01 — length in octets of value that follows
+05 — value (5)
+16 — type tag indicating IA5String 
+     (IA5 means the full 7-bit ISO 646 set, including variants, 
+      but is generally US-ASCII)
+0e — length in octets of value that follows
+41 6e 79 62 6f 64 79 20 74 68 65 72 65 3f — value (&quot;Anybody there?&quot;)
+</code></pre>
+
+<h5 id="sequence-of">SEQUENCE OF</h5>
+
+<p>相当于 c 中的 array，列表中的数据都是同一个类型的，编码方式跟 SEQUENCE 是一样的，只是记法不一样：</p>
+
+<pre><code>SEQUENCE OF Type
+</code></pre>
+
+<h5 id="set">SET</h5>
+
+<p>tag number 是 17，字段无序的结构体，记法类似于 SEQUENCE，编码方式也类似于它，另有一个要求是字段必须有不一样的 tag number，DER 编码时字段按 tag number 排序</p>
+
+<h5 id="set-of">SET OF</h5>
+
+<p>类似于 SEQUENCE OF，只是是无序的，DER 编码时按照各个字段 BER 编码后的字串排序</p>
+
+<h5 id="tagged-types">Tagged types</h5>
+
+<p>tagged types 如前所述是对现有类型的封装，赋予新的 tag 成为新的类型。有两种 tagged 类形：<code>IMPLICIT</code> 和 <code>EXPLICIT</code>，只是编码方式不一样，记法如下：</p>
+
+<pre><code>'[' [ class ] number ']' [ 'IMPLICIT' | 'EXPLICIT' ] Type
+
+class = 'UNIVERSAL' | 'APPLICATION' | 'PRIVATE'
+</code></pre>
+
+<p>例如：</p>
+
+<pre><code>Image ::= SEQUENCE {
+    width  [0] INTEGER OPTIONAL,
+    height [1] INTEGER OPTIONAL,
+    data   OCTET STRING
+}
+
+myImage Image ::= {
+    width 100,
+    ...
+}
+</code></pre>
+
+<p>这里 <code>width</code> 字段的原类型是 <code>INTEGER OPTIONAL</code>，<code>[0]</code> 表明这个 tagged 类型的 tag number 为 0，又因为 class 没指定，默认为 context-specific，而由于也没有指定 IMPLICIT 还是 EXPLICIT，默认是 EXPLICIT</p>
+
+<p>编码方式，对于 EXPLICIT tagged 类型，采用 constructed 编码方式，就像 SEQUENCE 一样，原类型数据则作为唯一一个字段进行编码。如上述例子对 width 的编码为：<code>a0 (10-1-00000) 03 02 01 64</code></p>
+
+<p>对于 IMPLICIT tagged 类型的话，则只是把原类型数据的 tag 换成新的 tag，所以可能是 primitive 也可以能是 constructed 编码方式，length-octets 跟 content-octets 都不变</p>
+
+<p>对比两种 tagged 类型，EXPLICIT 更为完整，接收方可以立即解码出原类型数据；而 IMPLICIT 类型的编码更短，但接收方必须知道原类型才能解码出数据</p>
 
 <h4 id="参考">参考</h4>
 
