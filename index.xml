@@ -7,8 +7,71 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
     <copyright>&amp;copy; 2017 &lt;a href=&#34;mailto:kassarar@gmail.com&#34;&gt;Huang JunWen&lt;/a&gt;; All rights reserved.</copyright>
-    <lastBuildDate>Wed, 01 Feb 2017 09:19:40 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 23 Apr 2017 09:27:43 +0800</lastBuildDate>
     <atom:link href="//huangjunwen.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Shamir&#39;s Secret Sharding</title>
+      <link>//huangjunwen.github.io/post/2017/shamir-secret-sharding/</link>
+      <pubDate>Sun, 23 Apr 2017 09:27:43 +0800</pubDate>
+      
+      <guid>//huangjunwen.github.io/post/2017/shamir-secret-sharding/</guid>
+      <description>
+
+&lt;script type=&#34;text/javascript&#34; async src=&#34;//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;&lt;a href=&#34;https://www.hashicorp.com&#34;&gt;Hashicorp&lt;/a&gt; 这家公司的产品都很有意思，其中 &lt;a href=&#34;https://www.vaultproject.io/&#34;&gt;Vault&lt;/a&gt; 是一个用来集中管理敏感信息（密码，各种 token，证书，key 等等）的工具。&lt;/p&gt;
+
+&lt;p&gt;Vault server 运行起来之后有两种状态：&lt;em&gt;seal/unseal（密封／解封）&lt;/em&gt;  ，这是因为：&lt;/p&gt;
+
+&lt;p&gt;Vault 的数据是加密储存在磁盘上的：由  &lt;strong&gt;encryption key&lt;/strong&gt;  加密，这个  encryption key  是由  &lt;strong&gt;master key&lt;/strong&gt;  加密储存在磁盘上，而  master key  是不存放在磁盘上。所以当 Vault server 刚启动时，由于  master key  未知，故  encryption key  以及实际数据都是无法被解密访问的，这种状态就称之为&lt;em&gt;seal（密封）&lt;/em&gt; ，&lt;em&gt;unseal（解封）&lt;/em&gt; 就是重建  master key  的过程。&lt;/p&gt;
+
+&lt;p&gt;由于 master key 太重要了，Vault 使用所谓的 &lt;a href=&#34;https://en.wikipedia.org/wiki/Shamir%27s_Secret_Sharing&#34;&gt;Shamir&amp;rsquo;s Secret Sharing&lt;/a&gt; 算法把这个 master key 切分并分发给 n 个人，只有当这 n 个人里的最少 k 个人授权提供他们持有的部分，vault 才能重构出这个 master key，这个算法挺有趣，所以写篇博客记录下来：&lt;/p&gt;
+
+&lt;h3 id=&#34;目标&#34;&gt;目标&lt;/h3&gt;
+
+&lt;p&gt;密码 &lt;span&gt;\(S\)&lt;/span&gt;
+ 需要切分成 &lt;span&gt;\(n\)&lt;/span&gt;
+ 份： &lt;span&gt;\(S_1, S_2, ... S_n\)&lt;/span&gt;
+&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;大于等于 &lt;span&gt;\(k\)&lt;/span&gt;
+ 个任意 &lt;span&gt;\(S_i\)&lt;/span&gt;
+ 就能算出 &lt;span&gt;\(S\)&lt;/span&gt;
+&lt;/li&gt;
+&lt;li&gt;少于等于 &lt;span&gt;\(k-1\)&lt;/span&gt;
+ 个任意 &lt;span&gt;\(S_i\)&lt;/span&gt;
+ 无法算出 &lt;span&gt;\(S\)&lt;/span&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;思路&#34;&gt;思路&lt;/h3&gt;
+
+&lt;p&gt;这个算法的思路是这样的：在平面几何中，2 个点就能唯一决定一条直线，3 个点就能唯一决定一条抛物线，4 个点能唯一决定一条三次曲线。。。反之，1 个点决定不了唯一一条直线，2 个点或更少决定不了唯一一条抛物线。。。&lt;/p&gt;
+
+&lt;p&gt;对于一条 &lt;span&gt;\(k-1\)&lt;/span&gt;
+ 次曲线&lt;/p&gt;
+
+&lt;span&gt;$$f(x) = a_0 &amp;#43; a_{1}x &amp;#43; a_{2}x^{2} &amp;#43; ... &amp;#43; a_{k-1}x^{k-1} $$&lt;/span&gt;
+
+
+&lt;p&gt;只要 &lt;span&gt;\(k\)&lt;/span&gt;
+ 个点就能唯一决定，而少于 &lt;span&gt;\(k\)&lt;/span&gt;
+ 个点，则有无限条 &lt;span&gt;\(k-1\)&lt;/span&gt;
+ 次曲线穿过这些点。&lt;/p&gt;
+
+&lt;p&gt;所以算法是这样的，令 &lt;span&gt;\(a_0 = S\)&lt;/span&gt;
+，再随机选取 &lt;span&gt;\(a_{1}, a_{2}, ... , a_{k-1}\)&lt;/span&gt;
+，这样就构造出一条 &lt;span&gt;\(k-1\)&lt;/span&gt;
+ 次曲线，在曲线上随机选取 &lt;span&gt;\(n\)&lt;/span&gt;
+ 个点，这些点（的坐标值）就是分发给各人的密码 &lt;span&gt;\(S_i\)&lt;/span&gt;
+ 了。 只要超过 &lt;span&gt;\(k\)&lt;/span&gt;
+ 个人提供他们的密码（点），就能重构曲线，也就能获得 &lt;span&gt;\(S = a_0 = f(0)\)&lt;/span&gt;
+ 了。&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Public Key Cryptography 笔记（2.1）-- ASN.1</title>

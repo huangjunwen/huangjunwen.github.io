@@ -8,29 +8,29 @@
 
 
 
-<link rel="canonical" href="//huangjunwen.github.io/post/2016/port-knocking-using-iptables/">
+<link rel="canonical" href="//huangjunwen.github.io/post/2017/shamir-secret-sharding/">
 
 
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/solarized_dark.min.css">
-    <title>用 iptables 来配置 port knocking - Jayven@dev</title>
+    <title>Shamir&#39;s Secret Sharding - Jayven@dev</title>
     
-<meta name="description" content="对于正式环境的服务器来说，每当查看到 auth.log 里头那些撞大运的 ssh 登录尝试，心里总是有点惴惴不安的。虽然 public key authentication 号称安全，但是谁说得准呢？而且不知道配置">
+<meta name="description" content="Hashicorp 这家公司的产品都很有意思，其中 Vault 是一个用来集中管理敏感信息（密码，各种 token，证书，key 等等）的工具。 Vault server 运行起来之后有两种状态：s">
 
-<meta property="og:title" content="用 iptables 来配置 port knocking - Jayven@dev">
+<meta property="og:title" content="Shamir&#39;s Secret Sharding - Jayven@dev">
 <meta property="og:type" content="article">
-<meta property="og:url" content="//huangjunwen.github.io/post/2016/port-knocking-using-iptables/">
+<meta property="og:url" content="//huangjunwen.github.io/post/2017/shamir-secret-sharding/">
 <meta property="og:image" content="//huangjunwen.github.io/images/default.png">
 <meta property="og:site_name" content="Jayven@dev">
-<meta property="og:description" content="对于正式环境的服务器来说，每当查看到 auth.log 里头那些撞大运的 ssh 登录尝试，心里总是有点惴惴不安的。虽然 public key authentication 号称安全，但是谁说得准呢？而且不知道配置">
+<meta property="og:description" content="Hashicorp 这家公司的产品都很有意思，其中 Vault 是一个用来集中管理敏感信息（密码，各种 token，证书，key 等等）的工具。 Vault server 运行起来之后有两种状态：s">
 <meta property="og:locale" content="ja_JP">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="Jayven@dev">
-<meta name="twitter:url" content="//huangjunwen.github.io/post/2016/port-knocking-using-iptables/">
-<meta name="twitter:title" content="用 iptables 来配置 port knocking - Jayven@dev">
-<meta name="twitter:description" content="对于正式环境的服务器来说，每当查看到 auth.log 里头那些撞大运的 ssh 登录尝试，心里总是有点惴惴不安的。虽然 public key authentication 号称安全，但是谁说得准呢？而且不知道配置">
+<meta name="twitter:url" content="//huangjunwen.github.io/post/2017/shamir-secret-sharding/">
+<meta name="twitter:title" content="Shamir&#39;s Secret Sharding - Jayven@dev">
+<meta name="twitter:description" content="Hashicorp 这家公司的产品都很有意思，其中 Vault 是一个用来集中管理敏感信息（密码，各种 token，证书，key 等等）的工具。 Vault server 运行起来之后有两种状态：s">
 <meta name="twitter:image" content="//huangjunwen.github.io/images/default.png">
 
 
@@ -42,15 +42,15 @@
       "@type": "WebPage",
       "@id":"\/\/huangjunwen.github.io\/"
     },
-    "headline": "用 iptables 来配置 port knocking - Jayven@dev",
+    "headline": "Shamir\x27s Secret Sharding - Jayven@dev",
     "image": {
       "@type": "ImageObject",
       "url": "\/\/huangjunwen.github.io\/images\/default.png",
       "height": 800,
       "width": 800
     },
-    "datePublished": "2016-12-20T10:20:54JST",
-    "dateModified": "2016-12-20T10:20:54JST",
+    "datePublished": "2017-04-23T09:27:43JST",
+    "dateModified": "2017-04-23T09:27:43JST",
     "author": {
       "@type": "Person",
       "name": "Jayven@dev"
@@ -65,7 +65,7 @@
         "height": 60
       }
     },
-    "description": "对于正式环境的服务器来说，每当查看到 auth.log 里头那些撞大运的 ssh 登录尝试，心里总是有点惴惴不安的。虽然 public key authentication 号称安全，但是谁说得准呢？而且不知道配置"
+    "description": "Hashicorp 这家公司的产品都很有意思，其中 Vault 是一个用来集中管理敏感信息（密码，各种 token，证书，key 等等）的工具。 Vault server 运行起来之后有两种状态：s"
   }
 </script>
 
@@ -139,106 +139,77 @@ ga('send', 'pageview');
         
         <li itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb"><a href="//huangjunwen.github.io/post/" itemprop="url"><span itemprop="title">post</span></a></li>
         
-        <li class="active">用 iptables 来配置 port knocking</li>
+        <li class="active">Shamir&#39;s Secret Sharding</li>
       </ol>
     </nav>
 
     <article class="single">
   <header>
     <ul class="p-facts">
-      <li><i class="fa fa-calendar" aria-hidden="true"></i><time datetime="2016-12-20T10:20:54JST">Dec 20, 2016</time></li>
+      <li><i class="fa fa-calendar" aria-hidden="true"></i><time datetime="2017-04-23T09:27:43JST">Apr 23, 2017</time></li>
       <li><i class="fa fa-bookmark" aria-hidden="true"></i><a href="//huangjunwen.github.io/post/">post</a></li>
       
     </ul>
 
-    <h1 class="title">用 iptables 来配置 port knocking</h1>
+    <h1 class="title">Shamir&#39;s Secret Sharding</h1>
   </header>
 
   
 
-  <div class="article-body"><p>对于正式环境的服务器来说，每当查看到 auth.log 里头那些撞大运的 ssh 登录尝试，心里总是有点惴惴不安的。虽然 public key authentication 号称安全，但是谁说得准呢？而且不知道配置里会不会有错误，要是有多一层的防护总是好的。</p>
+  <div class="article-body">
 
-<p>以前听说过 <a href="https://en.wikipedia.org/wiki/Port_knocking">Port knocking</a> 这种技术了，大致的思路就是设定一系列随机端口（例如：7421，3411，9088等等）作为暗号，用户在访问服务器之前，要依次“敲”一下这几个端口（即相继发送网络包到这几个端口上），这些端口当然是关闭状态啦，但服务器上可以侦察得到这些敲门，如果暗号对了，就给访问者 ip 开放服务端口（例如22）。</p>
+<script type="text/javascript" async src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 
-<p>还有一些更高级的，例如在网络包里存放加密信息等，不过这就复杂了，暂且不表。</p>
 
-<p>一般要实现这样的功能，需要有独立的 deamon 程序跑在后台检查日志，但有个问题，如果这个 deamon 不够健壮挂了的话，就再也没人上得去了。</p>
+<p><a href="https://www.hashicorp.com">Hashicorp</a> 这家公司的产品都很有意思，其中 <a href="https://www.vaultproject.io/">Vault</a> 是一个用来集中管理敏感信息（密码，各种 token，证书，key 等等）的工具。</p>
 
-<p>前段时间看到 <a href="https://www.digitalocean.com/">DigitalOcean</a> 上一篇单纯使用 iptables 就能实现 Port knocking 的教程，不需要单独开发 deamon，只要配置 iptables 的 rules 就能实现这样的功能，觉得很实用，分享在此：</p>
+<p>Vault server 运行起来之后有两种状态：<em>seal/unseal（密封／解封）</em>  ，这是因为：</p>
 
-<p><a href="https://www.digitalocean.com/community/tutorials/how-to-configure-port-knocking-using-only-iptables-on-an-ubuntu-vps">https://www.digitalocean.com/community/tutorials/how-to-configure-port-knocking-using-only-iptables-on-an-ubuntu-vps</a></p>
+<p>Vault 的数据是加密储存在磁盘上的：由  <strong>encryption key</strong>  加密，这个  encryption key  是由  <strong>master key</strong>  加密储存在磁盘上，而  master key  是不存放在磁盘上。所以当 Vault server 刚启动时，由于  master key  未知，故  encryption key  以及实际数据都是无法被解密访问的，这种状态就称之为<em>seal（密封）</em> ，<em>unseal（解封）</em> 就是重建  master key  的过程。</p>
 
-<p>不过我用的时候发现个问题，就是 tcp 包在发送的时候，好像一次过会发送多个包，这样敲门的序列就会变成类似：</p>
+<p>由于 master key 太重要了，Vault 使用所谓的 <a href="https://en.wikipedia.org/wiki/Shamir%27s_Secret_Sharing">Shamir&rsquo;s Secret Sharing</a> 算法把这个 master key 切分并分发给 n 个人，只有当这 n 个人里的最少 k 个人授权提供他们持有的部分，vault 才能重构出这个 master key，这个算法挺有趣，所以写篇博客记录下来：</p>
 
-<pre><code>7421
-7421
-3411
-9088
-9088
-9088
-...
-</code></pre>
+<h3 id="目标">目标</h3>
 
-<p>所以我把 rules 改成接纳每个端口可以连续 N 次，只要下一个不一样的是正确的就可以接受：</p>
+<p>密码 <span>\(S\)</span>
+ 需要切分成 <span>\(n\)</span>
+ 份： <span>\(S_1, S_2, ... S_n\)</span>
+</p>
 
-<pre><code>#!/bin/bash
+<ul>
+<li>大于等于 <span>\(k\)</span>
+ 个任意 <span>\(S_i\)</span>
+ 就能算出 <span>\(S\)</span>
+</li>
+<li>少于等于 <span>\(k-1\)</span>
+ 个任意 <span>\(S_i\)</span>
+ 无法算出 <span>\(S\)</span>
+</li>
+</ul>
 
-PORT1=xxxx
-PORT2=xxxx
-PORT3=xxxx
+<h3 id="思路">思路</h3>
 
-# reset firewall
-iptables -F
-iptables -X
-iptables -P INPUT ACCEPT
-iptables -P FORWARD ACCEPT
-iptables -P OUTPUT ACCEPT
+<p>这个算法的思路是这样的：在平面几何中，2 个点就能唯一决定一条直线，3 个点就能唯一决定一条抛物线，4 个点能唯一决定一条三次曲线。。。反之，1 个点决定不了唯一一条直线，2 个点或更少决定不了唯一一条抛物线。。。</p>
 
-# create new chains used by port knocking
-iptables -N KNOCKING
-iptables -N GATE1
-iptables -N GATE2
-iptables -N GATE3
-iptables -N PASSED
+<p>对于一条 <span>\(k-1\)</span>
+ 次曲线</p>
 
-# accept current connections (keep current SSH connections)
-iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+<span>$$f(x) = a_0 &#43; a_{1}x &#43; a_{2}x^{2} &#43; ... &#43; a_{k-1}x^{k-1} $$</span>
 
-# accept local machine's connection
-iptables -A INPUT -i lo -j ACCEPT
 
-# accept http/https or other exported services
-iptables -A INPUT -p tcp --dport 80 -j ACCEPT
-iptables -A INPUT -p tcp --dport 443 -j ACCEPT
+<p>只要 <span>\(k\)</span>
+ 个点就能唯一决定，而少于 <span>\(k\)</span>
+ 个点，则有无限条 <span>\(k-1\)</span>
+ 次曲线穿过这些点。</p>
 
-# now pass all other to the KNOCKING chain
-iptables -A INPUT -j KNOCKING
-
-# KNOCKING dispatch
-iptables -A KNOCKING -m recent --reap --rcheck --seconds 3600 --name AUTH3 -j PASSED
-iptables -A KNOCKING -m recent --reap --rcheck --seconds 10 --name AUTH2 -j GATE3
-iptables -A KNOCKING -m recent --reap --rcheck --seconds 10 --name AUTH1 -j GATE2
-iptables -A KNOCKING -j GATE1
-
-iptables -A GATE1 -p tcp --dport $PORT1 -m recent --name AUTH1 --set -j DROP
-iptables -A GATE1 -j DROP
-
-iptables -A GATE2 -p tcp --dport $PORT1 -j DROP         # allow $PORT1 duplication
-iptables -A GATE2 -m recent --name AUTH1 --remove
-iptables -A GATE2 -p tcp --dport $PORT2 -m recent --name AUTH2 --set -j DROP
-iptables -A GATE2 -j GATE1
-
-iptables -A GATE3 -p tcp --dport $PORT2 -j DROP         # allow $PORT2 duplication
-iptables -A GATE3 -m recent --name AUTH2 --remove
-iptables -A GATE3 -p tcp --dport $PORT3 -m recent --name AUTH3 --set -j DROP
-iptables -A GATE3 -j GATE1
-
-iptables -A PASSED -p tcp --dport $PORT3 -j DROP        # allow $PORT3 duplication
-iptables -A PASSED -p tcp --dport 22 -j ACCEPT
-iptables -A PASSED -j DROP
-</code></pre>
-
-<p>另外还有些修改，例如 AUTH3 的时候，允许用户有一个小时（3600秒）的时间可以随意连接 22 端口。</p>
+<p>所以算法是这样的，令 <span>\(a_0 = S\)</span>
+，再随机选取 <span>\(a_{1}, a_{2}, ... , a_{k-1}\)</span>
+，这样就构造出一条 <span>\(k-1\)</span>
+ 次曲线，在曲线上随机选取 <span>\(n\)</span>
+ 个点，这些点（的坐标值）就是分发给各人的密码 <span>\(S_i\)</span>
+ 了。 只要超过 <span>\(k\)</span>
+ 个人提供他们的密码（点），就能重构曲线，也就能获得 <span>\(S = a_0 = f(0)\)</span>
+ 了。</p>
 </div>
 
   <footer class="article-footer">
@@ -251,8 +222,6 @@ iptables -A PASSED -j DROP
       </header>
       <div>
         <ul class="p-terms">
-          
-          <li><a href="//huangjunwen.github.io/categories/sa/">sa</a></li>
           
         </ul>
       </div>
@@ -267,9 +236,9 @@ iptables -A PASSED -j DROP
       <div>
         <ul class="p-terms">
           
-          <li><a href="//huangjunwen.github.io/tags/iptables/">iptables</a></li>
+          <li><a href="//huangjunwen.github.io/tags/hashicorp-vault/">Hashicorp-Vault</a></li>
           
-          <li><a href="//huangjunwen.github.io/tags/port-knocking/">port-knocking</a></li>
+          <li><a href="//huangjunwen.github.io/tags/shamir-secret-sharing/">Shamir-Secret-Sharing</a></li>
           
         </ul>
       </div>
