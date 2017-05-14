@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Jayven@dev</title>
+    <link>//huangjunwen.github.io/tags/micro-service/index.xml</link>
+    <description>Recent content on Jayven@dev</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <copyright>&amp;copy; 2017 &lt;a href=&#34;mailto:kassarar@gmail.com&#34;&gt;Huang JunWen&lt;/a&gt;; All rights reserved.</copyright>
+    <atom:link href="//huangjunwen.github.io/tags/micro-service/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>微服务中的认证 (authentication) 问题</title>
+      <link>//huangjunwen.github.io/post/2017/authentication_in_microservice/</link>
+      <pubDate>Sun, 14 May 2017 19:14:51 +0800</pubDate>
+      
+      <guid>//huangjunwen.github.io/post/2017/authentication_in_microservice/</guid>
+      <description>&lt;p&gt;这帖子有意思 &lt;a href=&#34;https://news.ycombinator.com/item?id=11929267&#34;&gt;JSON Web token vs. Session&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;“单纯”的 JWT，其实跟 client side session 没啥区别，它的优缺点都一样：&lt;/p&gt;
+
+&lt;p&gt;Pros：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;服务端不需要储存 session 数据&lt;/li&gt;
+&lt;li&gt;stateless&lt;/li&gt;
+&lt;li&gt;因为不用访问任何储存服务，验证过程超快速&lt;/li&gt;
+&lt;li&gt;易于 scale up&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Cons:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;session 很难被主动清除（除非过期）&lt;/li&gt;
+&lt;li&gt;所有信息都暴露在外（或者有暴露的危险）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;最终我觉得一个比较好的办法是结合这两者：对外使用 session，提供一个 opaque 的 token (reference token) 作为 session id，在网关中做翻译过程，将这个 reference token 转换成真实的 jwt，然后在网关内的服务就都使用 jwt。&lt;/p&gt;
+
+&lt;p&gt;见 &lt;a href=&#34;https://www.slideshare.net/opencredo/authentication-in-microservice-systems-david-borsos&#34;&gt;muCon 2016: Authentication in Microservice Systems By David Borsos&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

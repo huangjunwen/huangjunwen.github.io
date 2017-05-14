@@ -6,16 +6,70 @@
 <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
 <meta name="generator" content="Hugo 0.17" />
 
-<link rel="alternate" type="application/rss+xml" title="RSS" href="//huangjunwen.github.io/tags/gnu-pg/index.xml">
 
-<link rel="canonical" href="//huangjunwen.github.io/tags/gnu-pg/">
+
+<link rel="canonical" href="//huangjunwen.github.io/post/2017/authentication_in_microservice/">
 
 
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/solarized_dark.min.css">
-    <title>Gnu Pg - Jayven@dev</title>
+    <title>微服务中的认证 (authentication) 问题 - Jayven@dev</title>
     
+<meta name="description" content="这帖子有意思 JSON Web token vs. Session “单纯”的 JWT，其实跟 client side session 没啥区别，它的优缺点都一样： Pros： 服务端不需要储存 session 数据 stateless 因为不用访问任何储存服务，">
+
+<meta property="og:title" content="微服务中的认证 (authentication) 问题 - Jayven@dev">
+<meta property="og:type" content="article">
+<meta property="og:url" content="//huangjunwen.github.io/post/2017/authentication_in_microservice/">
+<meta property="og:image" content="//huangjunwen.github.io/images/default.png">
+<meta property="og:site_name" content="Jayven@dev">
+<meta property="og:description" content="这帖子有意思 JSON Web token vs. Session “单纯”的 JWT，其实跟 client side session 没啥区别，它的优缺点都一样： Pros： 服务端不需要储存 session 数据 stateless 因为不用访问任何储存服务，">
+<meta property="og:locale" content="ja_JP">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="Jayven@dev">
+<meta name="twitter:url" content="//huangjunwen.github.io/post/2017/authentication_in_microservice/">
+<meta name="twitter:title" content="微服务中的认证 (authentication) 问题 - Jayven@dev">
+<meta name="twitter:description" content="这帖子有意思 JSON Web token vs. Session “单纯”的 JWT，其实跟 client side session 没啥区别，它的优缺点都一样： Pros： 服务端不需要储存 session 数据 stateless 因为不用访问任何储存服务，">
+<meta name="twitter:image" content="//huangjunwen.github.io/images/default.png">
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "NewsArticle",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id":"\/\/huangjunwen.github.io\/"
+    },
+    "headline": "微服务中的认证 (authentication) 问题 - Jayven@dev",
+    "image": {
+      "@type": "ImageObject",
+      "url": "\/\/huangjunwen.github.io\/images\/default.png",
+      "height": 800,
+      "width": 800
+    },
+    "datePublished": "2017-05-14T19:14:51JST",
+    "dateModified": "2017-05-14T19:14:51JST",
+    "author": {
+      "@type": "Person",
+      "name": "Jayven@dev"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Jayven@dev",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "\/\/huangjunwen.github.io\/images/logo.png",
+        "width": 600,
+        "height": 60
+      }
+    },
+    "description": "这帖子有意思 JSON Web token vs. Session “单纯”的 JWT，其实跟 client side session 没啥区别，它的优缺点都一样： Pros： 服务端不需要储存 session 数据 stateless 因为不用访问任何储存服务，"
+  }
+</script>
+
+
     <link href="//huangjunwen.github.io/css/styles.css" rel="stylesheet">
   </head>
 
@@ -79,39 +133,97 @@ ga('send', 'pageview');
 <div class="row">
   <div class="col-md-8">
 
-    
-    <header class="page-header">
-      <h1>Gnu Pg</h1>
-    </header>
-    
+    <nav class="p-crumb">
+      <ol class="breadcrumb">
+        <li><a href="//huangjunwen.github.io/"><i class="fa fa-home" aria-hidden="true"></i></a></li>
+        
+        <li itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb"><a href="//huangjunwen.github.io/post/" itemprop="url"><span itemprop="title">post</span></a></li>
+        
+        <li class="active">微服务中的认证 (authentication) 问题</li>
+      </ol>
+    </nav>
 
-    <ul class="p-articles">
-      
-      <li><article class="li">
+    <article class="single">
   <header>
     <ul class="p-facts">
-      <li><i class="fa fa-calendar" aria-hidden="true"></i><time datetime="2016-12-18T09:58:58JST">Dec 18, 2016</time></li>
+      <li><i class="fa fa-calendar" aria-hidden="true"></i><time datetime="2017-05-14T19:14:51JST">May 14, 2017</time></li>
       <li><i class="fa fa-bookmark" aria-hidden="true"></i><a href="//huangjunwen.github.io/post/">post</a></li>
       
     </ul>
-    <h2 class="title"><a href="//huangjunwen.github.io/post/2016/mysql-client-auto-login-without-password/">免输入密码登录 mysql</a></h2>
+
+    <h1 class="title">微服务中的认证 (authentication) 问题</h1>
   </header>
 
   
-  <div class="summary">对于一些 (古董) mysql 管理员来说，直接用 mysql client 连接生产环境的数据库进行操作是很常见的事情。 根据 Mysql 的 End-User Guidelines for Password Security： 在 command line 上用 -p xxxxx 直接指定</div>
 
-  <footer>
-    <a href="//huangjunwen.github.io/post/2016/mysql-client-auto-login-without-password/" title="免输入密码登录 mysql">Read More…</a>
+  <div class="article-body"><p>这帖子有意思 <a href="https://news.ycombinator.com/item?id=11929267">JSON Web token vs. Session</a></p>
+
+<p>“单纯”的 JWT，其实跟 client side session 没啥区别，它的优缺点都一样：</p>
+
+<p>Pros：</p>
+
+<ul>
+<li>服务端不需要储存 session 数据</li>
+<li>stateless</li>
+<li>因为不用访问任何储存服务，验证过程超快速</li>
+<li>易于 scale up</li>
+</ul>
+
+<p>Cons:</p>
+
+<ul>
+<li>session 很难被主动清除（除非过期）</li>
+<li>所有信息都暴露在外（或者有暴露的危险）</li>
+</ul>
+
+<p>最终我觉得一个比较好的办法是结合这两者：对外使用 session，提供一个 opaque 的 token (reference token) 作为 session id，在网关中做翻译过程，将这个 reference token 转换成真实的 jwt，然后在网关内的服务就都使用 jwt。</p>
+
+<p>见 <a href="https://www.slideshare.net/opencredo/authentication-in-microservice-systems-david-borsos">muCon 2016: Authentication in Microservice Systems By David Borsos</a></p>
+</div>
+
+  <footer class="article-footer">
+    
+    
+    
+    <section class="bordered">
+      <header>
+        <div class="panel-title">CATEGORIES</div>
+      </header>
+      <div>
+        <ul class="p-terms">
+          
+        </ul>
+      </div>
+    </section>
+    
+    
+    
+    <section class="bordered">
+      <header>
+        <div class="panel-title">TAGS</div>
+      </header>
+      <div>
+        <ul class="p-terms">
+          
+          <li><a href="//huangjunwen.github.io/tags/session/">session</a></li>
+          
+          <li><a href="//huangjunwen.github.io/tags/jwt/">jwt</a></li>
+          
+          <li><a href="//huangjunwen.github.io/tags/micro-service/">micro-service</a></li>
+          
+        </ul>
+      </div>
+    </section>
+    
+    
   </footer>
+
 </article>
-</li>
-      
-    </ul>
+
 
     
-
-
   </div>
+
   <div class="col-md-4">
     
 <aside class="l-sidebar">
