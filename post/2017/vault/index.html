@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+<meta name="pinterest" content="nopin">
+<meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+<meta name="generator" content="Hugo 0.17" />
+
+
+
+<link rel="canonical" href="//huangjunwen.github.io/post/2017/vault/">
+
+
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/solarized_dark.min.css">
+    <title>Vault 笔记 - Jayven@dev</title>
+    
+<meta name="description" content="之前一篇 博文 介绍了 Hashicorp Vault 的解封／密封算法。这篇打算记录一下这个软件的其它方面。当前最新版本为 v0.7.2 。 Vault 是一个相当复杂的系统，总括而言，它是一个集中">
+
+<meta property="og:title" content="Vault 笔记 - Jayven@dev">
+<meta property="og:type" content="article">
+<meta property="og:url" content="//huangjunwen.github.io/post/2017/vault/">
+<meta property="og:image" content="//huangjunwen.github.io/images/default.png">
+<meta property="og:site_name" content="Jayven@dev">
+<meta property="og:description" content="之前一篇 博文 介绍了 Hashicorp Vault 的解封／密封算法。这篇打算记录一下这个软件的其它方面。当前最新版本为 v0.7.2 。 Vault 是一个相当复杂的系统，总括而言，它是一个集中">
+<meta property="og:locale" content="ja_JP">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="Jayven@dev">
+<meta name="twitter:url" content="//huangjunwen.github.io/post/2017/vault/">
+<meta name="twitter:title" content="Vault 笔记 - Jayven@dev">
+<meta name="twitter:description" content="之前一篇 博文 介绍了 Hashicorp Vault 的解封／密封算法。这篇打算记录一下这个软件的其它方面。当前最新版本为 v0.7.2 。 Vault 是一个相当复杂的系统，总括而言，它是一个集中">
+<meta name="twitter:image" content="//huangjunwen.github.io/images/default.png">
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "NewsArticle",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id":"\/\/huangjunwen.github.io\/"
+    },
+    "headline": "Vault 笔记 - Jayven@dev",
+    "image": {
+      "@type": "ImageObject",
+      "url": "\/\/huangjunwen.github.io\/images\/default.png",
+      "height": 800,
+      "width": 800
+    },
+    "datePublished": "2017-06-07T08:14:18JST",
+    "dateModified": "2017-06-07T08:14:18JST",
+    "author": {
+      "@type": "Person",
+      "name": "Jayven@dev"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Jayven@dev",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "\/\/huangjunwen.github.io\/images/logo.png",
+        "width": 600,
+        "height": 60
+      }
+    },
+    "description": "之前一篇 博文 介绍了 Hashicorp Vault 的解封／密封算法。这篇打算记录一下这个软件的其它方面。当前最新版本为 v0.7.2 。 Vault 是一个相当复杂的系统，总括而言，它是一个集中"
+  }
+</script>
+
+
+    <link href="//huangjunwen.github.io/css/styles.css" rel="stylesheet">
+  </head>
+
+  <body>
+    
+    
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-89264111-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+    
+
+    <header class="l-header">
+      <nav class="navbar navbar-default">
+        <div class="container">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="//huangjunwen.github.io/">Jayven@dev</a>
+          </div>
+
+          
+          <div id="navbar" class="collapse navbar-collapse">
+            
+            <ul class="nav navbar-nav navbar-right">
+              
+              
+              <li><a href="/post">Posts</a></li>
+              
+              
+              
+              <li><a href="/categories">Categories</a></li>
+              
+              
+              
+              <li><a href="/tags">Tags</a></li>
+              
+              
+            </ul>
+            
+          </div>
+          
+
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <div class="container">
+        
+<div class="row">
+  <div class="col-md-8">
+
+    <nav class="p-crumb">
+      <ol class="breadcrumb">
+        <li><a href="//huangjunwen.github.io/"><i class="fa fa-home" aria-hidden="true"></i></a></li>
+        
+        <li itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb"><a href="//huangjunwen.github.io/post/" itemprop="url"><span itemprop="title">post</span></a></li>
+        
+        <li class="active">Vault 笔记</li>
+      </ol>
+    </nav>
+
+    <article class="single">
+  <header>
+    <ul class="p-facts">
+      <li><i class="fa fa-calendar" aria-hidden="true"></i><time datetime="2017-06-07T08:14:18JST">Jun 7, 2017</time></li>
+      <li><i class="fa fa-bookmark" aria-hidden="true"></i><a href="//huangjunwen.github.io/post/">post</a></li>
+      
+    </ul>
+
+    <h1 class="title">Vault 笔记</h1>
+  </header>
+
+  
+
+  <div class="article-body">
+
+<p>之前一篇 <a href="/post/2017/shamir-secret-sharding/">博文</a> 介绍了 <a href="https://www.vaultproject.io/">Hashicorp Vault</a> 的解封／密封算法。这篇打算记录一下这个软件的其它方面。当前最新版本为 v0.7.2 。</p>
+
+<p>Vault 是一个相当复杂的系统，总括而言，它是一个集中管理各类敏感信息（如密码／Key／证书等等）的软件（服务）。Vault 采用类似 Unix <a href="https://en.wikipedia.org/wiki/Everything_is_a_file">“一切皆文件”</a> 的方式组织及暴露各类信息：所有操作都是对某个路径的 read／write （实际上是对某个 HTTP 路径 POST／GET／LIST／DELETE 等） ，例如：</p>
+
+<ul>
+<li><code>/sys</code> 目录下是各种配置路径，此目录不可被卸载，其下路径各有用途，如 <code>/sys/seal</code> 和 <code>/sys/unseal</code> 这两个路径是用来密封／解封 vault 的。</li>
+<li><code>/secret</code> 目录下挂载的是 <a href="https://www.vaultproject.io/docs/secrets/generic/index.html">Generic Secret Backend</a>，用于存放一般用途的敏感信息，其下路径组织结构由用户自行决定，我们平时实际使用访问最多的应该也是这个。</li>
+<li>&hellip; 更多目录路径说明可参看 <a href="https://www.vaultproject.io/api/index.html">API 文档</a></li>
+</ul>
+
+<p>读取／写入的数据一般都是 JSON 格式。</p>
+
+<h2 id="backends">Backends</h2>
+
+<p>Vault 主要由几类 backends 合作组成：</p>
+
+<p>Auth -&gt; Secret -&gt; Storage(Physical) -&gt; Audit</p>
+
+<p>认证 -&gt; 实际操作 -&gt; 落盘储存 -&gt; 日志</p>
+
+<h3 id="auth-entication-backend">Auth(entication) Backend</h3>
+
+<p>Auth Backend 完成的是认证工作：访问者是谁。有多种可通过挂载添加，默认情况下它们会挂载在 <code>auth/&lt;type&gt;</code> 下，以下是其中一些认证方式：</p>
+
+<ul>
+<li><a href="https://www.vaultproject.io/docs/auth/token.html">token</a> 这个 Backend 是 Vault 的核心认证方式，默认挂载，不可卸载，非常重要，下一小节详细描述</li>
+<li><a href="https://www.vaultproject.io/docs/auth/userpass.html">userpass</a> 用户名密码认证</li>
+<li><a href="https://www.vaultproject.io/docs/auth/github.html">github</a> 用 Github 的认证服务</li>
+<li><a href="https://www.vaultproject.io/docs/auth/cert.html">cert</a> 用 tls 证书认证</li>
+<li><a href="https://www.vaultproject.io/docs/auth/approle.html">approle</a> TODO&hellip;</li>
+</ul>
+
+<h4 id="token-令牌">Token （令牌）</h4>
+
+<p>对外部而言，顾名思义，有了令牌就能通行，它是访问者身份的象征；实际上，Vault 对外 API 中绝大部分（除了像 seal／unseal 这种）都需要令牌才能访问：访问的 HTTP 请求头部需要加上 <code>X-Vault-Token: xxxxxx</code> （命令行其实也是调用 HTTP API 的，Token 保存在 <code>~/.vault_token</code> 里以供其使用）</p>
+
+<p>对内部而言，Token 是 Vault 里多个组件间的结合点，关联对应许多信息：</p>
+
+<ul>
+<li>树状层次：除了 root tokens 和 orphan tokens 外都有父 token，故所有 tokens 形成一个树（森林）状层次结构，当父 token 被吊销时，其所有子孙 tokens 都会同时被吊销</li>
+<li>限时：token 是有使用时限的（TTL），超时时会被吊销，可以续租延长时限的（但不超过某个最大值），也可以是周期性的 token（可通过周期性地续租无限延长使用时间）</li>
+<li>限次：token 可以限制使用次数，默认是不限制，超过使用次数后会被吊销，这个可以用作实现 one-time-password</li>
+<li>访问控制策略（Access Control Policies）：这是最关键的，每个 token 都关联一个访问控制策略列表（如 <code>[&quot;default&quot;, &quot;dev&quot;]</code>），访问控制策略就是 Vault 里头的权限控制机制，例如 <code>default</code> 策略是这样的：</li>
+</ul>
+
+<pre><code>$ vault policies default  # 查看名为 default 的控制策略
+
+# Allow tokens to look up their own properties
+path &quot;auth/token/lookup-self&quot; {
+    capabilities = [&quot;read&quot;]
+}
+
+# Allow tokens to renew themselves
+path &quot;auth/token/renew-self&quot; {
+    capabilities = [&quot;update&quot;]
+}
+
+# Allow tokens to revoke themselves
+path &quot;auth/token/revoke-self&quot; {
+    capabilities = [&quot;update&quot;]
+}
+
+# Allow a token to look up its own capabilities on a path
+path &quot;sys/capabilities-self&quot; {
+    capabilities = [&quot;update&quot;]
+}
+
+...
+
+</code></pre>
+
+<p>归功于“一切皆文件”的统一设计，能干什么不能干什么（create/read/update/delete/list/sudo/deny）都统一到一组路径上的读写权限。详情可参看 <a href="https://www.vaultproject.io/docs/concepts/policies.html">https://www.vaultproject.io/docs/concepts/policies.html</a></p>
+
+<p>整个流程应该是这样子的：用户（人／机器）携带着令牌调用某个 API，Vault 检查这个令牌是否已被吊销，是否超过使用限制，访问的操作／路径是否被允许，如果都通过了这些检查，才会实际执行操作。</p>
+
+<p>那么好了，令牌本身又是从哪里来的呢？方法有几个：</p>
+
+<ul>
+<li>root tokens 可以在 Vault 初始化的时候获得，也可以在之后通过 <code>vault generate-root</code> 命令或 <a href="https://www.vaultproject.io/api/system/generate-root.html">/sys/generate-root</a> API 创建新的（需要 unseal key），root token 是 token 中的 superuser，啥都可以做，且一般没有超时时间</li>
+<li>通过 <code>vault token-create</code> 命令或 <a href="https://godoc.org/github.com/hashicorp/vault/api#TokenAuth.Create">/auth/token/create</a> API 为当前 token 手动创建子 token，子 token 的访问控制策略只能是当前 token 的子集</li>
+<li>其它 auth backends 完成对认证后，其实返回的也是 token（所以从这个角度看，Vault 其实就只有 token 一种认证方式），至于返回的是什么样的 token，则决定于这个 auth backend 的配置是怎么样的；例如 Github 可以关联某个 team 或者某个 user 到指定访问控制策略，当这个 team 的成员或这个用户用 Github 的 Personal Access Token 完成认证后，就返回关联此策略的一个 token</li>
+</ul>
+
+<p>关于 token 的更详细文档可以参看这里： <a href="https://www.vaultproject.io/docs/concepts/tokens.html">https://www.vaultproject.io/docs/concepts/tokens.html</a></p>
+
+<h3 id="secret-backend">Secret Backend</h3>
+
+<p>用来存放（生成）秘密的地方；不同的 backend 类似于不同的虚拟文件系统（tmpfs，udev 等），可以挂载到不同的目录，读写到不同的 backend 下会有各自不同的作用，如前提及的 <a href="https://www.vaultproject.io/api/secret/generic/index.html">Generic Secret Backend</a> 就是其中一种，还有如</p>
+
+<ul>
+<li><a href="https://www.vaultproject.io/api/secret/cubbyhole/index.html">cubbyhole</a> 一句话不好解释，下面详细描述</li>
+<li><a href="https://www.vaultproject.io/api/secret/pki/index.html">pki</a> 用来管理（生成） X.509 证书</li>
+<li><a href="https://www.vaultproject.io/docs/secrets/databases/index.html">database</a> 用来管理数据库连接信息</li>
+</ul>
+
+<h4 id="cubbyhole">Cubbyhole</h4>
+
+<p>&hellip;TODO</p>
+
+<h3 id="storage-physical-backend">Storage (Physical) Backend</h3>
+
+<p>数据真正落盘的地方（注：到达 Storage Backend 时，数据都已经处于加密状态了，安全并不依赖于 Storage backend，实际上它是 untrusted 的，下面代码里有提到），需要在服务启动时在<a href="https://www.vaultproject.io/docs/configuration/storage/index.html">配置</a>里面指定；这类 backend 同样有很多种，例如：</p>
+
+<ul>
+<li><a href="https://www.vaultproject.io/docs/configuration/storage/in-memory.html">inmem</a> 存放在内存中（dev 模式下即是使用 inmen backend 的，一旦重启，数据就丢失了）</li>
+<li><a href="https://www.vaultproject.io/docs/configuration/storage/filesystem.html">file</a> 直接存放在本地文件里</li>
+<li><a href="https://www.vaultproject.io/docs/configuration/storage/mysql.html">mysql</a> 存放在 MySQL 数据库里</li>
+<li><a href="https://www.vaultproject.io/docs/configuration/storage/consul.html">consul</a>/<a href="https://www.vaultproject.io/docs/configuration/storage/etcd.html">etcd</a> 存放在 Key-Value 集群中（高可用）</li>
+</ul>
+
+<p>例如使用 mysql backend，vault init 后可以看到数据库里头实际上创建了一个表而已，此表就两个字段 <code>vault_key</code> 和 <code>vault_value</code>:</p>
+
+<ul>
+<li><code>vault_key</code> 是形如 <code>sys/policy/default</code> <code>logical/12345678-1234-1234-1234-123456790abc/ca</code> 等等这类内部路径名称。注意：路径是没有加密的，所以 Vault 的文档某个地方（我忘了在哪里了）指出不要把敏感信息暴露在路径上</li>
+<li><code>vault_value</code> 大部分是加密后的二进制数据，也有些是明文的，如 <code>core/seal-config</code> 记录密封算法跟参数：</li>
+</ul>
+
+<pre><code>{&quot;type&quot;:&quot;shamir&quot;,&quot;secret_shares&quot;:5,&quot;secret_threshold&quot;:3,&quot;pgp_keys&quot;:null,&quot;nonce&quot;:&quot;&quot;,&quot;backup&quot;:false,&quot;stored_shares&quot;:0}
+</code></pre>
+
+<p>这部分信息是在没解封前就要用到的，所以只能用明文；我尝试了下改了参数，例如把 <code>secret_threshold</code> 改成 1 看看能不能只要一个 key 就能解封，结果&hellip;当然是不能啦 :-)</p>
+
+<p>看了一下相关的代码，发现其实这部分很好理解，实际上只要提供以下这个 <a href="https://godoc.org/github.com/hashicorp/vault/physical#Backend">interface</a> 就能用作 storage backend 了（其实就是一个可以枚举的 Key-Value store 即可）：</p>
+
+<pre><code>// Backend is the interface required for a physical
+// backend. A physical backend is used to durably store
+// data outside of Vault. As such, it is completely untrusted,
+// and is only accessed via a security barrier. The backends
+// must represent keys in a hierarchical manner. All methods
+// are expected to be thread safe.
+type Backend interface {
+	// Put is used to insert or update an entry
+	Put(entry *Entry) error
+
+	// Get is used to fetch an entry
+	Get(key string) (*Entry, error)
+
+	// Delete is used to permanently delete an entry
+	Delete(key string) error
+
+	// List is used ot list all the keys under a given
+	// prefix, up to the next prefix.
+	List(prefix string) ([]string, error)
+}
+</code></pre>
+
+<p>注意这里提到的 &ldquo;As such, it is completely untrusted, &hellip;&rdquo;</p>
+
+<h3 id="audit-backend">Audit Backend</h3>
+
+<p>记日志的，对于敏感信息，日志会进行 HMAC-SHA256 哈希，这样做可以避免暴露明文但仍然能进行对照检查；另外如果启动了至少一个 audit backends 的话，对 Vault 的每一个请求都会<strong>阻塞</strong>直到其中一个日志完成记录，这样就能保证没有任何的操作不被记录下来</p>
+
+<h2 id="其它细节">其它细节</h2>
+
+<p>&hellip;TODO</p>
+</div>
+
+  <footer class="article-footer">
+    
+    
+    
+    <section class="bordered">
+      <header>
+        <div class="panel-title">CATEGORIES</div>
+      </header>
+      <div>
+        <ul class="p-terms">
+          
+        </ul>
+      </div>
+    </section>
+    
+    
+    
+    <section class="bordered">
+      <header>
+        <div class="panel-title">TAGS</div>
+      </header>
+      <div>
+        <ul class="p-terms">
+          
+          <li><a href="//huangjunwen.github.io/tags/hashicorp-vault/">Hashicorp-Vault</a></li>
+          
+        </ul>
+      </div>
+    </section>
+    
+    
+  </footer>
+
+</article>
+
+
+    
+  </div>
+
+  <div class="col-md-4">
+    
+<aside class="l-sidebar">
+
+  <section class="panel panel-default">
+    <div class="panel-heading">
+      <div class="panel-title">LATESTS</div>
+    </div>
+    <div class="list-group">
+      
+      <a href="//huangjunwen.github.io/post/2017/vault/" class="list-group-item">Vault 笔记</a>
+      
+      <a href="//huangjunwen.github.io/post/2017/authentication_in_microservice/" class="list-group-item">微服务中的认证 (authentication) 问题</a>
+      
+      <a href="//huangjunwen.github.io/post/2017/shamir-secret-sharding/" class="list-group-item">Shamir&#39;s Secret Sharding</a>
+      
+      <a href="//huangjunwen.github.io/post/2017/public-key-cryptography-notes-2-1-asn1/" class="list-group-item">Public Key Cryptography 笔记（2.1）-- ASN.1</a>
+      
+      <a href="//huangjunwen.github.io/post/2017/public-key-cryptography-notes-2-format-and-standard/" class="list-group-item">Public Key Cryptography 笔记（2）-- 存储格式和标准</a>
+      
+      <a href="//huangjunwen.github.io/post/2017/public-key-cryptography-notes-1-rsa/" class="list-group-item">Public Key Cryptography 笔记（1）-- RSA</a>
+      
+      <a href="//huangjunwen.github.io/post/2016/port-knocking-using-iptables/" class="list-group-item">用 iptables 来配置 port knocking</a>
+      
+      <a href="//huangjunwen.github.io/post/2016/mysql-client-auto-login-without-password/" class="list-group-item">免输入密码登录 mysql</a>
+      
+    </div>
+  </section>
+
+  
+  <section class="panel panel-default">
+    <div class="panel-heading">
+      <div class="panel-title">CATEGORY</div>
+    </div>
+    <div class="list-group">
+      
+      <a href="//huangjunwen.github.io/categories/public-key-cryptography-%E7%AC%94%E8%AE%B0" class="list-group-item">public-key-cryptography-笔记</a>
+      
+      <a href="//huangjunwen.github.io/categories/sa" class="list-group-item">sa</a>
+      
+    </div>
+  </section>
+  
+  <section class="panel panel-default">
+    <div class="panel-heading">
+      <div class="panel-title">TAG</div>
+    </div>
+    <div class="list-group">
+      
+      <a href="//huangjunwen.github.io/tags/hashicorp-vault" class="list-group-item">hashicorp-vault</a>
+      
+      <a href="//huangjunwen.github.io/tags/rsa" class="list-group-item">rsa</a>
+      
+      <a href="//huangjunwen.github.io/tags/asn.1" class="list-group-item">asn.1</a>
+      
+      <a href="//huangjunwen.github.io/tags/gnu-pg" class="list-group-item">gnu-pg</a>
+      
+      <a href="//huangjunwen.github.io/tags/iptables" class="list-group-item">iptables</a>
+      
+      <a href="//huangjunwen.github.io/tags/jwt" class="list-group-item">jwt</a>
+      
+      <a href="//huangjunwen.github.io/tags/micro-service" class="list-group-item">micro-service</a>
+      
+      <a href="//huangjunwen.github.io/tags/mysql" class="list-group-item">mysql</a>
+      
+      <a href="//huangjunwen.github.io/tags/port-knocking" class="list-group-item">port-knocking</a>
+      
+      <a href="//huangjunwen.github.io/tags/session" class="list-group-item">session</a>
+      
+    </div>
+  </section>
+  
+
+</aside>
+
+
+  </div>
+</div>
+
+      </div>
+    </main>
+
+    <footer class="l-footer">
+      <div class="container">
+        <p>&copy; 2017 <a href="mailto:kassarar@gmail.com">Huang JunWen</a>; All rights reserved.</p>
+        <aside>
+          <p>Powered by <a href="https://gohugo.io/">Hugo</a>.</p>
+          <p><a href="https://github.com/dim0627/hugo_theme_beg">Beg</a> designed by <a href="http://yet.unresolved.xyz/">Daisuke Tsuji</a>.</p>
+        </aside>
+      </div>
+    </footer>
+
+    <script src="//code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </body>
+</html>
+
