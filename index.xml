@@ -7,8 +7,83 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
     <copyright>&amp;copy; 2017 &lt;a href=&#34;mailto:kassarar@gmail.com&#34;&gt;Huang JunWen&lt;/a&gt;; All rights reserved.</copyright>
-    <lastBuildDate>Wed, 07 Jun 2017 08:14:18 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 10 Jun 2017 16:46:36 +0800</lastBuildDate>
     <atom:link href="//huangjunwen.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Vault Database Secret Backend 笔记</title>
+      <link>//huangjunwen.github.io/post/2017/vault-database-secret-backend/</link>
+      <pubDate>Sat, 10 Jun 2017 16:46:36 +0800</pubDate>
+      
+      <guid>//huangjunwen.github.io/post/2017/vault-database-secret-backend/</guid>
+      <description>
+
+&lt;p&gt;在当前版本（v0.7.2）这个 backend 还处于 beta 状态；这个 backend 应该是用来统一之前版本中各种数据库的 secret backend 的；使用前需要挂载 &lt;code&gt;vault mount database&lt;/code&gt;后，这里用 MySQL 来演示它的主要工作流程：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;创建数据库配置，路径在 &lt;code&gt;database/config/$db_name&lt;/code&gt; ，主要参数有：&lt;code&gt;plugin_name&lt;/code&gt; 指定用何种数据库 driver plugin（mysql/postgres 等），&lt;code&gt;connection_url&lt;/code&gt; 指定连接参数（注意这个连接参数是用来创建数据库用户的，需要有对应权限），&lt;code&gt;allowed_roles&lt;/code&gt; 指定的是允许哪些角色使用此配置（角色是啥下一步就会说明），例子：&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;$ export db_name=&amp;quot;test&amp;quot;
+$ export role_name=&amp;quot;test_reader&amp;quot;
+$ export plugin_name=&amp;quot;mysql-legacy-database-plugin&amp;quot;             # mysql 有多个 plugin，它们的区别这是创建的数据库用户名最大长度不一样，因为不同版本用户名长度有变化
+$ export connection_url=&amp;quot;root:password@tcp(127.0.0.1:3306)/&amp;quot;    # 不要忘了最后的 /
+
+$ vault write database/config/$db_name \
+&amp;gt;   plugin_name=$plugin_name \
+&amp;gt;   connection_url=$connection_url \
+&amp;gt;   allowed_roles=&amp;quot;$role_name&amp;quot; ...
+
+The following warnings were returned from the Vault server:
+* Read access to this endpoint should be controlled via ACLs as it will return the connection details as is, including passwords, if any.
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;创建角色，角色代表的是数据库用户的类型，路径在 &lt;code&gt;database/roles/$role_name&lt;/code&gt;，主要参数有：&lt;code&gt;db_name&lt;/code&gt; 就是上一步创建的数据库配置名，&lt;code&gt;creation_statements&lt;/code&gt;/&lt;code&gt;revocation_statements/...&lt;/code&gt; 等是在创建具体用户／注销用户等时执行的语句，例子：&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;$ vault write database/roles/$role_name \
+&amp;gt;   db_name=$db_name \
+&amp;gt;   creation_statements=&amp;quot;CREATE USER &#39;{{name}}&#39;@&#39;%&#39; IDENTIFIED BY &#39;{{password}}&#39;;GRANT SELECT ON test.* TO &#39;{{name}}&#39;&amp;quot; \
+&amp;gt;   default_ttl=15m
+
+Success! Data written to: database/roles/test_reader
+    
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这里创建了一个角色，用这个角色创建的用户对 &lt;code&gt;test&lt;/code&gt; 数据库有读权限，且用户名／密码的默认有效时间是 15 分钟，超时且没有续租的话，Vault 就会删除掉这个用户。（注意由于 MySQL plugin 默认有 &lt;code&gt;revocation_statements&lt;/code&gt; 可以不用提供，这些细节要看相关 plugin 的说明）&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;创建用户，路径在 &lt;code&gt;database/creds/$role_name&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code&gt;$ vault read database/creds/$role_name
+
+Key             Value
+---             -----
+lease_id        database/creds/test_reader/8e735c82-2eb7-53cf-9cc6-d9c9dc16dd96
+lease_duration  15m0s
+lease_renewable true
+password        96d17f10-9c67-8d44-26d1-c77dcd3e6ec1
+username        v-root-01fc63a1-
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;读取这个路径时，Vault 就会调用 &lt;code&gt;creation_statements&lt;/code&gt; 创建用户，返回动态生成的用户名密码，并对这个秘密关联租约（由 &lt;code&gt;lease_id&lt;/code&gt; 标识），这个租约默认 15 分钟内有效，可以续租&lt;/p&gt;
+
+&lt;p&gt;由此，我们就可以把一个 MySQL root 权限的用户保存在 Vault 中，并由它来动态产生受限的数据库用户，这些受限的数据库用户可以存在时间很短，使用它的服务可以定时续租，一旦服务停止，这个用户很快就会被删除掉&lt;/p&gt;
+
+&lt;h4 id=&#34;一些细节&#34;&gt;一些细节&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;database/config/$db_name&lt;/code&gt;: 数据库配置&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;database/roles/$role_name&lt;/code&gt;: 角色&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;database/creds/test_reader/8e735c82-2eb7-53cf-9cc6-d9c9dc16dd96&lt;/code&gt;: 具体用户秘密租约&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;这三部分信息是独立，删除修改其中一个貌似并不会影响其它，例如删除数据库配置，角色还是在的，只是创建具体用户的时候会失败，说无法找到相应的数据库配置；又如删除了角色，则具体用户在被吊销的时候也会报错，导致数据库里面还残留没有被删除的用户。&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Vault 笔记</title>
@@ -47,7 +122,7 @@
 &lt;li&gt;&lt;a href=&#34;https://www.vaultproject.io/docs/auth/userpass.html&#34;&gt;userpass&lt;/a&gt; 用户名密码认证&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://www.vaultproject.io/docs/auth/github.html&#34;&gt;github&lt;/a&gt; 用 Github 的认证服务&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://www.vaultproject.io/docs/auth/cert.html&#34;&gt;cert&lt;/a&gt; 用 tls 证书认证&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://www.vaultproject.io/docs/auth/approle.html&#34;&gt;approle&lt;/a&gt; TODO&amp;hellip;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.vaultproject.io/docs/auth/approle.html&#34;&gt;approle&lt;/a&gt; &lt;em&gt;TODO&lt;/em&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h4 id=&#34;token-令牌&#34;&gt;Token （令牌）&lt;/h4&gt;
@@ -108,14 +183,18 @@ path &amp;quot;sys/capabilities-self&amp;quot; {
 &lt;p&gt;用来存放（生成）秘密的地方；不同的 backend 类似于不同的虚拟文件系统（tmpfs，udev 等），可以挂载到不同的目录，读写到不同的 backend 下会有各自不同的作用，如前提及的 &lt;a href=&#34;https://www.vaultproject.io/api/secret/generic/index.html&#34;&gt;Generic Secret Backend&lt;/a&gt; 就是其中一种，还有如&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://www.vaultproject.io/api/secret/cubbyhole/index.html&#34;&gt;cubbyhole&lt;/a&gt; 一句话不好解释，下面详细描述&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://www.vaultproject.io/api/secret/pki/index.html&#34;&gt;pki&lt;/a&gt; 用来管理（生成） X.509 证书&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://www.vaultproject.io/docs/secrets/databases/index.html&#34;&gt;database&lt;/a&gt; 用来管理数据库连接信息&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.vaultproject.io/docs/secrets/databases/index.html&#34;&gt;database&lt;/a&gt; 用来管理数据库连接信息 &lt;em&gt;TODO&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.vaultproject.io/api/secret/pki/index.html&#34;&gt;pki&lt;/a&gt; 用来管理（生成） X.509 证书 &lt;em&gt;TODO&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.vaultproject.io/api/secret/cubbyhole/index.html&#34;&gt;cubbyhole&lt;/a&gt; 类似于 generic secret backend 可以存放任意秘密，但不同之处在于它是 token scoped 的
+
+&lt;ul&gt;
+&lt;li&gt;解释：举个类比，很多 Unix 系统有一个文件夹 &lt;code&gt;/dev/fd&lt;/code&gt;，像一个私有的空间，每一个进程访问都只能看到本进程的打开了的文件描述符；cubbyhole 类似于此，每一个 token 能访问到的都是一个只有自己能访问到的私有空间，当这个 token 销毁的时候，存储在这里面的所有秘密也一并被销毁&lt;/li&gt;
+&lt;li&gt;用处：例如我们从 Vault 中读取了一些秘密，这个秘密可能会通过很多中间环节才能送到最终的使用者手上，中间环节越多，泄漏的可能性就越大（例如不小心被 log 下来了等），那么可以通过创建一个寿命非常短（例如几秒）且只能用一次的 token，把密码放到此 token 的 cubbyhole 里，中间环节传输的则是这个
+token，即使泄漏了，由于其限时限次，秘密泄漏的可能性就大大降低了，同时如果泄漏了，日志里面必定会有所记录（偷取访问一次／正常访问一次，第二次失败），这是所谓 &lt;a href=&#34;https://www.vaultproject.io/docs/secrets/cubbyhole/index.html#response-wrapping&#34;&gt;Response Wrapping&lt;/a&gt;；其实这不就有点像 OAuth2 的流程一样，拿一个很短命的 code 去换取 Access Token （秘密）&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.hashicorp.com/blog/cubbyhole-authentication-principles&#34;&gt;https://www.hashicorp.com/blog/cubbyhole-authentication-principles&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.vaultproject.io/docs/secrets/cubbyhole/index.html&#34;&gt;https://www.vaultproject.io/docs/secrets/cubbyhole/index.html&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
 &lt;/ul&gt;
-
-&lt;h4 id=&#34;cubbyhole&#34;&gt;Cubbyhole&lt;/h4&gt;
-
-&lt;p&gt;&amp;hellip;TODO&lt;/p&gt;
 
 &lt;h3 id=&#34;storage-physical-backend&#34;&gt;Storage (Physical) Backend&lt;/h3&gt;
 
@@ -169,10 +248,6 @@ type Backend interface {
 &lt;h3 id=&#34;audit-backend&#34;&gt;Audit Backend&lt;/h3&gt;
 
 &lt;p&gt;记日志的，对于敏感信息，日志会进行 HMAC-SHA256 哈希，这样做可以避免暴露明文但仍然能进行对照检查；另外如果启动了至少一个 audit backends 的话，对 Vault 的每一个请求都会&lt;strong&gt;阻塞&lt;/strong&gt;直到其中一个日志完成记录，这样就能保证没有任何的操作不被记录下来&lt;/p&gt;
-
-&lt;h2 id=&#34;其它细节&#34;&gt;其它细节&lt;/h2&gt;
-
-&lt;p&gt;&amp;hellip;TODO&lt;/p&gt;
 </description>
     </item>
     

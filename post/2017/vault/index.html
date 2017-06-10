@@ -187,7 +187,7 @@ ga('send', 'pageview');
 <li><a href="https://www.vaultproject.io/docs/auth/userpass.html">userpass</a> 用户名密码认证</li>
 <li><a href="https://www.vaultproject.io/docs/auth/github.html">github</a> 用 Github 的认证服务</li>
 <li><a href="https://www.vaultproject.io/docs/auth/cert.html">cert</a> 用 tls 证书认证</li>
-<li><a href="https://www.vaultproject.io/docs/auth/approle.html">approle</a> TODO&hellip;</li>
+<li><a href="https://www.vaultproject.io/docs/auth/approle.html">approle</a> <em>TODO</em></li>
 </ul>
 
 <h4 id="token-令牌">Token （令牌）</h4>
@@ -248,14 +248,18 @@ path &quot;sys/capabilities-self&quot; {
 <p>用来存放（生成）秘密的地方；不同的 backend 类似于不同的虚拟文件系统（tmpfs，udev 等），可以挂载到不同的目录，读写到不同的 backend 下会有各自不同的作用，如前提及的 <a href="https://www.vaultproject.io/api/secret/generic/index.html">Generic Secret Backend</a> 就是其中一种，还有如</p>
 
 <ul>
-<li><a href="https://www.vaultproject.io/api/secret/cubbyhole/index.html">cubbyhole</a> 一句话不好解释，下面详细描述</li>
-<li><a href="https://www.vaultproject.io/api/secret/pki/index.html">pki</a> 用来管理（生成） X.509 证书</li>
-<li><a href="https://www.vaultproject.io/docs/secrets/databases/index.html">database</a> 用来管理数据库连接信息</li>
+<li><a href="https://www.vaultproject.io/docs/secrets/databases/index.html">database</a> 用来管理数据库连接信息 <em>TODO</em></li>
+<li><a href="https://www.vaultproject.io/api/secret/pki/index.html">pki</a> 用来管理（生成） X.509 证书 <em>TODO</em></li>
+<li><a href="https://www.vaultproject.io/api/secret/cubbyhole/index.html">cubbyhole</a> 类似于 generic secret backend 可以存放任意秘密，但不同之处在于它是 token scoped 的
+
+<ul>
+<li>解释：举个类比，很多 Unix 系统有一个文件夹 <code>/dev/fd</code>，像一个私有的空间，每一个进程访问都只能看到本进程的打开了的文件描述符；cubbyhole 类似于此，每一个 token 能访问到的都是一个只有自己能访问到的私有空间，当这个 token 销毁的时候，存储在这里面的所有秘密也一并被销毁</li>
+<li>用处：例如我们从 Vault 中读取了一些秘密，这个秘密可能会通过很多中间环节才能送到最终的使用者手上，中间环节越多，泄漏的可能性就越大（例如不小心被 log 下来了等），那么可以通过创建一个寿命非常短（例如几秒）且只能用一次的 token，把密码放到此 token 的 cubbyhole 里，中间环节传输的则是这个
+token，即使泄漏了，由于其限时限次，秘密泄漏的可能性就大大降低了，同时如果泄漏了，日志里面必定会有所记录（偷取访问一次／正常访问一次，第二次失败），这是所谓 <a href="https://www.vaultproject.io/docs/secrets/cubbyhole/index.html#response-wrapping">Response Wrapping</a>；其实这不就有点像 OAuth2 的流程一样，拿一个很短命的 code 去换取 Access Token （秘密）</li>
+<li><a href="https://www.hashicorp.com/blog/cubbyhole-authentication-principles">https://www.hashicorp.com/blog/cubbyhole-authentication-principles</a></li>
+<li><a href="https://www.vaultproject.io/docs/secrets/cubbyhole/index.html">https://www.vaultproject.io/docs/secrets/cubbyhole/index.html</a></li>
+</ul></li>
 </ul>
-
-<h4 id="cubbyhole">Cubbyhole</h4>
-
-<p>&hellip;TODO</p>
 
 <h3 id="storage-physical-backend">Storage (Physical) Backend</h3>
 
@@ -309,10 +313,6 @@ type Backend interface {
 <h3 id="audit-backend">Audit Backend</h3>
 
 <p>记日志的，对于敏感信息，日志会进行 HMAC-SHA256 哈希，这样做可以避免暴露明文但仍然能进行对照检查；另外如果启动了至少一个 audit backends 的话，对 Vault 的每一个请求都会<strong>阻塞</strong>直到其中一个日志完成记录，这样就能保证没有任何的操作不被记录下来</p>
-
-<h2 id="其它细节">其它细节</h2>
-
-<p>&hellip;TODO</p>
 </div>
 
   <footer class="article-footer">
@@ -375,6 +375,8 @@ type Backend interface {
       <div class="panel-title">LATESTS</div>
     </div>
     <div class="list-group">
+      
+      <a href="//huangjunwen.github.io/post/2017/vault-database-secret-backend/" class="list-group-item">Vault Database Secret Backend 笔记</a>
       
       <a href="//huangjunwen.github.io/post/2017/vault/" class="list-group-item">Vault 笔记</a>
       
