@@ -245,10 +245,11 @@ path &quot;sys/capabilities-self&quot; {
 
 <h3 id="secret-backend">Secret Backend</h3>
 
-<p>用来存放（生成）秘密的地方；不同的 backend 类似于不同的虚拟文件系统（tmpfs，udev 等），可以挂载到不同的目录，读写到不同的 backend 下会有各自不同的作用，如前提及的 <a href="https://www.vaultproject.io/api/secret/generic/index.html">Generic Secret Backend</a> 就是其中一种，还有如</p>
+<p>用来存放（生成）秘密的地方；不同的 backend 类似于不同的虚拟文件系统（tmpfs，udev 等），可以挂载到不同的目录，读写到不同的 backend 下会有各自不同的作用，如：</p>
 
 <ul>
-<li><a href="https://www.vaultproject.io/docs/secrets/databases/index.html">database</a> 用来管理数据库连接信息 <em>TODO</em></li>
+<li><a href="https://www.vaultproject.io/api/secret/generic/index.html">generic</a> 前文也提及过，一般用途的 backend</li>
+<li><a href="https://www.vaultproject.io/docs/secrets/databases/index.html">database</a> 用来管理数据库连接信息，具体参看另一篇<a href="../vault-database-secret-backend/">博文</a></li>
 <li><a href="https://www.vaultproject.io/api/secret/pki/index.html">pki</a> 用来管理（生成） X.509 证书 <em>TODO</em></li>
 <li><a href="https://www.vaultproject.io/api/secret/cubbyhole/index.html">cubbyhole</a> 类似于 generic secret backend 可以存放任意秘密，但不同之处在于它是 token scoped 的
 

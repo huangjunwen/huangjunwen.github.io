@@ -18,10 +18,19 @@
       <guid>//huangjunwen.github.io/post/2017/vault-database-secret-backend/</guid>
       <description>
 
-&lt;p&gt;在当前版本（v0.7.2）这个 backend 还处于 beta 状态；这个 backend 应该是用来统一之前版本中各种数据库的 secret backend 的；使用前需要挂载 &lt;code&gt;vault mount database&lt;/code&gt;后，这里用 MySQL 来演示它的主要工作流程：&lt;/p&gt;
+&lt;p&gt;在当前版本（v0.7.2）这个 backend 还处于 beta 状态；这个 backend 应该是用来统一之前版本中各种数据库的 secret backend 的；使用前需要挂载 &lt;code&gt;vault mount database&lt;/code&gt;，这里用 MySQL 来演示它的主要工作流程：&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;创建数据库配置，路径在 &lt;code&gt;database/config/$db_name&lt;/code&gt; ，主要参数有：&lt;code&gt;plugin_name&lt;/code&gt; 指定用何种数据库 driver plugin（mysql/postgres 等），&lt;code&gt;connection_url&lt;/code&gt; 指定连接参数（注意这个连接参数是用来创建数据库用户的，需要有对应权限），&lt;code&gt;allowed_roles&lt;/code&gt; 指定的是允许哪些角色使用此配置（角色是啥下一步就会说明），例子：&lt;/li&gt;
+&lt;li&gt;写入数据库配置，路径在 &lt;code&gt;database/config/$db_name&lt;/code&gt; ，主要参数有：
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;db_name&lt;/code&gt; 这个配置的名字&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;plugin_name&lt;/code&gt; 指定用何种数据库 driver plugin（mysql/postgres 等）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;connection_url&lt;/code&gt; 指定连接参数（注：这个连接参数是用来连数据库以创建用户的，需要有对应的权限）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;allowed_roles&lt;/code&gt; 指定的是允许哪些角色使用此配置（角色是啥下一步就会说明）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;安全考虑：这个路径即使读权限也需要严格限制，因为它包含了相当高权限的数据库用户信息&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;例子：&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;pre&gt;&lt;code&gt;$ export db_name=&amp;quot;test&amp;quot;
@@ -40,7 +49,13 @@ The following warnings were returned from the Vault server:
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;ul&gt;
-&lt;li&gt;创建角色，角色代表的是数据库用户的类型，路径在 &lt;code&gt;database/roles/$role_name&lt;/code&gt;，主要参数有：&lt;code&gt;db_name&lt;/code&gt; 就是上一步创建的数据库配置名，&lt;code&gt;creation_statements&lt;/code&gt;/&lt;code&gt;revocation_statements/...&lt;/code&gt; 等是在创建具体用户／注销用户等时执行的语句，例子：&lt;/li&gt;
+&lt;li&gt;创建角色，角色代表的是数据库用户的类型，路径在 &lt;code&gt;database/roles/$role_name&lt;/code&gt;，主要参数有：
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;db_name&lt;/code&gt; 就是上一步创建的数据库配置名&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;creation_statements&lt;/code&gt;/&lt;code&gt;revocation_statements/...&lt;/code&gt; 等是在创建具体用户／注销用户等时执行的语句，这些语句中可以添加如 &lt;code&gt;{{name}}&lt;/code&gt;/&lt;code&gt;{{password}}&lt;/code&gt; 等这些占位符，待生成真正用户时，这里会特换成动态生成的值，这些也就是这个 backend 要自动管理的秘密了，具体支持哪些占位符需要参阅各个 driver 的文档&lt;/li&gt;
+&lt;li&gt;例子：&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;pre&gt;&lt;code&gt;$ vault write database/roles/$role_name \
@@ -69,7 +84,7 @@ password        96d17f10-9c67-8d44-26d1-c77dcd3e6ec1
 username        v-root-01fc63a1-
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;读取这个路径时，Vault 就会调用 &lt;code&gt;creation_statements&lt;/code&gt; 创建用户，返回动态生成的用户名密码，并对这个秘密关联租约（由 &lt;code&gt;lease_id&lt;/code&gt; 标识），这个租约默认 15 分钟内有效，可以续租&lt;/p&gt;
+&lt;p&gt;每次读取这个路径时，Vault 就会调用 &lt;code&gt;creation_statements&lt;/code&gt; 创建一个新用户，返回动态生成的用户名密码，并对这个秘密关联租约（由 &lt;code&gt;lease_id&lt;/code&gt; 标识），这个租约默认 15 分钟内有效，可以续租&lt;/p&gt;
 
 &lt;p&gt;由此，我们就可以把一个 MySQL root 权限的用户保存在 Vault 中，并由它来动态产生受限的数据库用户，这些受限的数据库用户可以存在时间很短，使用它的服务可以定时续租，一旦服务停止，这个用户很快就会被删除掉&lt;/p&gt;
 
@@ -180,10 +195,11 @@ path &amp;quot;sys/capabilities-self&amp;quot; {
 
 &lt;h3 id=&#34;secret-backend&#34;&gt;Secret Backend&lt;/h3&gt;
 
-&lt;p&gt;用来存放（生成）秘密的地方；不同的 backend 类似于不同的虚拟文件系统（tmpfs，udev 等），可以挂载到不同的目录，读写到不同的 backend 下会有各自不同的作用，如前提及的 &lt;a href=&#34;https://www.vaultproject.io/api/secret/generic/index.html&#34;&gt;Generic Secret Backend&lt;/a&gt; 就是其中一种，还有如&lt;/p&gt;
+&lt;p&gt;用来存放（生成）秘密的地方；不同的 backend 类似于不同的虚拟文件系统（tmpfs，udev 等），可以挂载到不同的目录，读写到不同的 backend 下会有各自不同的作用，如：&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://www.vaultproject.io/docs/secrets/databases/index.html&#34;&gt;database&lt;/a&gt; 用来管理数据库连接信息 &lt;em&gt;TODO&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.vaultproject.io/api/secret/generic/index.html&#34;&gt;generic&lt;/a&gt; 前文也提及过，一般用途的 backend&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.vaultproject.io/docs/secrets/databases/index.html&#34;&gt;database&lt;/a&gt; 用来管理数据库连接信息，具体参看另一篇&lt;a href=&#34;../vault-database-secret-backend/&#34;&gt;博文&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://www.vaultproject.io/api/secret/pki/index.html&#34;&gt;pki&lt;/a&gt; 用来管理（生成） X.509 证书 &lt;em&gt;TODO&lt;/em&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://www.vaultproject.io/api/secret/cubbyhole/index.html&#34;&gt;cubbyhole&lt;/a&gt; 类似于 generic secret backend 可以存放任意秘密，但不同之处在于它是 token scoped 的
 
