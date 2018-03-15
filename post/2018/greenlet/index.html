@@ -168,30 +168,32 @@ ga('send', 'pageview');
 
 <p>Greenlet 就是 cpython 上的一种轻量级线程（协程）的实现，因为 cpython 是用 c 实现的，所以这就要求 Greenlet 的实现要跟 c 那一套保持一致，要让协程里运行的代码感觉自己跑在一个真正的 c 堆栈上</p>
 
-<p>Greenlet 的做法是这样的：当一个 greenlet 运行时，它的堆栈区间数据将会完整地恢复放在 c 堆栈上，让它“原生态”地执行；若它被挂起，则其部分或全部堆栈区间的数据会被拷贝到堆上保存；<em>这是因为所有同一个线程的 greenlets 共享同一个 c 堆栈的地址空间，它们的堆栈区间会有可能有交集重叠</em></p>
+<p>Greenlet 的做法是这样的：当一个 greenlet 运行时，它的堆栈区间数据将会完整地恢复放在 c 堆栈上，让它“原生态”地执行；若它被挂起，则有可能其部分或全部堆栈区间的数据会被拷贝到堆上保存；<em>这是因为所有同一个线程的 greenlets 共享同一个 c 堆栈的地址空间，它们的堆栈区间会有可能有交集重叠</em></p>
 
 <p>我们主要关注 <code>PyGreenlet</code> 的这几个字段来讨论实现原理：</p>
 
 <ul>
 <li><code>stack_stop</code>: 该 greenlet 堆栈区间 <em>底</em> 部地址（旧数据方向）</li>
 <li><code>stack_start</code>: 该 greenlet 堆栈区间 <em>顶</em> 部地址（新数据方向）</li>
-<li><code>stack_prev</code>: <em>greenlet 链表</em> 的上一个，见下面说明</li>
+<li><code>stack_prev</code>: <em>greenlet 链表</em> 指针，见下节说明</li>
 <li><code>stack_copy</code>: 该 greenlet 堆栈区间在堆上的拷贝</li>
 <li><code>stack_saved</code>: 该 greenlet 堆栈区间在堆上的拷贝的长度</li>
 </ul>
 
 <h4 id="greenlet-链表">greenlet 链表</h4>
 
-<p>任意时刻都维护一个 greenlet 链表，该链表由 <code>stack_prev</code> 串联而成，例如</p>
+<p>如前所叙述，只有当前运行的 greenlet 是保证其堆栈区间完整地置于 c 堆栈上，其它挂起的 greenlets 的堆栈区间数据则是有可能部分或全部地拷贝到了堆上保存；</p>
+
+<p>那么任意时刻，c 堆栈就会由多个 greenlets 的部分或全部堆栈区间组成（这些区间有可能是紧贴着的，也可能中间有空隙，但必定不能重叠），Greenlet 库维护一个 greenlet 链表来表达 c 堆栈上这些区间的前后关系，该链表就是由 <code>stack_prev</code> 串联而成的，例如</p>
 
 <pre><code>current.stack_prev -&gt; intermediate.stack_prev -&gt; ... -&gt; main.stack_prev -&gt; null
 </code></pre>
 
-<p>只有那些当前有部分（或全部）堆栈区间数据处于 c 堆栈上的 greenlet 才放到这个链表中，那些全部堆栈区间数据都保存到堆上的 greenlet 不在该链中；它们的先后顺序是以在 c 堆栈上地址的先后确定的（更准确是 <code>stack_stop</code>）：链表头是当前运行的 greenlet（处于堆栈顶部），然后是中间的一些已经挂起的 greenlets，最后是 main greenlet（处于堆栈底部）</p>
+<p>链表头一定是当前运行的 greenlet，链表尾一定是 main/initial greenlet；这个链表只包含那些在 c 堆栈上有部分/全部堆栈区间的 greenlets，已经完全拷贝到堆上的那些 greenlets 不包含在这个链表中</p>
 
 <h4 id="greenlet-堆栈区间">greenlet 堆栈区间</h4>
 
-<p>那么，一个 greenlet 是如何确定它的堆栈区间<code>[stack_stop, stack_start]</code>的呢？</p>
+<p>说了那么久堆栈区间，一个 greenlet 是如何确定它的堆栈区间<code>[stack_stop, stack_start]</code>的呢？</p>
 
 <ul>
 <li><p><code>stack_stop</code> 是在一个 greenlet 首次开始执行时确定的（main greenlet 除外）：它取一个外层函数的本地变量地址，为什么可以这样呢？因为外层函数的本地变量处于 c 堆栈上且一定比内层函数（该 greenlet 的入口函数）更靠近 c 堆栈底部，由它作为 <code>stack_stop</code> 肯定能包含该 greenlet 整个有效的堆栈地址区间；<em>这个地址在该 greenlet 的整个生命周期都不会改变</em></p></li>
@@ -201,13 +203,27 @@ ga('send', 'pageview');
 
 <h4 id="大致切换过程">大致切换过程</h4>
 
-<p>假设当前运行 greenlet 为 <em>current</em> , 准备切换到 <em>target</em> ，那么切换过程包括保存 greenlet 链表上各元素的堆栈区间以及恢复 <em>target</em> 堆栈区间</p>
+<p>假设当前运行 greenlet 为 <code>current</code> , 准备切换到 <code>target</code> ，那么切换过程包括保存 greenlet 链表上各元素的堆栈区间以及恢复 <code>target</code> 堆栈区间</p>
 
 <ul>
-<li><p>保存：无论 <em>target</em> 是第一次执行还是恢复执行，都是可以知道 <code>target.stack_stop</code> 的（如前所叙述），遍历 greenlet 链表，对遍历到的每一个元素进行保存操作：把堆栈区间的数据拷贝到堆上保存（<code>stack_copy/stack_saved</code>），直到空出到 <code>target.stack_stop</code> 这个地址或在链表中找到 <em>target</em></p></li>
+<li><p>保存：无论 <code>target</code> 是第一次执行还是恢复执行，都是可以知道 <code>target.stack_stop</code> 的（如前所叙述），也就知道 c 堆栈需要空出位置到哪里给它恢复了：遍历 greenlet 链表，将 <code>target.stack_stop</code> 将要覆盖到的 greenlets 的堆栈区间分别保存到各自 greenlet 的 <code>stack_copy/stack_saved</code> 中去</p></li>
 
-<li><p>恢复：第一次执行不需要恢复，直接执行即可；恢复执行的话，则把拷贝到堆上的数据恢复到 c 堆栈上，然后把 <em>target</em> 放入 greenlet 链表表头，设置 <code>target.stack_prev</code> 维护 greenlet 链表</p></li>
+<li><p>恢复：第一次执行不需要恢复，直接执行即可；恢复执行的话，则把拷贝到堆上的数据恢复到 c 堆栈上，然后把 <code>target</code> 放入 greenlet 链表表头，设置 <code>target.stack_prev</code> 维护 greenlet 链表</p></li>
 </ul>
+
+<h5 id="例子">例子</h5>
+
+<p>来两张灵魂画风的图例</p>
+
+<p>切换前：</p>
+
+<a href="./greenlets_before_switch.jpg"><img style="max-width: 100%; height: auto;" src="./greenlets_before_switch.jpg" alt="Greenlet 笔记 ./greenlets_before_switch.jpg"></a>
+
+
+<p>切换后：</p>
+
+<a href="./greenlets_after_switch.jpg"><img style="max-width: 100%; height: auto;" src="./greenlets_after_switch.jpg" alt="Greenlet 笔记 ./greenlets_after_switch.jpg"></a>
+
 
 <h4 id="注释">注释</h4>
 
