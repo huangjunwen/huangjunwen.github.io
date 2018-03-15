@@ -1,0 +1,17 @@
+digraph {
+
+  graph [rankdir="LR"];
+
+  greenlet0 [label="stack_stop|stack_start|stack_copy|<p>stack_prev" shape="record"];
+
+  greenlet1 [label="stack_stop|stack_start|stack_copy|<p>stack_prev" shape="record"];
+
+  greenlet2 [label="stack_stop|stack_start|stack_copy|<p>stack_prev" shape="record"];
+
+  stack [label="main greenlet stack|greenlet 1|greenlet 2|unused" shape="record"];
+
+  greenlet2:p -> greenlet1;
+
+  greenlet1:p -> greenlet0;
+
+}

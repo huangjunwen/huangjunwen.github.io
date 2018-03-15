@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Jayven@dev</title>
+    <link>//huangjunwen.github.io/tags/coroutine/index.xml</link>
+    <description>Recent content on Jayven@dev</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <copyright>&amp;copy; 2017 &lt;a href=&#34;mailto:kassarar@gmail.com&#34;&gt;Huang JunWen&lt;/a&gt;; All rights reserved.</copyright>
+    <atom:link href="//huangjunwen.github.io/tags/coroutine/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Greenlet 笔记</title>
+      <link>//huangjunwen.github.io/post/2018/greenlet/</link>
+      <pubDate>Thu, 15 Mar 2018 09:05:51 +0800</pubDate>
+      
+      <guid>//huangjunwen.github.io/post/2018/greenlet/</guid>
+      <description>
+
+&lt;p&gt;很多年前有一段时间对协程很感兴趣，于是去研究 &lt;a href=&#34;https://github.com/python-greenlet/greenlet&#34;&gt;Greenlet&lt;/a&gt; 的实现原理，记录在 google code 上（google code 关停后导出到 &lt;a href=&#34;https://github.com/huangjunwen/libhjw/blob/wiki/notes_on_greenlet.md&#34;&gt;Github&lt;/a&gt; 上了），这两天跟某人介绍这个东西的时候翻出来，自己都不是很明白了，果然贴代码的笔记不是好笔记&amp;hellip; 决定再写一篇更偏向原理的&lt;/p&gt;
+
+&lt;h4 id=&#34;原理&#34;&gt;原理&lt;/h4&gt;
+
+&lt;p&gt;我们知道，操作系统会给每一个线程分配一个独立的堆栈，它们各自独立运作，记录着该线程的各类运行状态：如函数本地变量，函数返回地址，寄存器状态等等各种上下文；从这个角度看，堆栈几乎就等价于线程&lt;/p&gt;
+
+&lt;p&gt;那么假如想要在用户态实现轻量级的类线程，就同样需要给它们分配独立堆栈，并提供方法在它们之间切换&lt;/p&gt;
+
+&lt;p&gt;Greenlet 就是 cpython 上的一种轻量级线程（协程）的实现，因为 cpython 是用 c 实现的，所以这就要求 Greenlet 的实现要跟 c 那一套保持一致，要让协程里运行的代码感觉自己跑在一个真正的 c 堆栈上&lt;/p&gt;
+
+&lt;p&gt;Greenlet 的做法是这样的：当一个 greenlet 运行时，它的堆栈区间数据将会完整地恢复放在 c 堆栈上，让它“原生态”地执行；若它被挂起，则其部分或全部堆栈区间的数据会被拷贝到堆上保存；&lt;em&gt;这是因为所有同一个线程的 greenlets 共享同一个 c 堆栈的地址空间，它们的堆栈区间会有可能有交集重叠&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;我们主要关注 &lt;code&gt;PyGreenlet&lt;/code&gt; 的这几个字段来讨论实现原理：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;stack_stop&lt;/code&gt;: 该 greenlet 堆栈区间 &lt;em&gt;底&lt;/em&gt; 部地址（旧数据方向）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;stack_start&lt;/code&gt;: 该 greenlet 堆栈区间 &lt;em&gt;顶&lt;/em&gt; 部地址（新数据方向）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;stack_prev&lt;/code&gt;: &lt;em&gt;greenlet 链表&lt;/em&gt; 的上一个，见下面说明&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;stack_copy&lt;/code&gt;: 该 greenlet 堆栈区间在堆上的拷贝&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;stack_saved&lt;/code&gt;: 该 greenlet 堆栈区间在堆上的拷贝的长度&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&#34;greenlet-链表&#34;&gt;greenlet 链表&lt;/h4&gt;
+
+&lt;p&gt;任意时刻都维护一个 greenlet 链表，该链表由 &lt;code&gt;stack_prev&lt;/code&gt; 串联而成，例如&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;current.stack_prev -&amp;gt; intermediate.stack_prev -&amp;gt; ... -&amp;gt; main.stack_prev -&amp;gt; null
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;只有那些当前有部分（或全部）堆栈区间数据处于 c 堆栈上的 greenlet 才放到这个链表中，那些全部堆栈区间数据都保存到堆上的 greenlet 不在该链中；它们的先后顺序是以在 c 堆栈上地址的先后确定的（更准确是 &lt;code&gt;stack_stop&lt;/code&gt;）：链表头是当前运行的 greenlet（处于堆栈顶部），然后是中间的一些已经挂起的 greenlets，最后是 main greenlet（处于堆栈底部）&lt;/p&gt;
+
+&lt;h4 id=&#34;greenlet-堆栈区间&#34;&gt;greenlet 堆栈区间&lt;/h4&gt;
+
+&lt;p&gt;那么，一个 greenlet 是如何确定它的堆栈区间&lt;code&gt;[stack_stop, stack_start]&lt;/code&gt;的呢？&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;stack_stop&lt;/code&gt; 是在一个 greenlet 首次开始执行时确定的（main greenlet 除外）：它取一个外层函数的本地变量地址，为什么可以这样呢？因为外层函数的本地变量处于 c 堆栈上且一定比内层函数（该 greenlet 的入口函数）更靠近 c 堆栈底部，由它作为 &lt;code&gt;stack_stop&lt;/code&gt; 肯定能包含该 greenlet 整个有效的堆栈地址区间；&lt;em&gt;这个地址在该 greenlet 的整个生命周期都不会改变&lt;/em&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;code&gt;stack_start&lt;/code&gt; 是在一个 greenlet &lt;em&gt;每次&lt;/em&gt; 将要交出控制权的时候确定的，因为该 greenlet 正在运行，所以 &lt;code&gt;stack_start&lt;/code&gt; 就是当前 c 堆栈顶地址&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&#34;大致切换过程&#34;&gt;大致切换过程&lt;/h4&gt;
+
+&lt;p&gt;假设当前运行 greenlet 为 &lt;em&gt;current&lt;/em&gt; , 准备切换到 &lt;em&gt;target&lt;/em&gt; ，那么切换过程包括保存 greenlet 链表上各元素的堆栈区间以及恢复 &lt;em&gt;target&lt;/em&gt; 堆栈区间&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;保存：无论 &lt;em&gt;target&lt;/em&gt; 是第一次执行还是恢复执行，都是可以知道 &lt;code&gt;target.stack_stop&lt;/code&gt; 的（如前所叙述），遍历 greenlet 链表，对遍历到的每一个元素进行保存操作：把堆栈区间的数据拷贝到堆上保存（&lt;code&gt;stack_copy/stack_saved&lt;/code&gt;），直到空出到 &lt;code&gt;target.stack_stop&lt;/code&gt; 这个地址或在链表中找到 &lt;em&gt;target&lt;/em&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;恢复：第一次执行不需要恢复，直接执行即可；恢复执行的话，则把拷贝到堆上的数据恢复到 c 堆栈上，然后把 &lt;em&gt;target&lt;/em&gt; 放入 greenlet 链表表头，设置 &lt;code&gt;target.stack_prev&lt;/code&gt; 维护 greenlet 链表&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&#34;注释&#34;&gt;注释&lt;/h4&gt;
+
+&lt;p&gt;最后还是贴一下代码里的注释，这个是最权威的说明了&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;/*
+A PyGreenlet is a range of C stack addresses that must be
+saved and restored in such a way that the full range of the
+stack contains valid data when we switch to it.
+
+Stack layout for a greenlet:
+
+               |     ^^^       |
+               |  older data   |
+               |               |
+  stack_stop . |_______________|
+        .      |               |
+        .      | greenlet data |
+        .      |   in stack    |
+        .    * |_______________| . .  _____________  stack_copy + stack_saved
+        .      |               |     |             |
+        .      |     data      |     |greenlet data|
+        .      |   unrelated   |     |    saved    |
+        .      |      to       |     |   in heap   |
+ stack_start . |     this      | . . |_____________| stack_copy
+               |   greenlet    |
+               |               |
+               |  newer data   |
+               |     vvv       |
+
+
+Note that a greenlet&#39;s stack data is typically partly at its correct
+place in the stack, and partly saved away in the heap, but always in
+the above configuration: two blocks, the more recent one in the heap
+and the older one still in the stack (either block may be empty).
+
+Greenlets are chained: each points to the previous greenlet, which is
+the one that owns the data currently in the C stack above my
+stack_stop.  The currently running greenlet is the first element of
+this chain.  The main (initial) greenlet is the last one.  Greenlets
+whose stack is entirely in the heap can be skipped from the chain.
+
+The chain is not related to execution order, but only to the order
+in which bits of C stack happen to belong to greenlets at a particular
+point in time.
+
+The main greenlet doesn&#39;t have a stack_stop: it is responsible for the
+complete rest of the C stack, and we don&#39;t know where it begins.  We
+use (char*) -1, the largest possible address.
+
+States:
+  stack_stop == NULL &amp;amp;&amp;amp; stack_start == NULL:  did not start yet
+  stack_stop != NULL &amp;amp;&amp;amp; stack_start == NULL:  already finished
+  stack_stop != NULL &amp;amp;&amp;amp; stack_start != NULL:  active
+
+The running greenlet&#39;s stack_start is undefined but not NULL.
+
+*/
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
