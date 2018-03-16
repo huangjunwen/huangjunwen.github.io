@@ -72,16 +72,16 @@
 
 &lt;h5 id=&#34;例子&#34;&gt;例子&lt;/h5&gt;
 
-&lt;p&gt;来两张灵魂画风的图例&lt;/p&gt;
+&lt;p&gt;来两张图例 （用 &lt;a href=&#34;https://www.lucidchart.com&#34;&gt;Lucidchart&lt;/a&gt; 画的）&lt;/p&gt;
 
 &lt;p&gt;切换前：&lt;/p&gt;
 
-&lt;a href=&#34;./greenlets_before_switch.jpg&#34;&gt;&lt;img style=&#34;max-width: 100%; height: auto;&#34; src=&#34;./greenlets_before_switch.jpg&#34; alt=&#34;Greenlet 笔记 ./greenlets_before_switch.jpg&#34;&gt;&lt;/a&gt;
+&lt;a href=&#34;./greenlet_before_switch.png&#34;&gt;&lt;img style=&#34;max-width: 100%; height: auto;&#34; src=&#34;./greenlet_before_switch.png&#34; alt=&#34;Greenlet 笔记 ./greenlet_before_switch.png&#34;&gt;&lt;/a&gt;
 
 
 &lt;p&gt;切换后：&lt;/p&gt;
 
-&lt;a href=&#34;./greenlets_after_switch.jpg&#34;&gt;&lt;img style=&#34;max-width: 100%; height: auto;&#34; src=&#34;./greenlets_after_switch.jpg&#34; alt=&#34;Greenlet 笔记 ./greenlets_after_switch.jpg&#34;&gt;&lt;/a&gt;
+&lt;a href=&#34;./greenlet_after_switch.png&#34;&gt;&lt;img style=&#34;max-width: 100%; height: auto;&#34; src=&#34;./greenlet_after_switch.png&#34; alt=&#34;Greenlet 笔记 ./greenlet_after_switch.png&#34;&gt;&lt;/a&gt;
 
 
 &lt;h4 id=&#34;注释&#34;&gt;注释&lt;/h4&gt;
