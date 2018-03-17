@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Jayven@dev</title>
-    <link>//huangjunwen.github.io/tags/gnu-pg/index.xml</link>
+    <link>https://huangjunwen.github.io/tags/gnu-pg/index.xml</link>
     <description>Recent content on Jayven@dev</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
     <copyright>&amp;copy; 2017 &lt;a href=&#34;mailto:kassarar@gmail.com&#34;&gt;Huang JunWen&lt;/a&gt;; All rights reserved.</copyright>
-    <atom:link href="//huangjunwen.github.io/tags/gnu-pg/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://huangjunwen.github.io/tags/gnu-pg/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>免输入密码登录 mysql</title>
-      <link>//huangjunwen.github.io/post/2016/mysql-client-auto-login-without-password/</link>
+      <link>https://huangjunwen.github.io/post/2016/mysql-client-auto-login-without-password/</link>
       <pubDate>Sun, 18 Dec 2016 09:58:58 +0800</pubDate>
       
-      <guid>//huangjunwen.github.io/post/2016/mysql-client-auto-login-without-password/</guid>
+      <guid>https://huangjunwen.github.io/post/2016/mysql-client-auto-login-without-password/</guid>
       <description>
 
 &lt;p&gt;对于一些 &lt;del&gt;(古董)&lt;/del&gt; mysql 管理员来说，直接用 mysql client 连接生产环境的数据库进行操作是很常见的事情。&lt;/p&gt;

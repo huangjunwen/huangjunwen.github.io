@@ -2,20 +2,20 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Jayven@dev</title>
-    <link>//huangjunwen.github.io/index.xml</link>
+    <link>https://huangjunwen.github.io/index.xml</link>
     <description>Recent content on Jayven@dev</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
     <copyright>&amp;copy; 2017 &lt;a href=&#34;mailto:kassarar@gmail.com&#34;&gt;Huang JunWen&lt;/a&gt;; All rights reserved.</copyright>
     <lastBuildDate>Thu, 15 Mar 2018 09:05:51 +0800</lastBuildDate>
-    <atom:link href="//huangjunwen.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://huangjunwen.github.io/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Greenlet 笔记</title>
-      <link>//huangjunwen.github.io/post/2018/greenlet/</link>
+      <link>https://huangjunwen.github.io/post/2018/greenlet/</link>
       <pubDate>Thu, 15 Mar 2018 09:05:51 +0800</pubDate>
       
-      <guid>//huangjunwen.github.io/post/2018/greenlet/</guid>
+      <guid>https://huangjunwen.github.io/post/2018/greenlet/</guid>
       <description>
 
 &lt;p&gt;很多年前有一段时间对协程很感兴趣，于是去研究 &lt;a href=&#34;https://github.com/python-greenlet/greenlet&#34;&gt;Greenlet&lt;/a&gt; 的实现原理，记录在 google code 上（google code 关停后导出到 &lt;a href=&#34;https://github.com/huangjunwen/libhjw/blob/wiki/notes_on_greenlet.md&#34;&gt;Github&lt;/a&gt; 上了），这两天跟某人介绍这个东西的时候翻出来，自己都不是很明白了，果然贴代码的笔记不是好笔记&amp;hellip; 决定再写一篇更偏向原理的&lt;/p&gt;
@@ -148,10 +148,10 @@ The running greenlet&#39;s stack_start is undefined but not NULL.
     
     <item>
       <title>Vault Database Secret Backend 笔记</title>
-      <link>//huangjunwen.github.io/post/2017/vault-database-secret-backend/</link>
+      <link>https://huangjunwen.github.io/post/2017/vault-database-secret-backend/</link>
       <pubDate>Sat, 10 Jun 2017 16:46:36 +0800</pubDate>
       
-      <guid>//huangjunwen.github.io/post/2017/vault-database-secret-backend/</guid>
+      <guid>https://huangjunwen.github.io/post/2017/vault-database-secret-backend/</guid>
       <description>
 
 &lt;p&gt;在当前版本（v0.7.2）这个 backend 还处于 beta 状态；这个 backend 应该是用来统一之前版本中各种数据库的 secret backend 的；使用前需要挂载 &lt;code&gt;vault mount database&lt;/code&gt;，这里用 MySQL 来演示它的主要工作流程：&lt;/p&gt;
@@ -238,13 +238,13 @@ username        v-root-01fc63a1-
     
     <item>
       <title>Vault 笔记</title>
-      <link>//huangjunwen.github.io/post/2017/vault/</link>
+      <link>https://huangjunwen.github.io/post/2017/vault/</link>
       <pubDate>Wed, 07 Jun 2017 08:14:18 +0800</pubDate>
       
-      <guid>//huangjunwen.github.io/post/2017/vault/</guid>
+      <guid>https://huangjunwen.github.io/post/2017/vault/</guid>
       <description>
 
-&lt;p&gt;之前一篇 &lt;a href=&#34;//huangjunwen.github.io/post/2017/shamir-secret-sharding/&#34;&gt;博文&lt;/a&gt; 介绍了 &lt;a href=&#34;https://www.vaultproject.io/&#34;&gt;Hashicorp Vault&lt;/a&gt; 的解封／密封算法。这篇打算记录一下这个软件的其它方面。当前最新版本为 v0.7.2 。&lt;/p&gt;
+&lt;p&gt;之前一篇 &lt;a href=&#34;https://huangjunwen.github.io/post/2017/shamir-secret-sharding/&#34;&gt;博文&lt;/a&gt; 介绍了 &lt;a href=&#34;https://www.vaultproject.io/&#34;&gt;Hashicorp Vault&lt;/a&gt; 的解封／密封算法。这篇打算记录一下这个软件的其它方面。当前最新版本为 v0.7.2 。&lt;/p&gt;
 
 &lt;p&gt;Vault 是一个相当复杂的系统，总括而言，它是一个集中管理各类敏感信息（如密码／Key／证书等等）的软件（服务）。Vault 采用类似 Unix &lt;a href=&#34;https://en.wikipedia.org/wiki/Everything_is_a_file&#34;&gt;“一切皆文件”&lt;/a&gt; 的方式组织及暴露各类信息：所有操作都是对某个路径的 read／write （实际上是对某个 HTTP 路径 POST／GET／LIST／DELETE 等） ，例如：&lt;/p&gt;
 
@@ -405,10 +405,10 @@ type Backend interface {
     
     <item>
       <title>微服务中的认证 (authentication) 问题</title>
-      <link>//huangjunwen.github.io/post/2017/authentication_in_microservice/</link>
+      <link>https://huangjunwen.github.io/post/2017/authentication_in_microservice/</link>
       <pubDate>Sun, 14 May 2017 19:14:51 +0800</pubDate>
       
-      <guid>//huangjunwen.github.io/post/2017/authentication_in_microservice/</guid>
+      <guid>https://huangjunwen.github.io/post/2017/authentication_in_microservice/</guid>
       <description>&lt;p&gt;这帖子有意思 &lt;a href=&#34;https://news.ycombinator.com/item?id=11929267&#34;&gt;JSON Web token vs. Session&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;“单纯”的 JWT，其实跟 client side session 没啥区别，它的优缺点都一样：&lt;/p&gt;
@@ -437,10 +437,10 @@ type Backend interface {
     
     <item>
       <title>Shamir&#39;s Secret Sharding</title>
-      <link>//huangjunwen.github.io/post/2017/shamir-secret-sharding/</link>
+      <link>https://huangjunwen.github.io/post/2017/shamir-secret-sharding/</link>
       <pubDate>Sun, 23 Apr 2017 09:27:43 +0800</pubDate>
       
-      <guid>//huangjunwen.github.io/post/2017/shamir-secret-sharding/</guid>
+      <guid>https://huangjunwen.github.io/post/2017/shamir-secret-sharding/</guid>
       <description>
 
 &lt;script type=&#34;text/javascript&#34; async src=&#34;//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML&#34;&gt;&lt;/script&gt;
@@ -500,10 +500,10 @@ type Backend interface {
     
     <item>
       <title>Public Key Cryptography 笔记（2.1）-- ASN.1</title>
-      <link>//huangjunwen.github.io/post/2017/public-key-cryptography-notes-2-1-asn1/</link>
+      <link>https://huangjunwen.github.io/post/2017/public-key-cryptography-notes-2-1-asn1/</link>
       <pubDate>Wed, 01 Feb 2017 09:19:40 +0800</pubDate>
       
-      <guid>//huangjunwen.github.io/post/2017/public-key-cryptography-notes-2-1-asn1/</guid>
+      <guid>https://huangjunwen.github.io/post/2017/public-key-cryptography-notes-2-1-asn1/</guid>
       <description>
 
 &lt;script type=&#34;text/javascript&#34; async src=&#34;//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML&#34;&gt;&lt;/script&gt;
@@ -820,10 +820,10 @@ myImage Image ::= {
     
     <item>
       <title>Public Key Cryptography 笔记（2）-- 存储格式和标准</title>
-      <link>//huangjunwen.github.io/post/2017/public-key-cryptography-notes-2-format-and-standard/</link>
+      <link>https://huangjunwen.github.io/post/2017/public-key-cryptography-notes-2-format-and-standard/</link>
       <pubDate>Thu, 26 Jan 2017 17:43:37 +0800</pubDate>
       
-      <guid>//huangjunwen.github.io/post/2017/public-key-cryptography-notes-2-format-and-standard/</guid>
+      <guid>https://huangjunwen.github.io/post/2017/public-key-cryptography-notes-2-format-and-standard/</guid>
       <description>
 
 &lt;h3 id=&#34;rsa-on-disk&#34;&gt;RSA on disk&lt;/h3&gt;
@@ -924,10 +924,10 @@ RSAPrivateKey:
     
     <item>
       <title>Public Key Cryptography 笔记（1）-- RSA</title>
-      <link>//huangjunwen.github.io/post/2017/public-key-cryptography-notes-1-rsa/</link>
+      <link>https://huangjunwen.github.io/post/2017/public-key-cryptography-notes-1-rsa/</link>
       <pubDate>Tue, 24 Jan 2017 11:52:55 +0800</pubDate>
       
-      <guid>//huangjunwen.github.io/post/2017/public-key-cryptography-notes-1-rsa/</guid>
+      <guid>https://huangjunwen.github.io/post/2017/public-key-cryptography-notes-1-rsa/</guid>
       <description>
 
 &lt;script type=&#34;text/javascript&#34; async src=&#34;//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML&#34;&gt;&lt;/script&gt;
@@ -1062,10 +1062,10 @@ Given that the underlying mathematics is the same for encryption and signing, on
     
     <item>
       <title>用 iptables 来配置 port knocking</title>
-      <link>//huangjunwen.github.io/post/2016/port-knocking-using-iptables/</link>
+      <link>https://huangjunwen.github.io/post/2016/port-knocking-using-iptables/</link>
       <pubDate>Tue, 20 Dec 2016 10:20:54 +0800</pubDate>
       
-      <guid>//huangjunwen.github.io/post/2016/port-knocking-using-iptables/</guid>
+      <guid>https://huangjunwen.github.io/post/2016/port-knocking-using-iptables/</guid>
       <description>&lt;p&gt;对于正式环境的服务器来说，每当查看到 auth.log 里头那些撞大运的 ssh 登录尝试，心里总是有点惴惴不安的。虽然 public key authentication 号称安全，但是谁说得准呢？而且不知道配置里会不会有错误，要是有多一层的防护总是好的。&lt;/p&gt;
 
 &lt;p&gt;以前听说过 &lt;a href=&#34;https://en.wikipedia.org/wiki/Port_knocking&#34;&gt;Port knocking&lt;/a&gt; 这种技术了，大致的思路就是设定一系列随机端口（例如：7421，3411，9088等等）作为暗号，用户在访问服务器之前，要依次“敲”一下这几个端口（即相继发送网络包到这几个端口上），这些端口当然是关闭状态啦，但服务器上可以侦察得到这些敲门，如果暗号对了，就给访问者 ip 开放服务端口（例如22）。&lt;/p&gt;
@@ -1154,10 +1154,10 @@ iptables -A PASSED -j DROP
     
     <item>
       <title>免输入密码登录 mysql</title>
-      <link>//huangjunwen.github.io/post/2016/mysql-client-auto-login-without-password/</link>
+      <link>https://huangjunwen.github.io/post/2016/mysql-client-auto-login-without-password/</link>
       <pubDate>Sun, 18 Dec 2016 09:58:58 +0800</pubDate>
       
-      <guid>//huangjunwen.github.io/post/2016/mysql-client-auto-login-without-password/</guid>
+      <guid>https://huangjunwen.github.io/post/2016/mysql-client-auto-login-without-password/</guid>
       <description>
 
 &lt;p&gt;对于一些 &lt;del&gt;(古董)&lt;/del&gt; mysql 管理员来说，直接用 mysql client 连接生产环境的数据库进行操作是很常见的事情。&lt;/p&gt;

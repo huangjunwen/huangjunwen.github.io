@@ -8,7 +8,7 @@
 
 
 
-<link rel="canonical" href="//huangjunwen.github.io/post/2017/authentication_in_microservice/">
+<link rel="canonical" href="https://huangjunwen.github.io/post/2017/authentication_in_microservice/">
 
 
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
@@ -20,18 +20,18 @@
 
 <meta property="og:title" content="微服务中的认证 (authentication) 问题 - Jayven@dev">
 <meta property="og:type" content="article">
-<meta property="og:url" content="//huangjunwen.github.io/post/2017/authentication_in_microservice/">
-<meta property="og:image" content="//huangjunwen.github.io/images/default.png">
+<meta property="og:url" content="https://huangjunwen.github.io/post/2017/authentication_in_microservice/">
+<meta property="og:image" content="https://huangjunwen.github.io/images/default.png">
 <meta property="og:site_name" content="Jayven@dev">
 <meta property="og:description" content="这帖子有意思 JSON Web token vs. Session “单纯”的 JWT，其实跟 client side session 没啥区别，它的优缺点都一样： Pros： 服务端不需要储存 session 数据 stateless 因为不用访问任何储存服务，">
 <meta property="og:locale" content="ja_JP">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="Jayven@dev">
-<meta name="twitter:url" content="//huangjunwen.github.io/post/2017/authentication_in_microservice/">
+<meta name="twitter:url" content="https://huangjunwen.github.io/post/2017/authentication_in_microservice/">
 <meta name="twitter:title" content="微服务中的认证 (authentication) 问题 - Jayven@dev">
 <meta name="twitter:description" content="这帖子有意思 JSON Web token vs. Session “单纯”的 JWT，其实跟 client side session 没啥区别，它的优缺点都一样： Pros： 服务端不需要储存 session 数据 stateless 因为不用访问任何储存服务，">
-<meta name="twitter:image" content="//huangjunwen.github.io/images/default.png">
+<meta name="twitter:image" content="https://huangjunwen.github.io/images/default.png">
 <meta property="fb:app_id" content="111286092806941">
 
 <script type="application/ld+json">
@@ -40,12 +40,12 @@
     "@type": "NewsArticle",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id":"\/\/huangjunwen.github.io\/"
+      "@id":"https:\/\/huangjunwen.github.io\/"
     },
     "headline": "微服务中的认证 (authentication) 问题 - Jayven@dev",
     "image": {
       "@type": "ImageObject",
-      "url": "\/\/huangjunwen.github.io\/images\/default.png",
+      "url": "https:\/\/huangjunwen.github.io\/images\/default.png",
       "height": 800,
       "width": 800
     },
@@ -60,7 +60,7 @@
       "name": "Jayven@dev",
       "logo": {
         "@type": "ImageObject",
-        "url": "\/\/huangjunwen.github.io\/images/logo.png",
+        "url": "https:\/\/huangjunwen.github.io\/images/logo.png",
         "width": 600,
         "height": 60
       }
@@ -70,7 +70,7 @@
 </script>
 
 
-    <link href="//huangjunwen.github.io/css/styles.css" rel="stylesheet">
+    <link href="https://huangjunwen.github.io/css/styles.css" rel="stylesheet">
   </head>
 
   <body>
@@ -98,7 +98,7 @@ ga('send', 'pageview');
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="//huangjunwen.github.io/">Jayven@dev</a>
+            <a class="navbar-brand" href="https://huangjunwen.github.io/">Jayven@dev</a>
           </div>
 
           
@@ -135,9 +135,9 @@ ga('send', 'pageview');
 
     <nav class="p-crumb">
       <ol class="breadcrumb">
-        <li><a href="//huangjunwen.github.io/"><i class="fa fa-home" aria-hidden="true"></i></a></li>
+        <li><a href="https://huangjunwen.github.io/"><i class="fa fa-home" aria-hidden="true"></i></a></li>
         
-        <li itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb"><a href="//huangjunwen.github.io/post/" itemprop="url"><span itemprop="title">post</span></a></li>
+        <li itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb"><a href="https://huangjunwen.github.io/post/" itemprop="url"><span itemprop="title">post</span></a></li>
         
         <li class="active">微服务中的认证 (authentication) 问题</li>
       </ol>
@@ -147,7 +147,7 @@ ga('send', 'pageview');
   <header>
     <ul class="p-facts">
       <li><i class="fa fa-calendar" aria-hidden="true"></i><time datetime="2017-05-14T19:14:51JST">May 14, 2017</time></li>
-      <li><i class="fa fa-bookmark" aria-hidden="true"></i><a href="//huangjunwen.github.io/post/">post</a></li>
+      <li><i class="fa fa-bookmark" aria-hidden="true"></i><a href="https://huangjunwen.github.io/post/">post</a></li>
       
     </ul>
 
@@ -205,11 +205,11 @@ ga('send', 'pageview');
       <div>
         <ul class="p-terms">
           
-          <li><a href="//huangjunwen.github.io/tags/session/">session</a></li>
+          <li><a href="https://huangjunwen.github.io/tags/session/">session</a></li>
           
-          <li><a href="//huangjunwen.github.io/tags/jwt/">jwt</a></li>
+          <li><a href="https://huangjunwen.github.io/tags/jwt/">jwt</a></li>
           
-          <li><a href="//huangjunwen.github.io/tags/micro-service/">micro-service</a></li>
+          <li><a href="https://huangjunwen.github.io/tags/micro-service/">micro-service</a></li>
           
         </ul>
       </div>
@@ -246,25 +246,25 @@ ga('send', 'pageview');
     </div>
     <div class="list-group">
       
-      <a href="//huangjunwen.github.io/post/2018/greenlet/" class="list-group-item">Greenlet 笔记</a>
+      <a href="https://huangjunwen.github.io/post/2018/greenlet/" class="list-group-item">Greenlet 笔记</a>
       
-      <a href="//huangjunwen.github.io/post/2017/vault-database-secret-backend/" class="list-group-item">Vault Database Secret Backend 笔记</a>
+      <a href="https://huangjunwen.github.io/post/2017/vault-database-secret-backend/" class="list-group-item">Vault Database Secret Backend 笔记</a>
       
-      <a href="//huangjunwen.github.io/post/2017/vault/" class="list-group-item">Vault 笔记</a>
+      <a href="https://huangjunwen.github.io/post/2017/vault/" class="list-group-item">Vault 笔记</a>
       
-      <a href="//huangjunwen.github.io/post/2017/authentication_in_microservice/" class="list-group-item">微服务中的认证 (authentication) 问题</a>
+      <a href="https://huangjunwen.github.io/post/2017/authentication_in_microservice/" class="list-group-item">微服务中的认证 (authentication) 问题</a>
       
-      <a href="//huangjunwen.github.io/post/2017/shamir-secret-sharding/" class="list-group-item">Shamir&#39;s Secret Sharding</a>
+      <a href="https://huangjunwen.github.io/post/2017/shamir-secret-sharding/" class="list-group-item">Shamir&#39;s Secret Sharding</a>
       
-      <a href="//huangjunwen.github.io/post/2017/public-key-cryptography-notes-2-1-asn1/" class="list-group-item">Public Key Cryptography 笔记（2.1）-- ASN.1</a>
+      <a href="https://huangjunwen.github.io/post/2017/public-key-cryptography-notes-2-1-asn1/" class="list-group-item">Public Key Cryptography 笔记（2.1）-- ASN.1</a>
       
-      <a href="//huangjunwen.github.io/post/2017/public-key-cryptography-notes-2-format-and-standard/" class="list-group-item">Public Key Cryptography 笔记（2）-- 存储格式和标准</a>
+      <a href="https://huangjunwen.github.io/post/2017/public-key-cryptography-notes-2-format-and-standard/" class="list-group-item">Public Key Cryptography 笔记（2）-- 存储格式和标准</a>
       
-      <a href="//huangjunwen.github.io/post/2017/public-key-cryptography-notes-1-rsa/" class="list-group-item">Public Key Cryptography 笔记（1）-- RSA</a>
+      <a href="https://huangjunwen.github.io/post/2017/public-key-cryptography-notes-1-rsa/" class="list-group-item">Public Key Cryptography 笔记（1）-- RSA</a>
       
-      <a href="//huangjunwen.github.io/post/2016/port-knocking-using-iptables/" class="list-group-item">用 iptables 来配置 port knocking</a>
+      <a href="https://huangjunwen.github.io/post/2016/port-knocking-using-iptables/" class="list-group-item">用 iptables 来配置 port knocking</a>
       
-      <a href="//huangjunwen.github.io/post/2016/mysql-client-auto-login-without-password/" class="list-group-item">免输入密码登录 mysql</a>
+      <a href="https://huangjunwen.github.io/post/2016/mysql-client-auto-login-without-password/" class="list-group-item">免输入密码登录 mysql</a>
       
     </div>
   </section>
@@ -276,9 +276,9 @@ ga('send', 'pageview');
     </div>
     <div class="list-group">
       
-      <a href="//huangjunwen.github.io/categories/public-key-cryptography-%E7%AC%94%E8%AE%B0" class="list-group-item">public-key-cryptography-笔记</a>
+      <a href="https://huangjunwen.github.io/categories/public-key-cryptography-%E7%AC%94%E8%AE%B0" class="list-group-item">public-key-cryptography-笔记</a>
       
-      <a href="//huangjunwen.github.io/categories/sa" class="list-group-item">sa</a>
+      <a href="https://huangjunwen.github.io/categories/sa" class="list-group-item">sa</a>
       
     </div>
   </section>
@@ -289,25 +289,25 @@ ga('send', 'pageview');
     </div>
     <div class="list-group">
       
-      <a href="//huangjunwen.github.io/tags/hashicorp-vault" class="list-group-item">hashicorp-vault</a>
+      <a href="https://huangjunwen.github.io/tags/hashicorp-vault" class="list-group-item">hashicorp-vault</a>
       
-      <a href="//huangjunwen.github.io/tags/rsa" class="list-group-item">rsa</a>
+      <a href="https://huangjunwen.github.io/tags/rsa" class="list-group-item">rsa</a>
       
-      <a href="//huangjunwen.github.io/tags/asn.1" class="list-group-item">asn.1</a>
+      <a href="https://huangjunwen.github.io/tags/asn.1" class="list-group-item">asn.1</a>
       
-      <a href="//huangjunwen.github.io/tags/coroutine" class="list-group-item">coroutine</a>
+      <a href="https://huangjunwen.github.io/tags/coroutine" class="list-group-item">coroutine</a>
       
-      <a href="//huangjunwen.github.io/tags/gnu-pg" class="list-group-item">gnu-pg</a>
+      <a href="https://huangjunwen.github.io/tags/gnu-pg" class="list-group-item">gnu-pg</a>
       
-      <a href="//huangjunwen.github.io/tags/greenlet" class="list-group-item">greenlet</a>
+      <a href="https://huangjunwen.github.io/tags/greenlet" class="list-group-item">greenlet</a>
       
-      <a href="//huangjunwen.github.io/tags/iptables" class="list-group-item">iptables</a>
+      <a href="https://huangjunwen.github.io/tags/iptables" class="list-group-item">iptables</a>
       
-      <a href="//huangjunwen.github.io/tags/jwt" class="list-group-item">jwt</a>
+      <a href="https://huangjunwen.github.io/tags/jwt" class="list-group-item">jwt</a>
       
-      <a href="//huangjunwen.github.io/tags/micro-service" class="list-group-item">micro-service</a>
+      <a href="https://huangjunwen.github.io/tags/micro-service" class="list-group-item">micro-service</a>
       
-      <a href="//huangjunwen.github.io/tags/mysql" class="list-group-item">mysql</a>
+      <a href="https://huangjunwen.github.io/tags/mysql" class="list-group-item">mysql</a>
       
     </div>
   </section>
