@@ -4,7 +4,7 @@
     <meta charset="utf-8">
 <meta name="pinterest" content="nopin">
 <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
-<meta name="generator" content="Hugo 0.17" />
+<meta name="generator" content="Hugo 0.48" />
 
 
 
@@ -13,7 +13,7 @@
 
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/solarized_dark.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/gruvbox-dark.min.css" integrity="sha256-LUdcdwBjq26ZxccbnPrUQyBoghJjHRR5ujhPVCC4Hb0=" crossorigin="anonymous" />
     <title>Public Key Cryptography 笔记（2）-- 存储格式和标准 - Jayven@dev</title>
     
 <meta name="description" content="RSA on disk 如前所描述，RSA 的公私钥实际上就是些数字，但我们平时实际使用的是 .pem 格式（或 .der）的 key 。 .pem 格式头部和尾部的有一些标识符（-----">
@@ -40,12 +40,12 @@
     "@type": "NewsArticle",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id":"https:\/\/huangjunwen.github.io\/"
+      "@id":"https://huangjunwen.github.io/"
     },
     "headline": "Public Key Cryptography 笔记（2）-- 存储格式和标准 - Jayven@dev",
     "image": {
       "@type": "ImageObject",
-      "url": "https:\/\/huangjunwen.github.io\/images\/default.png",
+      "url": "https://huangjunwen.github.io/images/default.png",
       "height": 800,
       "width": 800
     },
@@ -60,7 +60,7 @@
       "name": "Jayven@dev",
       "logo": {
         "@type": "ImageObject",
-        "url": "https:\/\/huangjunwen.github.io\/images/logo.png",
+        "url": "https://huangjunwen.github.io/images/logo.png",
         "width": 600,
         "height": 60
       }
@@ -76,14 +76,17 @@
   <body>
     
     
-<script>
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-ga('create', 'UA-89264111-1', 'auto');
-ga('send', 'pageview');
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-89264111-1', 'auto');
+	
+	ga('send', 'pageview');
+}
 </script>
 
     
@@ -168,7 +171,7 @@ ga('send', 'pageview');
 
 <p>写个程序验证以下（dec.py）：</p>
 
-<pre><code>#!/usr/bin/python
+<pre><code class="language-python">#!/usr/bin/python
 
 import sys
 from base64 import b64decode
@@ -189,7 +192,7 @@ print obj.prettyPrint()
 
 <p>找一个 rsa private key 来跑一下：</p>
 
-<pre><code>$ ./dec.py ca-key.pem
+<pre><code class="language-shell">$ ./dec.py ca-key.pem
 Sequence:
  &lt;no-name&gt;=0
  &lt;no-name&gt;=893023574113042040269634126903705690958192000367515749793690532339562261663040768984677949208969821111506076369919400865801870985710613745908260652498336371620343220418005606803657105824685015775676961140056140842104922723725658584469937036979589039943318206308234450689935285531106176400784666850060612721223693026581160586984891869615299748396327063287952075098361379463194619694679249727200666343866879641226753061213723029674074572257689929441761207652940540816182884905731304910753429627574542805302378789826317425085431344299593860348296475098275788724990249961382297055893837789210216811880295130941496086631466846898230102127302757337004369112580595622821486216735822235200640222222944221601570231272966140106941857253100312153098428839206633396871491965363584739634413789118376819458819246161914101471359882766752512369669989338842342284961310600856321697107602376430660404437017714184604092513856991285419405296956080590982024711058544298854586244916166800299716510005045028393869316903124931993350151904669792718044403523729143307225465547206325525108357699688142798085183620461364419641399258446567984823312671315017896056518369422953112217687200988245732031363722479836324436839592416038603174283616122293984715039728219
@@ -202,7 +205,7 @@ Sequence:
 
 <p>修改一下：</p>
 
-<pre><code># ...
+<pre><code class="language-python"># ...
 from pyasn1_modules import rfc2437
 
 # ...
@@ -213,7 +216,7 @@ obj, _ = read_pem(open(sys.argv[1]), asn1Spec=rfc2437.RSAPrivateKey())
 
 <p>重新运行一下：</p>
 
-<pre><code>$ ./dec.py ca-key.pem
+<pre><code class="language-shell">$ ./dec.py ca-key.pem
 RSAPrivateKey:
  version=0
  modulus=893023574113042040269634126903705690958192000367515749793690532339562261663040768984677949208969821111506076369919400865801870985710613745908260652498336371620343220418005606803657105824685015775676961140056140842104922723725658584469937036979589039943318206308234450689935285531106176400784666850060612721223693026581160586984891869615299748396327063287952075098361379463194619694679249727200666343866879641226753061213723029674074572257689929441761207652940540816182884905731304910753429627574542805302378789826317425085431344299593860348296475098275788724990249961382297055893837789210216811880295130941496086631466846898230102127302757337004369112580595622821486216735822235200640222222944221601570231272966140106941857253100312153098428839206633396871491965363584739634413789118376819458819246161914101471359882766752512369669989338842342284961310600856321697107602376430660404437017714184604092513856991285419405296956080590982024711058544298854586244916166800299716510005045028393869316903124931993350151904669792718044403523729143307225465547206325525108357699688142798085183620461364419641399258446567984823312671315017896056518369422953112217687200988245732031363722479836324436839592416038603174283616122293984715039728219
@@ -223,7 +226,7 @@ RSAPrivateKey:
 
 <p>完整的定义是在 <a href="https://en.wikipedia.org/wiki/PKCS_1">PKCS#1</a> 标准中：</p>
 
-<pre><code>RSAPrivateKey ::= SEQUENCE {
+<pre><code class="language-nohighlight">RSAPrivateKey ::= SEQUENCE {
   version           Version,
   modulus           INTEGER,  -- n
   publicExponent    INTEGER,  -- e
@@ -235,7 +238,6 @@ RSAPrivateKey:
   coefficient       INTEGER,  -- (inverse of q) mod p
   otherPrimeInfos   OtherPrimeInfos OPTIONAL
 }
-
 </code></pre>
 
 <p>其中 modulus/publicExponent/privateExponent 即模／公钥幂／私钥幂，可以看到实际中的 RSA 私钥也是包含 publicExponent 的；所以这就是为什么 openssl 工具中能从私钥中导出公钥的原因。</p>
@@ -404,7 +406,9 @@ RSAPrivateKey:
 
     <script src="//code.jquery.com/jquery-3.1.1.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js" integrity="sha256-LVuWfOU0rWFMCJNl1xb3K2HSWfxtK4IPbqEerP1P83M=" crossorigin="anonymous"></script>
     <script>hljs.initHighlightingOnLoad();</script>
   </body>
 </html>

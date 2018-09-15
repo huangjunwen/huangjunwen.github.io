@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+<meta name="pinterest" content="nopin">
+<meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+<meta name="generator" content="Hugo 0.17" />
+
+
+
+<link rel="canonical" href="https://huangjunwen.github.io/post/2018/sqlw-mysql/">
+
+
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/solarized_dark.min.css">
+    <title>写了一个 MySQL 数据表和查询的 go 代码生成器 - Jayven@dev</title>
+    
+<meta name="description" content="项目地址：https://github.com/huangjunwen/sqlw-mysql 最近这段时间开始用 go 写网站，遇到各种新老问题。其">
+
+<meta property="og:title" content="写了一个 MySQL 数据表和查询的 go 代码生成器 - Jayven@dev">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://huangjunwen.github.io/post/2018/sqlw-mysql/">
+<meta property="og:image" content="https://huangjunwen.github.io/images/default.png">
+<meta property="og:site_name" content="Jayven@dev">
+<meta property="og:description" content="项目地址：https://github.com/huangjunwen/sqlw-mysql 最近这段时间开始用 go 写网站，遇到各种新老问题。其">
+<meta property="og:locale" content="ja_JP">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="Jayven@dev">
+<meta name="twitter:url" content="https://huangjunwen.github.io/post/2018/sqlw-mysql/">
+<meta name="twitter:title" content="写了一个 MySQL 数据表和查询的 go 代码生成器 - Jayven@dev">
+<meta name="twitter:description" content="项目地址：https://github.com/huangjunwen/sqlw-mysql 最近这段时间开始用 go 写网站，遇到各种新老问题。其">
+<meta name="twitter:image" content="https://huangjunwen.github.io/images/default.png">
+<meta property="fb:app_id" content="111286092806941">
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "NewsArticle",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id":"https:\/\/huangjunwen.github.io\/"
+    },
+    "headline": "写了一个 MySQL 数据表和查询的 go 代码生成器 - Jayven@dev",
+    "image": {
+      "@type": "ImageObject",
+      "url": "https:\/\/huangjunwen.github.io\/images\/default.png",
+      "height": 800,
+      "width": 800
+    },
+    "datePublished": "2018-09-10T20:51:26JST",
+    "dateModified": "2018-09-10T20:51:26JST",
+    "author": {
+      "@type": "Person",
+      "name": "Jayven@dev"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Jayven@dev",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https:\/\/huangjunwen.github.io\/images/logo.png",
+        "width": 600,
+        "height": 60
+      }
+    },
+    "description": "项目地址：https:\/\/github.com\/huangjunwen\/sqlw-mysql 最近这段时间开始用 go 写网站，遇到各种新老问题。其"
+  }
+</script>
+
+
+    <link href="https://huangjunwen.github.io/css/styles.css" rel="stylesheet">
+  </head>
+
+  <body>
+    
+    
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-89264111-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+    
+
+    <header class="l-header">
+      <nav class="navbar navbar-default">
+        <div class="container">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://huangjunwen.github.io/">Jayven@dev</a>
+          </div>
+
+          
+          <div id="navbar" class="collapse navbar-collapse">
+            
+            <ul class="nav navbar-nav navbar-right">
+              
+              
+              <li><a href="/post">Posts</a></li>
+              
+              
+              
+              <li><a href="/categories">Categories</a></li>
+              
+              
+              
+              <li><a href="/tags">Tags</a></li>
+              
+              
+            </ul>
+            
+          </div>
+          
+
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <div class="container">
+        
+<div class="row">
+  <div class="col-md-8">
+
+    <nav class="p-crumb">
+      <ol class="breadcrumb">
+        <li><a href="https://huangjunwen.github.io/"><i class="fa fa-home" aria-hidden="true"></i></a></li>
+        
+        <li itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb"><a href="https://huangjunwen.github.io/post/" itemprop="url"><span itemprop="title">post</span></a></li>
+        
+        <li class="active">写了一个 MySQL 数据表和查询的 go 代码生成器</li>
+      </ol>
+    </nav>
+
+    <article class="single">
+  <header>
+    <ul class="p-facts">
+      <li><i class="fa fa-calendar" aria-hidden="true"></i><time datetime="2018-09-10T20:51:26JST">Sep 10, 2018</time></li>
+      <li><i class="fa fa-bookmark" aria-hidden="true"></i><a href="https://huangjunwen.github.io/post/">post</a></li>
+      
+    </ul>
+
+    <h1 class="title">写了一个 MySQL 数据表和查询的 go 代码生成器</h1>
+  </header>
+
+  
+
+  <div class="article-body"><p>项目地址：<a href="https://github.com/huangjunwen/sqlw-mysql">https://github.com/huangjunwen/sqlw-mysql</a></p>
+
+<p>最近这段时间开始用 go 写网站，遇到各种新老问题。其中一个老问题是如何访问 MySQL 数据库，大致浏览了一些热门的 ORM，感觉不是很合眼缘，跟动态语言的实现（例如 <a href="htps://www.sqlalchemy.org">SQLAlchemy</a> ）差不少。</p>
+
+<p>ORM （Object Relationship Mapping） 的特点在于使用程序员所熟悉的对象概念来抽象数据库关系，但数据库关系其实是挺复杂的，建立一个表达力十足的映射模型即是使用 python 这种表达力很强的动态语言都很复杂，何况 go 呢。因此实现往往只能退而求其次，只实现一些基本常用的功能。超出其设计时，就都得手写 SQL 了。</p>
+
+<p>除了 ORM 另外一种方法是直接面对关系数据库/SQL 本身，例如直接使用 <a href="https://github.com/jmoiron/sqlx">sqlx</a>，但全部手写会很重复很麻烦。</p>
+
+<p>所以有一些工具能帮忙直接生成代码，例如 <a href="https://github.com/xo/xo">xo</a>，连接上数据库直接从数据库中导出 schema 然后生成访问代码，同时也可以根据它的 SQL DSL 生成 SQL 的 wrapper code。这种方法我觉得在 go 中是最合适的，虽然要手写 SQL，但代码生成过程中要经过实际数据库的验证，能很大程度上保证其正确性（起码不会有语法错误），这比很多 ORM 都要安全了。</p>
+
+<p>不过实际使用了一下这个工具，还是有一些不满意的地方，主要集中在 SQL wrapper code 生成这一部分：</p>
+
+<ul>
+<li><p>不是所有 SQL 语句都支持，这是因为它的实现基于 <code>CREATE VIEW ...</code> ，但不是所有合法的 <code>SELECT</code> 语句都可以用来创建 view。例如如果有两个表都有 <code>id</code> 字段（这很常见），则 <code>SELECT t1.*, t2.* FROM t1 JOIN t2 ...</code> 虽然是合法语句，却因为字段重名而不能用来创建 view；而要添加 alias 改写成 <code>SELECT t1.id AS id1, ...., t2.id AS id2, ...</code> 这样才行。</p></li>
+
+<li><p>生成的代码省去了手动 scan 的麻烦，但不如 ORM 中操作 object 那么方便，例如上边的例子生成的代码大致长这样：</p>
+
+<pre><code class="language-go">type T1T2Result struct {
+  ID1 int32
+  // ...
+  ID2 int32
+  // ...
+}
+
+</code></pre></li>
+</ul>
+</div>
+
+  <footer class="article-footer">
+    
+    
+    
+    <section class="bordered">
+      <header>
+        <div class="panel-title">CATEGORIES</div>
+      </header>
+      <div>
+        <ul class="p-terms">
+          
+          <li><a href="https://huangjunwen.github.io/categories/%E9%80%A0%E8%BD%AE%E5%AD%90/">造轮子</a></li>
+          
+        </ul>
+      </div>
+    </section>
+    
+    
+    
+    <section class="bordered">
+      <header>
+        <div class="panel-title">TAGS</div>
+      </header>
+      <div>
+        <ul class="p-terms">
+          
+          <li><a href="https://huangjunwen.github.io/tags/golang/">golang</a></li>
+          
+          <li><a href="https://huangjunwen.github.io/tags/mysql/">mysql</a></li>
+          
+          <li><a href="https://huangjunwen.github.io/tags/code-generator/">code-generator</a></li>
+          
+          <li><a href="https://huangjunwen.github.io/tags/orm/">orm</a></li>
+          
+        </ul>
+      </div>
+    </section>
+    
+    
+  </footer>
+
+</article>
+
+
+    
+	<div id="fb-root"></div>
+	<script>(function(d, s, id) {
+	  var js, fjs = d.getElementsByTagName(s)[0];
+	  if (d.getElementById(id)) return;
+	  js = d.createElement(s); js.id = id;
+	  js.src = "//connect.facebook.net/zh_CN/sdk.js#xfbml=1&version=v2.9";
+	  fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));</script>
+
+	<div class="fb-comments"></div>
+    
+
+  </div>
+
+  <div class="col-md-4">
+    
+<aside class="l-sidebar">
+
+  <section class="panel panel-default">
+    <div class="panel-heading">
+      <div class="panel-title">LATESTS</div>
+    </div>
+    <div class="list-group">
+      
+      <a href="https://huangjunwen.github.io/post/2018/sqlw-mysql/" class="list-group-item">写了一个 MySQL 数据表和查询的 go 代码生成器</a>
+      
+      <a href="https://huangjunwen.github.io/post/2018/greenlet/" class="list-group-item">Greenlet 笔记</a>
+      
+      <a href="https://huangjunwen.github.io/post/2017/vault-database-secret-backend/" class="list-group-item">Vault Database Secret Backend 笔记</a>
+      
+      <a href="https://huangjunwen.github.io/post/2017/vault/" class="list-group-item">Vault 笔记</a>
+      
+      <a href="https://huangjunwen.github.io/post/2017/authentication_in_microservice/" class="list-group-item">微服务中的认证 (authentication) 问题</a>
+      
+      <a href="https://huangjunwen.github.io/post/2017/shamir-secret-sharding/" class="list-group-item">Shamir&#39;s Secret Sharding</a>
+      
+      <a href="https://huangjunwen.github.io/post/2017/public-key-cryptography-notes-2-1-asn1/" class="list-group-item">Public Key Cryptography 笔记（2.1）-- ASN.1</a>
+      
+      <a href="https://huangjunwen.github.io/post/2017/public-key-cryptography-notes-2-format-and-standard/" class="list-group-item">Public Key Cryptography 笔记（2）-- 存储格式和标准</a>
+      
+      <a href="https://huangjunwen.github.io/post/2017/public-key-cryptography-notes-1-rsa/" class="list-group-item">Public Key Cryptography 笔记（1）-- RSA</a>
+      
+      <a href="https://huangjunwen.github.io/post/2016/port-knocking-using-iptables/" class="list-group-item">用 iptables 来配置 port knocking</a>
+      
+    </div>
+  </section>
+
+  
+  <section class="panel panel-default">
+    <div class="panel-heading">
+      <div class="panel-title">CATEGORY</div>
+    </div>
+    <div class="list-group">
+      
+      <a href="https://huangjunwen.github.io/categories/public-key-cryptography-%E7%AC%94%E8%AE%B0" class="list-group-item">public-key-cryptography-笔记</a>
+      
+      <a href="https://huangjunwen.github.io/categories/sa" class="list-group-item">sa</a>
+      
+      <a href="https://huangjunwen.github.io/categories/%E9%80%A0%E8%BD%AE%E5%AD%90" class="list-group-item">造轮子</a>
+      
+    </div>
+  </section>
+  
+  <section class="panel panel-default">
+    <div class="panel-heading">
+      <div class="panel-title">TAG</div>
+    </div>
+    <div class="list-group">
+      
+      <a href="https://huangjunwen.github.io/tags/hashicorp-vault" class="list-group-item">hashicorp-vault</a>
+      
+      <a href="https://huangjunwen.github.io/tags/mysql" class="list-group-item">mysql</a>
+      
+      <a href="https://huangjunwen.github.io/tags/rsa" class="list-group-item">rsa</a>
+      
+      <a href="https://huangjunwen.github.io/tags/asn.1" class="list-group-item">asn.1</a>
+      
+      <a href="https://huangjunwen.github.io/tags/code-generator" class="list-group-item">code-generator</a>
+      
+      <a href="https://huangjunwen.github.io/tags/coroutine" class="list-group-item">coroutine</a>
+      
+      <a href="https://huangjunwen.github.io/tags/gnu-pg" class="list-group-item">gnu-pg</a>
+      
+      <a href="https://huangjunwen.github.io/tags/golang" class="list-group-item">golang</a>
+      
+      <a href="https://huangjunwen.github.io/tags/greenlet" class="list-group-item">greenlet</a>
+      
+      <a href="https://huangjunwen.github.io/tags/iptables" class="list-group-item">iptables</a>
+      
+    </div>
+  </section>
+  
+
+</aside>
+
+
+  </div>
+</div>
+
+      </div>
+    </main>
+
+    <footer class="l-footer">
+      <div class="container">
+        <p>&copy; 2016~2018 <a href="mailto:kassarar@gmail.com">Huang JunWen</a>; All rights reserved.</p>
+        <aside>
+          <p>Powered by <a href="https://gohugo.io/">Hugo</a>.</p>
+          <p><a href="https://github.com/dim0627/hugo_theme_beg">Beg</a> designed by <a href="http://yet.unresolved.xyz/">Daisuke Tsuji</a>.</p>
+        </aside>
+      </div>
+    </footer>
+
+    <script src="//code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </body>
+</html>
+

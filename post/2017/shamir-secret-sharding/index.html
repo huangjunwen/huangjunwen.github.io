@@ -4,7 +4,7 @@
     <meta charset="utf-8">
 <meta name="pinterest" content="nopin">
 <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
-<meta name="generator" content="Hugo 0.17" />
+<meta name="generator" content="Hugo 0.48" />
 
 
 
@@ -13,7 +13,7 @@
 
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/solarized_dark.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/gruvbox-dark.min.css" integrity="sha256-LUdcdwBjq26ZxccbnPrUQyBoghJjHRR5ujhPVCC4Hb0=" crossorigin="anonymous" />
     <title>Shamir&#39;s Secret Sharding - Jayven@dev</title>
     
 <meta name="description" content="Hashicorp 这家公司的产品都很有意思，其中 Vault 是一个用来集中管理敏感信息（密码，各种 token，证书，key 等等）的工具。 Vault server 运行起来之后有两种状态：s">
@@ -40,12 +40,12 @@
     "@type": "NewsArticle",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id":"https:\/\/huangjunwen.github.io\/"
+      "@id":"https://huangjunwen.github.io/"
     },
-    "headline": "Shamir\x27s Secret Sharding - Jayven@dev",
+    "headline": "Shamir&#39;s Secret Sharding - Jayven@dev",
     "image": {
       "@type": "ImageObject",
-      "url": "https:\/\/huangjunwen.github.io\/images\/default.png",
+      "url": "https://huangjunwen.github.io/images/default.png",
       "height": 800,
       "width": 800
     },
@@ -60,7 +60,7 @@
       "name": "Jayven@dev",
       "logo": {
         "@type": "ImageObject",
-        "url": "https:\/\/huangjunwen.github.io\/images/logo.png",
+        "url": "https://huangjunwen.github.io/images/logo.png",
         "width": 600,
         "height": 60
       }
@@ -76,14 +76,17 @@
   <body>
     
     
-<script>
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-ga('create', 'UA-89264111-1', 'auto');
-ga('send', 'pageview');
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-89264111-1', 'auto');
+	
+	ga('send', 'pageview');
+}
 </script>
 
     
@@ -167,7 +170,7 @@ ga('send', 'pageview');
 
 <p>Vault 的数据是加密储存在磁盘上的：由  <strong>encryption key</strong>  加密，这个  encryption key  是由  <strong>master key</strong>  加密储存在磁盘上，而  master key  是不存放在磁盘上。所以当 Vault server 刚启动时，由于  master key  未知，故  encryption key  以及实际数据都是无法被解密访问的，这种状态就称之为<em>seal（密封）</em> ，<em>unseal（解封）</em> 就是重建  master key  的过程。</p>
 
-<p>由于 master key 太重要了，Vault 使用所谓的 <a href="https://en.wikipedia.org/wiki/Shamir%27s_Secret_Sharing">Shamir&rsquo;s Secret Sharing</a> 算法把这个 master key 切分并分发给 n 个人，只有当这 n 个人里的最少 k 个人授权提供他们持有的部分，vault 才能重构出这个 master key，这个算法挺有趣，所以写篇博客记录下来：</p>
+<p>由于 master key 太重要了，Vault 使用所谓的 <a href="https://en.wikipedia.org/wiki/Shamir%27s_Secret_Sharing">Shamir&rsquo;s Secret Sharing</a> 算法把这个 master key 切分并分发给 n 个人，只有当这 n 个人里的最少 k 个人授权提供他们持有的部分，vault 才能重构出这个 master key，这个算法挺有趣，所以记录下来：</p>
 
 <h3 id="目标">目标</h3>
 
@@ -363,7 +366,9 @@ ga('send', 'pageview');
 
     <script src="//code.jquery.com/jquery-3.1.1.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js" integrity="sha256-LVuWfOU0rWFMCJNl1xb3K2HSWfxtK4IPbqEerP1P83M=" crossorigin="anonymous"></script>
     <script>hljs.initHighlightingOnLoad();</script>
   </body>
 </html>

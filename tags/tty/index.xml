@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Jayven@dev</title>
-    <link>https://huangjunwen.github.io/tags/tty/index.xml</link>
-    <description>Recent content on Jayven@dev</description>
+    <title>Tty on Jayven@dev</title>
+    <link>https://huangjunwen.github.io/tags/tty/</link>
+    <description>Recent content in Tty on Jayven@dev</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
     <copyright>&amp;copy; 2016~2018 &lt;a href=&#34;mailto:kassarar@gmail.com&#34;&gt;Huang JunWen&lt;/a&gt;; All rights reserved.</copyright>
-    <atom:link href="https://huangjunwen.github.io/tags/tty/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 18 Dec 2016 09:58:58 +0800</lastBuildDate>
+    
+	<atom:link href="https://huangjunwen.github.io/tags/tty/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>免输入密码登录 mysql</title>
@@ -15,169 +18,7 @@
       <pubDate>Sun, 18 Dec 2016 09:58:58 +0800</pubDate>
       
       <guid>https://huangjunwen.github.io/post/2016/mysql-client-auto-login-without-password/</guid>
-      <description>
-
-&lt;p&gt;对于一些 &lt;del&gt;(古董)&lt;/del&gt; mysql 管理员来说，直接用 mysql client 连接生产环境的数据库进行操作是很常见的事情。&lt;/p&gt;
-
-&lt;p&gt;根据 Mysql 的 &lt;a href=&#34;http://dev.mysql.com/doc/refman/5.5/en/password-security-user.html&#34;&gt;End-User Guidelines for Password Security&lt;/a&gt;：&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;在 command line 上用 &lt;code&gt;-p xxxxx&lt;/code&gt; 直接指定密码是很危险的，因为别人 &lt;code&gt;ps&lt;/code&gt; 一下就看到了。&lt;/li&gt;
-&lt;li&gt;在 command line 上用 &lt;code&gt;-p&lt;/code&gt; 然后在 prompt 中输入密码，这样相对安全得多，但这样得手动输入了。&lt;/li&gt;
-&lt;li&gt;在 &lt;code&gt;~/.my.cnf&lt;/code&gt; 里写下 password，似乎两者兼得唯有此法，但这个配置始终是明文的，感觉还是不太安全。&lt;/li&gt;
-&lt;li&gt;设置在 &lt;code&gt;MYSQL_PWD&lt;/code&gt; 环境变量中，extremely insecure and should not be used&amp;hellip;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;因为之前有&lt;a href=&#34;https://blog.erincall.com/p/using-pgp-to-encrypt-the-ansible-vault&#34;&gt;用 GPG 加密 ansible 的 vault 密码&lt;/a&gt;的经验： gpg 负责加密，gpg-agent 负责偷懒；我想也能用在这里吧。&lt;/p&gt;
-
-&lt;p&gt;首先设定最终要达到的效果：在 local machine 上执行一个脚本，它会通过 gpg-agent 解密出连接参数，再 ssh 到生产环境机器上（生产数据库只能由生产环境的 ip 访问），执行 mysql client 进行连接和操作。&lt;/p&gt;
-
-&lt;h3 id=&#34;初步尝试&#34;&gt;初步尝试&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;
-$ ssh $SSH_HOST &amp;quot;mysql -p -h $DB_HOST -u $DB_UESR $DB_NAME&amp;quot;
-Enter password: xxxxxx
-show tables;
-
-^D
-Tables_in_DB_NAME
-xxx
-yyy
-...
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;这里密码会回显，且输入的命令（&lt;code&gt;show tables;&lt;/code&gt;）直到输入 Ctrl+D （EOF）才执行，返回的结果是 &lt;a href=&#34;http://dev.mysql.com/doc/refman/5.5/en/batch-mode.html&#34;&gt;batch mode&lt;/a&gt; 格式的。似乎当 mysql client 的标准输入如果不是 tty 的话，则会进入 batch mode: &lt;a href=&#34;https://github.com/mysql/mysql-server/blob/5.7/client/mysql.cc#L1259&#34;&gt;https://github.com/mysql/mysql-server/blob/5.7/client/mysql.cc#L1259&lt;/a&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;让-ssh-分配-tty&#34;&gt;让 ssh 分配 tty&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;
-$ ssh -t $SSH_HOST &amp;quot;mysql -p -h $DB_HOST -u $DB_UESR $DB_NAME&amp;quot;
-Enter password:
-Reading table information for completion of table and column names
-...
-...
-Type &#39;help;&#39; or &#39;\h&#39; for help. Type &#39;\c&#39; to clear the current input statement.
-
-mysql&amp;gt;
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;ssh 加上 &lt;code&gt;-t&lt;/code&gt;，输入密码，进入 interactive mode，一切正常。&lt;/p&gt;
-
-&lt;h3 id=&#34;自动输入密码&#34;&gt;自动输入密码&lt;/h3&gt;
-
-&lt;p&gt;要实现自动输入密码，相当于将密码文本和当前终端的输入连接起来，那用 &lt;code&gt;cat&lt;/code&gt; 命令应该就能实现这个功能：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;#!bin/bash
-
-cur_tty=&amp;quot;$( tty )&amp;quot;
-
-echo $DB_PASSWORD | cat - $cur_tty | ssh -tt $SSH_HOST &amp;quot;mysql -p -h $DB_HOST -u $DB_UESR $DB_NAME&amp;quot;
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;这里 &lt;code&gt;ssh -tt&lt;/code&gt; 为什么又多了一个 &lt;code&gt;-t&lt;/code&gt; 呢？因为对 ssh 来说，它的标准输入不再是 tty 了（而是 cat 的标准输出 pipe），如果不多加一个 &lt;code&gt;-t&lt;/code&gt; 它不会分配 tty 的:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;-t  Force pseudo-terminal allocation.  This can be used to execute arbitrary screen-based programs on a remote machine, which can be very useful, e.g. when implementing menu services. Multiple -t options force tty allocation, even if ssh has no local tty.
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;效果：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ ./mysql.sh
-Enter password:
-...
-...
-Type &#39;help;&#39; or &#39;\h&#39; for help. Type &#39;\c&#39; to clear the current input statement.
-
-mysql&amp;gt; show tables;
-show tables;
-+-------------------+
-| Tables_in_DB_NAME |
-+-------------------+
-| xxxx              |
-| yyyy              |
-| ...               |
-+-------------------+
-
-mysql&amp;gt; ^[[A
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;不需要输入密码了，而且正确进入 interactive mode，但是编辑命令的时候跟原来有点不一样，例如命令会回显多一次，按 UP 键没有出现上一句命令而是 &amp;lsquo;^[[A&amp;rsquo;，要再按一次回车，上一句就直接执行了。这应该是因为 locale machine 的 tty 会 buffer 住当前行用于编辑，直到按回车才发送出去。&lt;/p&gt;
-
-&lt;p&gt;这是多此一举的，正确的方式是 locale machine 上输入什么，原原本本马上发送过去就好了。&lt;/p&gt;
-
-&lt;h3 id=&#34;stty-raw-mode&#34;&gt;stty raw mode&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;#!bin/bash
-
-#...
-
-stty_state=&amp;quot;$( stty -g )&amp;quot;
-
-trap &amp;quot;stty $stty_state&amp;quot; EXIT
-
-stty raw -echo
-
-#...
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;通过 &lt;code&gt;stty&lt;/code&gt; 命令来实现这个调整，首先 &lt;code&gt;stty -g&lt;/code&gt; 保存当前 tty 的设置，设置一个 EXIT 的 trap，在这个脚本退出时恢复设置，然后进入 raw 模式。（不过 linux 下的 stty raw 不包括 &lt;code&gt;-echo&lt;/code&gt;，所以这里加上）&lt;/p&gt;
-
-&lt;h3 id=&#34;gpg-解密参数&#34;&gt;gpg 解密参数&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;
-#!/bin/bash
-
-# ...
-
-# extract options from db_credential.sh.gpg, expected in db_credential.sh:
-#
-# SSH_USER=xxxx
-# SSH_HOST=xxxx
-# DB_USER=xxxx
-# DB_HOST=xxxx
-# DB_NAME=xxxx
-# DB_PASSWORD=xxxx
-eval `gpg --batch --use-agent --decrypt db_credential.sh.gpg`
-
-# ...
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;db_credential.sh&lt;/code&gt; 中写好 ssh 跟数据的连接参数，然后用 &lt;code&gt;gpg --encrypt -r your@email db_credential.sh&lt;/code&gt; 加密；脚本里则直接用 &lt;code&gt;eval&lt;/code&gt; 取出解密出来的内容。&lt;/p&gt;
-
-&lt;h3 id=&#34;最终&#34;&gt;最终&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;
-#!/bin/bash
-
-# extract options from db_credential.sh.gpg, expected in db_credential.sh:
-#
-# SSH_USER=xxxx
-# SSH_HOST=xxxx
-# DB_USER=xxxx
-# DB_HOST=xxxx
-# DB_NAME=xxxx
-# DB_PASSWORD=xxxx
-eval `gpg --batch --use-agent --decrypt db_credential.sh.gpg`
-
-cur_tty=&amp;quot;$( tty )&amp;quot;
-
-stty_state=&amp;quot;$( stty -g )&amp;quot;
-
-trap &amp;quot;stty $stty_state&amp;quot; EXIT
-
-stty raw -echo
-
-echo $DB_PASSWORD | cat - $cur_tty | ssh -tt -a $SSH_HOST &amp;quot;mysql -p -h $DB_HOST -u $DB_UESR $DB_NAME&amp;quot;
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;注：ssh 的配置里如果 &lt;code&gt;ForwardAgent yes&lt;/code&gt; 的话，似乎不能正常工作，还没找出原因，所以这里加上 &lt;code&gt;-a&lt;/code&gt; 显式地禁用它，因为这个脚本只是用来连数据库的，并不需要用到 ssh authentication。&lt;/p&gt;
-</description>
+      <description>对于一些 (古董) mysql 管理员来说，直接用 mysql client 连接生产环境的数据库进行操作是很常见的事情。 根据 Mysql 的 End-User Guidelines for Password Security： 在 command line 上用 -p xxxxx 直接指定</description>
     </item>
     
   </channel>

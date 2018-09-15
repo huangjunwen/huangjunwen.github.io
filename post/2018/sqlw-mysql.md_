@@ -1,0 +1,53 @@
+---
+categories: ["造轮子"]
+date: 2018-09-10T20:51:26+08:00
+tags: ["golang", "mysql", "code-generator", "orm"]
+title: 写了一个 MySQL 数据表和查询的 go 代码生成器
+---
+
+*项目地址 https://github.com/huangjunwen/sqlw-mysql*
+
+## 动机
+
+最近这段时间开始用 go 写网站，遇到各种新老问题。其中一个老问题是如何访问 MySQL 数据库，大致浏览了一些热门的 ORM，感觉不是很合眼缘，跟动态语言的实现（例如 [*SQLAlchemy*](htps://www.sqlalchemy.org) ）差不少。
+
+ORM （ *Object Relationship Mapping* ） 的特点在于使用程序员所熟悉的对象概念来抽象数据库关系，但数据库关系其实是挺复杂的，建立一个表达力十足的映射模型即是使用 python 这种表达力很强的动态语言都很复杂，何况 go 呢。因此实现往往只能退而求其次，只实现一些基本常用的功能。超出其设计时，就都得手写 SQL 了。
+
+除了 ORM 另外一种方法是直接面对关系数据库/SQL 本身，例如直接使用 [*sqlx*](https://github.com/jmoiron/sqlx)，但全部手写会很重复很麻烦。
+
+所以有一些工具能帮忙直接生成代码，例如 [*xo*](https://github.com/xo/xo)，连接上数据库直接导出 schema 然后生成访问代码，同时也可以根据它的 DSL 生成 SQL 的 wrapper code。这种方法我觉得在 go 中是最合适的，虽然要手写 SQL，但代码生成过程中要经过实际数据库的验证，能很大程度上保证其正确性（起码不会有语法错误），这比很多 ORM 都要安全了。
+
+不过实际使用了一下这个工具，还是有一些不满意的地方，主要集中在 SQL wrapper code 生成这一部分：
+
+* 有些 SQL 语句需要改写才支持，这主要是因为它的实现基于 `CREATE VIEW ...` ，但不是所有合法的 `SELECT` 语句都可以用来创建 view。例如假设有两个表 `user` 和 `employee` 都有 `id` 字段（这很常见），则 
+    `SELECT user.*, employee.* FROM user JOIN employee ...` 
+  虽然是合法语句，却因为字段重名而不能用来创建 view；而要添加 alias 改写成 
+    `SELECT user.id AS user_id, ...., employee.id AS employee_id, ...`
+  这样才行。
+
+* 生成的代码虽然省去了手动拼接手动 scan 的麻烦，但仍然不如 ORM 中操作 object 那么方便，例如上边的例子生成的代码大致长这样：
+    ```go
+    type JoinResult struct {
+      UserID int32
+      // ...
+      EmployeeID int32
+      // ...
+    }
+    ```
+    只是将结果平铺在一个 struct 中，而不是（我）理想中的：
+    ```go
+    type T1T2Result struct {
+      User *User
+      Employee *Employee
+    }
+    ```
+* 一些 MySQL 相关的问题，例如：[#123](https://github.com/xo/xo/issues/123)
+
+## 实现
+
+因为上述原因，所以决定基于 xo 的方法重新造一个轮子看看能不能稍微改善一点。
+
+首先以 [go1.8](https://golang.org/doc/go1.8#database_sql) 添加 [sql.ColumnType](https://golang.org/pkg/database/sql/#ColumnType) 作为数据源而不是 `information_schema` 里的信息，这样的所有合法的 `SELECT` 都能使用。
+
+增强 SQL DSL，sqlw-mysql 里使用 XML 来描述一个查询；用 XML 的原因是为了可以在 SQL 片段中插入一些特殊指令。例如 *wildcard* 指令 `<wc>`
+

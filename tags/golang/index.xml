@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Jayven@dev</title>
+    <link>https://huangjunwen.github.io/tags/golang/index.xml</link>
+    <description>Recent content on Jayven@dev</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <copyright>&amp;copy; 2016~2018 &lt;a href=&#34;mailto:kassarar@gmail.com&#34;&gt;Huang JunWen&lt;/a&gt;; All rights reserved.</copyright>
+    <atom:link href="https://huangjunwen.github.io/tags/golang/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>写了一个 MySQL 数据表和查询的 go 代码生成器</title>
+      <link>https://huangjunwen.github.io/post/2018/sqlw-mysql/</link>
+      <pubDate>Mon, 10 Sep 2018 20:51:26 +0800</pubDate>
+      
+      <guid>https://huangjunwen.github.io/post/2018/sqlw-mysql/</guid>
+      <description>&lt;p&gt;项目地址：&lt;a href=&#34;https://github.com/huangjunwen/sqlw-mysql&#34;&gt;https://github.com/huangjunwen/sqlw-mysql&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;最近这段时间开始用 go 写网站，遇到各种新老问题。其中一个老问题是如何访问 MySQL 数据库，大致浏览了一些热门的 ORM，感觉不是很合眼缘，跟动态语言的实现（例如 &lt;a href=&#34;htps://www.sqlalchemy.org&#34;&gt;SQLAlchemy&lt;/a&gt; ）差不少。&lt;/p&gt;
+
+&lt;p&gt;ORM （Object Relationship Mapping） 的特点在于使用程序员所熟悉的对象概念来抽象数据库关系，但数据库关系其实是挺复杂的，建立一个表达力十足的映射模型即是使用 python 这种表达力很强的动态语言都很复杂，何况 go 呢。因此实现往往只能退而求其次，只实现一些基本常用的功能。超出其设计时，就都得手写 SQL 了。&lt;/p&gt;
+
+&lt;p&gt;除了 ORM 另外一种方法是直接面对关系数据库/SQL 本身，例如直接使用 &lt;a href=&#34;https://github.com/jmoiron/sqlx&#34;&gt;sqlx&lt;/a&gt;，但全部手写会很重复很麻烦。&lt;/p&gt;
+
+&lt;p&gt;所以有一些工具能帮忙直接生成代码，例如 &lt;a href=&#34;https://github.com/xo/xo&#34;&gt;xo&lt;/a&gt;，连接上数据库直接从数据库中导出 schema 然后生成访问代码，同时也可以根据它的 SQL DSL 生成 SQL 的 wrapper code。这种方法我觉得在 go 中是最合适的，虽然要手写 SQL，但代码生成过程中要经过实际数据库的验证，能很大程度上保证其正确性（起码不会有语法错误），这比很多 ORM 都要安全了。&lt;/p&gt;
+
+&lt;p&gt;不过实际使用了一下这个工具，还是有一些不满意的地方，主要集中在 SQL wrapper code 生成这一部分：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;不是所有 SQL 语句都支持，这是因为它的实现基于 &lt;code&gt;CREATE VIEW ...&lt;/code&gt; ，但不是所有合法的 &lt;code&gt;SELECT&lt;/code&gt; 语句都可以用来创建 view。例如如果有两个表都有 &lt;code&gt;id&lt;/code&gt; 字段（这很常见），则 &lt;code&gt;SELECT t1.*, t2.* FROM t1 JOIN t2 ...&lt;/code&gt; 虽然是合法语句，却因为字段重名而不能用来创建 view；而要添加 alias 改写成 &lt;code&gt;SELECT t1.id AS id1, ...., t2.id AS id2, ...&lt;/code&gt; 这样才行。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;生成的代码省去了手动 scan 的麻烦，但不如 ORM 中操作 object 那么方便，例如上边的例子生成的代码大致长这样：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;type T1T2Result struct {
+  ID1 int32
+  // ...
+  ID2 int32
+  // ...
+}
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

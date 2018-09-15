@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Jayven@dev</title>
-    <link>https://huangjunwen.github.io/tags/hashicorp-vault/index.xml</link>
-    <description>Recent content on Jayven@dev</description>
+    <title>Hashicorp Vault on Jayven@dev</title>
+    <link>https://huangjunwen.github.io/tags/hashicorp-vault/</link>
+    <description>Recent content in Hashicorp Vault on Jayven@dev</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
     <copyright>&amp;copy; 2016~2018 &lt;a href=&#34;mailto:kassarar@gmail.com&#34;&gt;Huang JunWen&lt;/a&gt;; All rights reserved.</copyright>
-    <atom:link href="https://huangjunwen.github.io/tags/hashicorp-vault/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 10 Jun 2017 16:46:36 +0800</lastBuildDate>
+    
+	<atom:link href="https://huangjunwen.github.io/tags/hashicorp-vault/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>Vault Database Secret Backend 笔记</title>
@@ -15,88 +18,7 @@
       <pubDate>Sat, 10 Jun 2017 16:46:36 +0800</pubDate>
       
       <guid>https://huangjunwen.github.io/post/2017/vault-database-secret-backend/</guid>
-      <description>
-
-&lt;p&gt;在当前版本（v0.7.2）这个 backend 还处于 beta 状态；这个 backend 应该是用来统一之前版本中各种数据库的 secret backend 的；使用前需要挂载 &lt;code&gt;vault mount database&lt;/code&gt;，这里用 MySQL 来演示它的主要工作流程：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;写入数据库配置，路径在 &lt;code&gt;database/config/$db_name&lt;/code&gt; ，主要参数有：
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;db_name&lt;/code&gt; 这个配置的名字&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;plugin_name&lt;/code&gt; 指定用何种数据库 driver plugin（mysql/postgres 等）&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;connection_url&lt;/code&gt; 指定连接参数（注：这个连接参数是用来连数据库以创建用户的，需要有对应的权限）&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;allowed_roles&lt;/code&gt; 指定的是允许哪些角色使用此配置（角色是啥下一步就会说明）&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;安全考虑：这个路径即使读权限也需要严格限制，因为它包含了相当高权限的数据库用户信息&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;例子：&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code&gt;$ export db_name=&amp;quot;test&amp;quot;
-$ export role_name=&amp;quot;test_reader&amp;quot;
-$ export plugin_name=&amp;quot;mysql-legacy-database-plugin&amp;quot;             # mysql 有多个 plugin，它们的区别这是创建的数据库用户名最大长度不一样，因为不同版本用户名长度有变化
-$ export connection_url=&amp;quot;root:password@tcp(127.0.0.1:3306)/&amp;quot;    # 不要忘了最后的 /
-
-$ vault write database/config/$db_name \
-&amp;gt;   plugin_name=$plugin_name \
-&amp;gt;   connection_url=$connection_url \
-&amp;gt;   allowed_roles=&amp;quot;$role_name&amp;quot; ...
-
-The following warnings were returned from the Vault server:
-* Read access to this endpoint should be controlled via ACLs as it will return the connection details as is, including passwords, if any.
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ul&gt;
-&lt;li&gt;创建角色，角色代表的是数据库用户的类型，路径在 &lt;code&gt;database/roles/$role_name&lt;/code&gt;，主要参数有：
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;db_name&lt;/code&gt; 就是上一步创建的数据库配置名&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;creation_statements&lt;/code&gt;/&lt;code&gt;revocation_statements/...&lt;/code&gt; 等是在创建具体用户／注销用户等时执行的语句，这些语句中可以添加如 &lt;code&gt;{{name}}&lt;/code&gt;/&lt;code&gt;{{password}}&lt;/code&gt; 等这些占位符，待生成真正用户时，这里会特换成动态生成的值，这些也就是这个 backend 要自动管理的秘密了，具体支持哪些占位符需要参阅各个 driver 的文档&lt;/li&gt;
-&lt;li&gt;例子：&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code&gt;$ vault write database/roles/$role_name \
-&amp;gt;   db_name=$db_name \
-&amp;gt;   creation_statements=&amp;quot;CREATE USER &#39;{{name}}&#39;@&#39;%&#39; IDENTIFIED BY &#39;{{password}}&#39;;GRANT SELECT ON test.* TO &#39;{{name}}&#39;&amp;quot; \
-&amp;gt;   default_ttl=15m
-
-Success! Data written to: database/roles/test_reader
-    
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;这里创建了一个角色，用这个角色创建的用户对 &lt;code&gt;test&lt;/code&gt; 数据库有读权限，且用户名／密码的默认有效时间是 15 分钟，超时且没有续租的话，Vault 就会删除掉这个用户。（注意由于 MySQL plugin 默认有 &lt;code&gt;revocation_statements&lt;/code&gt; 可以不用提供，这些细节要看相关 plugin 的说明）&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;创建用户，路径在 &lt;code&gt;database/creds/$role_name&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code&gt;$ vault read database/creds/$role_name
-
-Key             Value
----             -----
-lease_id        database/creds/test_reader/8e735c82-2eb7-53cf-9cc6-d9c9dc16dd96
-lease_duration  15m0s
-lease_renewable true
-password        96d17f10-9c67-8d44-26d1-c77dcd3e6ec1
-username        v-root-01fc63a1-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;每次读取这个路径时，Vault 就会调用 &lt;code&gt;creation_statements&lt;/code&gt; 创建一个新用户，返回动态生成的用户名密码，并对这个秘密关联租约（由 &lt;code&gt;lease_id&lt;/code&gt; 标识），这个租约默认 15 分钟内有效，可以续租&lt;/p&gt;
-
-&lt;p&gt;由此，我们就可以把一个 MySQL root 权限的用户保存在 Vault 中，并由它来动态产生受限的数据库用户，这些受限的数据库用户可以存在时间很短，使用它的服务可以定时续租，一旦服务停止，这个用户很快就会被删除掉&lt;/p&gt;
-
-&lt;h4 id=&#34;一些细节&#34;&gt;一些细节&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;database/config/$db_name&lt;/code&gt;: 数据库配置&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;database/roles/$role_name&lt;/code&gt;: 角色&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;database/creds/test_reader/8e735c82-2eb7-53cf-9cc6-d9c9dc16dd96&lt;/code&gt;: 具体用户秘密租约&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;这三部分信息是独立，删除修改其中一个貌似并不会影响其它，例如删除数据库配置，角色还是在的，只是创建具体用户的时候会失败，说无法找到相应的数据库配置；又如删除了角色，则具体用户在被吊销的时候也会报错，导致数据库里面还残留没有被删除的用户。&lt;/p&gt;
-</description>
+      <description>在当前版本（v0.7.2）这个 backend 还处于 beta 状态；这个 backend 应该是用来统一之前版本中各种数据库的 secret backend 的；使用前需要挂载 vault mount database，这里用 MySQL</description>
     </item>
     
     <item>
@@ -105,165 +27,7 @@ username        v-root-01fc63a1-
       <pubDate>Wed, 07 Jun 2017 08:14:18 +0800</pubDate>
       
       <guid>https://huangjunwen.github.io/post/2017/vault/</guid>
-      <description>
-
-&lt;p&gt;之前一篇 &lt;a href=&#34;https://huangjunwen.github.io/post/2017/shamir-secret-sharding/&#34;&gt;博文&lt;/a&gt; 介绍了 &lt;a href=&#34;https://www.vaultproject.io/&#34;&gt;Hashicorp Vault&lt;/a&gt; 的解封／密封算法。这篇打算记录一下这个软件的其它方面。当前最新版本为 v0.7.2 。&lt;/p&gt;
-
-&lt;p&gt;Vault 是一个相当复杂的系统，总括而言，它是一个集中管理各类敏感信息（如密码／Key／证书等等）的软件（服务）。Vault 采用类似 Unix &lt;a href=&#34;https://en.wikipedia.org/wiki/Everything_is_a_file&#34;&gt;“一切皆文件”&lt;/a&gt; 的方式组织及暴露各类信息：所有操作都是对某个路径的 read／write （实际上是对某个 HTTP 路径 POST／GET／LIST／DELETE 等） ，例如：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;/sys&lt;/code&gt; 目录下是各种配置路径，此目录不可被卸载，其下路径各有用途，如 &lt;code&gt;/sys/seal&lt;/code&gt; 和 &lt;code&gt;/sys/unseal&lt;/code&gt; 这两个路径是用来密封／解封 vault 的。&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;/secret&lt;/code&gt; 目录下挂载的是 &lt;a href=&#34;https://www.vaultproject.io/docs/secrets/generic/index.html&#34;&gt;Generic Secret Backend&lt;/a&gt;，用于存放一般用途的敏感信息，其下路径组织结构由用户自行决定，我们平时实际使用访问最多的应该也是这个。&lt;/li&gt;
-&lt;li&gt;&amp;hellip; 更多目录路径说明可参看 &lt;a href=&#34;https://www.vaultproject.io/api/index.html&#34;&gt;API 文档&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;读取／写入的数据一般都是 JSON 格式。&lt;/p&gt;
-
-&lt;h2 id=&#34;backends&#34;&gt;Backends&lt;/h2&gt;
-
-&lt;p&gt;Vault 主要由几类 backends 合作组成：&lt;/p&gt;
-
-&lt;p&gt;Auth -&amp;gt; Secret -&amp;gt; Storage(Physical) -&amp;gt; Audit&lt;/p&gt;
-
-&lt;p&gt;认证 -&amp;gt; 实际操作 -&amp;gt; 落盘储存 -&amp;gt; 日志&lt;/p&gt;
-
-&lt;h3 id=&#34;auth-entication-backend&#34;&gt;Auth(entication) Backend&lt;/h3&gt;
-
-&lt;p&gt;Auth Backend 完成的是认证工作：访问者是谁。有多种可通过挂载添加，默认情况下它们会挂载在 &lt;code&gt;auth/&amp;lt;type&amp;gt;&lt;/code&gt; 下，以下是其中一些认证方式：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://www.vaultproject.io/docs/auth/token.html&#34;&gt;token&lt;/a&gt; 这个 Backend 是 Vault 的核心认证方式，默认挂载，不可卸载，非常重要，下一小节详细描述&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://www.vaultproject.io/docs/auth/userpass.html&#34;&gt;userpass&lt;/a&gt; 用户名密码认证&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://www.vaultproject.io/docs/auth/github.html&#34;&gt;github&lt;/a&gt; 用 Github 的认证服务&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://www.vaultproject.io/docs/auth/cert.html&#34;&gt;cert&lt;/a&gt; 用 tls 证书认证&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://www.vaultproject.io/docs/auth/approle.html&#34;&gt;approle&lt;/a&gt; &lt;em&gt;TODO&lt;/em&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&#34;token-令牌&#34;&gt;Token （令牌）&lt;/h4&gt;
-
-&lt;p&gt;对外部而言，顾名思义，有了令牌就能通行，它是访问者身份的象征；实际上，Vault 对外 API 中绝大部分（除了像 seal／unseal 这种）都需要令牌才能访问：访问的 HTTP 请求头部需要加上 &lt;code&gt;X-Vault-Token: xxxxxx&lt;/code&gt; （命令行其实也是调用 HTTP API 的，Token 保存在 &lt;code&gt;~/.vault_token&lt;/code&gt; 里以供其使用）&lt;/p&gt;
-
-&lt;p&gt;对内部而言，Token 是 Vault 里多个组件间的结合点，关联对应许多信息：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;树状层次：除了 root tokens 和 orphan tokens 外都有父 token，故所有 tokens 形成一个树（森林）状层次结构，当父 token 被吊销时，其所有子孙 tokens 都会同时被吊销&lt;/li&gt;
-&lt;li&gt;限时：token 是有使用时限的（TTL），超时时会被吊销，可以续租延长时限的（但不超过某个最大值），也可以是周期性的 token（可通过周期性地续租无限延长使用时间）&lt;/li&gt;
-&lt;li&gt;限次：token 可以限制使用次数，默认是不限制，超过使用次数后会被吊销，这个可以用作实现 one-time-password&lt;/li&gt;
-&lt;li&gt;访问控制策略（Access Control Policies）：这是最关键的，每个 token 都关联一个访问控制策略列表（如 &lt;code&gt;[&amp;quot;default&amp;quot;, &amp;quot;dev&amp;quot;]&lt;/code&gt;），访问控制策略就是 Vault 里头的权限控制机制，例如 &lt;code&gt;default&lt;/code&gt; 策略是这样的：&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code&gt;$ vault policies default  # 查看名为 default 的控制策略
-
-# Allow tokens to look up their own properties
-path &amp;quot;auth/token/lookup-self&amp;quot; {
-    capabilities = [&amp;quot;read&amp;quot;]
-}
-
-# Allow tokens to renew themselves
-path &amp;quot;auth/token/renew-self&amp;quot; {
-    capabilities = [&amp;quot;update&amp;quot;]
-}
-
-# Allow tokens to revoke themselves
-path &amp;quot;auth/token/revoke-self&amp;quot; {
-    capabilities = [&amp;quot;update&amp;quot;]
-}
-
-# Allow a token to look up its own capabilities on a path
-path &amp;quot;sys/capabilities-self&amp;quot; {
-    capabilities = [&amp;quot;update&amp;quot;]
-}
-
-...
-
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;归功于“一切皆文件”的统一设计，能干什么不能干什么（create/read/update/delete/list/sudo/deny）都统一到一组路径上的读写权限。详情可参看 &lt;a href=&#34;https://www.vaultproject.io/docs/concepts/policies.html&#34;&gt;https://www.vaultproject.io/docs/concepts/policies.html&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;整个流程应该是这样子的：用户（人／机器）携带着令牌调用某个 API，Vault 检查这个令牌是否已被吊销，是否超过使用限制，访问的操作／路径是否被允许，如果都通过了这些检查，才会实际执行操作。&lt;/p&gt;
-
-&lt;p&gt;那么好了，令牌本身又是从哪里来的呢？方法有几个：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;root tokens 可以在 Vault 初始化的时候获得，也可以在之后通过 &lt;code&gt;vault generate-root&lt;/code&gt; 命令或 &lt;a href=&#34;https://www.vaultproject.io/api/system/generate-root.html&#34;&gt;/sys/generate-root&lt;/a&gt; API 创建新的（需要 unseal key），root token 是 token 中的 superuser，啥都可以做，且一般没有超时时间&lt;/li&gt;
-&lt;li&gt;通过 &lt;code&gt;vault token-create&lt;/code&gt; 命令或 &lt;a href=&#34;https://godoc.org/github.com/hashicorp/vault/api#TokenAuth.Create&#34;&gt;/auth/token/create&lt;/a&gt; API 为当前 token 手动创建子 token，子 token 的访问控制策略只能是当前 token 的子集&lt;/li&gt;
-&lt;li&gt;其它 auth backends 完成对认证后，其实返回的也是 token（所以从这个角度看，Vault 其实就只有 token 一种认证方式），至于返回的是什么样的 token，则决定于这个 auth backend 的配置是怎么样的；例如 Github 可以关联某个 team 或者某个 user 到指定访问控制策略，当这个 team 的成员或这个用户用 Github 的 Personal Access Token 完成认证后，就返回关联此策略的一个 token&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;关于 token 的更详细文档可以参看这里： &lt;a href=&#34;https://www.vaultproject.io/docs/concepts/tokens.html&#34;&gt;https://www.vaultproject.io/docs/concepts/tokens.html&lt;/a&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;secret-backend&#34;&gt;Secret Backend&lt;/h3&gt;
-
-&lt;p&gt;用来存放（生成）秘密的地方；不同的 backend 类似于不同的虚拟文件系统（tmpfs，udev 等），可以挂载到不同的目录，读写到不同的 backend 下会有各自不同的作用，如：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://www.vaultproject.io/api/secret/generic/index.html&#34;&gt;generic&lt;/a&gt; 前文也提及过，一般用途的 backend&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://www.vaultproject.io/docs/secrets/databases/index.html&#34;&gt;database&lt;/a&gt; 用来管理数据库连接信息，具体参看另一篇&lt;a href=&#34;../vault-database-secret-backend/&#34;&gt;博文&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://www.vaultproject.io/api/secret/pki/index.html&#34;&gt;pki&lt;/a&gt; 用来管理（生成） X.509 证书 &lt;em&gt;TODO&lt;/em&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://www.vaultproject.io/api/secret/cubbyhole/index.html&#34;&gt;cubbyhole&lt;/a&gt; 类似于 generic secret backend 可以存放任意秘密，但不同之处在于它是 token scoped 的
-
-&lt;ul&gt;
-&lt;li&gt;解释：举个类比，很多 Unix 系统有一个文件夹 &lt;code&gt;/dev/fd&lt;/code&gt;，像一个私有的空间，每一个进程访问都只能看到本进程的打开了的文件描述符；cubbyhole 类似于此，每一个 token 能访问到的都是一个只有自己能访问到的私有空间，当这个 token 销毁的时候，存储在这里面的所有秘密也一并被销毁&lt;/li&gt;
-&lt;li&gt;用处：例如我们从 Vault 中读取了一些秘密，这个秘密可能会通过很多中间环节才能送到最终的使用者手上，中间环节越多，泄漏的可能性就越大（例如不小心被 log 下来了等），那么可以通过创建一个寿命非常短（例如几秒）且只能用一次的 token，把密码放到此 token 的 cubbyhole 里，中间环节传输的则是这个
-token，即使泄漏了，由于其限时限次，秘密泄漏的可能性就大大降低了，同时如果泄漏了，日志里面必定会有所记录（偷取访问一次／正常访问一次，第二次失败），这是所谓 &lt;a href=&#34;https://www.vaultproject.io/docs/secrets/cubbyhole/index.html#response-wrapping&#34;&gt;Response Wrapping&lt;/a&gt;；其实这不就有点像 OAuth2 的流程一样，拿一个很短命的 code 去换取 Access Token （秘密）&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://www.hashicorp.com/blog/cubbyhole-authentication-principles&#34;&gt;https://www.hashicorp.com/blog/cubbyhole-authentication-principles&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://www.vaultproject.io/docs/secrets/cubbyhole/index.html&#34;&gt;https://www.vaultproject.io/docs/secrets/cubbyhole/index.html&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;storage-physical-backend&#34;&gt;Storage (Physical) Backend&lt;/h3&gt;
-
-&lt;p&gt;数据真正落盘的地方（注：到达 Storage Backend 时，数据都已经处于加密状态了，安全并不依赖于 Storage backend，实际上它是 untrusted 的，下面代码里有提到），需要在服务启动时在&lt;a href=&#34;https://www.vaultproject.io/docs/configuration/storage/index.html&#34;&gt;配置&lt;/a&gt;里面指定；这类 backend 同样有很多种，例如：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://www.vaultproject.io/docs/configuration/storage/in-memory.html&#34;&gt;inmem&lt;/a&gt; 存放在内存中（dev 模式下即是使用 inmen backend 的，一旦重启，数据就丢失了）&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://www.vaultproject.io/docs/configuration/storage/filesystem.html&#34;&gt;file&lt;/a&gt; 直接存放在本地文件里&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://www.vaultproject.io/docs/configuration/storage/mysql.html&#34;&gt;mysql&lt;/a&gt; 存放在 MySQL 数据库里&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://www.vaultproject.io/docs/configuration/storage/consul.html&#34;&gt;consul&lt;/a&gt;/&lt;a href=&#34;https://www.vaultproject.io/docs/configuration/storage/etcd.html&#34;&gt;etcd&lt;/a&gt; 存放在 Key-Value 集群中（高可用）&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;例如使用 mysql backend，vault init 后可以看到数据库里头实际上创建了一个表而已，此表就两个字段 &lt;code&gt;vault_key&lt;/code&gt; 和 &lt;code&gt;vault_value&lt;/code&gt;:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;vault_key&lt;/code&gt; 是形如 &lt;code&gt;sys/policy/default&lt;/code&gt; &lt;code&gt;logical/12345678-1234-1234-1234-123456790abc/ca&lt;/code&gt; 等等这类内部路径名称。注意：路径是没有加密的，所以 Vault 的文档某个地方（我忘了在哪里了）指出不要把敏感信息暴露在路径上&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;vault_value&lt;/code&gt; 大部分是加密后的二进制数据，也有些是明文的，如 &lt;code&gt;core/seal-config&lt;/code&gt; 记录密封算法跟参数：&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code&gt;{&amp;quot;type&amp;quot;:&amp;quot;shamir&amp;quot;,&amp;quot;secret_shares&amp;quot;:5,&amp;quot;secret_threshold&amp;quot;:3,&amp;quot;pgp_keys&amp;quot;:null,&amp;quot;nonce&amp;quot;:&amp;quot;&amp;quot;,&amp;quot;backup&amp;quot;:false,&amp;quot;stored_shares&amp;quot;:0}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;这部分信息是在没解封前就要用到的，所以只能用明文；我尝试了下改了参数，例如把 &lt;code&gt;secret_threshold&lt;/code&gt; 改成 1 看看能不能只要一个 key 就能解封，结果&amp;hellip;当然是不能啦 :-)&lt;/p&gt;
-
-&lt;p&gt;看了一下相关的代码，发现其实这部分很好理解，实际上只要提供以下这个 &lt;a href=&#34;https://godoc.org/github.com/hashicorp/vault/physical#Backend&#34;&gt;interface&lt;/a&gt; 就能用作 storage backend 了（其实就是一个可以枚举的 Key-Value store 即可）：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;// Backend is the interface required for a physical
-// backend. A physical backend is used to durably store
-// data outside of Vault. As such, it is completely untrusted,
-// and is only accessed via a security barrier. The backends
-// must represent keys in a hierarchical manner. All methods
-// are expected to be thread safe.
-type Backend interface {
-	// Put is used to insert or update an entry
-	Put(entry *Entry) error
-
-	// Get is used to fetch an entry
-	Get(key string) (*Entry, error)
-
-	// Delete is used to permanently delete an entry
-	Delete(key string) error
-
-	// List is used ot list all the keys under a given
-	// prefix, up to the next prefix.
-	List(prefix string) ([]string, error)
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;注意这里提到的 &amp;ldquo;As such, it is completely untrusted, &amp;hellip;&amp;rdquo;&lt;/p&gt;
-
-&lt;h3 id=&#34;audit-backend&#34;&gt;Audit Backend&lt;/h3&gt;
-
-&lt;p&gt;记日志的，对于敏感信息，日志会进行 HMAC-SHA256 哈希，这样做可以避免暴露明文但仍然能进行对照检查；另外如果启动了至少一个 audit backends 的话，对 Vault 的每一个请求都会&lt;strong&gt;阻塞&lt;/strong&gt;直到其中一个日志完成记录，这样就能保证没有任何的操作不被记录下来&lt;/p&gt;
-</description>
+      <description>之前一篇 博文 介绍了 Hashicorp Vault 的解封／密封算法。这篇打算记录一下这个软件的其它方面。当前最新版本为 v0.7.2 。 Vault 是一个相当复杂的系统，总括而言，它是一个集中</description>
     </item>
     
     <item>
@@ -272,61 +36,7 @@ type Backend interface {
       <pubDate>Sun, 23 Apr 2017 09:27:43 +0800</pubDate>
       
       <guid>https://huangjunwen.github.io/post/2017/shamir-secret-sharding/</guid>
-      <description>
-
-&lt;script type=&#34;text/javascript&#34; async src=&#34;//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML&#34;&gt;&lt;/script&gt;
-
-
-&lt;p&gt;&lt;a href=&#34;https://www.hashicorp.com&#34;&gt;Hashicorp&lt;/a&gt; 这家公司的产品都很有意思，其中 &lt;a href=&#34;https://www.vaultproject.io/&#34;&gt;Vault&lt;/a&gt; 是一个用来集中管理敏感信息（密码，各种 token，证书，key 等等）的工具。&lt;/p&gt;
-
-&lt;p&gt;Vault server 运行起来之后有两种状态：&lt;em&gt;seal/unseal（密封／解封）&lt;/em&gt;  ，这是因为：&lt;/p&gt;
-
-&lt;p&gt;Vault 的数据是加密储存在磁盘上的：由  &lt;strong&gt;encryption key&lt;/strong&gt;  加密，这个  encryption key  是由  &lt;strong&gt;master key&lt;/strong&gt;  加密储存在磁盘上，而  master key  是不存放在磁盘上。所以当 Vault server 刚启动时，由于  master key  未知，故  encryption key  以及实际数据都是无法被解密访问的，这种状态就称之为&lt;em&gt;seal（密封）&lt;/em&gt; ，&lt;em&gt;unseal（解封）&lt;/em&gt; 就是重建  master key  的过程。&lt;/p&gt;
-
-&lt;p&gt;由于 master key 太重要了，Vault 使用所谓的 &lt;a href=&#34;https://en.wikipedia.org/wiki/Shamir%27s_Secret_Sharing&#34;&gt;Shamir&amp;rsquo;s Secret Sharing&lt;/a&gt; 算法把这个 master key 切分并分发给 n 个人，只有当这 n 个人里的最少 k 个人授权提供他们持有的部分，vault 才能重构出这个 master key，这个算法挺有趣，所以写篇博客记录下来：&lt;/p&gt;
-
-&lt;h3 id=&#34;目标&#34;&gt;目标&lt;/h3&gt;
-
-&lt;p&gt;密码 &lt;span&gt;\(S\)&lt;/span&gt;
- 需要切分成 &lt;span&gt;\(n\)&lt;/span&gt;
- 份： &lt;span&gt;\(S_1, S_2, ... S_n\)&lt;/span&gt;
-&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;大于等于 &lt;span&gt;\(k\)&lt;/span&gt;
- 个任意 &lt;span&gt;\(S_i\)&lt;/span&gt;
- 就能算出 &lt;span&gt;\(S\)&lt;/span&gt;
-&lt;/li&gt;
-&lt;li&gt;少于等于 &lt;span&gt;\(k-1\)&lt;/span&gt;
- 个任意 &lt;span&gt;\(S_i\)&lt;/span&gt;
- 无法算出 &lt;span&gt;\(S\)&lt;/span&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;思路&#34;&gt;思路&lt;/h3&gt;
-
-&lt;p&gt;这个算法的思路是这样的：在平面几何中，2 个点就能唯一决定一条直线，3 个点就能唯一决定一条抛物线，4 个点能唯一决定一条三次曲线。。。反之，1 个点决定不了唯一一条直线，2 个点或更少决定不了唯一一条抛物线。。。&lt;/p&gt;
-
-&lt;p&gt;对于一条 &lt;span&gt;\(k-1\)&lt;/span&gt;
- 次曲线&lt;/p&gt;
-
-&lt;span&gt;$$f(x) = a_0 &amp;#43; a_{1}x &amp;#43; a_{2}x^{2} &amp;#43; ... &amp;#43; a_{k-1}x^{k-1} $$&lt;/span&gt;
-
-
-&lt;p&gt;只要 &lt;span&gt;\(k\)&lt;/span&gt;
- 个点就能唯一决定，而少于 &lt;span&gt;\(k\)&lt;/span&gt;
- 个点，则有无限条 &lt;span&gt;\(k-1\)&lt;/span&gt;
- 次曲线穿过这些点。&lt;/p&gt;
-
-&lt;p&gt;所以算法是这样的，令 &lt;span&gt;\(a_0 = S\)&lt;/span&gt;
-，再随机选取 &lt;span&gt;\(a_{1}, a_{2}, ... , a_{k-1}\)&lt;/span&gt;
-，这样就构造出一条 &lt;span&gt;\(k-1\)&lt;/span&gt;
- 次曲线，在曲线上随机选取 &lt;span&gt;\(n\)&lt;/span&gt;
- 个点，这些点（的坐标值）就是分发给各人的密码 &lt;span&gt;\(S_i\)&lt;/span&gt;
- 了。 只要超过 &lt;span&gt;\(k\)&lt;/span&gt;
- 个人提供他们的密码（点），就能重构曲线，也就能获得 &lt;span&gt;\(S = a_0 = f(0)\)&lt;/span&gt;
- 了。&lt;/p&gt;
-</description>
+      <description>Hashicorp 这家公司的产品都很有意思，其中 Vault 是一个用来集中管理敏感信息（密码，各种 token，证书，key 等等）的工具。 Vault server 运行起来之后有两种状态：s</description>
     </item>
     
   </channel>

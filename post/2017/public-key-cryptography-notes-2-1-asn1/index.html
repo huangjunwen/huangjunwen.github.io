@@ -4,7 +4,7 @@
     <meta charset="utf-8">
 <meta name="pinterest" content="nopin">
 <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
-<meta name="generator" content="Hugo 0.17" />
+<meta name="generator" content="Hugo 0.48" />
 
 
 
@@ -13,7 +13,7 @@
 
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/solarized_dark.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/gruvbox-dark.min.css" integrity="sha256-LUdcdwBjq26ZxccbnPrUQyBoghJjHRR5ujhPVCC4Hb0=" crossorigin="anonymous" />
     <title>Public Key Cryptography 笔记（2.1）-- ASN.1 - Jayven@dev</title>
     
 <meta name="description" content="记法和编码 ASN.1（Abstract syntax notation one） 是一个对数据（类型／值）的记法和编码的祖父级标准；制定几十年而依然健在且广泛使用。 对比一下">
@@ -40,12 +40,12 @@
     "@type": "NewsArticle",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id":"https:\/\/huangjunwen.github.io\/"
+      "@id":"https://huangjunwen.github.io/"
     },
     "headline": "Public Key Cryptography 笔记（2.1）-- ASN.1 - Jayven@dev",
     "image": {
       "@type": "ImageObject",
-      "url": "https:\/\/huangjunwen.github.io\/images\/default.png",
+      "url": "https://huangjunwen.github.io/images/default.png",
       "height": 800,
       "width": 800
     },
@@ -60,7 +60,7 @@
       "name": "Jayven@dev",
       "logo": {
         "@type": "ImageObject",
-        "url": "https:\/\/huangjunwen.github.io\/images/logo.png",
+        "url": "https://huangjunwen.github.io/images/logo.png",
         "width": 600,
         "height": 60
       }
@@ -76,14 +76,17 @@
   <body>
     
     
-<script>
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-ga('create', 'UA-89264111-1', 'auto');
-ga('send', 'pageview');
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-89264111-1', 'auto');
+	
+	ga('send', 'pageview');
+}
 </script>
 
     
@@ -169,7 +172,7 @@ ga('send', 'pageview');
 
 <p>而 ASN.1 中记法和编码是不一样的，记法主要是为人类服务，用于描述，是抽象且实现无关的，例如（摘自<a href="https://www.obj-sys.com/asn1tutorial/node11.html#asn1_struct">这里</a>）：</p>
 
-<pre><code>AirlineFlight  ::=  SEQUENCE {
+<pre><code class="language-nohighlight">AirlineFlight  ::=  SEQUENCE {
     airline   IA5String,
     flight    NumericString,
     seats     SEQUENCE {
@@ -306,13 +309,12 @@ ga('send', 'pageview');
 
 <p>tag number 为 2，整数类型可以是正／负的任意精度整数。 记法：</p>
 
-<pre><code>INTEGER [ '{' identifier1(value1) ... identifiern(valuen) '}' ]
+<pre><code class="language-nohighlight">INTEGER [ '{' identifier1(value1) ... identifiern(valuen) '}' ]
 </code></pre>
 
 <p>其中 <code>identifier1</code> &hellip; <code>identifiern</code> 如果有的话，这些标识符将绑定其对应的整数值，例如：</p>
 
-<pre><code>Version ::= INTEGER { v1988(0) }
-
+<pre><code class="language-nohighlight">Version ::= INTEGER { v1988(0) }
 ...
 
 Certificate ::= ...
@@ -335,12 +337,12 @@ Certificate ::= ...
 
 <p>tag number 为 3，比特串可以表示任意长度（包括0）的 0 和 1。记法：</p>
 
-<pre><code>BIT STRING
+<pre><code class="language-nohighlight">BIT STRING
 </code></pre>
 
 <p>例如 X.509 的 SubjectPublicKeyInfo：</p>
 
-<pre><code>SubjectPublicKeyInfo ::= SEQUENCE {
+<pre><code class="language-nohighlight">SubjectPublicKeyInfo ::= SEQUENCE {
     algorithm AlgorithmIdentifier,
     publicKey BIT STRING
 }
@@ -364,7 +366,7 @@ Certificate ::= ...
 
 <p>tag number 为 4，任意长度的字节串，记法：</p>
 
-<pre><code>OCTET STRING [ SIZE '(' size | size1 '..' size2 ')' ]
+<pre><code class="language-nohighlight">OCTET STRING [ SIZE '(' size | size1 '..' size2 ')' ]
 </code></pre>
 
 <p><code>SIZE(size)</code> 形式的表示字节串长度为 size，<code>SIZE(size1..size2)</code> 形式的表示字符串长度需要在 size1 和 size2 之间，没有 <code>SIZE</code> 后缀的表示字符串可以任意长度。</p>
@@ -375,7 +377,7 @@ Certificate ::= ...
 
 <p>tag number 为 16，相当于 c 语言中的 struct，记法：</p>
 
-<pre><code>SEQUENCE {
+<pre><code class="language-nohighlight">SEQUENCE {
     [identifier1] Type1 [ '{' ( 'OPTIONAL' | 'DEFAULT' value1 ) '}' ],
     ...,
     [identifiern] Typen [ '{' ( 'OPTIONAL' | 'DEFAULT' valuen ) '}' ]
@@ -388,7 +390,7 @@ Certificate ::= ...
 
 <p>例子，摘自 <a href="https://en.wikipedia.org/wiki/Abstract_Syntax_Notation_One#Example">wiki</a>：</p>
 
-<pre><code>FooQuestion ::= SEQUENCE {
+<pre><code class="language-nohighlight">FooQuestion ::= SEQUENCE {
     trackingNumber INTEGER,
     question       IA5String
 }
@@ -401,14 +403,14 @@ myQuestion FooQuestion ::= {
 
 <p>编码为</p>
 
-<pre><code>30 — type tag indicating SEQUENCE
+<pre><code class="language-nohighlight">30 — type tag indicating SEQUENCE
 13 — length in octets of value that follows
 02 — type tag indicating INTEGER
 01 — length in octets of value that follows
 05 — value (5)
 16 — type tag indicating IA5String 
-     (IA5 means the full 7-bit ISO 646 set, including variants, 
-      but is generally US-ASCII)
+   (IA5 means the full 7-bit ISO 646 set, including variants, 
+    but is generally US-ASCII)
 0e — length in octets of value that follows
 41 6e 79 62 6f 64 79 20 74 68 65 72 65 3f — value (&quot;Anybody there?&quot;)
 </code></pre>
@@ -417,7 +419,7 @@ myQuestion FooQuestion ::= {
 
 <p>相当于 c 中的 array，列表中的数据都是同一个类型的，编码方式跟 SEQUENCE 是一样的，只是记法不一样：</p>
 
-<pre><code>SEQUENCE OF Type
+<pre><code class="language-nohighlight">SEQUENCE OF Type
 </code></pre>
 
 <h5 id="set">SET</h5>
@@ -432,14 +434,14 @@ myQuestion FooQuestion ::= {
 
 <p>tagged types 如前所述是对现有类型的封装，赋予新的 tag 成为新的类型。有两种 tagged 类形：<code>IMPLICIT</code> 和 <code>EXPLICIT</code>，只是编码方式不一样，记法如下：</p>
 
-<pre><code>'[' [ class ] number ']' [ 'IMPLICIT' | 'EXPLICIT' ] Type
+<pre><code class="language-nohighlight">'[' [ class ] number ']' [ 'IMPLICIT' | 'EXPLICIT' ] Type
 
 class = 'UNIVERSAL' | 'APPLICATION' | 'PRIVATE'
 </code></pre>
 
 <p>例如：</p>
 
-<pre><code>Image ::= SEQUENCE {
+<pre><code class="language-nohighlight">Image ::= SEQUENCE {
     width  [0] INTEGER OPTIONAL,
     height [1] INTEGER OPTIONAL,
     data   OCTET STRING
@@ -620,7 +622,9 @@ myImage Image ::= {
 
     <script src="//code.jquery.com/jquery-3.1.1.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js" integrity="sha256-LVuWfOU0rWFMCJNl1xb3K2HSWfxtK4IPbqEerP1P83M=" crossorigin="anonymous"></script>
     <script>hljs.initHighlightingOnLoad();</script>
   </body>
 </html>
