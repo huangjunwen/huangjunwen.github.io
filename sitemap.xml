@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://huangjunwen.github.io/post/2018/sqlw-mysql/</loc>
+    <lastmod>2018-09-10T20:51:26+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://huangjunwen.github.io/post/2018/greenlet/</loc>
     <lastmod>2018-03-15T09:05:51+08:00</lastmod>
   </url>
@@ -64,6 +69,12 @@
   </url>
   
   <url>
+    <loc>https://huangjunwen.github.io/tags/code-generator/</loc>
+    <lastmod>2018-09-10T20:51:26+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://huangjunwen.github.io/tags/coroutine/</loc>
     <lastmod>2018-03-15T09:05:51+08:00</lastmod>
     <priority>0</priority>
@@ -72,6 +83,12 @@
   <url>
     <loc>https://huangjunwen.github.io/tags/gnu-pg/</loc>
     <lastmod>2016-12-18T09:58:58+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://huangjunwen.github.io/tags/golang/</loc>
+    <lastmod>2018-09-10T20:51:26+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -95,7 +112,7 @@
   
   <url>
     <loc>https://huangjunwen.github.io/</loc>
-    <lastmod>2018-03-15T09:05:51+08:00</lastmod>
+    <lastmod>2018-09-10T20:51:26+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -113,7 +130,13 @@
   
   <url>
     <loc>https://huangjunwen.github.io/tags/mysql/</loc>
-    <lastmod>2016-12-18T09:58:58+08:00</lastmod>
+    <lastmod>2018-09-10T20:51:26+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://huangjunwen.github.io/tags/orm/</loc>
+    <lastmod>2018-09-10T20:51:26+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -125,7 +148,7 @@
   
   <url>
     <loc>https://huangjunwen.github.io/post/</loc>
-    <lastmod>2018-03-15T09:05:51+08:00</lastmod>
+    <lastmod>2018-09-10T20:51:26+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -174,6 +197,12 @@
   <url>
     <loc>https://huangjunwen.github.io/tags/tty/</loc>
     <lastmod>2016-12-18T09:58:58+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://huangjunwen.github.io/categories/%E9%80%A0%E8%BD%AE%E5%AD%90/</loc>
+    <lastmod>2018-09-10T20:51:26+08:00</lastmod>
     <priority>0</priority>
   </url>
   

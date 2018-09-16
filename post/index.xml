@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
     <copyright>&amp;copy; 2016~2018 &lt;a href=&#34;mailto:kassarar@gmail.com&#34;&gt;Huang JunWen&lt;/a&gt;; All rights reserved.</copyright>
-    <lastBuildDate>Thu, 15 Mar 2018 09:05:51 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 10 Sep 2018 20:51:26 +0800</lastBuildDate>
     
 	<atom:link href="https://huangjunwen.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>写了一个 MySQL 数据表和查询的 go 代码生成器</title>
+      <link>https://huangjunwen.github.io/post/2018/sqlw-mysql/</link>
+      <pubDate>Mon, 10 Sep 2018 20:51:26 +0800</pubDate>
+      
+      <guid>https://huangjunwen.github.io/post/2018/sqlw-mysql/</guid>
+      <description>项目地址 https://github.com/huangjunwen/sqlw-mysql 动机 最近这段时间开始用 go 写网站，遇到各种新老问题。其中一个老问题是如何访问 MySQL 数据库。 使用 ORM (Object Relationship Mapping) 大致浏览了一些热门的实现，感觉不是</description>
+    </item>
     
     <item>
       <title>Greenlet 笔记</title>

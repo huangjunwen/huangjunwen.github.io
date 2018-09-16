@@ -4,7 +4,7 @@
     <meta charset="utf-8">
 <meta name="pinterest" content="nopin">
 <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
-<meta name="generator" content="Hugo 0.17" />
+<meta name="generator" content="Hugo 0.48" />
 
 <link rel="alternate" type="application/rss+xml" title="RSS" href="https://huangjunwen.github.io/tags/golang/index.xml">
 
@@ -13,7 +13,7 @@
 
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/solarized_dark.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/gruvbox-dark.min.css" integrity="sha256-LUdcdwBjq26ZxccbnPrUQyBoghJjHRR5ujhPVCC4Hb0=" crossorigin="anonymous" />
     <title>Golang - Jayven@dev</title>
     
     <link href="https://huangjunwen.github.io/css/styles.css" rel="stylesheet">
@@ -22,14 +22,17 @@
   <body>
     
     
-<script>
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-ga('create', 'UA-89264111-1', 'auto');
-ga('send', 'pageview');
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-89264111-1', 'auto');
+	
+	ga('send', 'pageview');
+}
 </script>
 
     
@@ -98,7 +101,7 @@ ga('send', 'pageview');
   </header>
 
   
-  <div class="summary">项目地址：https://github.com/huangjunwen/sqlw-mysql 最近这段时间开始用 go 写网站，遇到各种新老问题。其</div>
+  <div class="summary">项目地址 https://github.com/huangjunwen/sqlw-mysql 动机 最近这段时间开始用 go 写网站，遇到各种新老问题。其中一个老问题是如何访问 MySQL 数据库。 使用 ORM (Object Relationship Mapping) 大致浏览了一些热门的实现，感觉不是</div>
 
   <footer>
     <a href="https://huangjunwen.github.io/post/2018/sqlw-mysql/" title="写了一个 MySQL 数据表和查询的 go 代码生成器">Read More…</a>
@@ -212,7 +215,9 @@ ga('send', 'pageview');
 
     <script src="//code.jquery.com/jquery-3.1.1.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+    
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js" integrity="sha256-LVuWfOU0rWFMCJNl1xb3K2HSWfxtK4IPbqEerP1P83M=" crossorigin="anonymous"></script>
     <script>hljs.initHighlightingOnLoad();</script>
   </body>
 </html>

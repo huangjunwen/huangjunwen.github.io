@@ -22,6 +22,15 @@
     </item>
     
     <item>
+      <title>Code Generator</title>
+      <link>https://huangjunwen.github.io/tags/code-generator/</link>
+      <pubDate>Mon, 10 Sep 2018 20:51:26 +0800</pubDate>
+      
+      <guid>https://huangjunwen.github.io/tags/code-generator/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Coroutine</title>
       <link>https://huangjunwen.github.io/tags/coroutine/</link>
       <pubDate>Thu, 15 Mar 2018 09:05:51 +0800</pubDate>
@@ -36,6 +45,15 @@
       <pubDate>Sun, 18 Dec 2016 09:58:58 +0800</pubDate>
       
       <guid>https://huangjunwen.github.io/tags/gnu-pg/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Golang</title>
+      <link>https://huangjunwen.github.io/tags/golang/</link>
+      <pubDate>Mon, 10 Sep 2018 20:51:26 +0800</pubDate>
+      
+      <guid>https://huangjunwen.github.io/tags/golang/</guid>
       <description></description>
     </item>
     
@@ -87,9 +105,18 @@
     <item>
       <title>Mysql</title>
       <link>https://huangjunwen.github.io/tags/mysql/</link>
-      <pubDate>Sun, 18 Dec 2016 09:58:58 +0800</pubDate>
+      <pubDate>Mon, 10 Sep 2018 20:51:26 +0800</pubDate>
       
       <guid>https://huangjunwen.github.io/tags/mysql/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Orm</title>
+      <link>https://huangjunwen.github.io/tags/orm/</link>
+      <pubDate>Mon, 10 Sep 2018 20:51:26 +0800</pubDate>
+      
+      <guid>https://huangjunwen.github.io/tags/orm/</guid>
       <description></description>
     </item>
     
