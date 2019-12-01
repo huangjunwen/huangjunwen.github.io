@@ -1,12 +1,11 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Sa on Jayven@dev</title>
+    <title>sa on Coder Papa</title>
     <link>https://huangjunwen.github.io/categories/sa/</link>
-    <description>Recent content in Sa on Jayven@dev</description>
+    <description>Recent content in sa on Coder Papa</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <copyright>&amp;copy; 2016~2018 &lt;a href=&#34;mailto:kassarar@gmail.com&#34;&gt;Huang JunWen&lt;/a&gt;; All rights reserved.</copyright>
     <lastBuildDate>Tue, 20 Dec 2016 10:20:54 +0800</lastBuildDate>
     
 	<atom:link href="https://huangjunwen.github.io/categories/sa/index.xml" rel="self" type="application/rss+xml" />

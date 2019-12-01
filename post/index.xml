@@ -1,12 +1,11 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on Jayven@dev</title>
+    <title>Posts on Coder Papa</title>
     <link>https://huangjunwen.github.io/post/</link>
-    <description>Recent content in Posts on Jayven@dev</description>
+    <description>Recent content in Posts on Coder Papa</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <copyright>&amp;copy; 2016~2018 &lt;a href=&#34;mailto:kassarar@gmail.com&#34;&gt;Huang JunWen&lt;/a&gt;; All rights reserved.</copyright>
     <lastBuildDate>Mon, 10 Sep 2018 20:51:26 +0800</lastBuildDate>
     
 	<atom:link href="https://huangjunwen.github.io/post/index.xml" rel="self" type="application/rss+xml" />
@@ -27,7 +26,7 @@
       <pubDate>Thu, 15 Mar 2018 09:05:51 +0800</pubDate>
       
       <guid>https://huangjunwen.github.io/post/2018/greenlet/</guid>
-      <description>很多年前有一段时间对协程很感兴趣，于是去研究 Greenlet 的实现原理，记录在 google code 上（google code 关停后导出到 Github 上了），这两天跟某人介绍这个东西的时候翻</description>
+      <description>原理 我们知道，操作系统会给每一个线程分配一个独立的堆栈，它们各自独立运作，记录着该线程的各类运行状态：如函数本地变量，函数返回地址，寄存器状</description>
     </item>
     
     <item>

@@ -1,501 +1,208 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-<meta name="pinterest" content="nopin">
-<meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
-<meta name="generator" content="Hugo 0.48" />
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-CN" lang="zh-CN">
+<head>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.60.1" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>写了一个 MySQL 数据表和查询的 go 代码生成器 &middot; Coder Papa</title>
+  <meta name="description" content="" />
+
+  
+  <link type="text/css" rel="stylesheet" href="https://huangjunwen.github.io/css/print.css" media="print">
+  <link type="text/css" rel="stylesheet" href="https://huangjunwen.github.io/css/poole.css">
+  <link type="text/css" rel="stylesheet" href="https://huangjunwen.github.io/css/syntax.css">
+  <link type="text/css" rel="stylesheet" href="https://huangjunwen.github.io/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700">
 
 
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
 
-<link rel="canonical" href="https://huangjunwen.github.io/post/2018/sqlw-mysql/">
+  
+  
+</head>
 
+  <body class="theme-base-0d layout-reverse">
+  <aside class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="https://huangjunwen.github.io/"><h1>Coder Papa</h1></a>
+      <p class="lead">
+       一个普通程序员老爸的笔记 
+      </p>
+    </div>
 
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/gruvbox-dark.min.css" integrity="sha256-LUdcdwBjq26ZxccbnPrUQyBoghJjHRR5ujhPVCC4Hb0=" crossorigin="anonymous" />
-    <title>写了一个 MySQL 数据表和查询的 go 代码生成器 - Jayven@dev</title>
-    
-<meta name="description" content="项目地址 https://github.com/huangjunwen/sqlw-mysql 动机 最近这段时间开始用 go 写网站，遇到各种新老问题。其中一个老问题是如何访问 MySQL 数据库。 使用 ORM (Object Relationship Mapping) 大致浏览了一些热门的实现，感觉不是">
+    <nav>
+      <ul class="sidebar-nav">
+        <li><a href="https://huangjunwen.github.io/">Home</a> </li>
+        <li><a href="/post"> Posts </a></li><li><a href="/categories"> Categories </a></li><li><a href="/tags"> Tags </a></li><li><a href="https://github.com/huangjunwen"> Github.com </a></li>
+      </ul>
+    </nav>
 
-<meta property="og:title" content="写了一个 MySQL 数据表和查询的 go 代码生成器 - Jayven@dev">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://huangjunwen.github.io/post/2018/sqlw-mysql/">
-<meta property="og:image" content="https://huangjunwen.github.io/images/default.png">
-<meta property="og:site_name" content="Jayven@dev">
-<meta property="og:description" content="项目地址 https://github.com/huangjunwen/sqlw-mysql 动机 最近这段时间开始用 go 写网站，遇到各种新老问题。其中一个老问题是如何访问 MySQL 数据库。 使用 ORM (Object Relationship Mapping) 大致浏览了一些热门的实现，感觉不是">
-<meta property="og:locale" content="ja_JP">
+    <p>&copy; 2019. All rights reserved. </p>
+  </div>
+</aside>
 
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:site" content="Jayven@dev">
-<meta name="twitter:url" content="https://huangjunwen.github.io/post/2018/sqlw-mysql/">
-<meta name="twitter:title" content="写了一个 MySQL 数据表和查询的 go 代码生成器 - Jayven@dev">
-<meta name="twitter:description" content="项目地址 https://github.com/huangjunwen/sqlw-mysql 动机 最近这段时间开始用 go 写网站，遇到各种新老问题。其中一个老问题是如何访问 MySQL 数据库。 使用 ORM (Object Relationship Mapping) 大致浏览了一些热门的实现，感觉不是">
-<meta name="twitter:image" content="https://huangjunwen.github.io/images/default.png">
-<meta property="fb:app_id" content="111286092806941">
+    <main class="content container">
+    <div class="post">
+  <h1>写了一个 MySQL 数据表和查询的 go 代码生成器</h1>
+  <time datetime=2018-09-10T20:51:26&#43;0800 class="post-date">Mon, Sep 10, 2018</time>
+  <p><em>项目地址 <a href="https://github.com/huangjunwen/sqlw-mysql">https://github.com/huangjunwen/sqlw-mysql</a></em></p>
+<h2 id="heading">动机</h2>
+<p>最近这段时间开始用 go 写网站，遇到各种新老问题。其中一个老问题是如何访问 MySQL 数据库。</p>
+<h3 id="-orm-object-relationship-mapping">使用 ORM (Object Relationship Mapping)</h3>
+<p>大致浏览了一些热门的实现，感觉不是很合眼缘，跟动态语言的实现（例如 <a href="htps://www.sqlalchemy.org"><em>SQLAlchemy</em></a> ）差不少。</p>
+<p>ORM 的特点在于使用程序员熟悉的对象概念抽象数据库关系，使之成为可编程的对象，提供使用上的便利：</p>
+<ul>
+<li>构造查询的便利，用户一般只需要指定需要查询的对象（一般对应数据库表），或者关系（一般对应 <code>JOIN</code>），还可以按需要增添查询条件，ORM 即可推导出需要执行的语句：</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">sess<span style="color:#f92672">.</span>query(User)                        <span style="color:#75715e"># SELECT user.id, ... FROM user</span>
+sess<span style="color:#f92672">.</span>query(Employee<span style="color:#f92672">.</span>User)               <span style="color:#75715e"># SELECT employee.id, ... FROM employee JOIN user ON ...</span>
+sess<span style="color:#f92672">.</span>query(User)<span style="color:#f92672">.</span>filter(User<span style="color:#f92672">.</span>name<span style="color:#f92672">==</span>xxx) <span style="color:#75715e"># SELECT user.id, ... FROM user WHERE name=xxx</span>
+sess<span style="color:#f92672">.</span>query(User)<span style="color:#f92672">.</span>options(joinedload(Employee))<span style="color:#f92672">.</span>order_by(<span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>) <span style="color:#75715e"># ...</span>
+</code></pre></div><ul>
+<li>查询后的便利，结果集会被重新组装成对象，后续仍只需继续在这些对象上操作即可。</li>
+</ul>
+<p>这样理想状态下涉及数据库的操作就被完全封装到一个闭环里头。然而数据库关系其实并不简单，建立一个表达力十足的映射模型即是使用 python 这种表达力很强的动态语言都很复杂（看看这个<a href="http://docs.sqlalchemy.org/en/latest/orm/relationship_api.html#sqlalchemy.orm.relationship">函数</a>），何况 go 这种既缺乏元编程能力也缺乏语法糖的语言呢。</p>
+<p>因此我所见的实现往往只能退而求其次，只实现一些基本常用的功能。</p>
+<h3 id="-sql">直接使用 SQL</h3>
+<p>除了使用 ORM 另外一种方法是直接面对关系数据库/SQL 本身，例如有很多人（声称）直接使用 <a href="https://github.com/jmoiron/sqlx"><em>sqlx</em></a>，但我感觉全部手写会不会也挺麻烦重复的呢？</p>
+<p>所以有一些工具能帮忙生成代码，例如 <a href="https://github.com/xo/xo"><em>xo</em></a>，连接上数据库直接导出 schema 就能生成基本的 CRUD 访问代码，同时也可以根据它的 SQL DSL 生成 SQL 的 wrapper code。整个过程一目了然，没有层层封装的不透明感，生成代码的效率也高，虽然需要手写 SQL，但代码生成过程是经过实际数据库验证的，这就相当可靠了。</p>
+<p>因此我认为这种方法在 go 中是最合适的，不过实际使用了一下这个工具后，还是有一些不满意的地方，主要集中在 SQL wrapper code 生成这一部分：</p>
+<ul>
+<li>
+<p>有些 SQL 语句需要改写才行，这主要是因为它的实现基于 <code>CREATE VIEW ...</code> ，但不是所有合法的 <code>SELECT</code> 语句都可以用来创建 view。例如假设有两个表 <code>user</code> 和 <code>employee</code> 都有 <code>id</code> 字段（这很常见），则
+<code>SELECT user.*, employee.* FROM user JOIN employee ...</code>
+虽然是合法语句，却因为字段重名而不能用来创建 view；而要添加 alias 改写成
+<code>SELECT user.id AS user_id, ...., employee.id AS employee_id, ...</code>
+这样才行。</p>
+</li>
+<li>
+<p>一些 MySQL 相关的问题，例如：<a href="https://github.com/xo/xo/issues/123">#123</a></p>
+</li>
+<li>
+<p>生成的代码虽然省去了手动拼接手动 scan 的麻烦，但仍然不如 ORM 中操作对象那么方便，例如上边的例子生成的代码大致长这样：</p>
+</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">JoinResult</span> <span style="color:#66d9ef">struct</span> {
+  <span style="color:#a6e22e">UserID</span> <span style="color:#66d9ef">int32</span>
+  <span style="color:#75715e">// ...
+</span><span style="color:#75715e"></span>  <span style="color:#a6e22e">EmployeeID</span> <span style="color:#66d9ef">int32</span>
+  <span style="color:#75715e">// ...
+</span><span style="color:#75715e"></span>}
+</code></pre></div><p>只是将结果平铺在一个 struct 中，而不是（我）理想中的：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">JoinResult</span> <span style="color:#66d9ef">struct</span> {
+  <span style="color:#a6e22e">User</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">User</span>
+  <span style="color:#a6e22e">Employee</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Employee</span>
+}
+</code></pre></div><p>这样后续我如果需要继续在结果集的 <code>User</code> 上继续操作的话，我需要重新手动装配一次。</p>
+<h2 id="heading1">改良</h2>
+<p>因为上述原因，所以决定基于 xo 的方法重新造一个轮子看看能不能改善一点。</p>
+<p>首先，直接以 <a href="https://golang.org/pkg/database/sql/#ColumnType">sql.ColumnType</a>（<a href="https://golang.org/doc/go1.8#database_sql">go1.8</a> 添加）而不是从 <code>information_schema</code> 里提取 schema 和 query 的元数据，这样所有合法的查询都能支持。不过这种方法有个缺点，能获得多少元信息取决于这个 RDBMS 的协议返回什么样的信息，例如，postgres 似乎是<a href="https://github.com/lib/pq/pull/647">无法获得</a> <code>Nullable</code> 信息的；而 MySQL 的协议返回的信息相对比较完整，这也是为什么只支持 MySQL 的缘故啦 :-)</p>
+<p>另一方面是增强 SQL DSL，在 sqlw-mysql 中我选择使用 XML 来描述一个查询，例如（quick start 的例子之一）:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;stmt</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;SubordinatesBySuperiors&#34;</span><span style="color:#f92672">&gt;</span>
+  <span style="color:#f92672">&lt;a</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;id&#34;</span> <span style="color:#a6e22e">type=</span><span style="color:#e6db74">&#34;...int&#34;</span> <span style="color:#f92672">/&gt;</span>
+  <span style="color:#f92672">&lt;v</span> <span style="color:#a6e22e">in_query=</span><span style="color:#e6db74">&#34;1&#34;</span> <span style="color:#f92672">/&gt;</span>
+  SELECT
+    <span style="color:#f92672">&lt;wc</span> <span style="color:#a6e22e">table=</span><span style="color:#e6db74">&#34;employee&#34;</span> <span style="color:#a6e22e">as=</span><span style="color:#e6db74">&#34;superior&#34;</span> <span style="color:#f92672">/&gt;</span>,     <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> 上司 </span><span style="color:#75715e">--&gt;</span>
+    <span style="color:#f92672">&lt;wc</span> <span style="color:#a6e22e">table=</span><span style="color:#e6db74">&#34;employee&#34;</span> <span style="color:#a6e22e">as=</span><span style="color:#e6db74">&#34;subordinate&#34;</span> <span style="color:#f92672">/&gt;</span>   <span style="color:#75715e">&lt;!--</span><span style="color:#75715e"> 下级 </span><span style="color:#75715e">--&gt;</span>
+  FROM
+    employee AS superior LEFT JOIN employee AS subordinate 
+    ON subordinate.superior_id=superior.id
+  WHERE
+    superior.id IN (<span style="color:#f92672">&lt;r</span> <span style="color:#a6e22e">by=</span><span style="color:#e6db74">&#34;:id&#34;</span><span style="color:#f92672">&gt;</span>1<span style="color:#f92672">&lt;/r&gt;</span>)
+<span style="color:#f92672">&lt;/stmt&gt;</span>
+</code></pre></div><p>之所以使用 XML 是因为需要在 SQL 语句片段中间插入一些特殊的指令（元素），这些指令有些有特殊的标记作用；有些则会展开成 SQL 片段来减少一些重复劳动，例子里的 <code>&lt;wc table=&quot;employee&quot; as=&quot;superior&quot;&gt;</code> （wildcard）指令实际上是会展开成字段列表如</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">superior.id, superior.employee_sn, superior.user_id, superior.superior_id
+</code></pre></div><p>上述例子演示的是 <code>one2many</code> 的关系（一个上司对应 0+ 个下级），最终生成的代码节选如下：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// SubordinatesBySuperiorsResult is the result of `SubordinatesBySuperiors`.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">SubordinatesBySuperiorsResult</span> <span style="color:#66d9ef">struct</span> {
+  <span style="color:#a6e22e">Superior</span>          <span style="color:#f92672">*</span><span style="color:#a6e22e">Employee</span>
+  <span style="color:#a6e22e">Subordinate</span>       <span style="color:#f92672">*</span><span style="color:#a6e22e">Employee</span>
+  <span style="color:#75715e">// ...
+</span><span style="color:#75715e"></span>}
 
-<script type="application/ld+json">
-  {
-    "@context": "http://schema.org",
-    "@type": "NewsArticle",
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id":"https://huangjunwen.github.io/"
-    },
-    "headline": "写了一个 MySQL 数据表和查询的 go 代码生成器 - Jayven@dev",
-    "image": {
-      "@type": "ImageObject",
-      "url": "https://huangjunwen.github.io/images/default.png",
-      "height": 800,
-      "width": 800
-    },
-    "datePublished": "2018-09-10T20:51:26JST",
-    "dateModified": "2018-09-10T20:51:26JST",
-    "author": {
-      "@type": "Person",
-      "name": "Jayven@dev"
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": "Jayven@dev",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://huangjunwen.github.io/images/logo.png",
-        "width": 600,
-        "height": 60
-      }
-    },
-    "description": "项目地址 https://github.com/huangjunwen/sqlw-mysql 动机 最近这段时间开始用 go 写网站，遇到各种新老问题。其中一个老问题是如何访问 MySQL 数据库。 使用 ORM (Object Relationship Mapping) 大致浏览了一些热门的实现，感觉不是"
+<span style="color:#75715e">// SubordinatesBySuperiorsResultSlice is slice of SubordinatesBySuperiorsResult.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">SubordinatesBySuperiorsResultSlice</span> []<span style="color:#f92672">*</span><span style="color:#a6e22e">SubordinatesBySuperiorsResult</span>
+
+<span style="color:#75715e">// ...
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">SubordinatesBySuperiors</span>(<span style="color:#a6e22e">ctx</span> <span style="color:#a6e22e">context</span>.<span style="color:#a6e22e">Context</span>, <span style="color:#a6e22e">q</span> <span style="color:#a6e22e">Queryer</span>, <span style="color:#a6e22e">id</span> <span style="color:#f92672">...</span><span style="color:#66d9ef">int</span>) (<span style="color:#a6e22e">SubordinatesBySuperiorsResultSlice</span>, <span style="color:#66d9ef">error</span>) {
+  <span style="color:#75715e">// ...
+</span><span style="color:#75715e"></span>}
+
+<span style="color:#75715e">// DistinctSuperior returns distinct (by primary value) Superior in the slice.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">slice</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">SubordinatesBySuperiorsResultSlice</span>) <span style="color:#a6e22e">DistinctSuperior</span>() []<span style="color:#f92672">*</span><span style="color:#a6e22e">Employee</span> {
+  <span style="color:#75715e">// ...
+</span><span style="color:#75715e"></span>}
+
+<span style="color:#75715e">// GroupBySuperior groups by Superior and returns distinct (by primary value) Superior with
+</span><span style="color:#75715e"></span><span style="color:#75715e">// their associated sub group of slices.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">slice</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">SubordinatesBySuperiorsResultSlice</span>) <span style="color:#a6e22e">GroupBySuperior</span>() ([]<span style="color:#f92672">*</span><span style="color:#a6e22e">Employee</span>, []<span style="color:#a6e22e">SubordinatesBySuperiorsResultSlice</span>) {
+  <span style="color:#75715e">// ...
+</span><span style="color:#75715e"></span>}
+
+<span style="color:#75715e">// DistinctSubordinate returns distinct (by primary value) Subordinate in the slice.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">slice</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">SubordinatesBySuperiorsResultSlice</span>) <span style="color:#a6e22e">DistinctSubordinate</span>() []<span style="color:#f92672">*</span><span style="color:#a6e22e">Employee</span> {
+  <span style="color:#75715e">// ...
+</span><span style="color:#75715e"></span>}
+
+<span style="color:#75715e">// GroupBySubordinate groups by Subordinate and returns distinct (by primary value) Subordinate with
+</span><span style="color:#75715e"></span><span style="color:#75715e">// their associated sub group of slices.
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">slice</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">SubordinatesBySuperiorsResultSlice</span>) <span style="color:#a6e22e">GroupBySubordinate</span>() ([]<span style="color:#f92672">*</span><span style="color:#a6e22e">Employee</span>, []<span style="color:#a6e22e">SubordinatesBySuperiorsResultSlice</span>) {
+  <span style="color:#75715e">// ...
+</span><span style="color:#75715e"></span>}
+
+</code></pre></div><p>可以看到，除了生成出基本的 wrapper function （<code>SubordinatesBySuperiors</code>）外，结果集也附带一些辅佐函数 <code>GroupByXXX/DistinctXXX</code> 以便操作，例如可以这样使用：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// 查询 id 为 1~7 号员工的下级
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">slice</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">models</span>.<span style="color:#a6e22e">SubordinatesBySuperiors</span>(<span style="color:#a6e22e">ctx</span>, <span style="color:#a6e22e">tx</span>, <span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">4</span>, <span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">6</span>, <span style="color:#ae81ff">7</span>)
+<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+  <span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Fatal</span>(<span style="color:#a6e22e">err</span>)
+}
+
+<span style="color:#75715e">// 结果集按 superior 分组，superiors[i] 对应 groups[i]
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">superiors</span>, <span style="color:#a6e22e">groups</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">slice</span>.<span style="color:#a6e22e">GroupBySuperior</span>()
+
+<span style="color:#75715e">// 迭代每一个上司
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">for</span> <span style="color:#a6e22e">i</span>, <span style="color:#a6e22e">superior</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">superiors</span> {
+  <span style="color:#75715e">// 获得与之对应的组别里全部下级
+</span><span style="color:#75715e"></span>  <span style="color:#a6e22e">subordinates</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">groups</span>[<span style="color:#a6e22e">i</span>].<span style="color:#a6e22e">DistinctSubordinate</span>()
+
+  <span style="color:#75715e">// 打印
+</span><span style="color:#75715e"></span>  <span style="color:#66d9ef">if</span> len(<span style="color:#a6e22e">subordinates</span>) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span> {
+    <span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;Employee %+q has no subordinate.\n&#34;</span>, <span style="color:#a6e22e">superior</span>.<span style="color:#a6e22e">EmployeeSn</span>)
+  } <span style="color:#66d9ef">else</span> {
+    <span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;Employee %+q has the following subordinates:\n&#34;</span>, <span style="color:#a6e22e">superior</span>.<span style="color:#a6e22e">EmployeeSn</span>)
+    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">subordinate</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">subordinates</span> {
+      <span style="color:#a6e22e">log</span>.<span style="color:#a6e22e">Printf</span>(<span style="color:#e6db74">&#34;\t%+q\n&#34;</span>, <span style="color:#a6e22e">subordinate</span>.<span style="color:#a6e22e">EmployeeSn</span>)
+    }
   }
-</script>
+}
+
+</code></pre></div><p>是不是也还挺方便的呢？</p>
+<p>注：关于 <code>&lt;wc&gt;</code> 指令如何确定 <code>Superior</code> / <code>Subordinate</code> 字段的正确位置<a href="https://github.com/huangjunwen/sqlw-mysql#how-wildcard-directive-works">文档</a>里有一些说明。</p>
+<p>总的而言个人觉得这些改进比较符合我的预期，不过这个方法也有一个比较大的缺点，<strong>那就是要起很多名字&hellip;</strong></p>
+
+</div>
 
 
-    <link href="https://huangjunwen.github.io/css/styles.css" rel="stylesheet">
-  </head>
+    </main>
 
-  <body>
-    
     
 <script type="application/javascript">
 var doNotTrack = false;
 if (!doNotTrack) {
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
 	ga('create', 'UA-89264111-1', 'auto');
 	
 	ga('send', 'pageview');
 }
 </script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
 
-    
-
-    <header class="l-header">
-      <nav class="navbar navbar-default">
-        <div class="container">
-          <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="https://huangjunwen.github.io/">Jayven@dev</a>
-          </div>
-
-          
-          <div id="navbar" class="collapse navbar-collapse">
-            
-            <ul class="nav navbar-nav navbar-right">
-              
-              
-              <li><a href="/post">Posts</a></li>
-              
-              
-              
-              <li><a href="/categories">Categories</a></li>
-              
-              
-              
-              <li><a href="/tags">Tags</a></li>
-              
-              
-            </ul>
-            
-          </div>
-          
-
-        </div>
-      </nav>
-    </header>
-
-    <main>
-      <div class="container">
-        
-<div class="row">
-  <div class="col-md-8">
-
-    <nav class="p-crumb">
-      <ol class="breadcrumb">
-        <li><a href="https://huangjunwen.github.io/"><i class="fa fa-home" aria-hidden="true"></i></a></li>
-        
-        <li itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb"><a href="https://huangjunwen.github.io/post/" itemprop="url"><span itemprop="title">post</span></a></li>
-        
-        <li class="active">写了一个 MySQL 数据表和查询的 go 代码生成器</li>
-      </ol>
-    </nav>
-
-    <article class="single">
-  <header>
-    <ul class="p-facts">
-      <li><i class="fa fa-calendar" aria-hidden="true"></i><time datetime="2018-09-10T20:51:26JST">Sep 10, 2018</time></li>
-      <li><i class="fa fa-bookmark" aria-hidden="true"></i><a href="https://huangjunwen.github.io/post/">post</a></li>
-      
-    </ul>
-
-    <h1 class="title">写了一个 MySQL 数据表和查询的 go 代码生成器</h1>
-  </header>
-
-  
-
-  <div class="article-body">
-
-<p><em>项目地址 <a href="https://github.com/huangjunwen/sqlw-mysql">https://github.com/huangjunwen/sqlw-mysql</a></em></p>
-
-<h2 id="动机">动机</h2>
-
-<p>最近这段时间开始用 go 写网站，遇到各种新老问题。其中一个老问题是如何访问 MySQL 数据库。</p>
-
-<h3 id="使用-orm-object-relationship-mapping">使用 ORM (Object Relationship Mapping)</h3>
-
-<p>大致浏览了一些热门的实现，感觉不是很合眼缘，跟动态语言的实现（例如 <a href="htps://www.sqlalchemy.org"><em>SQLAlchemy</em></a> ）差不少。</p>
-
-<p>ORM 的特点在于使用程序员熟悉的对象概念抽象数据库关系，使之成为可编程的对象，提供使用上的便利：</p>
-
-<ul>
-<li>构造查询的便利，用户一般只需要指定需要查询的对象（一般对应数据库表），或者关系（一般对应 <code>JOIN</code>），还可以按需要增添查询条件，ORM 即可推导出需要执行的语句：</li>
-</ul>
-
-<pre><code class="language-python">sess.query(User)                        # SELECT user.id, ... FROM user
-sess.query(Employee.User)               # SELECT employee.id, ... FROM employee JOIN user ON ...
-sess.query(User).filter(User.name==xxx) # SELECT user.id, ... FROM user WHERE name=xxx
-sess.query(User).options(joinedload(Employee)).order_by(...) # ...
-</code></pre>
-
-<ul>
-<li>查询后的便利，结果集会被重新组装成对象，后续仍只需继续在这些对象上操作即可。</li>
-</ul>
-
-<p>这样理想状态下涉及数据库的操作就被完全封装到一个闭环里头。然而数据库关系其实并不简单，建立一个表达力十足的映射模型即是使用 python 这种表达力很强的动态语言都很复杂（看看这个<a href="http://docs.sqlalchemy.org/en/latest/orm/relationship_api.html#sqlalchemy.orm.relationship">函数</a>），何况 go 这种既缺乏元编程能力也缺乏语法糖的语言呢。</p>
-
-<p>因此我所见的实现往往只能退而求其次，只实现一些基本常用的功能。</p>
-
-<h3 id="直接使用-sql">直接使用 SQL</h3>
-
-<p>除了使用 ORM 另外一种方法是直接面对关系数据库/SQL 本身，例如有很多人（声称）直接使用 <a href="https://github.com/jmoiron/sqlx"><em>sqlx</em></a>，但我感觉全部手写会不会也挺麻烦重复的呢？</p>
-
-<p>所以有一些工具能帮忙生成代码，例如 <a href="https://github.com/xo/xo"><em>xo</em></a>，连接上数据库直接导出 schema 就能生成基本的 CRUD 访问代码，同时也可以根据它的 SQL DSL 生成 SQL 的 wrapper code。整个过程一目了然，没有层层封装的不透明感，生成代码的效率也高，虽然需要手写 SQL，但代码生成过程是经过实际数据库验证的，这就相当可靠了。</p>
-
-<p>因此我认为这种方法在 go 中是最合适的，不过实际使用了一下这个工具后，还是有一些不满意的地方，主要集中在 SQL wrapper code 生成这一部分：</p>
-
-<ul>
-<li><p>有些 SQL 语句需要改写才行，这主要是因为它的实现基于 <code>CREATE VIEW ...</code> ，但不是所有合法的 <code>SELECT</code> 语句都可以用来创建 view。例如假设有两个表 <code>user</code> 和 <code>employee</code> 都有 <code>id</code> 字段（这很常见），则
-<code>SELECT user.*, employee.* FROM user JOIN employee ...</code>
-虽然是合法语句，却因为字段重名而不能用来创建 view；而要添加 alias 改写成
-<code>SELECT user.id AS user_id, ...., employee.id AS employee_id, ...</code>
-这样才行。</p></li>
-
-<li><p>一些 MySQL 相关的问题，例如：<a href="https://github.com/xo/xo/issues/123">#123</a></p></li>
-
-<li><p>生成的代码虽然省去了手动拼接手动 scan 的麻烦，但仍然不如 ORM 中操作对象那么方便，例如上边的例子生成的代码大致长这样：</p></li>
-</ul>
-
-<pre><code class="language-go">type JoinResult struct {
-  UserID int32
-  // ...
-  EmployeeID int32
-  // ...
-}
-</code></pre>
-
-<p>只是将结果平铺在一个 struct 中，而不是（我）理想中的：</p>
-
-<pre><code class="language-go">type JoinResult struct {
-  User *User
-  Employee *Employee
-}
-</code></pre>
-
-<p>这样后续我如果需要继续在结果集的 <code>User</code> 上继续操作的话，我需要重新手动装配一次。</p>
-
-<h2 id="改良">改良</h2>
-
-<p>因为上述原因，所以决定基于 xo 的方法重新造一个轮子看看能不能改善一点。</p>
-
-<p>首先，直接以 <a href="https://golang.org/pkg/database/sql/#ColumnType">sql.ColumnType</a>（<a href="https://golang.org/doc/go1.8#database_sql">go1.8</a> 添加）而不是从 <code>information_schema</code> 里提取 schema 和 query 的元数据，这样所有合法的查询都能支持。不过这种方法有个缺点，能获得多少元信息取决于这个 RDBMS 的协议返回什么样的信息，例如，postgres 似乎是<a href="https://github.com/lib/pq/pull/647">无法获得</a> <code>Nullable</code> 信息的；而 MySQL 的协议返回的信息相对比较完整，这也是为什么只支持 MySQL 的缘故啦 :-)</p>
-
-<p>另一方面是增强 SQL DSL，在 sqlw-mysql 中我选择使用 XML 来描述一个查询，例如（quick start 的例子之一）:</p>
-
-<pre><code class="language-xml">&lt;stmt name=&quot;SubordinatesBySuperiors&quot;&gt;
-  &lt;a name=&quot;id&quot; type=&quot;...int&quot; /&gt;
-  &lt;v in_query=&quot;1&quot; /&gt;
-  SELECT
-    &lt;wc table=&quot;employee&quot; as=&quot;superior&quot; /&gt;,     &lt;!-- 上司 --&gt;
-    &lt;wc table=&quot;employee&quot; as=&quot;subordinate&quot; /&gt;   &lt;!-- 下级 --&gt;
-  FROM
-    employee AS superior LEFT JOIN employee AS subordinate 
-    ON subordinate.superior_id=superior.id
-  WHERE
-    superior.id IN (&lt;r by=&quot;:id&quot;&gt;1&lt;/r&gt;)
-&lt;/stmt&gt;
-</code></pre>
-
-<p>之所以使用 XML 是因为需要在 SQL 语句片段中间插入一些特殊的指令（元素），这些指令有些有特殊的标记作用；有些则会展开成 SQL 片段来减少一些重复劳动，例子里的 <code>&lt;wc table=&quot;employee&quot; as=&quot;superior&quot;&gt;</code> （wildcard）指令实际上是会展开成字段列表如</p>
-
-<pre><code class="language-sql">superior.id, superior.employee_sn, superior.user_id, superior.superior_id
-</code></pre>
-
-<p>上述例子演示的是 <code>one2many</code> 的关系（一个上司对应 0+ 个下级），最终生成的代码节选如下：</p>
-
-<pre><code class="language-go">// SubordinatesBySuperiorsResult is the result of `SubordinatesBySuperiors`.
-type SubordinatesBySuperiorsResult struct {
-  Superior          *Employee
-  Subordinate       *Employee
-  // ...
-}
-
-// SubordinatesBySuperiorsResultSlice is slice of SubordinatesBySuperiorsResult.
-type SubordinatesBySuperiorsResultSlice []*SubordinatesBySuperiorsResult
-
-// ...
-func SubordinatesBySuperiors(ctx context.Context, q Queryer, id ...int) (SubordinatesBySuperiorsResultSlice, error) {
-  // ...
-}
-
-// DistinctSuperior returns distinct (by primary value) Superior in the slice.
-func (slice *SubordinatesBySuperiorsResultSlice) DistinctSuperior() []*Employee {
-  // ...
-}
-
-// GroupBySuperior groups by Superior and returns distinct (by primary value) Superior with
-// their associated sub group of slices.
-func (slice *SubordinatesBySuperiorsResultSlice) GroupBySuperior() ([]*Employee, []SubordinatesBySuperiorsResultSlice) {
-  // ...
-}
-
-// DistinctSubordinate returns distinct (by primary value) Subordinate in the slice.
-func (slice *SubordinatesBySuperiorsResultSlice) DistinctSubordinate() []*Employee {
-  // ...
-}
-
-// GroupBySubordinate groups by Subordinate and returns distinct (by primary value) Subordinate with
-// their associated sub group of slices.
-func (slice *SubordinatesBySuperiorsResultSlice) GroupBySubordinate() ([]*Employee, []SubordinatesBySuperiorsResultSlice) {
-  // ...
-}
-
-</code></pre>
-
-<p>可以看到，除了生成出基本的 wrapper function （<code>SubordinatesBySuperiors</code>）外，结果集也附带一些辅佐函数 <code>GroupByXXX/DistinctXXX</code> 以便操作，例如可以这样使用：</p>
-
-<pre><code class="language-go">// 查询 id 为 1~7 号员工的下级
-slice, err := models.SubordinatesBySuperiors(ctx, tx, 1, 2, 3, 4, 5, 6, 7)
-if err != nil {
-  log.Fatal(err)
-}
-
-// 结果集按 superior 分组，superiors[i] 对应 groups[i]
-superiors, groups := slice.GroupBySuperior()
-
-// 迭代每一个上司
-for i, superior := range superiors {
-  // 获得与之对应的组别里全部下级
-  subordinates := groups[i].DistinctSubordinate()
-
-  // 打印
-  if len(subordinates) == 0 {
-    log.Printf(&quot;Employee %+q has no subordinate.\n&quot;, superior.EmployeeSn)
-  } else {
-    log.Printf(&quot;Employee %+q has the following subordinates:\n&quot;, superior.EmployeeSn)
-    for _, subordinate := range subordinates {
-      log.Printf(&quot;\t%+q\n&quot;, subordinate.EmployeeSn)
-    }
-  }
-}
-
-</code></pre>
-
-<p>是不是也还挺方便的呢？</p>
-
-<p>注：关于 <code>&lt;wc&gt;</code> 指令如何确定 <code>Superior</code>/<code>Subordinate</code> 字段的正确位置<a href="https://github.com/huangjunwen/sqlw-mysql#how-wildcard-directive-works">文档</a>里有一些说明。</p>
-
-<p>总的而言个人觉得这些改进比较符合我的预期，不过这个方法也有一个比较大的缺点，<strong>那就是要起很多名字&hellip;</strong></p>
-</div>
-
-  <footer class="article-footer">
-    
-    
-    
-    <section class="bordered">
-      <header>
-        <div class="panel-title">CATEGORIES</div>
-      </header>
-      <div>
-        <ul class="p-terms">
-          
-          <li><a href="https://huangjunwen.github.io/categories/%E9%80%A0%E8%BD%AE%E5%AD%90/">造轮子</a></li>
-          
-        </ul>
-      </div>
-    </section>
-    
-    
-    
-    <section class="bordered">
-      <header>
-        <div class="panel-title">TAGS</div>
-      </header>
-      <div>
-        <ul class="p-terms">
-          
-          <li><a href="https://huangjunwen.github.io/tags/golang/">golang</a></li>
-          
-          <li><a href="https://huangjunwen.github.io/tags/mysql/">mysql</a></li>
-          
-          <li><a href="https://huangjunwen.github.io/tags/code-generator/">code-generator</a></li>
-          
-          <li><a href="https://huangjunwen.github.io/tags/orm/">orm</a></li>
-          
-        </ul>
-      </div>
-    </section>
-    
-    
-  </footer>
-
-</article>
-
-
-    
-	<div id="fb-root"></div>
-	<script>(function(d, s, id) {
-	  var js, fjs = d.getElementsByTagName(s)[0];
-	  if (d.getElementById(id)) return;
-	  js = d.createElement(s); js.id = id;
-	  js.src = "//connect.facebook.net/zh_CN/sdk.js#xfbml=1&version=v2.9";
-	  fjs.parentNode.insertBefore(js, fjs);
-	}(document, 'script', 'facebook-jssdk'));</script>
-
-	<div class="fb-comments"></div>
-    
-
-  </div>
-
-  <div class="col-md-4">
-    
-<aside class="l-sidebar">
-
-  <section class="panel panel-default">
-    <div class="panel-heading">
-      <div class="panel-title">LATESTS</div>
-    </div>
-    <div class="list-group">
-      
-      <a href="https://huangjunwen.github.io/post/2018/sqlw-mysql/" class="list-group-item">写了一个 MySQL 数据表和查询的 go 代码生成器</a>
-      
-      <a href="https://huangjunwen.github.io/post/2018/greenlet/" class="list-group-item">Greenlet 笔记</a>
-      
-      <a href="https://huangjunwen.github.io/post/2017/vault-database-secret-backend/" class="list-group-item">Vault Database Secret Backend 笔记</a>
-      
-      <a href="https://huangjunwen.github.io/post/2017/vault/" class="list-group-item">Vault 笔记</a>
-      
-      <a href="https://huangjunwen.github.io/post/2017/authentication_in_microservice/" class="list-group-item">微服务中的认证 (authentication) 问题</a>
-      
-      <a href="https://huangjunwen.github.io/post/2017/shamir-secret-sharding/" class="list-group-item">Shamir&#39;s Secret Sharding</a>
-      
-      <a href="https://huangjunwen.github.io/post/2017/public-key-cryptography-notes-2-1-asn1/" class="list-group-item">Public Key Cryptography 笔记（2.1）-- ASN.1</a>
-      
-      <a href="https://huangjunwen.github.io/post/2017/public-key-cryptography-notes-2-format-and-standard/" class="list-group-item">Public Key Cryptography 笔记（2）-- 存储格式和标准</a>
-      
-      <a href="https://huangjunwen.github.io/post/2017/public-key-cryptography-notes-1-rsa/" class="list-group-item">Public Key Cryptography 笔记（1）-- RSA</a>
-      
-      <a href="https://huangjunwen.github.io/post/2016/port-knocking-using-iptables/" class="list-group-item">用 iptables 来配置 port knocking</a>
-      
-    </div>
-  </section>
-
-  
-  <section class="panel panel-default">
-    <div class="panel-heading">
-      <div class="panel-title">CATEGORY</div>
-    </div>
-    <div class="list-group">
-      
-      <a href="https://huangjunwen.github.io/categories/public-key-cryptography-%E7%AC%94%E8%AE%B0" class="list-group-item">public-key-cryptography-笔记</a>
-      
-      <a href="https://huangjunwen.github.io/categories/sa" class="list-group-item">sa</a>
-      
-      <a href="https://huangjunwen.github.io/categories/%E9%80%A0%E8%BD%AE%E5%AD%90" class="list-group-item">造轮子</a>
-      
-    </div>
-  </section>
-  
-  <section class="panel panel-default">
-    <div class="panel-heading">
-      <div class="panel-title">TAG</div>
-    </div>
-    <div class="list-group">
-      
-      <a href="https://huangjunwen.github.io/tags/hashicorp-vault" class="list-group-item">hashicorp-vault</a>
-      
-      <a href="https://huangjunwen.github.io/tags/mysql" class="list-group-item">mysql</a>
-      
-      <a href="https://huangjunwen.github.io/tags/rsa" class="list-group-item">rsa</a>
-      
-      <a href="https://huangjunwen.github.io/tags/asn.1" class="list-group-item">asn.1</a>
-      
-      <a href="https://huangjunwen.github.io/tags/code-generator" class="list-group-item">code-generator</a>
-      
-      <a href="https://huangjunwen.github.io/tags/coroutine" class="list-group-item">coroutine</a>
-      
-      <a href="https://huangjunwen.github.io/tags/gnu-pg" class="list-group-item">gnu-pg</a>
-      
-      <a href="https://huangjunwen.github.io/tags/golang" class="list-group-item">golang</a>
-      
-      <a href="https://huangjunwen.github.io/tags/greenlet" class="list-group-item">greenlet</a>
-      
-      <a href="https://huangjunwen.github.io/tags/iptables" class="list-group-item">iptables</a>
-      
-    </div>
-  </section>
-  
-
-</aside>
-
-
-  </div>
-</div>
-
-      </div>
-    </main>
-
-    <footer class="l-footer">
-      <div class="container">
-        <p>&copy; 2016~2018 <a href="mailto:kassarar@gmail.com">Huang JunWen</a>; All rights reserved.</p>
-        <aside>
-          <p>Powered by <a href="https://gohugo.io/">Hugo</a>.</p>
-          <p><a href="https://github.com/dim0627/hugo_theme_beg">Beg</a> designed by <a href="http://yet.unresolved.xyz/">Daisuke Tsuji</a>.</p>
-        </aside>
-      </div>
-    </footer>
-
-    <script src="//code.jquery.com/jquery-3.1.1.min.js"></script>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js" integrity="sha256-LVuWfOU0rWFMCJNl1xb3K2HSWfxtK4IPbqEerP1P83M=" crossorigin="anonymous"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
   </body>
 </html>
-

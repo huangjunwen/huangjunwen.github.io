@@ -1,452 +1,175 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-<meta name="pinterest" content="nopin">
-<meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
-<meta name="generator" content="Hugo 0.48" />
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-CN" lang="zh-CN">
+<head>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.60.1" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Greenlet 笔记 &middot; Coder Papa</title>
+  <meta name="description" content="" />
+
+  
+  <link type="text/css" rel="stylesheet" href="https://huangjunwen.github.io/css/print.css" media="print">
+  <link type="text/css" rel="stylesheet" href="https://huangjunwen.github.io/css/poole.css">
+  <link type="text/css" rel="stylesheet" href="https://huangjunwen.github.io/css/syntax.css">
+  <link type="text/css" rel="stylesheet" href="https://huangjunwen.github.io/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700">
 
 
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
 
-<link rel="canonical" href="https://huangjunwen.github.io/post/2018/greenlet/">
+  
+  
+</head>
+
+  <body class="theme-base-0d layout-reverse">
+  <aside class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="https://huangjunwen.github.io/"><h1>Coder Papa</h1></a>
+      <p class="lead">
+       一个普通程序员老爸的笔记 
+      </p>
+    </div>
+
+    <nav>
+      <ul class="sidebar-nav">
+        <li><a href="https://huangjunwen.github.io/">Home</a> </li>
+        <li><a href="/post"> Posts </a></li><li><a href="/categories"> Categories </a></li><li><a href="/tags"> Tags </a></li><li><a href="https://github.com/huangjunwen"> Github.com </a></li>
+      </ul>
+    </nav>
+
+    <p>&copy; 2019. All rights reserved. </p>
+  </div>
+</aside>
+
+    <main class="content container">
+    <div class="post">
+  <h1>Greenlet 笔记</h1>
+  <time datetime=2018-03-15T09:05:51&#43;0800 class="post-date">Thu, Mar 15, 2018</time>
+  <h4 id="heading">原理</h4>
+<p>我们知道，操作系统会给每一个线程分配一个独立的堆栈，它们各自独立运作，记录着该线程的各类运行状态：如函数本地变量，函数返回地址，寄存器状态等等各种上下文；从这个角度看，堆栈几乎就等价于线程</p>
+<p>那么假如想要在用户态实现轻量级的类线程，就同样需要给它们分配独立堆栈，并提供方法在它们之间切换</p>
+<p>Greenlet 就是 cpython 上的一种轻量级线程（协程）的实现，因为 cpython 是用 c 实现的，所以这就要求 Greenlet 的实现要跟 c 那一套保持一致，要让协程里运行的代码感觉自己跑在一个真正的 c 堆栈上</p>
+<p>Greenlet 的做法是这样的：当一个 greenlet 运行时，它的堆栈区间数据将会完整地恢复放在 c 堆栈上，让它“原生态”地执行；若它被挂起，则有可能其部分或全部堆栈区间的数据会被拷贝到堆上保存；<strong>这是因为所有同一个线程的 greenlets 共享同一个 c 堆栈的地址空间，它们的堆栈区间会有可能有交集重叠</strong></p>
+<p>我们主要关注 <code>PyGreenlet</code> 的这几个字段来讨论实现原理：</p>
+<ul>
+<li><code>stack_stop</code>: 该 greenlet 堆栈区间 <strong>底</strong> 部地址（旧数据方向）</li>
+<li><code>stack_start</code>: 该 greenlet 堆栈区间 <strong>顶</strong> 部地址（新数据方向）</li>
+<li><code>stack_prev</code>: <strong>greenlet 链表</strong> 指针，见下节说明</li>
+<li><code>stack_copy</code>: 该 greenlet 堆栈区间在堆上的拷贝</li>
+<li><code>stack_saved</code>: 该 greenlet 堆栈区间在堆上的拷贝的长度</li>
+</ul>
+<h4 id="greenlet-">greenlet 链表</h4>
+<p>如前所叙述，只有当前运行的 greenlet 是保证其堆栈区间完整地置于 c 堆栈上，其它挂起的 greenlets 的堆栈区间数据则是有可能部分或全部地拷贝到了堆上保存；</p>
+<p>那么任意时刻，c 堆栈就会由多个 greenlets 的部分或全部堆栈区间组成（这些区间有可能是紧贴着的，也可能中间有空隙，但必定不能重叠），Greenlet 库维护一个 greenlet 链表来表达 c 堆栈上这些区间的前后关系，该链表就是由 <code>stack_prev</code> 串联而成的，例如</p>
+<pre><code>current.stack_prev -&gt; intermediate.stack_prev -&gt; ... -&gt; main.stack_prev -&gt; null
+</code></pre><p>链表头一定是当前运行的 greenlet，链表尾一定是 main/initial greenlet；这个链表只包含那些在 c 堆栈上有部分/全部堆栈区间的 greenlets，已经完全拷贝到堆上的那些 greenlets 不包含在这个链表中</p>
+<h4 id="greenlet-1">greenlet 堆栈区间</h4>
+<p>说了那么久堆栈区间，一个 greenlet 是如何确定它的堆栈区间<code>[stack_stop, stack_start]</code>的呢？</p>
+<ul>
+<li>
+<p><code>stack_stop</code> 是在一个 greenlet 首次开始执行时确定的（main greenlet 除外）：它取一个外层函数的本地变量地址，为什么可以这样呢？因为外层函数的本地变量处于 c 堆栈上且一定比内层函数（该 greenlet 的入口函数）更靠近 c 堆栈底部，由它作为 <code>stack_stop</code> 肯定能包含该 greenlet 整个有效的堆栈地址区间；<strong>这个地址在该 greenlet 的整个生命周期都不会改变</strong></p>
+</li>
+<li>
+<p><code>stack_start</code> 是在一个 greenlet <strong>每次</strong> 将要交出控制权的时候确定的，因为该 greenlet 正在运行，所以 <code>stack_start</code> 就是当前 c 堆栈顶地址</p>
+</li>
+</ul>
+<h4 id="heading1">大致切换过程</h4>
+<p>假设当前运行 greenlet 为 <code>current</code> , 准备切换到 <code>target</code> ，那么切换过程包括保存 greenlet 链表上各元素的堆栈区间以及恢复 <code>target</code> 堆栈区间</p>
+<ul>
+<li>
+<p>保存：无论 <code>target</code> 是第一次执行还是恢复执行，都是可以知道 <code>target.stack_stop</code> 的（如前所叙述），也就知道 c 堆栈需要空出位置到哪里给它恢复了：遍历 greenlet 链表，将 <code>target.stack_stop</code> 将要覆盖到的 greenlets 的堆栈区间分别保存到各自 greenlet 的 <code>stack_copy/stack_saved</code> 中去</p>
+</li>
+<li>
+<p>恢复：第一次执行不需要恢复，直接执行即可；恢复执行的话，则把拷贝到堆上的数据恢复到 c 堆栈上，然后把 <code>target</code> 放入 greenlet 链表表头，设置 <code>target.stack_prev</code> 维护 greenlet 链表</p>
+</li>
+</ul>
+<h5 id="heading2">例子</h5>
+<p>来两张图例 （用 <a href="https://www.lucidchart.com">Lucidchart</a> 画的）</p>
+<p>切换前：</p>
+<a href="./greenlet_before_switch.png"><img style="max-width: 100%; height: auto;" src="./greenlet_before_switch.png" alt="Greenlet 笔记 ./greenlet_before_switch.png"></a>
+
+<p>切换后：</p>
+<a href="./greenlet_after_switch.png"><img style="max-width: 100%; height: auto;" src="./greenlet_after_switch.png" alt="Greenlet 笔记 ./greenlet_after_switch.png"></a>
+
+<h4 id="heading3">注释</h4>
+<p>最后还是贴一下代码里的注释，这个是最权威的说明了</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">/*
+</span><span style="color:#75715e">A PyGreenlet is a range of C stack addresses that must be
+</span><span style="color:#75715e">saved and restored in such a way that the full range of the
+</span><span style="color:#75715e">stack contains valid data when we switch to it.
+</span><span style="color:#75715e">
+</span><span style="color:#75715e">Stack layout for a greenlet:
+</span><span style="color:#75715e">
+</span><span style="color:#75715e">               |     ^^^       |
+</span><span style="color:#75715e">               |  older data   |
+</span><span style="color:#75715e">               |               |
+</span><span style="color:#75715e">  stack_stop . |_______________|
+</span><span style="color:#75715e">        .      |               |
+</span><span style="color:#75715e">        .      | greenlet data |
+</span><span style="color:#75715e">        .      |   in stack    |
+</span><span style="color:#75715e">        .    * |_______________| . .  _____________  stack_copy + stack_saved
+</span><span style="color:#75715e">        .      |               |     |             |
+</span><span style="color:#75715e">        .      |     data      |     |greenlet data|
+</span><span style="color:#75715e">        .      |   unrelated   |     |    saved    |
+</span><span style="color:#75715e">        .      |      to       |     |   in heap   |
+</span><span style="color:#75715e"> stack_start . |     this      | . . |_____________| stack_copy
+</span><span style="color:#75715e">               |   greenlet    |
+</span><span style="color:#75715e">               |               |
+</span><span style="color:#75715e">               |  newer data   |
+</span><span style="color:#75715e">               |     vvv       |
+</span><span style="color:#75715e">
+</span><span style="color:#75715e">
+</span><span style="color:#75715e">Note that a greenlet&#39;s stack data is typically partly at its correct
+</span><span style="color:#75715e">place in the stack, and partly saved away in the heap, but always in
+</span><span style="color:#75715e">the above configuration: two blocks, the more recent one in the heap
+</span><span style="color:#75715e">and the older one still in the stack (either block may be empty).
+</span><span style="color:#75715e">
+</span><span style="color:#75715e">Greenlets are chained: each points to the previous greenlet, which is
+</span><span style="color:#75715e">the one that owns the data currently in the C stack above my
+</span><span style="color:#75715e">stack_stop.  The currently running greenlet is the first element of
+</span><span style="color:#75715e">this chain.  The main (initial) greenlet is the last one.  Greenlets
+</span><span style="color:#75715e">whose stack is entirely in the heap can be skipped from the chain.
+</span><span style="color:#75715e">
+</span><span style="color:#75715e">The chain is not related to execution order, but only to the order
+</span><span style="color:#75715e">in which bits of C stack happen to belong to greenlets at a particular
+</span><span style="color:#75715e">point in time.
+</span><span style="color:#75715e">
+</span><span style="color:#75715e">The main greenlet doesn&#39;t have a stack_stop: it is responsible for the
+</span><span style="color:#75715e">complete rest of the C stack, and we don&#39;t know where it begins.  We
+</span><span style="color:#75715e">use (char*) -1, the largest possible address.
+</span><span style="color:#75715e">
+</span><span style="color:#75715e">States:
+</span><span style="color:#75715e">  stack_stop == NULL &amp;&amp; stack_start == NULL:  did not start yet
+</span><span style="color:#75715e">  stack_stop != NULL &amp;&amp; stack_start == NULL:  already finished
+</span><span style="color:#75715e">  stack_stop != NULL &amp;&amp; stack_start != NULL:  active
+</span><span style="color:#75715e">
+</span><span style="color:#75715e">The running greenlet&#39;s stack_start is undefined but not NULL.
+</span><span style="color:#75715e">
+</span><span style="color:#75715e">*/</span>
+</code></pre></div>
+</div>
 
 
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/gruvbox-dark.min.css" integrity="sha256-LUdcdwBjq26ZxccbnPrUQyBoghJjHRR5ujhPVCC4Hb0=" crossorigin="anonymous" />
-    <title>Greenlet 笔记 - Jayven@dev</title>
-    
-<meta name="description" content="很多年前有一段时间对协程很感兴趣，于是去研究 Greenlet 的实现原理，记录在 google code 上（google code 关停后导出到 Github 上了），这两天跟某人介绍这个东西的时候翻">
+    </main>
 
-<meta property="og:title" content="Greenlet 笔记 - Jayven@dev">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://huangjunwen.github.io/post/2018/greenlet/">
-<meta property="og:image" content="https://huangjunwen.github.io/images/default.png">
-<meta property="og:site_name" content="Jayven@dev">
-<meta property="og:description" content="很多年前有一段时间对协程很感兴趣，于是去研究 Greenlet 的实现原理，记录在 google code 上（google code 关停后导出到 Github 上了），这两天跟某人介绍这个东西的时候翻">
-<meta property="og:locale" content="ja_JP">
-
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:site" content="Jayven@dev">
-<meta name="twitter:url" content="https://huangjunwen.github.io/post/2018/greenlet/">
-<meta name="twitter:title" content="Greenlet 笔记 - Jayven@dev">
-<meta name="twitter:description" content="很多年前有一段时间对协程很感兴趣，于是去研究 Greenlet 的实现原理，记录在 google code 上（google code 关停后导出到 Github 上了），这两天跟某人介绍这个东西的时候翻">
-<meta name="twitter:image" content="https://huangjunwen.github.io/images/default.png">
-<meta property="fb:app_id" content="111286092806941">
-
-<script type="application/ld+json">
-  {
-    "@context": "http://schema.org",
-    "@type": "NewsArticle",
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id":"https://huangjunwen.github.io/"
-    },
-    "headline": "Greenlet 笔记 - Jayven@dev",
-    "image": {
-      "@type": "ImageObject",
-      "url": "https://huangjunwen.github.io/images/default.png",
-      "height": 800,
-      "width": 800
-    },
-    "datePublished": "2018-03-15T09:05:51JST",
-    "dateModified": "2018-03-15T09:05:51JST",
-    "author": {
-      "@type": "Person",
-      "name": "Jayven@dev"
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": "Jayven@dev",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://huangjunwen.github.io/images/logo.png",
-        "width": 600,
-        "height": 60
-      }
-    },
-    "description": "很多年前有一段时间对协程很感兴趣，于是去研究 Greenlet 的实现原理，记录在 google code 上（google code 关停后导出到 Github 上了），这两天跟某人介绍这个东西的时候翻"
-  }
-</script>
-
-
-    <link href="https://huangjunwen.github.io/css/styles.css" rel="stylesheet">
-  </head>
-
-  <body>
-    
     
 <script type="application/javascript">
 var doNotTrack = false;
 if (!doNotTrack) {
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
 	ga('create', 'UA-89264111-1', 'auto');
 	
 	ga('send', 'pageview');
 }
 </script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
 
-    
-
-    <header class="l-header">
-      <nav class="navbar navbar-default">
-        <div class="container">
-          <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="https://huangjunwen.github.io/">Jayven@dev</a>
-          </div>
-
-          
-          <div id="navbar" class="collapse navbar-collapse">
-            
-            <ul class="nav navbar-nav navbar-right">
-              
-              
-              <li><a href="/post">Posts</a></li>
-              
-              
-              
-              <li><a href="/categories">Categories</a></li>
-              
-              
-              
-              <li><a href="/tags">Tags</a></li>
-              
-              
-            </ul>
-            
-          </div>
-          
-
-        </div>
-      </nav>
-    </header>
-
-    <main>
-      <div class="container">
-        
-<div class="row">
-  <div class="col-md-8">
-
-    <nav class="p-crumb">
-      <ol class="breadcrumb">
-        <li><a href="https://huangjunwen.github.io/"><i class="fa fa-home" aria-hidden="true"></i></a></li>
-        
-        <li itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb"><a href="https://huangjunwen.github.io/post/" itemprop="url"><span itemprop="title">post</span></a></li>
-        
-        <li class="active">Greenlet 笔记</li>
-      </ol>
-    </nav>
-
-    <article class="single">
-  <header>
-    <ul class="p-facts">
-      <li><i class="fa fa-calendar" aria-hidden="true"></i><time datetime="2018-03-15T09:05:51JST">Mar 15, 2018</time></li>
-      <li><i class="fa fa-bookmark" aria-hidden="true"></i><a href="https://huangjunwen.github.io/post/">post</a></li>
-      
-    </ul>
-
-    <h1 class="title">Greenlet 笔记</h1>
-  </header>
-
-  
-
-  <div class="article-body">
-
-<p>很多年前有一段时间对协程很感兴趣，于是去研究 <a href="https://github.com/python-greenlet/greenlet">Greenlet</a> 的实现原理，记录在 google code 上（google code 关停后导出到 <a href="https://github.com/huangjunwen/libhjw/blob/wiki/notes_on_greenlet.md">Github</a> 上了），这两天跟某人介绍这个东西的时候翻出来，自己都不是很明白了，果然贴代码的笔记不是好笔记&hellip; 决定再写一篇更偏向原理的</p>
-
-<h4 id="原理">原理</h4>
-
-<p>我们知道，操作系统会给每一个线程分配一个独立的堆栈，它们各自独立运作，记录着该线程的各类运行状态：如函数本地变量，函数返回地址，寄存器状态等等各种上下文；从这个角度看，堆栈几乎就等价于线程</p>
-
-<p>那么假如想要在用户态实现轻量级的类线程，就同样需要给它们分配独立堆栈，并提供方法在它们之间切换</p>
-
-<p>Greenlet 就是 cpython 上的一种轻量级线程（协程）的实现，因为 cpython 是用 c 实现的，所以这就要求 Greenlet 的实现要跟 c 那一套保持一致，要让协程里运行的代码感觉自己跑在一个真正的 c 堆栈上</p>
-
-<p>Greenlet 的做法是这样的：当一个 greenlet 运行时，它的堆栈区间数据将会完整地恢复放在 c 堆栈上，让它“原生态”地执行；若它被挂起，则有可能其部分或全部堆栈区间的数据会被拷贝到堆上保存；<em>这是因为所有同一个线程的 greenlets 共享同一个 c 堆栈的地址空间，它们的堆栈区间会有可能有交集重叠</em></p>
-
-<p>我们主要关注 <code>PyGreenlet</code> 的这几个字段来讨论实现原理：</p>
-
-<ul>
-<li><code>stack_stop</code>: 该 greenlet 堆栈区间 <em>底</em> 部地址（旧数据方向）</li>
-<li><code>stack_start</code>: 该 greenlet 堆栈区间 <em>顶</em> 部地址（新数据方向）</li>
-<li><code>stack_prev</code>: <em>greenlet 链表</em> 指针，见下节说明</li>
-<li><code>stack_copy</code>: 该 greenlet 堆栈区间在堆上的拷贝</li>
-<li><code>stack_saved</code>: 该 greenlet 堆栈区间在堆上的拷贝的长度</li>
-</ul>
-
-<h4 id="greenlet-链表">greenlet 链表</h4>
-
-<p>如前所叙述，只有当前运行的 greenlet 是保证其堆栈区间完整地置于 c 堆栈上，其它挂起的 greenlets 的堆栈区间数据则是有可能部分或全部地拷贝到了堆上保存；</p>
-
-<p>那么任意时刻，c 堆栈就会由多个 greenlets 的部分或全部堆栈区间组成（这些区间有可能是紧贴着的，也可能中间有空隙，但必定不能重叠），Greenlet 库维护一个 greenlet 链表来表达 c 堆栈上这些区间的前后关系，该链表就是由 <code>stack_prev</code> 串联而成的，例如</p>
-
-<pre><code>current.stack_prev -&gt; intermediate.stack_prev -&gt; ... -&gt; main.stack_prev -&gt; null
-</code></pre>
-
-<p>链表头一定是当前运行的 greenlet，链表尾一定是 main/initial greenlet；这个链表只包含那些在 c 堆栈上有部分/全部堆栈区间的 greenlets，已经完全拷贝到堆上的那些 greenlets 不包含在这个链表中</p>
-
-<h4 id="greenlet-堆栈区间">greenlet 堆栈区间</h4>
-
-<p>说了那么久堆栈区间，一个 greenlet 是如何确定它的堆栈区间<code>[stack_stop, stack_start]</code>的呢？</p>
-
-<ul>
-<li><p><code>stack_stop</code> 是在一个 greenlet 首次开始执行时确定的（main greenlet 除外）：它取一个外层函数的本地变量地址，为什么可以这样呢？因为外层函数的本地变量处于 c 堆栈上且一定比内层函数（该 greenlet 的入口函数）更靠近 c 堆栈底部，由它作为 <code>stack_stop</code> 肯定能包含该 greenlet 整个有效的堆栈地址区间；<em>这个地址在该 greenlet 的整个生命周期都不会改变</em></p></li>
-
-<li><p><code>stack_start</code> 是在一个 greenlet <em>每次</em> 将要交出控制权的时候确定的，因为该 greenlet 正在运行，所以 <code>stack_start</code> 就是当前 c 堆栈顶地址</p></li>
-</ul>
-
-<h4 id="大致切换过程">大致切换过程</h4>
-
-<p>假设当前运行 greenlet 为 <code>current</code> , 准备切换到 <code>target</code> ，那么切换过程包括保存 greenlet 链表上各元素的堆栈区间以及恢复 <code>target</code> 堆栈区间</p>
-
-<ul>
-<li><p>保存：无论 <code>target</code> 是第一次执行还是恢复执行，都是可以知道 <code>target.stack_stop</code> 的（如前所叙述），也就知道 c 堆栈需要空出位置到哪里给它恢复了：遍历 greenlet 链表，将 <code>target.stack_stop</code> 将要覆盖到的 greenlets 的堆栈区间分别保存到各自 greenlet 的 <code>stack_copy/stack_saved</code> 中去</p></li>
-
-<li><p>恢复：第一次执行不需要恢复，直接执行即可；恢复执行的话，则把拷贝到堆上的数据恢复到 c 堆栈上，然后把 <code>target</code> 放入 greenlet 链表表头，设置 <code>target.stack_prev</code> 维护 greenlet 链表</p></li>
-</ul>
-
-<h5 id="例子">例子</h5>
-
-<p>来两张图例 （用 <a href="https://www.lucidchart.com">Lucidchart</a> 画的）</p>
-
-<p>切换前：</p>
-
-<a href="./greenlet_before_switch.png"><img style="max-width: 100%; height: auto;" src="./greenlet_before_switch.png" alt="Greenlet 笔记 ./greenlet_before_switch.png"></a>
-
-
-<p>切换后：</p>
-
-<a href="./greenlet_after_switch.png"><img style="max-width: 100%; height: auto;" src="./greenlet_after_switch.png" alt="Greenlet 笔记 ./greenlet_after_switch.png"></a>
-
-
-<h4 id="注释">注释</h4>
-
-<p>最后还是贴一下代码里的注释，这个是最权威的说明了</p>
-
-<pre><code class="language-c">/*
-A PyGreenlet is a range of C stack addresses that must be
-saved and restored in such a way that the full range of the
-stack contains valid data when we switch to it.
-
-Stack layout for a greenlet:
-
-               |     ^^^       |
-               |  older data   |
-               |               |
-  stack_stop . |_______________|
-        .      |               |
-        .      | greenlet data |
-        .      |   in stack    |
-        .    * |_______________| . .  _____________  stack_copy + stack_saved
-        .      |               |     |             |
-        .      |     data      |     |greenlet data|
-        .      |   unrelated   |     |    saved    |
-        .      |      to       |     |   in heap   |
- stack_start . |     this      | . . |_____________| stack_copy
-               |   greenlet    |
-               |               |
-               |  newer data   |
-               |     vvv       |
-
-
-Note that a greenlet's stack data is typically partly at its correct
-place in the stack, and partly saved away in the heap, but always in
-the above configuration: two blocks, the more recent one in the heap
-and the older one still in the stack (either block may be empty).
-
-Greenlets are chained: each points to the previous greenlet, which is
-the one that owns the data currently in the C stack above my
-stack_stop.  The currently running greenlet is the first element of
-this chain.  The main (initial) greenlet is the last one.  Greenlets
-whose stack is entirely in the heap can be skipped from the chain.
-
-The chain is not related to execution order, but only to the order
-in which bits of C stack happen to belong to greenlets at a particular
-point in time.
-
-The main greenlet doesn't have a stack_stop: it is responsible for the
-complete rest of the C stack, and we don't know where it begins.  We
-use (char*) -1, the largest possible address.
-
-States:
-  stack_stop == NULL &amp;&amp; stack_start == NULL:  did not start yet
-  stack_stop != NULL &amp;&amp; stack_start == NULL:  already finished
-  stack_stop != NULL &amp;&amp; stack_start != NULL:  active
-
-The running greenlet's stack_start is undefined but not NULL.
-
-*/
-</code></pre>
-</div>
-
-  <footer class="article-footer">
-    
-    
-    
-    <section class="bordered">
-      <header>
-        <div class="panel-title">CATEGORIES</div>
-      </header>
-      <div>
-        <ul class="p-terms">
-          
-        </ul>
-      </div>
-    </section>
-    
-    
-    
-    <section class="bordered">
-      <header>
-        <div class="panel-title">TAGS</div>
-      </header>
-      <div>
-        <ul class="p-terms">
-          
-          <li><a href="https://huangjunwen.github.io/tags/python/">python</a></li>
-          
-          <li><a href="https://huangjunwen.github.io/tags/greenlet/">greenlet</a></li>
-          
-          <li><a href="https://huangjunwen.github.io/tags/coroutine/">coroutine</a></li>
-          
-        </ul>
-      </div>
-    </section>
-    
-    
-  </footer>
-
-</article>
-
-
-    
-	<div id="fb-root"></div>
-	<script>(function(d, s, id) {
-	  var js, fjs = d.getElementsByTagName(s)[0];
-	  if (d.getElementById(id)) return;
-	  js = d.createElement(s); js.id = id;
-	  js.src = "//connect.facebook.net/zh_CN/sdk.js#xfbml=1&version=v2.9";
-	  fjs.parentNode.insertBefore(js, fjs);
-	}(document, 'script', 'facebook-jssdk'));</script>
-
-	<div class="fb-comments"></div>
-    
-
-  </div>
-
-  <div class="col-md-4">
-    
-<aside class="l-sidebar">
-
-  <section class="panel panel-default">
-    <div class="panel-heading">
-      <div class="panel-title">LATESTS</div>
-    </div>
-    <div class="list-group">
-      
-      <a href="https://huangjunwen.github.io/post/2018/sqlw-mysql/" class="list-group-item">写了一个 MySQL 数据表和查询的 go 代码生成器</a>
-      
-      <a href="https://huangjunwen.github.io/post/2018/greenlet/" class="list-group-item">Greenlet 笔记</a>
-      
-      <a href="https://huangjunwen.github.io/post/2017/vault-database-secret-backend/" class="list-group-item">Vault Database Secret Backend 笔记</a>
-      
-      <a href="https://huangjunwen.github.io/post/2017/vault/" class="list-group-item">Vault 笔记</a>
-      
-      <a href="https://huangjunwen.github.io/post/2017/authentication_in_microservice/" class="list-group-item">微服务中的认证 (authentication) 问题</a>
-      
-      <a href="https://huangjunwen.github.io/post/2017/shamir-secret-sharding/" class="list-group-item">Shamir&#39;s Secret Sharding</a>
-      
-      <a href="https://huangjunwen.github.io/post/2017/public-key-cryptography-notes-2-1-asn1/" class="list-group-item">Public Key Cryptography 笔记（2.1）-- ASN.1</a>
-      
-      <a href="https://huangjunwen.github.io/post/2017/public-key-cryptography-notes-2-format-and-standard/" class="list-group-item">Public Key Cryptography 笔记（2）-- 存储格式和标准</a>
-      
-      <a href="https://huangjunwen.github.io/post/2017/public-key-cryptography-notes-1-rsa/" class="list-group-item">Public Key Cryptography 笔记（1）-- RSA</a>
-      
-      <a href="https://huangjunwen.github.io/post/2016/port-knocking-using-iptables/" class="list-group-item">用 iptables 来配置 port knocking</a>
-      
-    </div>
-  </section>
-
-  
-  <section class="panel panel-default">
-    <div class="panel-heading">
-      <div class="panel-title">CATEGORY</div>
-    </div>
-    <div class="list-group">
-      
-      <a href="https://huangjunwen.github.io/categories/public-key-cryptography-%E7%AC%94%E8%AE%B0" class="list-group-item">public-key-cryptography-笔记</a>
-      
-      <a href="https://huangjunwen.github.io/categories/sa" class="list-group-item">sa</a>
-      
-      <a href="https://huangjunwen.github.io/categories/%E9%80%A0%E8%BD%AE%E5%AD%90" class="list-group-item">造轮子</a>
-      
-    </div>
-  </section>
-  
-  <section class="panel panel-default">
-    <div class="panel-heading">
-      <div class="panel-title">TAG</div>
-    </div>
-    <div class="list-group">
-      
-      <a href="https://huangjunwen.github.io/tags/hashicorp-vault" class="list-group-item">hashicorp-vault</a>
-      
-      <a href="https://huangjunwen.github.io/tags/mysql" class="list-group-item">mysql</a>
-      
-      <a href="https://huangjunwen.github.io/tags/rsa" class="list-group-item">rsa</a>
-      
-      <a href="https://huangjunwen.github.io/tags/asn.1" class="list-group-item">asn.1</a>
-      
-      <a href="https://huangjunwen.github.io/tags/code-generator" class="list-group-item">code-generator</a>
-      
-      <a href="https://huangjunwen.github.io/tags/coroutine" class="list-group-item">coroutine</a>
-      
-      <a href="https://huangjunwen.github.io/tags/gnu-pg" class="list-group-item">gnu-pg</a>
-      
-      <a href="https://huangjunwen.github.io/tags/golang" class="list-group-item">golang</a>
-      
-      <a href="https://huangjunwen.github.io/tags/greenlet" class="list-group-item">greenlet</a>
-      
-      <a href="https://huangjunwen.github.io/tags/iptables" class="list-group-item">iptables</a>
-      
-    </div>
-  </section>
-  
-
-</aside>
-
-
-  </div>
-</div>
-
-      </div>
-    </main>
-
-    <footer class="l-footer">
-      <div class="container">
-        <p>&copy; 2016~2018 <a href="mailto:kassarar@gmail.com">Huang JunWen</a>; All rights reserved.</p>
-        <aside>
-          <p>Powered by <a href="https://gohugo.io/">Hugo</a>.</p>
-          <p><a href="https://github.com/dim0627/hugo_theme_beg">Beg</a> designed by <a href="http://yet.unresolved.xyz/">Daisuke Tsuji</a>.</p>
-        </aside>
-      </div>
-    </footer>
-
-    <script src="//code.jquery.com/jquery-3.1.1.min.js"></script>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js" integrity="sha256-LVuWfOU0rWFMCJNl1xb3K2HSWfxtK4IPbqEerP1P83M=" crossorigin="anonymous"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
   </body>
 </html>
-

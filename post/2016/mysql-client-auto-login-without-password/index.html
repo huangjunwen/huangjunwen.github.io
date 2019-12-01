@@ -1,185 +1,70 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-<meta name="pinterest" content="nopin">
-<meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
-<meta name="generator" content="Hugo 0.48" />
-
-
-
-<link rel="canonical" href="https://huangjunwen.github.io/post/2016/mysql-client-auto-login-without-password/">
-
-
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/gruvbox-dark.min.css" integrity="sha256-LUdcdwBjq26ZxccbnPrUQyBoghJjHRR5ujhPVCC4Hb0=" crossorigin="anonymous" />
-    <title>免输入密码登录 mysql - Jayven@dev</title>
-    
-<meta name="description" content="对于一些 (古董) mysql 管理员来说，直接用 mysql client 连接生产环境的数据库进行操作是很常见的事情。 根据 Mysql 的 End-User Guidelines for Password Security： 在 command line 上用 -p xxxxx 直接指定">
-
-<meta property="og:title" content="免输入密码登录 mysql - Jayven@dev">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://huangjunwen.github.io/post/2016/mysql-client-auto-login-without-password/">
-<meta property="og:image" content="https://huangjunwen.github.io/images/default.png">
-<meta property="og:site_name" content="Jayven@dev">
-<meta property="og:description" content="对于一些 (古董) mysql 管理员来说，直接用 mysql client 连接生产环境的数据库进行操作是很常见的事情。 根据 Mysql 的 End-User Guidelines for Password Security： 在 command line 上用 -p xxxxx 直接指定">
-<meta property="og:locale" content="ja_JP">
-
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:site" content="Jayven@dev">
-<meta name="twitter:url" content="https://huangjunwen.github.io/post/2016/mysql-client-auto-login-without-password/">
-<meta name="twitter:title" content="免输入密码登录 mysql - Jayven@dev">
-<meta name="twitter:description" content="对于一些 (古董) mysql 管理员来说，直接用 mysql client 连接生产环境的数据库进行操作是很常见的事情。 根据 Mysql 的 End-User Guidelines for Password Security： 在 command line 上用 -p xxxxx 直接指定">
-<meta name="twitter:image" content="https://huangjunwen.github.io/images/default.png">
-<meta property="fb:app_id" content="111286092806941">
-
-<script type="application/ld+json">
-  {
-    "@context": "http://schema.org",
-    "@type": "NewsArticle",
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id":"https://huangjunwen.github.io/"
-    },
-    "headline": "免输入密码登录 mysql - Jayven@dev",
-    "image": {
-      "@type": "ImageObject",
-      "url": "https://huangjunwen.github.io/images/default.png",
-      "height": 800,
-      "width": 800
-    },
-    "datePublished": "2016-12-18T09:58:58JST",
-    "dateModified": "2016-12-18T09:58:58JST",
-    "author": {
-      "@type": "Person",
-      "name": "Jayven@dev"
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": "Jayven@dev",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://huangjunwen.github.io/images/logo.png",
-        "width": 600,
-        "height": 60
-      }
-    },
-    "description": "对于一些 (古董) mysql 管理员来说，直接用 mysql client 连接生产环境的数据库进行操作是很常见的事情。 根据 Mysql 的 End-User Guidelines for Password Security： 在 command line 上用 -p xxxxx 直接指定"
-  }
-</script>
-
-
-    <link href="https://huangjunwen.github.io/css/styles.css" rel="stylesheet">
-  </head>
-
-  <body>
-    
-    
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-89264111-1', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script>
-
-    
-
-    <header class="l-header">
-      <nav class="navbar navbar-default">
-        <div class="container">
-          <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="https://huangjunwen.github.io/">Jayven@dev</a>
-          </div>
-
-          
-          <div id="navbar" class="collapse navbar-collapse">
-            
-            <ul class="nav navbar-nav navbar-right">
-              
-              
-              <li><a href="/post">Posts</a></li>
-              
-              
-              
-              <li><a href="/categories">Categories</a></li>
-              
-              
-              
-              <li><a href="/tags">Tags</a></li>
-              
-              
-            </ul>
-            
-          </div>
-          
-
-        </div>
-      </nav>
-    </header>
-
-    <main>
-      <div class="container">
-        
-<div class="row">
-  <div class="col-md-8">
-
-    <nav class="p-crumb">
-      <ol class="breadcrumb">
-        <li><a href="https://huangjunwen.github.io/"><i class="fa fa-home" aria-hidden="true"></i></a></li>
-        
-        <li itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb"><a href="https://huangjunwen.github.io/post/" itemprop="url"><span itemprop="title">post</span></a></li>
-        
-        <li class="active">免输入密码登录 mysql</li>
-      </ol>
-    </nav>
-
-    <article class="single">
-  <header>
-    <ul class="p-facts">
-      <li><i class="fa fa-calendar" aria-hidden="true"></i><time datetime="2016-12-18T09:58:58JST">Dec 18, 2016</time></li>
-      <li><i class="fa fa-bookmark" aria-hidden="true"></i><a href="https://huangjunwen.github.io/post/">post</a></li>
-      
-    </ul>
-
-    <h1 class="title">免输入密码登录 mysql</h1>
-  </header>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-CN" lang="zh-CN">
+<head>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.60.1" />
 
   
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <div class="article-body">
+  <title>免输入密码登录 mysql &middot; Coder Papa</title>
+  <meta name="description" content="" />
 
-<p>对于一些 <del>(古董)</del> mysql 管理员来说，直接用 mysql client 连接生产环境的数据库进行操作是很常见的事情。</p>
+  
+  <link type="text/css" rel="stylesheet" href="https://huangjunwen.github.io/css/print.css" media="print">
+  <link type="text/css" rel="stylesheet" href="https://huangjunwen.github.io/css/poole.css">
+  <link type="text/css" rel="stylesheet" href="https://huangjunwen.github.io/css/syntax.css">
+  <link type="text/css" rel="stylesheet" href="https://huangjunwen.github.io/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700">
 
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  
+</head>
+
+  <body class="theme-base-0d layout-reverse">
+  <aside class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="https://huangjunwen.github.io/"><h1>Coder Papa</h1></a>
+      <p class="lead">
+       一个普通程序员老爸的笔记 
+      </p>
+    </div>
+
+    <nav>
+      <ul class="sidebar-nav">
+        <li><a href="https://huangjunwen.github.io/">Home</a> </li>
+        <li><a href="/post"> Posts </a></li><li><a href="/categories"> Categories </a></li><li><a href="/tags"> Tags </a></li><li><a href="https://github.com/huangjunwen"> Github.com </a></li>
+      </ul>
+    </nav>
+
+    <p>&copy; 2019. All rights reserved. </p>
+  </div>
+</aside>
+
+    <main class="content container">
+    <div class="post">
+  <h1>免输入密码登录 mysql</h1>
+  <time datetime=2016-12-18T09:58:58&#43;0800 class="post-date">Sun, Dec 18, 2016</time>
+  <p>对于一些 <del>(古董)</del> mysql 管理员来说，直接用 mysql client 连接生产环境的数据库进行操作是很常见的事情。</p>
 <p>根据 Mysql 的 <a href="http://dev.mysql.com/doc/refman/5.5/en/password-security-user.html">End-User Guidelines for Password Security</a>：</p>
-
 <ol>
 <li>在 command line 上用 <code>-p xxxxx</code> 直接指定密码是很危险的，因为别人 <code>ps</code> 一下就看到了。</li>
 <li>在 command line 上用 <code>-p</code> 然后在 prompt 中输入密码，这样相对安全得多，但这样得手动输入了。</li>
 <li>在 <code>~/.my.cnf</code> 里写下 password，似乎两者兼得唯有此法，但这个配置始终是明文的，感觉还是不太安全。</li>
 <li>设置在 <code>MYSQL_PWD</code> 环境变量中，extremely insecure and should not be used&hellip;</li>
 </ol>
-
 <p>因为之前有<a href="https://blog.erincall.com/p/using-pgp-to-encrypt-the-ansible-vault">用 GPG 加密 ansible 的 vault 密码</a>的经验： gpg 负责加密，gpg-agent 负责偷懒；我想也能用在这里吧。</p>
-
 <p>首先设定最终要达到的效果：在 local machine 上执行一个脚本，它会通过 gpg-agent 解密出连接参数，再 ssh 到生产环境机器上（生产数据库只能由生产环境的 ip 访问），执行 mysql client 进行连接和操作。</p>
-
-<h3 id="初步尝试">初步尝试</h3>
-
-<pre><code class="language-shell">
-$ ssh $SSH_HOST &quot;mysql -p -h $DB_HOST -u $DB_UESR $DB_NAME&quot;
+<h3 id="heading">初步尝试</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">
+$ ssh $SSH_HOST <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">mysql -p -h </span>$DB_HOST<span style="color:#e6db74"> -u </span>$DB_UESR<span style="color:#e6db74"> </span>$DB_NAME<span style="color:#e6db74">&#34;</span>
 Enter password: xxxxxx
 show tables;
 
@@ -189,50 +74,35 @@ xxx
 yyy
 ...
 
-</code></pre>
-
-<p>这里密码会回显，且输入的命令（<code>show tables;</code>）直到输入 Ctrl+D （EOF）才执行，返回的结果是 <a href="http://dev.mysql.com/doc/refman/5.5/en/batch-mode.html">batch mode</a> 格式的。似乎当 mysql client 的标准输入如果不是 tty 的话，则会进入 batch mode: <a href="https://github.com/mysql/mysql-server/blob/5.7/client/mysql.cc#L1259">https://github.com/mysql/mysql-server/blob/5.7/client/mysql.cc#L1259</a></p>
-
-<h3 id="让-ssh-分配-tty">让 ssh 分配 tty</h3>
-
-<pre><code class="language-shell">
-$ ssh -t $SSH_HOST &quot;mysql -p -h $DB_HOST -u $DB_UESR $DB_NAME&quot;
+</code></pre></div><p>这里密码会回显，且输入的命令（<code>show tables;</code>）直到输入 Ctrl+D （EOF）才执行，返回的结果是 <a href="http://dev.mysql.com/doc/refman/5.5/en/batch-mode.html">batch mode</a> 格式的。似乎当 mysql client 的标准输入如果不是 tty 的话，则会进入 batch mode: <a href="https://github.com/mysql/mysql-server/blob/5.7/client/mysql.cc#L1259">https://github.com/mysql/mysql-server/blob/5.7/client/mysql.cc#L1259</a></p>
+<h3 id="-ssh--tty">让 ssh 分配 tty</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">
+$ ssh -t $SSH_HOST <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">mysql -p -h </span>$DB_HOST<span style="color:#e6db74"> -u </span>$DB_UESR<span style="color:#e6db74"> </span>$DB_NAME<span style="color:#e6db74">&#34;</span>
 Enter password:
-Reading table information for completion of table and column names
+Reading table information <span style="color:#66d9ef">for</span> completion of table and column names
 ...
 ...
-Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+Type <span style="color:#e6db74">&#39;help;&#39;</span> or <span style="color:#e6db74">&#39;\h&#39;</span> <span style="color:#66d9ef">for</span> help. Type <span style="color:#e6db74">&#39;\c&#39;</span> to clear the current input statement.
 
 mysql&gt;
 
-</code></pre>
-
-<p>ssh 加上 <code>-t</code>，输入密码，进入 interactive mode，一切正常。</p>
-
-<h3 id="自动输入密码">自动输入密码</h3>
-
+</code></pre></div><p>ssh 加上 <code>-t</code>，输入密码，进入 interactive mode，一切正常。</p>
+<h3 id="heading1">自动输入密码</h3>
 <p>要实现自动输入密码，相当于将密码文本和当前终端的输入连接起来，那用 <code>cat</code> 命令应该就能实现这个功能：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e">#!bin/bash
+</span><span style="color:#75715e"></span>
+cur_tty<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span> tty <span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
 
-<pre><code class="language-bash">#!bin/bash
+echo $DB_PASSWORD | cat - $cur_tty | ssh -tt $SSH_HOST <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">mysql -p -h </span>$DB_HOST<span style="color:#e6db74"> -u </span>$DB_UESR<span style="color:#e6db74"> </span>$DB_NAME<span style="color:#e6db74">&#34;</span>
 
-cur_tty=&quot;$( tty )&quot;
-
-echo $DB_PASSWORD | cat - $cur_tty | ssh -tt $SSH_HOST &quot;mysql -p -h $DB_HOST -u $DB_UESR $DB_NAME&quot;
-
-</code></pre>
-
-<p>这里 <code>ssh -tt</code> 为什么又多了一个 <code>-t</code> 呢？因为对 ssh 来说，它的标准输入不再是 tty 了（而是 cat 的标准输出 pipe），如果不多加一个 <code>-t</code> 它不会分配 tty 的:</p>
-
-<pre><code class="language-nohighlight">-t  Force pseudo-terminal allocation.  This can be used to execute arbitrary screen-based programs on a remote machine, which can be very useful, e.g. when implementing menu services. Multiple -t options force tty allocation, even if ssh has no local tty.
-</code></pre>
-
-<p>效果：</p>
-
-<pre><code class="language-shell">$ ./mysql.sh
+</code></pre></div><p>这里 <code>ssh -tt</code> 为什么又多了一个 <code>-t</code> 呢？因为对 ssh 来说，它的标准输入不再是 tty 了（而是 cat 的标准输出 pipe），如果不多加一个 <code>-t</code> 它不会分配 tty 的:</p>
+<pre><code class="language-nohighlight" data-lang="nohighlight">-t  Force pseudo-terminal allocation.  This can be used to execute arbitrary screen-based programs on a remote machine, which can be very useful, e.g. when implementing menu services. Multiple -t options force tty allocation, even if ssh has no local tty.
+</code></pre><p>效果：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ ./mysql.sh
 Enter password:
 ...
 ...
-Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+Type <span style="color:#e6db74">&#39;help;&#39;</span> or <span style="color:#e6db74">&#39;\h&#39;</span> <span style="color:#66d9ef">for</span> help. Type <span style="color:#e6db74">&#39;\c&#39;</span> to clear the current input statement.
 
 mysql&gt; show tables;
 show tables;
@@ -244,246 +114,85 @@ show tables;
 | ...               |
 +-------------------+
 
-mysql&gt; ^[[A
+mysql&gt; ^<span style="color:#f92672">[</span><span style="color:#f92672">[</span>A
 
-</code></pre>
-
-<p>不需要输入密码了，而且正确进入 interactive mode，但是编辑命令的时候跟原来有点不一样，例如命令会回显多一次，按 UP 键没有出现上一句命令而是 &lsquo;^[[A&rsquo;，要再按一次回车，上一句就直接执行了。这应该是因为 locale machine 的 tty 会 buffer 住当前行用于编辑，直到按回车才发送出去。</p>
-
+</code></pre></div><p>不需要输入密码了，而且正确进入 interactive mode，但是编辑命令的时候跟原来有点不一样，例如命令会回显多一次，按 UP 键没有出现上一句命令而是 &lsquo;^[[A&rsquo;，要再按一次回车，上一句就直接执行了。这应该是因为 locale machine 的 tty 会 buffer 住当前行用于编辑，直到按回车才发送出去。</p>
 <p>这是多此一举的，正确的方式是 locale machine 上输入什么，原原本本马上发送过去就好了。</p>
-
 <h3 id="stty-raw-mode">stty raw mode</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e">#!bin/bash
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">#...</span>
 
-<pre><code class="language-bash">#!bin/bash
+stty_state<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span> stty -g <span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
 
-#...
-
-stty_state=&quot;$( stty -g )&quot;
-
-trap &quot;stty $stty_state&quot; EXIT
-
-stty raw -echo
-
-#...
-
-</code></pre>
-
-<p>通过 <code>stty</code> 命令来实现这个调整，首先 <code>stty -g</code> 保存当前 tty 的设置，设置一个 EXIT 的 trap，在这个脚本退出时恢复设置，然后进入 raw 模式。（不过 linux 下的 stty raw 不包括 <code>-echo</code>，所以这里加上）</p>
-
-<h3 id="gpg-解密参数">gpg 解密参数</h3>
-
-<pre><code class="language-bash">
-#!/bin/bash
-
-# ...
-
-# extract options from db_credential.sh.gpg, expected in db_credential.sh:
-#
-# SSH_USER=xxxx
-# SSH_HOST=xxxx
-# DB_USER=xxxx
-# DB_HOST=xxxx
-# DB_NAME=xxxx
-# DB_PASSWORD=xxxx
-eval `gpg --batch --use-agent --decrypt db_credential.sh.gpg`
-
-# ...
-
-</code></pre>
-
-<p><code>db_credential.sh</code> 中写好 ssh 跟数据的连接参数，然后用 <code>gpg --encrypt -r your@email db_credential.sh</code> 加密；脚本里则直接用 <code>eval</code> 取出解密出来的内容。</p>
-
-<h3 id="最终">最终</h3>
-
-<pre><code class="language-bash">
-#!/bin/bash
-
-# extract options from db_credential.sh.gpg, expected in db_credential.sh:
-#
-# SSH_USER=xxxx
-# SSH_HOST=xxxx
-# DB_USER=xxxx
-# DB_HOST=xxxx
-# DB_NAME=xxxx
-# DB_PASSWORD=xxxx
-eval `gpg --batch --use-agent --decrypt db_credential.sh.gpg`
-
-cur_tty=&quot;$( tty )&quot;
-
-stty_state=&quot;$( stty -g )&quot;
-
-trap &quot;stty $stty_state&quot; EXIT
+trap <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">stty </span>$stty_state<span style="color:#e6db74">&#34;</span> EXIT
 
 stty raw -echo
 
-echo $DB_PASSWORD | cat - $cur_tty | ssh -tt -a $SSH_HOST &quot;mysql -p -h $DB_HOST -u $DB_UESR $DB_NAME&quot;
+<span style="color:#75715e">#...</span>
 
-</code></pre>
+</code></pre></div><p>通过 <code>stty</code> 命令来实现这个调整，首先 <code>stty -g</code> 保存当前 tty 的设置，设置一个 EXIT 的 trap，在这个脚本退出时恢复设置，然后进入 raw 模式。（不过 linux 下的 stty raw 不包括 <code>-echo</code>，所以这里加上）</p>
+<h3 id="gpg-">gpg 解密参数</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">
+<span style="color:#75715e">#!/bin/bash</span>
 
-<p>注：ssh 的配置里如果 <code>ForwardAgent yes</code> 的话，似乎不能正常工作，还没找出原因，所以这里加上 <code>-a</code> 显式地禁用它，因为这个脚本只是用来连数据库的，并不需要用到 ssh authentication。</p>
+<span style="color:#75715e"># ...</span>
+
+<span style="color:#75715e"># extract options from db_credential.sh.gpg, expected in db_credential.sh:</span>
+#
+<span style="color:#75715e"># SSH_USER=xxxx</span>
+<span style="color:#75715e"># SSH_HOST=xxxx</span>
+<span style="color:#75715e"># DB_USER=xxxx</span>
+<span style="color:#75715e"># DB_HOST=xxxx</span>
+<span style="color:#75715e"># DB_NAME=xxxx</span>
+<span style="color:#75715e"># DB_PASSWORD=xxxx</span>
+eval <span style="color:#e6db74">`</span>gpg --batch --use-agent --decrypt db_credential.sh.gpg<span style="color:#e6db74">`</span>
+
+<span style="color:#75715e"># ...</span>
+
+</code></pre></div><p><code>db_credential.sh</code> 中写好 ssh 跟数据的连接参数，然后用 <code>gpg --encrypt -r your@email db_credential.sh</code> 加密；脚本里则直接用 <code>eval</code> 取出解密出来的内容。</p>
+<h3 id="heading2">最终</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">
+<span style="color:#75715e">#!/bin/bash</span>
+
+<span style="color:#75715e"># extract options from db_credential.sh.gpg, expected in db_credential.sh:</span>
+#
+<span style="color:#75715e"># SSH_USER=xxxx</span>
+<span style="color:#75715e"># SSH_HOST=xxxx</span>
+<span style="color:#75715e"># DB_USER=xxxx</span>
+<span style="color:#75715e"># DB_HOST=xxxx</span>
+<span style="color:#75715e"># DB_NAME=xxxx</span>
+<span style="color:#75715e"># DB_PASSWORD=xxxx</span>
+eval <span style="color:#e6db74">`</span>gpg --batch --use-agent --decrypt db_credential.sh.gpg<span style="color:#e6db74">`</span>
+
+cur_tty<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span> tty <span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
+
+stty_state<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span> stty -g <span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
+
+trap <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">stty </span>$stty_state<span style="color:#e6db74">&#34;</span> EXIT
+
+stty raw -echo
+
+echo $DB_PASSWORD | cat - $cur_tty | ssh -tt -a $SSH_HOST <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">mysql -p -h </span>$DB_HOST<span style="color:#e6db74"> -u </span>$DB_UESR<span style="color:#e6db74"> </span>$DB_NAME<span style="color:#e6db74">&#34;</span>
+
+</code></pre></div><p>注：ssh 的配置里如果 <code>ForwardAgent yes</code> 的话，似乎不能正常工作，还没找出原因，所以这里加上 <code>-a</code> 显式地禁用它，因为这个脚本只是用来连数据库的，并不需要用到 ssh authentication。</p>
+
 </div>
 
-  <footer class="article-footer">
-    
-    
-    
-    <section class="bordered">
-      <header>
-        <div class="panel-title">CATEGORIES</div>
-      </header>
-      <div>
-        <ul class="p-terms">
-          
-          <li><a href="https://huangjunwen.github.io/categories/sa/">sa</a></li>
-          
-        </ul>
-      </div>
-    </section>
-    
-    
-    
-    <section class="bordered">
-      <header>
-        <div class="panel-title">TAGS</div>
-      </header>
-      <div>
-        <ul class="p-terms">
-          
-          <li><a href="https://huangjunwen.github.io/tags/mysql/">mysql</a></li>
-          
-          <li><a href="https://huangjunwen.github.io/tags/gnu-pg/">gnu-pg</a></li>
-          
-          <li><a href="https://huangjunwen.github.io/tags/tty/">tty</a></li>
-          
-        </ul>
-      </div>
-    </section>
-    
-    
-  </footer>
 
-</article>
-
-
-    
-	<div id="fb-root"></div>
-	<script>(function(d, s, id) {
-	  var js, fjs = d.getElementsByTagName(s)[0];
-	  if (d.getElementById(id)) return;
-	  js = d.createElement(s); js.id = id;
-	  js.src = "//connect.facebook.net/zh_CN/sdk.js#xfbml=1&version=v2.9";
-	  fjs.parentNode.insertBefore(js, fjs);
-	}(document, 'script', 'facebook-jssdk'));</script>
-
-	<div class="fb-comments"></div>
-    
-
-  </div>
-
-  <div class="col-md-4">
-    
-<aside class="l-sidebar">
-
-  <section class="panel panel-default">
-    <div class="panel-heading">
-      <div class="panel-title">LATESTS</div>
-    </div>
-    <div class="list-group">
-      
-      <a href="https://huangjunwen.github.io/post/2018/sqlw-mysql/" class="list-group-item">写了一个 MySQL 数据表和查询的 go 代码生成器</a>
-      
-      <a href="https://huangjunwen.github.io/post/2018/greenlet/" class="list-group-item">Greenlet 笔记</a>
-      
-      <a href="https://huangjunwen.github.io/post/2017/vault-database-secret-backend/" class="list-group-item">Vault Database Secret Backend 笔记</a>
-      
-      <a href="https://huangjunwen.github.io/post/2017/vault/" class="list-group-item">Vault 笔记</a>
-      
-      <a href="https://huangjunwen.github.io/post/2017/authentication_in_microservice/" class="list-group-item">微服务中的认证 (authentication) 问题</a>
-      
-      <a href="https://huangjunwen.github.io/post/2017/shamir-secret-sharding/" class="list-group-item">Shamir&#39;s Secret Sharding</a>
-      
-      <a href="https://huangjunwen.github.io/post/2017/public-key-cryptography-notes-2-1-asn1/" class="list-group-item">Public Key Cryptography 笔记（2.1）-- ASN.1</a>
-      
-      <a href="https://huangjunwen.github.io/post/2017/public-key-cryptography-notes-2-format-and-standard/" class="list-group-item">Public Key Cryptography 笔记（2）-- 存储格式和标准</a>
-      
-      <a href="https://huangjunwen.github.io/post/2017/public-key-cryptography-notes-1-rsa/" class="list-group-item">Public Key Cryptography 笔记（1）-- RSA</a>
-      
-      <a href="https://huangjunwen.github.io/post/2016/port-knocking-using-iptables/" class="list-group-item">用 iptables 来配置 port knocking</a>
-      
-    </div>
-  </section>
-
-  
-  <section class="panel panel-default">
-    <div class="panel-heading">
-      <div class="panel-title">CATEGORY</div>
-    </div>
-    <div class="list-group">
-      
-      <a href="https://huangjunwen.github.io/categories/public-key-cryptography-%E7%AC%94%E8%AE%B0" class="list-group-item">public-key-cryptography-笔记</a>
-      
-      <a href="https://huangjunwen.github.io/categories/sa" class="list-group-item">sa</a>
-      
-      <a href="https://huangjunwen.github.io/categories/%E9%80%A0%E8%BD%AE%E5%AD%90" class="list-group-item">造轮子</a>
-      
-    </div>
-  </section>
-  
-  <section class="panel panel-default">
-    <div class="panel-heading">
-      <div class="panel-title">TAG</div>
-    </div>
-    <div class="list-group">
-      
-      <a href="https://huangjunwen.github.io/tags/hashicorp-vault" class="list-group-item">hashicorp-vault</a>
-      
-      <a href="https://huangjunwen.github.io/tags/mysql" class="list-group-item">mysql</a>
-      
-      <a href="https://huangjunwen.github.io/tags/rsa" class="list-group-item">rsa</a>
-      
-      <a href="https://huangjunwen.github.io/tags/asn.1" class="list-group-item">asn.1</a>
-      
-      <a href="https://huangjunwen.github.io/tags/code-generator" class="list-group-item">code-generator</a>
-      
-      <a href="https://huangjunwen.github.io/tags/coroutine" class="list-group-item">coroutine</a>
-      
-      <a href="https://huangjunwen.github.io/tags/gnu-pg" class="list-group-item">gnu-pg</a>
-      
-      <a href="https://huangjunwen.github.io/tags/golang" class="list-group-item">golang</a>
-      
-      <a href="https://huangjunwen.github.io/tags/greenlet" class="list-group-item">greenlet</a>
-      
-      <a href="https://huangjunwen.github.io/tags/iptables" class="list-group-item">iptables</a>
-      
-    </div>
-  </section>
-  
-
-</aside>
-
-
-  </div>
-</div>
-
-      </div>
     </main>
 
-    <footer class="l-footer">
-      <div class="container">
-        <p>&copy; 2016~2018 <a href="mailto:kassarar@gmail.com">Huang JunWen</a>; All rights reserved.</p>
-        <aside>
-          <p>Powered by <a href="https://gohugo.io/">Hugo</a>.</p>
-          <p><a href="https://github.com/dim0627/hugo_theme_beg">Beg</a> designed by <a href="http://yet.unresolved.xyz/">Daisuke Tsuji</a>.</p>
-        </aside>
-      </div>
-    </footer>
-
-    <script src="//code.jquery.com/jquery-3.1.1.min.js"></script>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js" integrity="sha256-LVuWfOU0rWFMCJNl1xb3K2HSWfxtK4IPbqEerP1P83M=" crossorigin="anonymous"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-89264111-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
   </body>
 </html>
-

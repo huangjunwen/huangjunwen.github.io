@@ -1,218 +1,89 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-<meta name="pinterest" content="nopin">
-<meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
-<meta name="generator" content="Hugo 0.48" />
-
-
-
-<link rel="canonical" href="https://huangjunwen.github.io/post/2017/public-key-cryptography-notes-1-rsa/">
-
-
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/gruvbox-dark.min.css" integrity="sha256-LUdcdwBjq26ZxccbnPrUQyBoghJjHRR5ujhPVCC4Hb0=" crossorigin="anonymous" />
-    <title>Public Key Cryptography 笔记（1）-- RSA - Jayven@dev</title>
-    
-<meta name="description" content="这一系列的笔记主要是对学习到的公钥加密体系知识的记录和梳理，主要以 RSA 算法为代表，以及从中衍生开去的各种应用：ssl/tls，ssh，gpg 等">
-
-<meta property="og:title" content="Public Key Cryptography 笔记（1）-- RSA - Jayven@dev">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://huangjunwen.github.io/post/2017/public-key-cryptography-notes-1-rsa/">
-<meta property="og:image" content="https://huangjunwen.github.io/images/default.png">
-<meta property="og:site_name" content="Jayven@dev">
-<meta property="og:description" content="这一系列的笔记主要是对学习到的公钥加密体系知识的记录和梳理，主要以 RSA 算法为代表，以及从中衍生开去的各种应用：ssl/tls，ssh，gpg 等">
-<meta property="og:locale" content="ja_JP">
-
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:site" content="Jayven@dev">
-<meta name="twitter:url" content="https://huangjunwen.github.io/post/2017/public-key-cryptography-notes-1-rsa/">
-<meta name="twitter:title" content="Public Key Cryptography 笔记（1）-- RSA - Jayven@dev">
-<meta name="twitter:description" content="这一系列的笔记主要是对学习到的公钥加密体系知识的记录和梳理，主要以 RSA 算法为代表，以及从中衍生开去的各种应用：ssl/tls，ssh，gpg 等">
-<meta name="twitter:image" content="https://huangjunwen.github.io/images/default.png">
-<meta property="fb:app_id" content="111286092806941">
-
-<script type="application/ld+json">
-  {
-    "@context": "http://schema.org",
-    "@type": "NewsArticle",
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id":"https://huangjunwen.github.io/"
-    },
-    "headline": "Public Key Cryptography 笔记（1）-- RSA - Jayven@dev",
-    "image": {
-      "@type": "ImageObject",
-      "url": "https://huangjunwen.github.io/images/default.png",
-      "height": 800,
-      "width": 800
-    },
-    "datePublished": "2017-01-24T11:52:55JST",
-    "dateModified": "2017-01-24T11:52:55JST",
-    "author": {
-      "@type": "Person",
-      "name": "Jayven@dev"
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": "Jayven@dev",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://huangjunwen.github.io/images/logo.png",
-        "width": 600,
-        "height": 60
-      }
-    },
-    "description": "这一系列的笔记主要是对学习到的公钥加密体系知识的记录和梳理，主要以 RSA 算法为代表，以及从中衍生开去的各种应用：ssl/tls，ssh，gpg 等"
-  }
-</script>
-
-
-    <link href="https://huangjunwen.github.io/css/styles.css" rel="stylesheet">
-  </head>
-
-  <body>
-    
-    
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-89264111-1', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script>
-
-    
-
-    <header class="l-header">
-      <nav class="navbar navbar-default">
-        <div class="container">
-          <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="https://huangjunwen.github.io/">Jayven@dev</a>
-          </div>
-
-          
-          <div id="navbar" class="collapse navbar-collapse">
-            
-            <ul class="nav navbar-nav navbar-right">
-              
-              
-              <li><a href="/post">Posts</a></li>
-              
-              
-              
-              <li><a href="/categories">Categories</a></li>
-              
-              
-              
-              <li><a href="/tags">Tags</a></li>
-              
-              
-            </ul>
-            
-          </div>
-          
-
-        </div>
-      </nav>
-    </header>
-
-    <main>
-      <div class="container">
-        
-<div class="row">
-  <div class="col-md-8">
-
-    <nav class="p-crumb">
-      <ol class="breadcrumb">
-        <li><a href="https://huangjunwen.github.io/"><i class="fa fa-home" aria-hidden="true"></i></a></li>
-        
-        <li itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb"><a href="https://huangjunwen.github.io/post/" itemprop="url"><span itemprop="title">post</span></a></li>
-        
-        <li class="active">Public Key Cryptography 笔记（1）-- RSA</li>
-      </ol>
-    </nav>
-
-    <article class="single">
-  <header>
-    <ul class="p-facts">
-      <li><i class="fa fa-calendar" aria-hidden="true"></i><time datetime="2017-01-24T11:52:55JST">Jan 24, 2017</time></li>
-      <li><i class="fa fa-bookmark" aria-hidden="true"></i><a href="https://huangjunwen.github.io/post/">post</a></li>
-      
-    </ul>
-
-    <h1 class="title">Public Key Cryptography 笔记（1）-- RSA</h1>
-  </header>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-CN" lang="zh-CN">
+<head>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.60.1" />
 
   
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <div class="article-body">
+  <title>Public Key Cryptography 笔记（1）-- RSA &middot; Coder Papa</title>
+  <meta name="description" content="" />
 
-<script type="text/javascript" async src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+  
+  <link type="text/css" rel="stylesheet" href="https://huangjunwen.github.io/css/print.css" media="print">
+  <link type="text/css" rel="stylesheet" href="https://huangjunwen.github.io/css/poole.css">
+  <link type="text/css" rel="stylesheet" href="https://huangjunwen.github.io/css/syntax.css">
+  <link type="text/css" rel="stylesheet" href="https://huangjunwen.github.io/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700">
 
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  
+</head>
+
+  <body class="theme-base-0d layout-reverse">
+  <aside class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="https://huangjunwen.github.io/"><h1>Coder Papa</h1></a>
+      <p class="lead">
+       一个普通程序员老爸的笔记 
+      </p>
+    </div>
+
+    <nav>
+      <ul class="sidebar-nav">
+        <li><a href="https://huangjunwen.github.io/">Home</a> </li>
+        <li><a href="/post"> Posts </a></li><li><a href="/categories"> Categories </a></li><li><a href="/tags"> Tags </a></li><li><a href="https://github.com/huangjunwen"> Github.com </a></li>
+      </ul>
+    </nav>
+
+    <p>&copy; 2019. All rights reserved. </p>
+  </div>
+</aside>
+
+    <main class="content container">
+    <div class="post">
+  <h1>Public Key Cryptography 笔记（1）-- RSA</h1>
+  <time datetime=2017-01-24T11:52:55&#43;0800 class="post-date">Tue, Jan 24, 2017</time>
+  <script type="text/javascript" async src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 
 <p>这一系列的笔记主要是对学习到的公钥加密体系知识的记录和梳理，主要以 RSA 算法为代表，以及从中衍生开去的各种应用：ssl/tls，ssh，gpg 等等我们每天都依赖的东西。</p>
-
-<h3 id="rsa-主要原理">RSA 主要原理</h3>
-
+<h3 id="rsa-">RSA 主要原理</h3>
 <p><a href="https://en.wikipedia.org/wiki/RSA_(cryptosystem)">RSA</a> 的原理是在于能够找到三个很大的正整数 <span>\(e,d,n\)</span>
  使得对于任何 <span>\(0\le{m}\lt{n}\)</span>
 ：</p>
-
 <span>$$(m^e)^d\equiv m\pmod{n}$$</span>
-
 
 <p>其中公钥为 <span>\((n,e)\)</span>
 ，可以发送给任何人；私钥为 <span>\((n,d)\)</span>
 ，只能由所有者掌握。RSA 支持 4 种操作：加密／解密，签名／验证签名。</p>
-
-<h4 id="加密">加密</h4>
-
+<h4 id="heading">加密</h4>
 <p>首先用一些编码手段把需要加密的信息转换成整数 <span>\(m\)</span>
  ，用公钥中的两个参数计算</p>
-
 <span>$$c=m^e\pmod{n}$$</span>
-
 
 <p><span>\(c\)</span>
  就是加密后的信息了。</p>
-
-<h4 id="解密">解密</h4>
-
+<h4 id="heading1">解密</h4>
 <p>中学知识温习时间：</p>
-
 <span>$$ab\pmod{n}\\=(xn&#43;a_r)(yn&#43;b_r)\pmod{n}\\={a_r}{b_r}\pmod{n}\\=(a\pmod{n})(b\pmod{n})\pmod{n}$$</span>
 
-
 <p>所以：</p>
-
 <span>$$x^y\pmod{n}\\=(xx...x)\pmod{n}\\=(x\pmod{n})(x\pmod{n})...\pmod{n}\\=(x\pmod{n})^y\pmod{n}$$</span>
 
-
 <p>即在模运算中，只要算余数就可以了。</p>
-
 <p>由私钥所有者计算</p>
-
 <span>$$c^d\pmod{n}=(m^e\pmod{n})^d\pmod{n}=(m^e)^d\pmod{n}=m\pmod{n}$$</span>
 
-
 <p>就能还原原来的信息了。<del>（数学差真啰嗦啊。。。）</del></p>
-
-<h4 id="签名">签名</h4>
-
+<h4 id="heading2">签名</h4>
 <ol>
 <li>首先对要签名的信息作一个 <a href="https://en.wikipedia.org/wiki/Cryptographic_hash_function">message digest</a>，常用的如 MD5 和 SHA 系列；</li>
 <li>然后把这个 digest 转换成整数 <span>\(m\)</span>
@@ -222,9 +93,7 @@ if (!doNotTrack) {
  计算 <span>\(s=m^d\pmod{n}\)</span>
 </li>
 </ol>
-
-<h4 id="验证签名">验证签名</h4>
-
+<h4 id="heading3">验证签名</h4>
 <ol>
 <li>用公钥 <span>\((n,e)\)</span>
  计算 <span>\(v=s^e\pmod{n}\)</span>
@@ -234,19 +103,12 @@ if (!doNotTrack) {
 <li>独立对要签名的信息再作一次 digest</li>
 <li>对比这两个 digest，如果相同的话，那这个签名就是有效的</li>
 </ol>
-
-<h4 id="小结">小结</h4>
-
+<h4 id="heading4">小结</h4>
 <p>可以看到加解密和签名验签刚好是两个方向：前者是公钥加密发送给所有者解密，后者是用私钥签名发送给其他人用公钥验签；所以这就是为何一般<a href="http://www.di-mgt.com.au/rsa_alg.html#weaknesses">不建议使用相同的 key 同时用作加密和签名</a>：</p>
-
-<pre><code class="language-nohighlight">    Using the same key for encryption and signing
+<pre><code class="language-nohighlight" data-lang="nohighlight">    Using the same key for encryption and signing
     Given that the underlying mathematics is the same for encryption and signing, only in reverse, if an attacker can convince a key holder to sign an unformatted encrypted message using the same key then she gets the original.
-</code></pre>
-
-<h3 id="实际算法">实际算法</h3>
-
+</code></pre><h3 id="heading5">实际算法</h3>
 <p>包括 key 的生成算法，计算时的优化，对信息的编码等，以及 RSA 的数学上的证明；有兴趣可以看一下下面参考的链接，稍微摘录一些简单而重要的点：</p>
-
 <ul>
 <li>计算 <span>\(y=x^e\pmod{n}\)</span>
  （所谓 modular exponentiation）的复杂度大约为 <span>\(O(k^3)\)</span>
@@ -272,181 +134,37 @@ if (!doNotTrack) {
  推导出来，由于模是公开的（公钥的一部分），故 RSA 的其中一个安全因素在于：<a href="https://en.wikipedia.org/wiki/Integer_factorization">分解一个大数</a>是困难的。</li>
 <li>多个素数相乘结果作为模的一个好处是可以更快速的计算 <span>\(m=c^d\pmod{n}\)</span>
 
-
 <ul>
 <li>使用中国剩余定理（Chinese Remainder Theorem，CRT）可以把这个计算转换成对 <span>\(p,q\)</span>
  的 modular exponentiation 计算，而 <span>\(p, q\)</span>
  的长度都只有 <span>\(n\)</span>
  的一半，所以复杂度会降低到原来的<a href="http://www.di-mgt.com.au/crt_rsa.html#crtarithmetic">四分之一</a>：<span>\(O(2(\cfrac{k}{2})^3)=O(\cfrac{k^3}{4})\)</span>
 </li>
-</ul></li>
 </ul>
-
-<h3 id="参考">参考</h3>
-
+</li>
+</ul>
+<h3 id="heading6">参考</h3>
 <ul>
 <li><a href="http://www.di-mgt.com.au/rsa_alg.html">http://www.di-mgt.com.au/rsa_alg.html</a></li>
 <li><a href="http://www.di-mgt.com.au/rsa_theory.html">http://www.di-mgt.com.au/rsa_theory.html</a></li>
 </ul>
+
 </div>
 
-  <footer class="article-footer">
-    
-    
-    
-    <section class="bordered">
-      <header>
-        <div class="panel-title">CATEGORIES</div>
-      </header>
-      <div>
-        <ul class="p-terms">
-          
-          <li><a href="https://huangjunwen.github.io/categories/public-key-cryptography-%E7%AC%94%E8%AE%B0/">public key cryptography 笔记</a></li>
-          
-        </ul>
-      </div>
-    </section>
-    
-    
-    
-    <section class="bordered">
-      <header>
-        <div class="panel-title">TAGS</div>
-      </header>
-      <div>
-        <ul class="p-terms">
-          
-          <li><a href="https://huangjunwen.github.io/tags/rsa/">rsa</a></li>
-          
-        </ul>
-      </div>
-    </section>
-    
-    
-  </footer>
 
-</article>
-
-
-    
-	<div id="fb-root"></div>
-	<script>(function(d, s, id) {
-	  var js, fjs = d.getElementsByTagName(s)[0];
-	  if (d.getElementById(id)) return;
-	  js = d.createElement(s); js.id = id;
-	  js.src = "//connect.facebook.net/zh_CN/sdk.js#xfbml=1&version=v2.9";
-	  fjs.parentNode.insertBefore(js, fjs);
-	}(document, 'script', 'facebook-jssdk'));</script>
-
-	<div class="fb-comments"></div>
-    
-
-  </div>
-
-  <div class="col-md-4">
-    
-<aside class="l-sidebar">
-
-  <section class="panel panel-default">
-    <div class="panel-heading">
-      <div class="panel-title">LATESTS</div>
-    </div>
-    <div class="list-group">
-      
-      <a href="https://huangjunwen.github.io/post/2018/sqlw-mysql/" class="list-group-item">写了一个 MySQL 数据表和查询的 go 代码生成器</a>
-      
-      <a href="https://huangjunwen.github.io/post/2018/greenlet/" class="list-group-item">Greenlet 笔记</a>
-      
-      <a href="https://huangjunwen.github.io/post/2017/vault-database-secret-backend/" class="list-group-item">Vault Database Secret Backend 笔记</a>
-      
-      <a href="https://huangjunwen.github.io/post/2017/vault/" class="list-group-item">Vault 笔记</a>
-      
-      <a href="https://huangjunwen.github.io/post/2017/authentication_in_microservice/" class="list-group-item">微服务中的认证 (authentication) 问题</a>
-      
-      <a href="https://huangjunwen.github.io/post/2017/shamir-secret-sharding/" class="list-group-item">Shamir&#39;s Secret Sharding</a>
-      
-      <a href="https://huangjunwen.github.io/post/2017/public-key-cryptography-notes-2-1-asn1/" class="list-group-item">Public Key Cryptography 笔记（2.1）-- ASN.1</a>
-      
-      <a href="https://huangjunwen.github.io/post/2017/public-key-cryptography-notes-2-format-and-standard/" class="list-group-item">Public Key Cryptography 笔记（2）-- 存储格式和标准</a>
-      
-      <a href="https://huangjunwen.github.io/post/2017/public-key-cryptography-notes-1-rsa/" class="list-group-item">Public Key Cryptography 笔记（1）-- RSA</a>
-      
-      <a href="https://huangjunwen.github.io/post/2016/port-knocking-using-iptables/" class="list-group-item">用 iptables 来配置 port knocking</a>
-      
-    </div>
-  </section>
-
-  
-  <section class="panel panel-default">
-    <div class="panel-heading">
-      <div class="panel-title">CATEGORY</div>
-    </div>
-    <div class="list-group">
-      
-      <a href="https://huangjunwen.github.io/categories/public-key-cryptography-%E7%AC%94%E8%AE%B0" class="list-group-item">public-key-cryptography-笔记</a>
-      
-      <a href="https://huangjunwen.github.io/categories/sa" class="list-group-item">sa</a>
-      
-      <a href="https://huangjunwen.github.io/categories/%E9%80%A0%E8%BD%AE%E5%AD%90" class="list-group-item">造轮子</a>
-      
-    </div>
-  </section>
-  
-  <section class="panel panel-default">
-    <div class="panel-heading">
-      <div class="panel-title">TAG</div>
-    </div>
-    <div class="list-group">
-      
-      <a href="https://huangjunwen.github.io/tags/hashicorp-vault" class="list-group-item">hashicorp-vault</a>
-      
-      <a href="https://huangjunwen.github.io/tags/mysql" class="list-group-item">mysql</a>
-      
-      <a href="https://huangjunwen.github.io/tags/rsa" class="list-group-item">rsa</a>
-      
-      <a href="https://huangjunwen.github.io/tags/asn.1" class="list-group-item">asn.1</a>
-      
-      <a href="https://huangjunwen.github.io/tags/code-generator" class="list-group-item">code-generator</a>
-      
-      <a href="https://huangjunwen.github.io/tags/coroutine" class="list-group-item">coroutine</a>
-      
-      <a href="https://huangjunwen.github.io/tags/gnu-pg" class="list-group-item">gnu-pg</a>
-      
-      <a href="https://huangjunwen.github.io/tags/golang" class="list-group-item">golang</a>
-      
-      <a href="https://huangjunwen.github.io/tags/greenlet" class="list-group-item">greenlet</a>
-      
-      <a href="https://huangjunwen.github.io/tags/iptables" class="list-group-item">iptables</a>
-      
-    </div>
-  </section>
-  
-
-</aside>
-
-
-  </div>
-</div>
-
-      </div>
     </main>
 
-    <footer class="l-footer">
-      <div class="container">
-        <p>&copy; 2016~2018 <a href="mailto:kassarar@gmail.com">Huang JunWen</a>; All rights reserved.</p>
-        <aside>
-          <p>Powered by <a href="https://gohugo.io/">Hugo</a>.</p>
-          <p><a href="https://github.com/dim0627/hugo_theme_beg">Beg</a> designed by <a href="http://yet.unresolved.xyz/">Daisuke Tsuji</a>.</p>
-        </aside>
-      </div>
-    </footer>
-
-    <script src="//code.jquery.com/jquery-3.1.1.min.js"></script>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js" integrity="sha256-LVuWfOU0rWFMCJNl1xb3K2HSWfxtK4IPbqEerP1P83M=" crossorigin="anonymous"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-89264111-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
   </body>
 </html>
-

@@ -1,171 +1,60 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-<meta name="pinterest" content="nopin">
-<meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
-<meta name="generator" content="Hugo 0.48" />
-
-
-
-<link rel="canonical" href="https://huangjunwen.github.io/post/2017/vault-database-secret-backend/">
-
-
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/gruvbox-dark.min.css" integrity="sha256-LUdcdwBjq26ZxccbnPrUQyBoghJjHRR5ujhPVCC4Hb0=" crossorigin="anonymous" />
-    <title>Vault Database Secret Backend 笔记 - Jayven@dev</title>
-    
-<meta name="description" content="在当前版本（v0.7.2）这个 backend 还处于 beta 状态；这个 backend 应该是用来统一之前版本中各种数据库的 secret backend 的；使用前需要挂载 vault mount database，这里用 MySQL">
-
-<meta property="og:title" content="Vault Database Secret Backend 笔记 - Jayven@dev">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://huangjunwen.github.io/post/2017/vault-database-secret-backend/">
-<meta property="og:image" content="https://huangjunwen.github.io/images/default.png">
-<meta property="og:site_name" content="Jayven@dev">
-<meta property="og:description" content="在当前版本（v0.7.2）这个 backend 还处于 beta 状态；这个 backend 应该是用来统一之前版本中各种数据库的 secret backend 的；使用前需要挂载 vault mount database，这里用 MySQL">
-<meta property="og:locale" content="ja_JP">
-
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:site" content="Jayven@dev">
-<meta name="twitter:url" content="https://huangjunwen.github.io/post/2017/vault-database-secret-backend/">
-<meta name="twitter:title" content="Vault Database Secret Backend 笔记 - Jayven@dev">
-<meta name="twitter:description" content="在当前版本（v0.7.2）这个 backend 还处于 beta 状态；这个 backend 应该是用来统一之前版本中各种数据库的 secret backend 的；使用前需要挂载 vault mount database，这里用 MySQL">
-<meta name="twitter:image" content="https://huangjunwen.github.io/images/default.png">
-<meta property="fb:app_id" content="111286092806941">
-
-<script type="application/ld+json">
-  {
-    "@context": "http://schema.org",
-    "@type": "NewsArticle",
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id":"https://huangjunwen.github.io/"
-    },
-    "headline": "Vault Database Secret Backend 笔记 - Jayven@dev",
-    "image": {
-      "@type": "ImageObject",
-      "url": "https://huangjunwen.github.io/images/default.png",
-      "height": 800,
-      "width": 800
-    },
-    "datePublished": "2017-06-10T16:46:36JST",
-    "dateModified": "2017-06-10T16:46:36JST",
-    "author": {
-      "@type": "Person",
-      "name": "Jayven@dev"
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": "Jayven@dev",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://huangjunwen.github.io/images/logo.png",
-        "width": 600,
-        "height": 60
-      }
-    },
-    "description": "在当前版本（v0.7.2）这个 backend 还处于 beta 状态；这个 backend 应该是用来统一之前版本中各种数据库的 secret backend 的；使用前需要挂载 vault mount database，这里用 MySQL"
-  }
-</script>
-
-
-    <link href="https://huangjunwen.github.io/css/styles.css" rel="stylesheet">
-  </head>
-
-  <body>
-    
-    
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-89264111-1', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script>
-
-    
-
-    <header class="l-header">
-      <nav class="navbar navbar-default">
-        <div class="container">
-          <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="https://huangjunwen.github.io/">Jayven@dev</a>
-          </div>
-
-          
-          <div id="navbar" class="collapse navbar-collapse">
-            
-            <ul class="nav navbar-nav navbar-right">
-              
-              
-              <li><a href="/post">Posts</a></li>
-              
-              
-              
-              <li><a href="/categories">Categories</a></li>
-              
-              
-              
-              <li><a href="/tags">Tags</a></li>
-              
-              
-            </ul>
-            
-          </div>
-          
-
-        </div>
-      </nav>
-    </header>
-
-    <main>
-      <div class="container">
-        
-<div class="row">
-  <div class="col-md-8">
-
-    <nav class="p-crumb">
-      <ol class="breadcrumb">
-        <li><a href="https://huangjunwen.github.io/"><i class="fa fa-home" aria-hidden="true"></i></a></li>
-        
-        <li itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb"><a href="https://huangjunwen.github.io/post/" itemprop="url"><span itemprop="title">post</span></a></li>
-        
-        <li class="active">Vault Database Secret Backend 笔记</li>
-      </ol>
-    </nav>
-
-    <article class="single">
-  <header>
-    <ul class="p-facts">
-      <li><i class="fa fa-calendar" aria-hidden="true"></i><time datetime="2017-06-10T16:46:36JST">Jun 10, 2017</time></li>
-      <li><i class="fa fa-bookmark" aria-hidden="true"></i><a href="https://huangjunwen.github.io/post/">post</a></li>
-      
-    </ul>
-
-    <h1 class="title">Vault Database Secret Backend 笔记</h1>
-  </header>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-CN" lang="zh-CN">
+<head>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.60.1" />
 
   
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <div class="article-body">
+  <title>Vault Database Secret Backend 笔记 &middot; Coder Papa</title>
+  <meta name="description" content="" />
 
-<p>在当前版本（v0.7.2）这个 backend 还处于 beta 状态；这个 backend 应该是用来统一之前版本中各种数据库的 secret backend 的；使用前需要挂载 <code>vault mount database</code>，这里用 MySQL 来演示它的主要工作流程：</p>
+  
+  <link type="text/css" rel="stylesheet" href="https://huangjunwen.github.io/css/print.css" media="print">
+  <link type="text/css" rel="stylesheet" href="https://huangjunwen.github.io/css/poole.css">
+  <link type="text/css" rel="stylesheet" href="https://huangjunwen.github.io/css/syntax.css">
+  <link type="text/css" rel="stylesheet" href="https://huangjunwen.github.io/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700">
 
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  
+</head>
+
+  <body class="theme-base-0d layout-reverse">
+  <aside class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="https://huangjunwen.github.io/"><h1>Coder Papa</h1></a>
+      <p class="lead">
+       一个普通程序员老爸的笔记 
+      </p>
+    </div>
+
+    <nav>
+      <ul class="sidebar-nav">
+        <li><a href="https://huangjunwen.github.io/">Home</a> </li>
+        <li><a href="/post"> Posts </a></li><li><a href="/categories"> Categories </a></li><li><a href="/tags"> Tags </a></li><li><a href="https://github.com/huangjunwen"> Github.com </a></li>
+      </ul>
+    </nav>
+
+    <p>&copy; 2019. All rights reserved. </p>
+  </div>
+</aside>
+
+    <main class="content container">
+    <div class="post">
+  <h1>Vault Database Secret Backend 笔记</h1>
+  <time datetime=2017-06-10T16:46:36&#43;0800 class="post-date">Sat, Jun 10, 2017</time>
+  <p>在当前版本（v0.7.2）这个 backend 还处于 beta 状态；这个 backend 应该是用来统一之前版本中各种数据库的 secret backend 的；使用前需要挂载 <code>vault mount database</code>，这里用 MySQL 来演示它的主要工作流程：</p>
 <ul>
 <li>写入数据库配置，路径在 <code>database/config/$db_name</code> ，主要参数有：
-
 <ul>
 <li><code>db_name</code> 这个配置的名字</li>
 <li><code>plugin_name</code> 指定用何种数据库 driver plugin（mysql/postgres 等）</li>
@@ -173,50 +62,43 @@ if (!doNotTrack) {
 <li><code>allowed_roles</code> 指定的是允许哪些角色使用此配置（角色是啥下一步就会说明）</li>
 <li><strong>安全考虑：这个路径即使读权限也需要严格限制，因为它包含了相当高权限的数据库用户信息</strong></li>
 <li>例子：</li>
-</ul></li>
 </ul>
+</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ export db_name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;test&#34;</span>
+$ export role_name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;test_reader&#34;</span>
+$ export plugin_name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;mysql-legacy-database-plugin&#34;</span>             <span style="color:#75715e"># mysql 有多个 plugin，它们的区别这是创建的数据库用户名最大长度不一样，因为不同版本用户名长度有变化</span>
+$ export connection_url<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;root:password@tcp(127.0.0.1:3306)/&#34;</span>    <span style="color:#75715e"># 不要忘了最后的 /</span>
 
-<pre><code class="language-shell">$ export db_name=&quot;test&quot;
-$ export role_name=&quot;test_reader&quot;
-$ export plugin_name=&quot;mysql-legacy-database-plugin&quot;             # mysql 有多个 plugin，它们的区别这是创建的数据库用户名最大长度不一样，因为不同版本用户名长度有变化
-$ export connection_url=&quot;root:password@tcp(127.0.0.1:3306)/&quot;    # 不要忘了最后的 /
-
-$ vault write database/config/$db_name \
-&gt;   plugin_name=$plugin_name \
-&gt;   connection_url=$connection_url \
-&gt;   allowed_roles=&quot;$role_name&quot; ...
+$ vault write database/config/$db_name <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>&gt;   plugin_name<span style="color:#f92672">=</span>$plugin_name <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>&gt;   connection_url<span style="color:#f92672">=</span>$connection_url <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>&gt;   allowed_roles<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span>$role_name<span style="color:#e6db74">&#34;</span> ...
 
 The following warnings were returned from the Vault server:
-* Read access to this endpoint should be controlled via ACLs as it will return the connection details as is, including passwords, if any.
+* Read access to this endpoint should be controlled via ACLs as it will <span style="color:#66d9ef">return</span> the connection details as is, including passwords, <span style="color:#66d9ef">if</span> any.
 
-</code></pre>
-
-<ul>
+</code></pre></div><ul>
 <li>创建角色，角色代表的是数据库用户的类型，路径在 <code>database/roles/$role_name</code>，主要参数有：
-
 <ul>
 <li><code>db_name</code> 就是上一步创建的数据库配置名</li>
-<li><code>creation_statements</code>/<code>revocation_statements/...</code> 等是在创建具体用户／注销用户等时执行的语句，这些语句中可以添加如 <code>{{name}}</code>/<code>{{password}}</code> 等这些占位符，待生成真正用户时，这里会特换成动态生成的值，这些也就是这个 backend 要自动管理的秘密了，具体支持哪些占位符需要参阅各个 driver 的文档</li>
+<li><code>creation_statements`/</code>revocation_statements/&hellip;<code>等是在创建具体用户／注销用户等时执行的语句，这些语句中可以添加如</code>{{name}}<code>/</code>{{password}}` 等这些占位符，待生成真正用户时，这里会特换成动态生成的值，这些也就是这个 backend 要自动管理的秘密了，具体支持哪些占位符需要参阅各个 driver 的文档</li>
 <li>例子：</li>
-</ul></li>
 </ul>
-
-<pre><code class="language-shell">$ vault write database/roles/$role_name \
-&gt;   db_name=$db_name \
-&gt;   creation_statements=&quot;CREATE USER '{{name}}'@'%' IDENTIFIED BY '{{password}}';GRANT SELECT ON test.* TO '{{name}}'&quot; \
-&gt;   default_ttl=15m
+</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ vault write database/roles/$role_name <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>&gt;   db_name<span style="color:#f92672">=</span>$db_name <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>&gt;   creation_statements<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;CREATE USER &#39;{{name}}&#39;@&#39;%&#39; IDENTIFIED BY &#39;{{password}}&#39;;GRANT SELECT ON test.* TO &#39;{{name}}&#39;&#34;</span> <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>&gt;   default_ttl<span style="color:#f92672">=</span>15m
 
 Success! Data written to: database/roles/test_reader
     
-</code></pre>
-
-<p>这里创建了一个角色，用这个角色创建的用户对 <code>test</code> 数据库有读权限，且用户名／密码的默认有效时间是 15 分钟，超时且没有续租的话，Vault 就会删除掉这个用户。（注意由于 MySQL plugin 默认有 <code>revocation_statements</code> 可以不用提供，这些细节要看相关 plugin 的说明）</p>
-
+</code></pre></div><p>这里创建了一个角色，用这个角色创建的用户对 <code>test</code> 数据库有读权限，且用户名／密码的默认有效时间是 15 分钟，超时且没有续租的话，Vault 就会删除掉这个用户。（注意由于 MySQL plugin 默认有 <code>revocation_statements</code> 可以不用提供，这些细节要看相关 plugin 的说明）</p>
 <ul>
 <li>创建用户，路径在 <code>database/creds/$role_name</code></li>
 </ul>
-
-<pre><code class="language-shell">$ vault read database/creds/$role_name
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ vault read database/creds/$role_name
 
 Key             Value
 ---             -----
@@ -225,178 +107,32 @@ lease_duration  15m0s
 lease_renewable true
 password        96d17f10-9c67-8d44-26d1-c77dcd3e6ec1
 username        v-root-01fc63a1-
-</code></pre>
-
-<p>每次读取这个路径时，Vault 就会调用 <code>creation_statements</code> 创建一个新用户，返回动态生成的用户名密码，并对这个秘密关联租约（由 <code>lease_id</code> 标识），这个租约默认 15 分钟内有效，可以续租</p>
-
+</code></pre></div><p>每次读取这个路径时，Vault 就会调用 <code>creation_statements</code> 创建一个新用户，返回动态生成的用户名密码，并对这个秘密关联租约（由 <code>lease_id</code> 标识），这个租约默认 15 分钟内有效，可以续租</p>
 <p>由此，我们就可以把一个 MySQL root 权限的用户保存在 Vault 中，并由它来动态产生受限的数据库用户，这些受限的数据库用户可以存在时间很短，使用它的服务可以定时续租，一旦服务停止，这个用户很快就会被删除掉</p>
-
-<h4 id="一些细节">一些细节</h4>
-
+<h4 id="heading">一些细节</h4>
 <ul>
 <li><code>database/config/$db_name</code>: 数据库配置</li>
 <li><code>database/roles/$role_name</code>: 角色</li>
 <li><code>database/creds/test_reader/8e735c82-2eb7-53cf-9cc6-d9c9dc16dd96</code>: 具体用户秘密租约</li>
 </ul>
-
 <p>这三部分信息是独立，删除修改其中一个貌似并不会影响其它，例如删除数据库配置，角色还是在的，只是创建具体用户的时候会失败，说无法找到相应的数据库配置；又如删除了角色，则具体用户在被吊销的时候也会报错，导致数据库里面还残留没有被删除的用户。</p>
+
 </div>
 
-  <footer class="article-footer">
-    
-    
-    
-    <section class="bordered">
-      <header>
-        <div class="panel-title">CATEGORIES</div>
-      </header>
-      <div>
-        <ul class="p-terms">
-          
-        </ul>
-      </div>
-    </section>
-    
-    
-    
-    <section class="bordered">
-      <header>
-        <div class="panel-title">TAGS</div>
-      </header>
-      <div>
-        <ul class="p-terms">
-          
-          <li><a href="https://huangjunwen.github.io/tags/hashicorp-vault/">hashicorp-vault</a></li>
-          
-        </ul>
-      </div>
-    </section>
-    
-    
-  </footer>
 
-</article>
-
-
-    
-	<div id="fb-root"></div>
-	<script>(function(d, s, id) {
-	  var js, fjs = d.getElementsByTagName(s)[0];
-	  if (d.getElementById(id)) return;
-	  js = d.createElement(s); js.id = id;
-	  js.src = "//connect.facebook.net/zh_CN/sdk.js#xfbml=1&version=v2.9";
-	  fjs.parentNode.insertBefore(js, fjs);
-	}(document, 'script', 'facebook-jssdk'));</script>
-
-	<div class="fb-comments"></div>
-    
-
-  </div>
-
-  <div class="col-md-4">
-    
-<aside class="l-sidebar">
-
-  <section class="panel panel-default">
-    <div class="panel-heading">
-      <div class="panel-title">LATESTS</div>
-    </div>
-    <div class="list-group">
-      
-      <a href="https://huangjunwen.github.io/post/2018/sqlw-mysql/" class="list-group-item">写了一个 MySQL 数据表和查询的 go 代码生成器</a>
-      
-      <a href="https://huangjunwen.github.io/post/2018/greenlet/" class="list-group-item">Greenlet 笔记</a>
-      
-      <a href="https://huangjunwen.github.io/post/2017/vault-database-secret-backend/" class="list-group-item">Vault Database Secret Backend 笔记</a>
-      
-      <a href="https://huangjunwen.github.io/post/2017/vault/" class="list-group-item">Vault 笔记</a>
-      
-      <a href="https://huangjunwen.github.io/post/2017/authentication_in_microservice/" class="list-group-item">微服务中的认证 (authentication) 问题</a>
-      
-      <a href="https://huangjunwen.github.io/post/2017/shamir-secret-sharding/" class="list-group-item">Shamir&#39;s Secret Sharding</a>
-      
-      <a href="https://huangjunwen.github.io/post/2017/public-key-cryptography-notes-2-1-asn1/" class="list-group-item">Public Key Cryptography 笔记（2.1）-- ASN.1</a>
-      
-      <a href="https://huangjunwen.github.io/post/2017/public-key-cryptography-notes-2-format-and-standard/" class="list-group-item">Public Key Cryptography 笔记（2）-- 存储格式和标准</a>
-      
-      <a href="https://huangjunwen.github.io/post/2017/public-key-cryptography-notes-1-rsa/" class="list-group-item">Public Key Cryptography 笔记（1）-- RSA</a>
-      
-      <a href="https://huangjunwen.github.io/post/2016/port-knocking-using-iptables/" class="list-group-item">用 iptables 来配置 port knocking</a>
-      
-    </div>
-  </section>
-
-  
-  <section class="panel panel-default">
-    <div class="panel-heading">
-      <div class="panel-title">CATEGORY</div>
-    </div>
-    <div class="list-group">
-      
-      <a href="https://huangjunwen.github.io/categories/public-key-cryptography-%E7%AC%94%E8%AE%B0" class="list-group-item">public-key-cryptography-笔记</a>
-      
-      <a href="https://huangjunwen.github.io/categories/sa" class="list-group-item">sa</a>
-      
-      <a href="https://huangjunwen.github.io/categories/%E9%80%A0%E8%BD%AE%E5%AD%90" class="list-group-item">造轮子</a>
-      
-    </div>
-  </section>
-  
-  <section class="panel panel-default">
-    <div class="panel-heading">
-      <div class="panel-title">TAG</div>
-    </div>
-    <div class="list-group">
-      
-      <a href="https://huangjunwen.github.io/tags/hashicorp-vault" class="list-group-item">hashicorp-vault</a>
-      
-      <a href="https://huangjunwen.github.io/tags/mysql" class="list-group-item">mysql</a>
-      
-      <a href="https://huangjunwen.github.io/tags/rsa" class="list-group-item">rsa</a>
-      
-      <a href="https://huangjunwen.github.io/tags/asn.1" class="list-group-item">asn.1</a>
-      
-      <a href="https://huangjunwen.github.io/tags/code-generator" class="list-group-item">code-generator</a>
-      
-      <a href="https://huangjunwen.github.io/tags/coroutine" class="list-group-item">coroutine</a>
-      
-      <a href="https://huangjunwen.github.io/tags/gnu-pg" class="list-group-item">gnu-pg</a>
-      
-      <a href="https://huangjunwen.github.io/tags/golang" class="list-group-item">golang</a>
-      
-      <a href="https://huangjunwen.github.io/tags/greenlet" class="list-group-item">greenlet</a>
-      
-      <a href="https://huangjunwen.github.io/tags/iptables" class="list-group-item">iptables</a>
-      
-    </div>
-  </section>
-  
-
-</aside>
-
-
-  </div>
-</div>
-
-      </div>
     </main>
 
-    <footer class="l-footer">
-      <div class="container">
-        <p>&copy; 2016~2018 <a href="mailto:kassarar@gmail.com">Huang JunWen</a>; All rights reserved.</p>
-        <aside>
-          <p>Powered by <a href="https://gohugo.io/">Hugo</a>.</p>
-          <p><a href="https://github.com/dim0627/hugo_theme_beg">Beg</a> designed by <a href="http://yet.unresolved.xyz/">Daisuke Tsuji</a>.</p>
-        </aside>
-      </div>
-    </footer>
-
-    <script src="//code.jquery.com/jquery-3.1.1.min.js"></script>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js" integrity="sha256-LVuWfOU0rWFMCJNl1xb3K2HSWfxtK4IPbqEerP1P83M=" crossorigin="anonymous"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-89264111-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
   </body>
 </html>
-

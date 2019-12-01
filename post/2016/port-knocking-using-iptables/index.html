@@ -1,178 +1,64 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-<meta name="pinterest" content="nopin">
-<meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
-<meta name="generator" content="Hugo 0.48" />
-
-
-
-<link rel="canonical" href="https://huangjunwen.github.io/post/2016/port-knocking-using-iptables/">
-
-
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/gruvbox-dark.min.css" integrity="sha256-LUdcdwBjq26ZxccbnPrUQyBoghJjHRR5ujhPVCC4Hb0=" crossorigin="anonymous" />
-    <title>用 iptables 来配置 port knocking - Jayven@dev</title>
-    
-<meta name="description" content="对于正式环境的服务器来说，每当查看到 auth.log 里头那些撞大运的 ssh 登录尝试，心里总是有点惴惴不安的。虽然 public key authentication 号称安全，但是谁说得准呢？而且不知道配置">
-
-<meta property="og:title" content="用 iptables 来配置 port knocking - Jayven@dev">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://huangjunwen.github.io/post/2016/port-knocking-using-iptables/">
-<meta property="og:image" content="https://huangjunwen.github.io/images/default.png">
-<meta property="og:site_name" content="Jayven@dev">
-<meta property="og:description" content="对于正式环境的服务器来说，每当查看到 auth.log 里头那些撞大运的 ssh 登录尝试，心里总是有点惴惴不安的。虽然 public key authentication 号称安全，但是谁说得准呢？而且不知道配置">
-<meta property="og:locale" content="ja_JP">
-
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:site" content="Jayven@dev">
-<meta name="twitter:url" content="https://huangjunwen.github.io/post/2016/port-knocking-using-iptables/">
-<meta name="twitter:title" content="用 iptables 来配置 port knocking - Jayven@dev">
-<meta name="twitter:description" content="对于正式环境的服务器来说，每当查看到 auth.log 里头那些撞大运的 ssh 登录尝试，心里总是有点惴惴不安的。虽然 public key authentication 号称安全，但是谁说得准呢？而且不知道配置">
-<meta name="twitter:image" content="https://huangjunwen.github.io/images/default.png">
-<meta property="fb:app_id" content="111286092806941">
-
-<script type="application/ld+json">
-  {
-    "@context": "http://schema.org",
-    "@type": "NewsArticle",
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id":"https://huangjunwen.github.io/"
-    },
-    "headline": "用 iptables 来配置 port knocking - Jayven@dev",
-    "image": {
-      "@type": "ImageObject",
-      "url": "https://huangjunwen.github.io/images/default.png",
-      "height": 800,
-      "width": 800
-    },
-    "datePublished": "2016-12-20T10:20:54JST",
-    "dateModified": "2016-12-20T10:20:54JST",
-    "author": {
-      "@type": "Person",
-      "name": "Jayven@dev"
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": "Jayven@dev",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://huangjunwen.github.io/images/logo.png",
-        "width": 600,
-        "height": 60
-      }
-    },
-    "description": "对于正式环境的服务器来说，每当查看到 auth.log 里头那些撞大运的 ssh 登录尝试，心里总是有点惴惴不安的。虽然 public key authentication 号称安全，但是谁说得准呢？而且不知道配置"
-  }
-</script>
-
-
-    <link href="https://huangjunwen.github.io/css/styles.css" rel="stylesheet">
-  </head>
-
-  <body>
-    
-    
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-89264111-1', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script>
-
-    
-
-    <header class="l-header">
-      <nav class="navbar navbar-default">
-        <div class="container">
-          <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="https://huangjunwen.github.io/">Jayven@dev</a>
-          </div>
-
-          
-          <div id="navbar" class="collapse navbar-collapse">
-            
-            <ul class="nav navbar-nav navbar-right">
-              
-              
-              <li><a href="/post">Posts</a></li>
-              
-              
-              
-              <li><a href="/categories">Categories</a></li>
-              
-              
-              
-              <li><a href="/tags">Tags</a></li>
-              
-              
-            </ul>
-            
-          </div>
-          
-
-        </div>
-      </nav>
-    </header>
-
-    <main>
-      <div class="container">
-        
-<div class="row">
-  <div class="col-md-8">
-
-    <nav class="p-crumb">
-      <ol class="breadcrumb">
-        <li><a href="https://huangjunwen.github.io/"><i class="fa fa-home" aria-hidden="true"></i></a></li>
-        
-        <li itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb"><a href="https://huangjunwen.github.io/post/" itemprop="url"><span itemprop="title">post</span></a></li>
-        
-        <li class="active">用 iptables 来配置 port knocking</li>
-      </ol>
-    </nav>
-
-    <article class="single">
-  <header>
-    <ul class="p-facts">
-      <li><i class="fa fa-calendar" aria-hidden="true"></i><time datetime="2016-12-20T10:20:54JST">Dec 20, 2016</time></li>
-      <li><i class="fa fa-bookmark" aria-hidden="true"></i><a href="https://huangjunwen.github.io/post/">post</a></li>
-      
-    </ul>
-
-    <h1 class="title">用 iptables 来配置 port knocking</h1>
-  </header>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-CN" lang="zh-CN">
+<head>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.60.1" />
 
   
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <div class="article-body"><p>对于正式环境的服务器来说，每当查看到 auth.log 里头那些撞大运的 ssh 登录尝试，心里总是有点惴惴不安的。虽然 public key authentication 号称安全，但是谁说得准呢？而且不知道配置里会不会有错误，要是有多一层的防护总是好的。</p>
+  <title>用 iptables 来配置 port knocking &middot; Coder Papa</title>
+  <meta name="description" content="" />
 
+  
+  <link type="text/css" rel="stylesheet" href="https://huangjunwen.github.io/css/print.css" media="print">
+  <link type="text/css" rel="stylesheet" href="https://huangjunwen.github.io/css/poole.css">
+  <link type="text/css" rel="stylesheet" href="https://huangjunwen.github.io/css/syntax.css">
+  <link type="text/css" rel="stylesheet" href="https://huangjunwen.github.io/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700">
+
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  
+</head>
+
+  <body class="theme-base-0d layout-reverse">
+  <aside class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="https://huangjunwen.github.io/"><h1>Coder Papa</h1></a>
+      <p class="lead">
+       一个普通程序员老爸的笔记 
+      </p>
+    </div>
+
+    <nav>
+      <ul class="sidebar-nav">
+        <li><a href="https://huangjunwen.github.io/">Home</a> </li>
+        <li><a href="/post"> Posts </a></li><li><a href="/categories"> Categories </a></li><li><a href="/tags"> Tags </a></li><li><a href="https://github.com/huangjunwen"> Github.com </a></li>
+      </ul>
+    </nav>
+
+    <p>&copy; 2019. All rights reserved. </p>
+  </div>
+</aside>
+
+    <main class="content container">
+    <div class="post">
+  <h1>用 iptables 来配置 port knocking</h1>
+  <time datetime=2016-12-20T10:20:54&#43;0800 class="post-date">Tue, Dec 20, 2016</time>
+  <p>对于正式环境的服务器来说，每当查看到 auth.log 里头那些撞大运的 ssh 登录尝试，心里总是有点惴惴不安的。虽然 public key authentication 号称安全，但是谁说得准呢？而且不知道配置里会不会有错误，要是有多一层的防护总是好的。</p>
 <p>以前听说过 <a href="https://en.wikipedia.org/wiki/Port_knocking">Port knocking</a> 这种技术了，大致的思路就是设定一系列随机端口（例如：7421，3411，9088等等）作为暗号，用户在访问服务器之前，要依次“敲”一下这几个端口（即相继发送网络包到这几个端口上），这些端口当然是关闭状态啦，但服务器上可以侦察得到这些敲门，如果暗号对了，就给访问者 ip 开放服务端口（例如22）。</p>
-
 <p>还有一些更高级的，例如在网络包里存放加密信息等，不过这就复杂了，暂且不表。</p>
-
 <p>一般要实现这样的功能，需要有独立的 deamon 程序跑在后台检查日志，但有个问题，如果这个 deamon 不够健壮挂了的话，就再也没人上得去了。</p>
-
 <p>前段时间看到 <a href="https://www.digitalocean.com/">DigitalOcean</a> 上一篇单纯使用 iptables 就能实现 Port knocking 的教程，不需要单独开发 deamon，只要配置 iptables 的 rules 就能实现这样的功能，觉得很实用，分享在此：</p>
-
 <p><a href="https://www.digitalocean.com/community/tutorials/how-to-configure-port-knocking-using-only-iptables-on-an-ubuntu-vps">https://www.digitalocean.com/community/tutorials/how-to-configure-port-knocking-using-only-iptables-on-an-ubuntu-vps</a></p>
-
 <p>不过我用的时候发现个问题，就是 tcp 包在发送的时候，好像一次过会发送多个包，这样敲门的序列就会变成类似：</p>
-
 <pre><code>7421
 7421
 3411
@@ -180,229 +66,80 @@ if (!doNotTrack) {
 9088
 9088
 ...
-</code></pre>
+</code></pre><p>所以我把 rules 改成接纳每个端口可以连续 N 次，只要下一个不一样的是正确的就可以接受：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e">#!/bin/bash
+</span><span style="color:#75715e"></span>
+PORT1<span style="color:#f92672">=</span>xxxx
+PORT2<span style="color:#f92672">=</span>xxxx
+PORT3<span style="color:#f92672">=</span>xxxx
 
-<p>所以我把 rules 改成接纳每个端口可以连续 N 次，只要下一个不一样的是正确的就可以接受：</p>
-
-<pre><code class="language-bash">#!/bin/bash
-
-PORT1=xxxx
-PORT2=xxxx
-PORT3=xxxx
-
-# reset firewall
+<span style="color:#75715e"># reset firewall</span>
 iptables -F
 iptables -X
 iptables -P INPUT ACCEPT
 iptables -P FORWARD ACCEPT
 iptables -P OUTPUT ACCEPT
 
-# create new chains used by port knocking
+<span style="color:#75715e"># create new chains used by port knocking</span>
 iptables -N KNOCKING
 iptables -N GATE1
 iptables -N GATE2
 iptables -N GATE3
 iptables -N PASSED
 
-# accept current connections (keep current SSH connections)
+<span style="color:#75715e"># accept current connections (keep current SSH connections)</span>
 iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
 
-# accept local machine's connection
+<span style="color:#75715e"># accept local machine&#39;s connection</span>
 iptables -A INPUT -i lo -j ACCEPT
 
-# accept http/https or other exported services
-iptables -A INPUT -p tcp --dport 80 -j ACCEPT
-iptables -A INPUT -p tcp --dport 443 -j ACCEPT
+<span style="color:#75715e"># accept http/https or other exported services</span>
+iptables -A INPUT -p tcp --dport <span style="color:#ae81ff">80</span> -j ACCEPT
+iptables -A INPUT -p tcp --dport <span style="color:#ae81ff">443</span> -j ACCEPT
 
-# now pass all other to the KNOCKING chain
+<span style="color:#75715e"># now pass all other to the KNOCKING chain</span>
 iptables -A INPUT -j KNOCKING
 
-# KNOCKING dispatch
-iptables -A KNOCKING -m recent --reap --rcheck --seconds 3600 --name AUTH3 -j PASSED
-iptables -A KNOCKING -m recent --reap --rcheck --seconds 10 --name AUTH2 -j GATE3
-iptables -A KNOCKING -m recent --reap --rcheck --seconds 10 --name AUTH1 -j GATE2
+<span style="color:#75715e"># KNOCKING dispatch</span>
+iptables -A KNOCKING -m recent --reap --rcheck --seconds <span style="color:#ae81ff">3600</span> --name AUTH3 -j PASSED
+iptables -A KNOCKING -m recent --reap --rcheck --seconds <span style="color:#ae81ff">10</span> --name AUTH2 -j GATE3
+iptables -A KNOCKING -m recent --reap --rcheck --seconds <span style="color:#ae81ff">10</span> --name AUTH1 -j GATE2
 iptables -A KNOCKING -j GATE1
 
 iptables -A GATE1 -p tcp --dport $PORT1 -m recent --name AUTH1 --set -j DROP
 iptables -A GATE1 -j DROP
 
-iptables -A GATE2 -p tcp --dport $PORT1 -j DROP         # allow $PORT1 duplication
+iptables -A GATE2 -p tcp --dport $PORT1 -j DROP         <span style="color:#75715e"># allow $PORT1 duplication</span>
 iptables -A GATE2 -m recent --name AUTH1 --remove
 iptables -A GATE2 -p tcp --dport $PORT2 -m recent --name AUTH2 --set -j DROP
 iptables -A GATE2 -j GATE1
 
-iptables -A GATE3 -p tcp --dport $PORT2 -j DROP         # allow $PORT2 duplication
+iptables -A GATE3 -p tcp --dport $PORT2 -j DROP         <span style="color:#75715e"># allow $PORT2 duplication</span>
 iptables -A GATE3 -m recent --name AUTH2 --remove
 iptables -A GATE3 -p tcp --dport $PORT3 -m recent --name AUTH3 --set -j DROP
 iptables -A GATE3 -j GATE1
 
-iptables -A PASSED -p tcp --dport $PORT3 -j DROP        # allow $PORT3 duplication
-iptables -A PASSED -p tcp --dport 22 -j ACCEPT
+iptables -A PASSED -p tcp --dport $PORT3 -j DROP        <span style="color:#75715e"># allow $PORT3 duplication</span>
+iptables -A PASSED -p tcp --dport <span style="color:#ae81ff">22</span> -j ACCEPT
 iptables -A PASSED -j DROP
-</code></pre>
+</code></pre></div><p>另外还有些修改，例如 AUTH3 的时候，允许用户有一个小时（3600秒）的时间可以随意连接 22 端口。</p>
 
-<p>另外还有些修改，例如 AUTH3 的时候，允许用户有一个小时（3600秒）的时间可以随意连接 22 端口。</p>
 </div>
 
-  <footer class="article-footer">
-    
-    
-    
-    <section class="bordered">
-      <header>
-        <div class="panel-title">CATEGORIES</div>
-      </header>
-      <div>
-        <ul class="p-terms">
-          
-          <li><a href="https://huangjunwen.github.io/categories/sa/">sa</a></li>
-          
-        </ul>
-      </div>
-    </section>
-    
-    
-    
-    <section class="bordered">
-      <header>
-        <div class="panel-title">TAGS</div>
-      </header>
-      <div>
-        <ul class="p-terms">
-          
-          <li><a href="https://huangjunwen.github.io/tags/iptables/">iptables</a></li>
-          
-          <li><a href="https://huangjunwen.github.io/tags/port-knocking/">port-knocking</a></li>
-          
-        </ul>
-      </div>
-    </section>
-    
-    
-  </footer>
 
-</article>
-
-
-    
-	<div id="fb-root"></div>
-	<script>(function(d, s, id) {
-	  var js, fjs = d.getElementsByTagName(s)[0];
-	  if (d.getElementById(id)) return;
-	  js = d.createElement(s); js.id = id;
-	  js.src = "//connect.facebook.net/zh_CN/sdk.js#xfbml=1&version=v2.9";
-	  fjs.parentNode.insertBefore(js, fjs);
-	}(document, 'script', 'facebook-jssdk'));</script>
-
-	<div class="fb-comments"></div>
-    
-
-  </div>
-
-  <div class="col-md-4">
-    
-<aside class="l-sidebar">
-
-  <section class="panel panel-default">
-    <div class="panel-heading">
-      <div class="panel-title">LATESTS</div>
-    </div>
-    <div class="list-group">
-      
-      <a href="https://huangjunwen.github.io/post/2018/sqlw-mysql/" class="list-group-item">写了一个 MySQL 数据表和查询的 go 代码生成器</a>
-      
-      <a href="https://huangjunwen.github.io/post/2018/greenlet/" class="list-group-item">Greenlet 笔记</a>
-      
-      <a href="https://huangjunwen.github.io/post/2017/vault-database-secret-backend/" class="list-group-item">Vault Database Secret Backend 笔记</a>
-      
-      <a href="https://huangjunwen.github.io/post/2017/vault/" class="list-group-item">Vault 笔记</a>
-      
-      <a href="https://huangjunwen.github.io/post/2017/authentication_in_microservice/" class="list-group-item">微服务中的认证 (authentication) 问题</a>
-      
-      <a href="https://huangjunwen.github.io/post/2017/shamir-secret-sharding/" class="list-group-item">Shamir&#39;s Secret Sharding</a>
-      
-      <a href="https://huangjunwen.github.io/post/2017/public-key-cryptography-notes-2-1-asn1/" class="list-group-item">Public Key Cryptography 笔记（2.1）-- ASN.1</a>
-      
-      <a href="https://huangjunwen.github.io/post/2017/public-key-cryptography-notes-2-format-and-standard/" class="list-group-item">Public Key Cryptography 笔记（2）-- 存储格式和标准</a>
-      
-      <a href="https://huangjunwen.github.io/post/2017/public-key-cryptography-notes-1-rsa/" class="list-group-item">Public Key Cryptography 笔记（1）-- RSA</a>
-      
-      <a href="https://huangjunwen.github.io/post/2016/port-knocking-using-iptables/" class="list-group-item">用 iptables 来配置 port knocking</a>
-      
-    </div>
-  </section>
-
-  
-  <section class="panel panel-default">
-    <div class="panel-heading">
-      <div class="panel-title">CATEGORY</div>
-    </div>
-    <div class="list-group">
-      
-      <a href="https://huangjunwen.github.io/categories/public-key-cryptography-%E7%AC%94%E8%AE%B0" class="list-group-item">public-key-cryptography-笔记</a>
-      
-      <a href="https://huangjunwen.github.io/categories/sa" class="list-group-item">sa</a>
-      
-      <a href="https://huangjunwen.github.io/categories/%E9%80%A0%E8%BD%AE%E5%AD%90" class="list-group-item">造轮子</a>
-      
-    </div>
-  </section>
-  
-  <section class="panel panel-default">
-    <div class="panel-heading">
-      <div class="panel-title">TAG</div>
-    </div>
-    <div class="list-group">
-      
-      <a href="https://huangjunwen.github.io/tags/hashicorp-vault" class="list-group-item">hashicorp-vault</a>
-      
-      <a href="https://huangjunwen.github.io/tags/mysql" class="list-group-item">mysql</a>
-      
-      <a href="https://huangjunwen.github.io/tags/rsa" class="list-group-item">rsa</a>
-      
-      <a href="https://huangjunwen.github.io/tags/asn.1" class="list-group-item">asn.1</a>
-      
-      <a href="https://huangjunwen.github.io/tags/code-generator" class="list-group-item">code-generator</a>
-      
-      <a href="https://huangjunwen.github.io/tags/coroutine" class="list-group-item">coroutine</a>
-      
-      <a href="https://huangjunwen.github.io/tags/gnu-pg" class="list-group-item">gnu-pg</a>
-      
-      <a href="https://huangjunwen.github.io/tags/golang" class="list-group-item">golang</a>
-      
-      <a href="https://huangjunwen.github.io/tags/greenlet" class="list-group-item">greenlet</a>
-      
-      <a href="https://huangjunwen.github.io/tags/iptables" class="list-group-item">iptables</a>
-      
-    </div>
-  </section>
-  
-
-</aside>
-
-
-  </div>
-</div>
-
-      </div>
     </main>
 
-    <footer class="l-footer">
-      <div class="container">
-        <p>&copy; 2016~2018 <a href="mailto:kassarar@gmail.com">Huang JunWen</a>; All rights reserved.</p>
-        <aside>
-          <p>Powered by <a href="https://gohugo.io/">Hugo</a>.</p>
-          <p><a href="https://github.com/dim0627/hugo_theme_beg">Beg</a> designed by <a href="http://yet.unresolved.xyz/">Daisuke Tsuji</a>.</p>
-        </aside>
-      </div>
-    </footer>
-
-    <script src="//code.jquery.com/jquery-3.1.1.min.js"></script>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js" integrity="sha256-LVuWfOU0rWFMCJNl1xb3K2HSWfxtK4IPbqEerP1P83M=" crossorigin="anonymous"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-89264111-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
   </body>
 </html>
-
