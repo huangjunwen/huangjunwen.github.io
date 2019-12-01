@@ -55,8 +55,8 @@
   <script type="text/javascript" async src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 
 <p><a href="https://www.hashicorp.com">Hashicorp</a> 这家公司的产品都很有意思，其中 <a href="https://www.vaultproject.io/">Vault</a> 是一个用来集中管理敏感信息（密码，各种 token，证书，key 等等）的工具。</p>
-<p>Vault server 运行起来之后有两种状态：<em>seal/unseal（密封／解封）</em>  ，这是因为：</p>
-<p>Vault 的数据是加密储存在磁盘上的：由  <strong>encryption key</strong>  加密，这个  encryption key  是由  <strong>master key</strong>  加密储存在磁盘上，而  master key  是不存放在磁盘上。所以当 Vault server 刚启动时，由于  master key  未知，故  encryption key  以及实际数据都是无法被解密访问的，这种状态就称之为<em>seal（密封）</em> ，<em>unseal（解封）</em> 就是重建  master key  的过程。</p>
+<p>Vault server 运行起来之后有两种状态：<strong>seal/unseal (密封/解封)</strong>  ，这是因为：</p>
+<p>Vault 的数据是加密储存在磁盘上的：由  <strong>encryption key</strong>  加密，这个  encryption key  是由  <strong>master key</strong>  加密储存在磁盘上，而  master key  是不存放在磁盘上。所以当 Vault server 刚启动时，由于  master key  未知，故  encryption key  以及实际数据都是无法被解密访问的，这种状态就称之为<strong>seal (密封)</strong> ，<strong>unseal(解封)</strong> 就是重建  master key  的过程。</p>
 <p>由于 master key 太重要了，Vault 使用所谓的 <a href="https://en.wikipedia.org/wiki/Shamir%27s_Secret_Sharing">Shamir's Secret Sharing</a> 算法把这个 master key 切分并分发给 n 个人，只有当这 n 个人里的最少 k 个人授权提供他们持有的部分，vault 才能重构出这个 master key，这个算法挺有趣，所以记录下来：</p>
 <h3 id="heading">目标</h3>
 <p>密码 <span>\(S\)</span>
