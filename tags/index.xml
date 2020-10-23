@@ -6,10 +6,28 @@
     <description>Recent content in Tags on Coder Papa</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Mon, 10 Sep 2018 20:51:26 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 12 Sep 2020 12:23:00 +0800</lastBuildDate>
     
 	<atom:link href="https://huangjunwen.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>dht</title>
+      <link>https://huangjunwen.github.io/tags/dht/</link>
+      <pubDate>Sat, 12 Sep 2020 12:23:00 +0800</pubDate>
+      
+      <guid>https://huangjunwen.github.io/tags/dht/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>kademlia</title>
+      <link>https://huangjunwen.github.io/tags/kademlia/</link>
+      <pubDate>Sat, 12 Sep 2020 12:23:00 +0800</pubDate>
+      
+      <guid>https://huangjunwen.github.io/tags/kademlia/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>code-generator</title>
@@ -75,7 +93,7 @@
     </item>
     
     <item>
-      <title>hashicorp-vault</title>
+      <title>Hashicorp-Vault</title>
       <link>https://huangjunwen.github.io/tags/hashicorp-vault/</link>
       <pubDate>Sat, 10 Jun 2017 16:46:36 +0800</pubDate>
       
