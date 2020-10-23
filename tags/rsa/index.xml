@@ -26,7 +26,7 @@
       <pubDate>Tue, 24 Jan 2017 11:52:55 +0800</pubDate>
       
       <guid>https://huangjunwen.github.io/post/2017/public-key-cryptography-notes-1-rsa/</guid>
-      <description>这一系列的笔记主要是对学习到的公钥加密体系知识的记录和梳理，主要以 RSA 算法为代表，以及从中衍生开去的各种应用：ssl/tls，ssh，gpg 等</description>
+      <description>MathJax = { svg: { fontCache: &#39;local&#39; } } 这一系列的笔记主要是对学习到的公钥加密体系知识的记录和梳理，主要以 RSA 算法为代表，以及从中衍生开去的各种应用：ssl/tls</description>
     </item>
     
   </channel>

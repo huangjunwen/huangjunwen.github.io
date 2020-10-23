@@ -52,7 +52,15 @@
     <div class="post">
   <h1>Shamir&#39;s Secret Sharding</h1>
   <time datetime=2017-04-23T09:27:43&#43;0800 class="post-date">Sun, Apr 23, 2017</time>
-  <script type="text/javascript" async src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+  <script>
+
+MathJax = {
+  svg: {
+    fontCache: 'local'
+  }
+}
+</script>
+<script type="text/javascript" async src="//cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-svg.js"></script>
 
 <p><a href="https://www.hashicorp.com">Hashicorp</a> 这家公司的产品都很有意思，其中 <a href="https://www.vaultproject.io/">Vault</a> 是一个用来集中管理敏感信息（密码，各种 token，证书，key 等等）的工具。</p>
 <p>Vault server 运行起来之后有两种状态：<strong>seal/unseal (密封/解封)</strong>  ，这是因为：</p>

@@ -17,7 +17,7 @@
       <pubDate>Sat, 12 Sep 2020 12:23:00 +0800</pubDate>
       
       <guid>https://huangjunwen.github.io/post/2020/kademlia/</guid>
-      <description>Kademlia 是一种 p2p 网络的分布式哈希表 (DHT: distributed hash table). 有别于单机版的 hash table, p2p DHT 需要将 key-value 键值对存放在大量的 (但不稳定的) p2p 节点上的, 并提供远程的 (RPC) 存取方法. 键空间</description>
+      <description>MathJax = { svg: { fontCache: &#39;local&#39; } } Kademlia 是一种 p2p 网络的分布式哈希表 (DHT: distributed hash table). 有别于单机版的 hash table, p2p DHT 需要将 key-value 键值对存放在大量的 (但不稳定的) p2p 节点上的, 并提供远程的</description>
     </item>
     
   </channel>

@@ -52,7 +52,15 @@
     <div class="post">
   <h1>Public Key Cryptography 笔记（1）-- RSA</h1>
   <time datetime=2017-01-24T11:52:55&#43;0800 class="post-date">Tue, Jan 24, 2017</time>
-  <script type="text/javascript" async src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+  <script>
+
+MathJax = {
+  svg: {
+    fontCache: 'local'
+  }
+}
+</script>
+<script type="text/javascript" async src="//cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-svg.js"></script>
 
 <p>这一系列的笔记主要是对学习到的公钥加密体系知识的记录和梳理，主要以 RSA 算法为代表，以及从中衍生开去的各种应用：ssl/tls，ssh，gpg 等等我们每天都依赖的东西。</p>
 <h3 id="rsa-">RSA 主要原理</h3>

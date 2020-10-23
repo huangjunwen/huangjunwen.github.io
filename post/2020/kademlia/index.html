@@ -52,7 +52,15 @@
     <div class="post">
   <h1>Kademlia 笔记</h1>
   <time datetime=2020-09-12T12:23:00&#43;0800 class="post-date">Sat, Sep 12, 2020</time>
-  <script type="text/javascript" async src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+  <script>
+
+MathJax = {
+  svg: {
+    fontCache: 'local'
+  }
+}
+</script>
+<script type="text/javascript" async src="//cdn.jsdelivr.net/npm/mathjax@3.1.2/es5/tex-svg.js"></script>
 
 <p><a href="https://en.wikipedia.org/wiki/Kademlia">Kademlia</a> 是一种 p2p 网络的分布式哈希表 (<a href="https://en.wikipedia.org/wiki/Distributed_hash_table">DHT</a>: distributed hash table). 有别于单机版的 hash table, p2p DHT 需要将 key-value 键值对存放在大量的 (但不稳定的) p2p 节点上的, 并提供远程的 (RPC) 存取方法.</p>
 <h3 id="-key-space">键空间 (Key Space)</h3>
@@ -119,12 +127,12 @@
 <p>其实很好理解，因为越<strong>亲</strong>的 key 它们二进制表示的共同前缀就越长；反之则共同前缀短，即某个高位就不一致了，
 不一致时异或得 1，由于二进制高位权重大，则距离就（大）远了，对比:</p>
 <ul>
-<li>距离最近的，前 3 位都一致，只有最后一位不一致 <span>$$\frac{\quad 0b0110 \\ ⊕ 0b0111}{\quad 0b0001}$$</span>
+<li>距离最近的，前 3 位都一致，只有最后一位不一致 <span>$$\frac{\begin{align}\quad 0b0110 \\ ⊕ 0b0111\end{align}}{\quad 0b0001}$$</span>
 </li>
-<li>距离最远的，第一位就不一致了（实际每一位都不一致） <span>$$\frac{\quad 0b0110 \\ ⊕ 0b1001}{\quad 0b1111}$$</span>
+<li>距离最远的，第一位就不一致了（实际每一位都不一致） <span>$$\frac{\begin{align}\quad 0b0110 \\ ⊕ 0b1001\end{align}}{\quad 0b1111}$$</span>
 </li>
 </ul>
-<p>kademlia 将跟 <strong>G</strong> 二进制共同前缀长度一样的键值归到一个 <strong>桶（k-bucket）</strong> 里，例如这里 n 为 4，故有 4 个桶；每一个桶里的键值跟 G 的距离处于 <span>\([2^{n-i-1}, 2^{n-i})\)</span>
+<p>kademlia 将跟 <strong>G</strong> 二进制共同前缀长度一样的键值归到一个 <strong>桶（k-bucket）</strong> 里，例如这里 n 为 4，故有 4 个桶；每一个桶里的键值跟 <strong>G</strong> 的距离处于 <span>\([2^{n-i-1}, 2^{n-i}-1]\)</span>
  区间之内（其中 <span>\(i\)</span>
  是二进制共同前缀长度）.</p>
 <h3 id="todo-">TODO &hellip;.</h3>
@@ -136,10 +144,10 @@
 </li>
 <li>对称的: <span>\(Dis(A, B) = Dis(B, A)\)</span>
 </li>
-<li>满足三角不等式, 即给定三个 key, 满足 <span>$$Dis(A, C) ≤ Dis(A, B) &#43; Dis(B, C)$$</span>
+<li>满足三角不等式, 即给定三个 key, 满足 <span>$$Dis(A, C) \le Dis(A, B) &#43; Dis(B, C)$$</span>
 
 <ul>
-<li>这是因为 <span>$$Dis(A, C) = A ⊕ C = A ⊕ B ⊕ B ⊕ C = Dis(A, B) ⊕ Dis(B, C) ≤ Dis(A, B) &#43; Dis(B, C) $$</span>
+<li>这是因为 <span>$$\begin{eqnarray} Dis(A, C) &amp;=&amp; A ⊕ C \\ &amp;=&amp; A ⊕ B ⊕ B ⊕ C \\ &amp;=&amp; Dis(A, B) ⊕ Dis(B, C) \\ &amp;\le&amp; Dis(A, B) &#43; Dis(B, C)\end{eqnarray}$$</span>
 </li>
 <li>其中最后一步不等式 <span>\(X ⊕ Y ≤ X &#43; Y\)</span>
  是因为异或实际上就是不带进位 (carry) 的加法，故必然小于等于加法得出的结果</li>

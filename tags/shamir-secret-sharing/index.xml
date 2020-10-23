@@ -17,7 +17,7 @@
       <pubDate>Sun, 23 Apr 2017 09:27:43 +0800</pubDate>
       
       <guid>https://huangjunwen.github.io/post/2017/shamir-secret-sharding/</guid>
-      <description>Hashicorp 这家公司的产品都很有意思，其中 Vault 是一个用来集中管理敏感信息（密码，各种 token，证书，key 等等）的工具。 Vault server 运行起来之后有两种状态：s</description>
+      <description>MathJax = { svg: { fontCache: &#39;local&#39; } } Hashicorp 这家公司的产品都很有意思，其中 Vault 是一个用来集中管理敏感信息（密码，各种 token，证书，key 等等）的工具。 Vault server 运行起来</description>
     </item>
     
   </channel>
