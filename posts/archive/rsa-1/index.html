@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>RSA 简介 (1) - 算法</title>
+    
+    <link rel="stylesheet" href="/res/libs/fontawesome/css/all.min.css"></link>
+    <link rel="stylesheet" href="/res/libs/chota/css/chota.min.css"></link>
+    <link rel="stylesheet" href="/res/style/site.min.1cfb2065638c6eda7f5ceb0b60110baf5593ae09a1298e64096971386bd084ca.css"></link>
+    <script type="text/javascript" src="/res/script/site.min.6881188133395162222bed24f23dd6cbdd74f0b93a54b35a6b929b5178e10fe9.js"></script>
+    <link id="markdown-body-style" rel="stylesheet" href="/res/style/markdown-body.min.f4f92656c58fcefbc647dacbc170e419ce382a807b91958fc6c683580a8094f8.css"></link>
+    <script type="text/javascript" src="/res/script/markdown-body.min.63397e711af2142bc1376b6549029b00deca5b6ec13cd8f0d4109125ddc524ca.js"></script>
+  </head>
+
+  <body>
+    
+    <div id="header">
+      
+      <nav id="navbar" class="row">
+        <div class="is-left col-12 col-3-md row">
+          <a id="navbar-brand" class="brand" href="/">Coder Papa</a>
+          <label id="navbar-toggle-menu" for="navbar-toggle-menu-state" class="hide-md hide-lg">
+            <span></span>
+            <span></span>
+            <span></span>
+          </label>
+        </div>
+        <input id="navbar-toggle-menu-state" type="checkbox" style="display:none"></input>
+        <div id="navbar-menu" class="is-right col-12 col-9-md row hide-xs-noimportant hide-sm-noimportant">
+          
+          <a href="/posts">Posts</a>
+          
+          <a href="/notes">Notes</a>
+          
+          
+          <a href="/tags">Tags</a>
+          
+          
+          <a href="https://github.com/huangjunwen"><i class='fab fa-github'></i></a>
+          
+          <a href="javascript:void(0)" id="navbar-toggle-mode" onclick="return toggleColorMode()"></a>
+        </div>
+      </nav>
+    </div>
+
+    
+    <div id="main" class="row">
+      <div id="main-left" class="hide-xs hide-sm col-2-md col-3-lg">
+        
+      </div>
+      <div id="main-center" class="col-12 col-8-md col-6-lg mdb">
+        <div id="main-title" class="text-center">
+          
+  <h5 class="no-toc"><span class="breadcrumbnav"><span><a href="/posts/">POSTS</a></span><i class="fa fa-fw fa-angle-double-right"></i><span><a href="/posts/archive/">ARCHIVE</a></span></span></h5>
+  <h1>RSA 简介 (1) - 算法</h1>
+  <small>
+    <time class="" datetime="2017-01-24T11:52:55&#43;0800">Tue, 2017/01/24</time>
+  </small>
+  <p>
+    
+    <a href="/tags/rsa/"><span class="tag is-small">rsa</span></a>
+    <a href="/tags/algo/"><span class="tag is-small">algo</span></a>
+  </p>
+  
+        </div>
+        <div id="main-body">
+          
+  <article id="content-body">
+    <p>这一系列简单介绍 RSA 公钥加密体系</p>
+<h3 id="rsa-主要原理">RSA 主要原理</h3>
+<p><a href="https://en.wikipedia.org/wiki/RSA_(cryptosystem)">RSA</a>
+的原理是在于能够找到三个很大的正整数 \(e,d,n\) 使得对于任何 \(0 \le m
+\lt n\)：</p>
+<p>\[
+(m^e)^d \equiv m \pmod{n}
+\]</p>
+<p>其中公钥为 \((n,e)\)，可以发送给任何人；私钥为
+\((n,d)\)，只能由所有者掌握。RSA 支持 4
+种操作：加密/解密，签名/验证签名。</p>
+<h4 id="加密">加密</h4>
+<p>首先用一些编码手段把需要加密的信息转换成整数
+\(m\)，用公钥中的两个参数计算</p>
+<p>\[
+c = m^e \pmod{n}
+\]</p>
+<p>其中 \(c\) 就是加密后的信息了。</p>
+<h4 id="解密">解密</h4>
+<p>中学知识温习时间：</p>
+<p>\[
+\begin{align}
+ab \pmod{n} &amp;= (xn+a_r)(yn+b_r) \pmod{n} \\
+            &amp;= a_r b_r \pmod{n} \\
+            &amp;= (a \pmod{n})(b \pmod{n}) \pmod{n}
+\end{align}
+\]</p>
+<p>即在模运算中，只要算余数就可以了。</p>
+<p>因此，由私钥所有者计算</p>
+<p>\[
+\begin{align}
+c^d \pmod{n} &amp;= (m^e \pmod{n})^d \pmod{n} \\
+             &amp;= (m^e)^d \pmod{n} \\
+             &amp;= m \pmod{n}
+\end{align}
+\]</p>
+<p>就能还原原来的信息了。</p>
+<h4 id="签名">签名</h4>
+<ol type="1">
+<li>首先对要签名的信息作一个 <a
+href="https://en.wikipedia.org/wiki/Cryptographic_hash_function">message
+digest</a>，常用的如 MD5 和 SHA 系列；</li>
+<li>然后把这个 digest 转换成整数 \(m\) 使得 \(1 \le m \lt n\)；</li>
+<li>最后用私钥 \((n,d)\) 计算 \(s = m^d \pmod{n}\)</li>
+</ol>
+<h4 id="验证签名">验证签名</h4>
+<ol type="1">
+<li>用公钥 \((n,e)\) 计算 \(v = s^e \pmod{n}\)</li>
+<li>把 \(v\) 转换回 digest</li>
+<li>独立对要签名的信息再作一次 digest</li>
+<li>对比这两个 digest，如果相同的话，那这个签名就是有效的</li>
+</ol>
+<h4 id="小结">小结</h4>
+<p>可以看到加解密和签名验签刚好是两个方向：前者是公钥加密发送给所有者解密，后者是用私钥签名发送给其他人用公钥验签；所以这就是为何一般<a
+href="http://www.di-mgt.com.au/rsa_alg.html#weaknesses">不建议使用相同的
+key 同时用作加密和签名</a>：</p>
+<blockquote>
+<p><strong>Using the same key for encryption and signing</strong></p>
+<p>Given that the underlying mathematics is the same for encryption and
+signing, only in reverse, if an attacker can convince a key holder to
+sign an unformatted encrypted messageusing the same key then she gets
+the original.</p>
+</blockquote>
+<h3 id="实际算法">实际算法</h3>
+<p>包括 key 的生成算法，计算时的优化，对信息的编码等，以及 RSA
+的数学上的证明；有兴趣可以看一下下面参考的链接，稍微摘录一些简单而重要的点：</p>
+<ul>
+<li>计算 \(y = x^e \pmod{n}\) （所谓 modular
+exponentiation）的复杂度大约为 \(O(k^3)\)，其中 \(k\) 是 \(n\)
+的长度（例如 1024 bits），且当 \(e\) 的二进制表示中 1
+的数量越多则越慢。</li>
+<li>公钥幂 \(e\) 一般选取固定的：例如 \[
+\begin{split}
+3 = 2^{2^0}+1 \\
+5 = 2^{2^1}+1 \\
+17 = 2^{2^2}+1 \\
+257 = 2^{2^3}+1 \\
+65537 = 2^{2^4}+1
+\end{split}
+\] 这5个是前五个 fermat number：\(F_x = 2^{2^x}+1\) ，恰好都是素数，但
+\(F_5\) 以及后面的 fermat number
+不是素数。显然这些数字的二进制表示只有两个
+1，如上述原因，在加密的过程中能节省计算时间。实际应用中一般都是使用
+65537 ，因为小的 \(e\) 不太安全。</li>
+<li>模 \(n\)
+一般是由两个(\(n=pq\))或更多个随机产生（且满足一些数学条件）的大素数（所谓
+“multi-prime” RSA）相乘而得。</li>
+<li>私钥幂 \(d\) 是从模 \(n\) 的因子（\(p,q\)）以及 \(e\)
+推导出来，由于模是公开的（公钥的一部分），故 RSA
+的其中一个安全因素在于：<a
+href="https://en.wikipedia.org/wiki/Integer_factorization">分解一个大数</a>是困难的。</li>
+<li>多个素数相乘结果作为模的一个好处是可以更快速的计算 \(m = c^d
+\pmod{n}\)
+<ul>
+<li>使用中国剩余定理（Chinese Remainder
+Theorem，CRT）可以把这个计算转换成对 \(p,q\) 的 modular exponentiation
+计算，而 \(p,q\) 的长度都只有 \(n\) 的一半，所以复杂度会降低到原来的<a
+href="http://www.di-mgt.com.au/crt_rsa.html#crtarithmetic">四分之一</a>：\(O(2(\cfrac{k}{2})^3)
+= O(\cfrac{k^3}{4})\)</li>
+</ul></li>
+</ul>
+<h3 id="参考">参考</h3>
+<ul>
+<li><a href="http://www.di-mgt.com.au/rsa_alg.html"
+class="uri">http://www.di-mgt.com.au/rsa_alg.html</a></li>
+<li><a href="http://www.di-mgt.com.au/rsa_theory.html"
+class="uri">http://www.di-mgt.com.au/rsa_theory.html</a></li>
+</ul>
+
+  </article>
+
+        </div>
+      </div>
+      <div id="main-right" class="hide-xs hide-sm col-2-md col-3-lg">
+        
+  
+  <div id="content-toc" class="toc hide-md"></div>
+  
+
+      </div>
+    </div>
+
+    
+    <div id="footer" class="text-center">
+      <p>
+        Powered By <a href="https://gohugo.io/">Hugo</a>/<a href="https://jenil.github.io/chota">Chota</a>,
+        Generated Using <a href="https://github.com/huangjunwen/mdtool">MDTool</a>
+      </p>
+      <p>&copy; 2022. All rights reserved</p>
+    </div>
+
+    
+  
+    <link rel="stylesheet" href="/res/libs/tocbot/css/tocbot.css"></link>
+    <style>
+    #content-toc {
+      position: -webkit-sticky;
+      position: sticky;
+      top: 7rem;
+      padding-left: 2rem;
+      padding-right: 1rem;
+    }
+
+    #content-toc a.toc-link {
+      color: var(--font-color);
+    }
+
+    #content-toc a.toc-link.is-active-link {
+      color: var(--color-darkGrey);
+    }
+
+    #content-toc a.toc-link::before {
+      background-color: var(--bg-color);
+    }
+
+    #content-toc a.toc-link.is-active-link::before {
+      background-color: var(--color-primary);
+    }
+    </style>
+    <script src="/res/libs/tocbot/js/tocbot.min.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', (ev) => {
+      tocbot.init({
+        tocSelector: '#content-toc',
+        contentSelector: '#main-center',
+        ignoreSelector: '.no-toc',
+        headingSelector: 'h1, h2, h3, h4, h5, h6',
+        hasInnerContainers: false,
+        headingsOffset: 80,
+        scrollSmoothOffset: -80
+      });
+    });
+    </script>
+  
+  
+    <script type="text/javascript" src="/res/libs/anchorjs/js/anchor.min.js"></script>
+    <script>anchors.add('#main-body h1, #main-body h2, #main-body h3, #main-body h4, #main-body h5, #main-body h6, #main-body dt');</script>
+  
+
+  </body>
+</html>

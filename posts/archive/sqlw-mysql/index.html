@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>写了一个 MySQL 数据表和查询的 go 代码生成器</title>
+    
+    <link rel="stylesheet" href="/res/libs/fontawesome/css/all.min.css"></link>
+    <link rel="stylesheet" href="/res/libs/chota/css/chota.min.css"></link>
+    <link rel="stylesheet" href="/res/style/site.min.1cfb2065638c6eda7f5ceb0b60110baf5593ae09a1298e64096971386bd084ca.css"></link>
+    <script type="text/javascript" src="/res/script/site.min.6881188133395162222bed24f23dd6cbdd74f0b93a54b35a6b929b5178e10fe9.js"></script>
+    <link id="markdown-body-style" rel="stylesheet" href="/res/style/markdown-body.min.f4f92656c58fcefbc647dacbc170e419ce382a807b91958fc6c683580a8094f8.css"></link>
+    <script type="text/javascript" src="/res/script/markdown-body.min.63397e711af2142bc1376b6549029b00deca5b6ec13cd8f0d4109125ddc524ca.js"></script>
+  </head>
+
+  <body>
+    
+    <div id="header">
+      
+      <nav id="navbar" class="row">
+        <div class="is-left col-12 col-3-md row">
+          <a id="navbar-brand" class="brand" href="/">Coder Papa</a>
+          <label id="navbar-toggle-menu" for="navbar-toggle-menu-state" class="hide-md hide-lg">
+            <span></span>
+            <span></span>
+            <span></span>
+          </label>
+        </div>
+        <input id="navbar-toggle-menu-state" type="checkbox" style="display:none"></input>
+        <div id="navbar-menu" class="is-right col-12 col-9-md row hide-xs-noimportant hide-sm-noimportant">
+          
+          <a href="/posts">Posts</a>
+          
+          <a href="/notes">Notes</a>
+          
+          
+          <a href="/tags">Tags</a>
+          
+          
+          <a href="https://github.com/huangjunwen"><i class='fab fa-github'></i></a>
+          
+          <a href="javascript:void(0)" id="navbar-toggle-mode" onclick="return toggleColorMode()"></a>
+        </div>
+      </nav>
+    </div>
+
+    
+    <div id="main" class="row">
+      <div id="main-left" class="hide-xs hide-sm col-2-md col-3-lg">
+        
+      </div>
+      <div id="main-center" class="col-12 col-8-md col-6-lg mdb">
+        <div id="main-title" class="text-center">
+          
+  <h5 class="no-toc"><span class="breadcrumbnav"><span><a href="/posts/">POSTS</a></span><i class="fa fa-fw fa-angle-double-right"></i><span><a href="/posts/archive/">ARCHIVE</a></span></span></h5>
+  <h1>写了一个 MySQL 数据表和查询的 go 代码生成器</h1>
+  <small>
+    <time class="" datetime="2018-09-10T20:51:26&#43;0800">Mon, 2018/09/10</time>
+  </small>
+  <p>
+    
+    <a href="/tags/golang/"><span class="tag is-small">golang</span></a>
+    <a href="/tags/mysql/"><span class="tag is-small">mysql</span></a>
+    <a href="/tags/tool/"><span class="tag is-small">tool</span></a>
+  </p>
+  
+        </div>
+        <div id="main-body">
+          
+  <article id="content-body">
+    <p><em>项目地址 <a href="https://github.com/huangjunwen/sqlw-mysql"
+class="uri">https://github.com/huangjunwen/sqlw-mysql</a></em></p>
+<h2 id="动机">动机</h2>
+<p>最近这段时间开始用 go
+写网站，遇到各种新老问题。其中一个老问题是如何访问 MySQL 数据库。</p>
+<h3 id="使用-orm-object-relationship-mapping">使用 ORM (Object
+Relationship Mapping)</h3>
+<p>大致浏览了一些热门的实现，感觉不是很合眼缘，跟动态语言的实现（例如 <a
+href="htps://www.sqlalchemy.org"><em>SQLAlchemy</em></a> ）差不少。</p>
+<p>ORM
+的特点在于使用程序员熟悉的对象概念抽象数据库关系，使之成为可编程的对象，提供使用上的便利：</p>
+<ul>
+<li>构造查询的便利，用户一般只需要指定需要查询的对象（一般对应数据库表），或者关系（一般对应
+<code
+class="language-plaintext">JOIN</code>），还可以按需要增添查询条件，ORM
+即可推导出需要执行的语句：</li>
+</ul>
+<pre class="language-python"><code>sess.query(User)                        # SELECT user.id, ... FROM user
+sess.query(Employee.User)               # SELECT employee.id, ... FROM employee JOIN user ON ...
+sess.query(User).filter(User.name==xxx) # SELECT user.id, ... FROM user WHERE name=xxx
+sess.query(User).options(joinedload(Employee)).order_by(...) # ...</code></pre>
+<ul>
+<li>查询后的便利，结果集会被重新组装成对象，后续仍只需继续在这些对象上操作即可。</li>
+</ul>
+<p>这样理想状态下涉及数据库的操作就被完全封装到一个闭环里头。然而数据库关系其实并不简单，建立一个表达力十足的映射模型即是使用
+python 这种表达力很强的动态语言都很复杂（看看这个<a
+href="http://docs.sqlalchemy.org/en/latest/orm/relationship_api.html#sqlalchemy.orm.relationship">函数</a>），何况
+go 这种既缺乏元编程能力也缺乏语法糖的语言呢。</p>
+<p>因此我所见的实现往往只能退而求其次，只实现一些基本常用的功能。</p>
+<h3 id="直接使用-sql">直接使用 SQL</h3>
+<p>除了使用 ORM 另外一种方法是直接面对关系数据库/SQL
+本身，例如有很多人（声称）直接使用 <a
+href="https://github.com/jmoiron/sqlx"><em>sqlx</em></a>，但我感觉全部手写会不会也挺麻烦重复的呢？</p>
+<p>所以有一些工具能帮忙生成代码，例如 <a
+href="https://github.com/xo/xo"><em>xo</em></a>，连接上数据库直接导出
+schema 就能生成基本的 CRUD 访问代码，同时也可以根据它的 SQL DSL 生成 SQL
+的 wrapper
+code。整个过程一目了然，没有层层封装的不透明感，生成代码的效率也高，虽然需要手写
+SQL，但代码生成过程是经过实际数据库验证的，这就相当可靠了。</p>
+<p>因此我认为这种方法在 go
+中是最合适的，不过实际使用了一下这个工具后，还是有一些不满意的地方，主要集中在
+SQL wrapper code 生成这一部分：</p>
+<ul>
+<li><p>有些 SQL 语句需要改写才行，这主要是因为它的实现基于 <code
+class="language-plaintext">CREATE VIEW ...</code> ，但不是所有合法的
+<code class="language-plaintext">SELECT</code> 语句都可以用来创建
+view。例如假设有两个表 <code class="language-plaintext">user</code> 和
+<code class="language-plaintext">employee</code> 都有 <code
+class="language-plaintext">id</code> 字段（这很常见），则 <code
+class="language-plaintext">SELECT user.*, employee.* FROM user JOIN employee ...</code>
+虽然是合法语句，却因为字段重名而不能用来创建 view；而要添加 alias 改写成
+<code
+class="language-plaintext">SELECT user.id AS user_id, ...., employee.id AS employee_id, ...</code>
+这样才行。</p></li>
+<li><p>一些 MySQL 相关的问题，例如：<a
+href="https://github.com/xo/xo/issues/123">#123</a></p></li>
+<li><p>生成的代码虽然省去了手动拼接手动 scan 的麻烦，但仍然不如 ORM
+中操作对象那么方便，例如上边的例子生成的代码大致长这样：</p></li>
+</ul>
+<pre class="language-go"><code>type JoinResult struct {
+  UserID int32
+  // ...
+  EmployeeID int32
+  // ...
+}</code></pre>
+<p>只是将结果平铺在一个 struct 中，而不是（我）理想中的：</p>
+<pre class="language-go"><code>type JoinResult struct {
+  User *User
+  Employee *Employee
+}</code></pre>
+<p>这样后续我如果需要继续在结果集的 <code
+class="language-plaintext">User</code>
+上继续操作的话，我需要重新手动装配一次。</p>
+<h2 id="改良">改良</h2>
+<p>因为上述原因，所以决定基于 xo
+的方法重新造一个轮子看看能不能改善一点。</p>
+<p>首先，直接以 <a
+href="https://golang.org/pkg/database/sql/#ColumnType">sql.ColumnType</a>（<a
+href="https://golang.org/doc/go1.8#database_sql">go1.8</a>
+添加）而不是从 <code
+class="language-plaintext">information_schema</code> 里提取 schema 和
+query
+的元数据，这样所有合法的查询都能支持。不过这种方法有个缺点，能获得多少元信息取决于这个
+RDBMS 的协议返回什么样的信息，例如，postgres 似乎是<a
+href="https://github.com/lib/pq/pull/647">无法获得</a> <code
+class="language-plaintext">Nullable</code> 信息的；而 MySQL
+的协议返回的信息相对比较完整，这也是为什么只支持 MySQL 的缘故啦 :-)</p>
+<p>另一方面是增强 SQL DSL，在 sqlw-mysql 中我选择使用 XML
+来描述一个查询，例如（quick start 的例子之一）:</p>
+<pre class="language-xml"><code>&lt;stmt name=&quot;SubordinatesBySuperiors&quot;&gt;
+  &lt;a name=&quot;id&quot; type=&quot;...int&quot; /&gt;
+  &lt;v in_query=&quot;1&quot; /&gt;
+  SELECT
+    &lt;wc table=&quot;employee&quot; as=&quot;superior&quot; /&gt;,     &lt;!-- 上司 --&gt;
+    &lt;wc table=&quot;employee&quot; as=&quot;subordinate&quot; /&gt;   &lt;!-- 下级 --&gt;
+  FROM
+    employee AS superior LEFT JOIN employee AS subordinate 
+    ON subordinate.superior_id=superior.id
+  WHERE
+    superior.id IN (&lt;r by=&quot;:id&quot;&gt;1&lt;/r&gt;)
+&lt;/stmt&gt;</code></pre>
+<p>之所以使用 XML 是因为需要在 SQL
+语句片段中间插入一些特殊的指令（元素），这些指令有些有特殊的标记作用；有些则会展开成
+SQL 片段来减少一些重复劳动，例子里的 <code
+class="language-plaintext">&lt;wc table="employee" as="superior"&gt;</code>
+（wildcard）指令实际上是会展开成字段列表如</p>
+<pre class="language-sql"><code>superior.id, superior.employee_sn, superior.user_id, superior.superior_id</code></pre>
+<p>上述例子演示的是 <code class="language-plaintext">one2many</code>
+的关系（一个上司对应 0+ 个下级），最终生成的代码节选如下：</p>
+<pre class="language-go"><code>// SubordinatesBySuperiorsResult is the result of `SubordinatesBySuperiors`.
+type SubordinatesBySuperiorsResult struct {
+  Superior          *Employee
+  Subordinate       *Employee
+  // ...
+}
+
+// SubordinatesBySuperiorsResultSlice is slice of SubordinatesBySuperiorsResult.
+type SubordinatesBySuperiorsResultSlice []*SubordinatesBySuperiorsResult
+
+// ...
+func SubordinatesBySuperiors(ctx context.Context, q Queryer, id ...int) (SubordinatesBySuperiorsResultSlice, error) {
+  // ...
+}
+
+// DistinctSuperior returns distinct (by primary value) Superior in the slice.
+func (slice *SubordinatesBySuperiorsResultSlice) DistinctSuperior() []*Employee {
+  // ...
+}
+
+// GroupBySuperior groups by Superior and returns distinct (by primary value) Superior with
+// their associated sub group of slices.
+func (slice *SubordinatesBySuperiorsResultSlice) GroupBySuperior() ([]*Employee, []SubordinatesBySuperiorsResultSlice) {
+  // ...
+}
+
+// DistinctSubordinate returns distinct (by primary value) Subordinate in the slice.
+func (slice *SubordinatesBySuperiorsResultSlice) DistinctSubordinate() []*Employee {
+  // ...
+}
+
+// GroupBySubordinate groups by Subordinate and returns distinct (by primary value) Subordinate with
+// their associated sub group of slices.
+func (slice *SubordinatesBySuperiorsResultSlice) GroupBySubordinate() ([]*Employee, []SubordinatesBySuperiorsResultSlice) {
+  // ...
+}
+</code></pre>
+<p>可以看到，除了生成出基本的 wrapper function （<code
+class="language-plaintext">SubordinatesBySuperiors</code>）外，结果集也附带一些辅佐函数
+<code class="language-plaintext">GroupByXXX/DistinctXXX</code>
+以便操作，例如可以这样使用：</p>
+<pre class="language-go"><code>// 查询 id 为 1~7 号员工的下级
+slice, err := models.SubordinatesBySuperiors(ctx, tx, 1, 2, 3, 4, 5, 6, 7)
+if err != nil {
+  log.Fatal(err)
+}
+
+// 结果集按 superior 分组，superiors[i] 对应 groups[i]
+superiors, groups := slice.GroupBySuperior()
+
+// 迭代每一个上司
+for i, superior := range superiors {
+  // 获得与之对应的组别里全部下级
+  subordinates := groups[i].DistinctSubordinate()
+
+  // 打印
+  if len(subordinates) == 0 {
+    log.Printf(&quot;Employee %+q has no subordinate.\n&quot;, superior.EmployeeSn)
+  } else {
+    log.Printf(&quot;Employee %+q has the following subordinates:\n&quot;, superior.EmployeeSn)
+    for _, subordinate := range subordinates {
+      log.Printf(&quot;\t%+q\n&quot;, subordinate.EmployeeSn)
+    }
+  }
+}
+</code></pre>
+<p>是不是也还挺方便的呢？</p>
+<p>注：关于 <code class="language-plaintext">&lt;wc&gt;</code>
+指令如何确定 <code class="language-plaintext">Superior</code> / <code
+class="language-plaintext">Subordinate</code> 字段的正确位置<a
+href="https://github.com/huangjunwen/sqlw-mysql#how-wildcard-directive-works">文档</a>里有一些说明。</p>
+<p>总的而言个人觉得这些改进比较符合我的预期，不过这个方法也有一个比较大的缺点，<strong>那就是要起很多名字…</strong></p>
+
+  </article>
+
+        </div>
+      </div>
+      <div id="main-right" class="hide-xs hide-sm col-2-md col-3-lg">
+        
+  
+  <div id="content-toc" class="toc hide-md"></div>
+  
+
+      </div>
+    </div>
+
+    
+    <div id="footer" class="text-center">
+      <p>
+        Powered By <a href="https://gohugo.io/">Hugo</a>/<a href="https://jenil.github.io/chota">Chota</a>,
+        Generated Using <a href="https://github.com/huangjunwen/mdtool">MDTool</a>
+      </p>
+      <p>&copy; 2022. All rights reserved</p>
+    </div>
+
+    
+  
+    <link rel="stylesheet" href="/res/libs/tocbot/css/tocbot.css"></link>
+    <style>
+    #content-toc {
+      position: -webkit-sticky;
+      position: sticky;
+      top: 7rem;
+      padding-left: 2rem;
+      padding-right: 1rem;
+    }
+
+    #content-toc a.toc-link {
+      color: var(--font-color);
+    }
+
+    #content-toc a.toc-link.is-active-link {
+      color: var(--color-darkGrey);
+    }
+
+    #content-toc a.toc-link::before {
+      background-color: var(--bg-color);
+    }
+
+    #content-toc a.toc-link.is-active-link::before {
+      background-color: var(--color-primary);
+    }
+    </style>
+    <script src="/res/libs/tocbot/js/tocbot.min.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', (ev) => {
+      tocbot.init({
+        tocSelector: '#content-toc',
+        contentSelector: '#main-center',
+        ignoreSelector: '.no-toc',
+        headingSelector: 'h1, h2, h3, h4, h5, h6',
+        hasInnerContainers: false,
+        headingsOffset: 80,
+        scrollSmoothOffset: -80
+      });
+    });
+    </script>
+  
+  
+    <script type="text/javascript" src="/res/libs/anchorjs/js/anchor.min.js"></script>
+    <script>anchors.add('#main-body h1, #main-body h2, #main-body h3, #main-body h4, #main-body h5, #main-body h6, #main-body dt');</script>
+  
+
+  </body>
+</html>

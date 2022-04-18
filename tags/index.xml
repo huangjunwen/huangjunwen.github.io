@@ -2,192 +2,80 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Coder Papa</title>
-    <link>https://huangjunwen.github.io/tags/</link>
+    <link>http://127.0.0.1:1313/tags/</link>
     <description>Recent content in Tags on Coder Papa</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh-CN</language>
-    <lastBuildDate>Sat, 12 Sep 2020 12:23:00 +0800</lastBuildDate>
-    
-	<atom:link href="https://huangjunwen.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
-    
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 16 Apr 2022 03:24:27 +0000</lastBuildDate><atom:link href="http://127.0.0.1:1313/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>tool</title>
+      <link>http://127.0.0.1:1313/tags/tool/</link>
+      <pubDate>Sat, 16 Apr 2022 03:24:27 +0000</pubDate>
+      
+      <guid>http://127.0.0.1:1313/tags/tool/</guid>
+      <description></description>
+    </item>
     
     <item>
-      <title>dht</title>
-      <link>https://huangjunwen.github.io/tags/dht/</link>
+      <title>algo</title>
+      <link>http://127.0.0.1:1313/tags/algo/</link>
       <pubDate>Sat, 12 Sep 2020 12:23:00 +0800</pubDate>
       
-      <guid>https://huangjunwen.github.io/tags/dht/</guid>
+      <guid>http://127.0.0.1:1313/tags/algo/</guid>
       <description></description>
     </item>
     
     <item>
       <title>kademlia</title>
-      <link>https://huangjunwen.github.io/tags/kademlia/</link>
+      <link>http://127.0.0.1:1313/tags/kademlia/</link>
       <pubDate>Sat, 12 Sep 2020 12:23:00 +0800</pubDate>
       
-      <guid>https://huangjunwen.github.io/tags/kademlia/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>code-generator</title>
-      <link>https://huangjunwen.github.io/tags/code-generator/</link>
-      <pubDate>Mon, 10 Sep 2018 20:51:26 +0800</pubDate>
-      
-      <guid>https://huangjunwen.github.io/tags/code-generator/</guid>
+      <guid>http://127.0.0.1:1313/tags/kademlia/</guid>
       <description></description>
     </item>
     
     <item>
       <title>golang</title>
-      <link>https://huangjunwen.github.io/tags/golang/</link>
+      <link>http://127.0.0.1:1313/tags/golang/</link>
       <pubDate>Mon, 10 Sep 2018 20:51:26 +0800</pubDate>
       
-      <guid>https://huangjunwen.github.io/tags/golang/</guid>
+      <guid>http://127.0.0.1:1313/tags/golang/</guid>
       <description></description>
     </item>
     
     <item>
       <title>mysql</title>
-      <link>https://huangjunwen.github.io/tags/mysql/</link>
+      <link>http://127.0.0.1:1313/tags/mysql/</link>
       <pubDate>Mon, 10 Sep 2018 20:51:26 +0800</pubDate>
       
-      <guid>https://huangjunwen.github.io/tags/mysql/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>orm</title>
-      <link>https://huangjunwen.github.io/tags/orm/</link>
-      <pubDate>Mon, 10 Sep 2018 20:51:26 +0800</pubDate>
-      
-      <guid>https://huangjunwen.github.io/tags/orm/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>coroutine</title>
-      <link>https://huangjunwen.github.io/tags/coroutine/</link>
-      <pubDate>Thu, 15 Mar 2018 09:05:51 +0800</pubDate>
-      
-      <guid>https://huangjunwen.github.io/tags/coroutine/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>greenlet</title>
-      <link>https://huangjunwen.github.io/tags/greenlet/</link>
-      <pubDate>Thu, 15 Mar 2018 09:05:51 +0800</pubDate>
-      
-      <guid>https://huangjunwen.github.io/tags/greenlet/</guid>
+      <guid>http://127.0.0.1:1313/tags/mysql/</guid>
       <description></description>
     </item>
     
     <item>
       <title>python</title>
-      <link>https://huangjunwen.github.io/tags/python/</link>
+      <link>http://127.0.0.1:1313/tags/python/</link>
       <pubDate>Thu, 15 Mar 2018 09:05:51 +0800</pubDate>
       
-      <guid>https://huangjunwen.github.io/tags/python/</guid>
+      <guid>http://127.0.0.1:1313/tags/python/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Hashicorp-Vault</title>
-      <link>https://huangjunwen.github.io/tags/hashicorp-vault/</link>
+      <title>vault</title>
+      <link>http://127.0.0.1:1313/tags/vault/</link>
       <pubDate>Sat, 10 Jun 2017 16:46:36 +0800</pubDate>
       
-      <guid>https://huangjunwen.github.io/tags/hashicorp-vault/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>jwt</title>
-      <link>https://huangjunwen.github.io/tags/jwt/</link>
-      <pubDate>Sun, 14 May 2017 19:14:51 +0800</pubDate>
-      
-      <guid>https://huangjunwen.github.io/tags/jwt/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>micro-service</title>
-      <link>https://huangjunwen.github.io/tags/micro-service/</link>
-      <pubDate>Sun, 14 May 2017 19:14:51 +0800</pubDate>
-      
-      <guid>https://huangjunwen.github.io/tags/micro-service/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>session</title>
-      <link>https://huangjunwen.github.io/tags/session/</link>
-      <pubDate>Sun, 14 May 2017 19:14:51 +0800</pubDate>
-      
-      <guid>https://huangjunwen.github.io/tags/session/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Shamir-Secret-Sharing</title>
-      <link>https://huangjunwen.github.io/tags/shamir-secret-sharing/</link>
-      <pubDate>Sun, 23 Apr 2017 09:27:43 +0800</pubDate>
-      
-      <guid>https://huangjunwen.github.io/tags/shamir-secret-sharing/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>asn.1</title>
-      <link>https://huangjunwen.github.io/tags/asn.1/</link>
-      <pubDate>Wed, 01 Feb 2017 09:19:40 +0800</pubDate>
-      
-      <guid>https://huangjunwen.github.io/tags/asn.1/</guid>
+      <guid>http://127.0.0.1:1313/tags/vault/</guid>
       <description></description>
     </item>
     
     <item>
       <title>rsa</title>
-      <link>https://huangjunwen.github.io/tags/rsa/</link>
-      <pubDate>Thu, 26 Jan 2017 17:43:37 +0800</pubDate>
+      <link>http://127.0.0.1:1313/tags/rsa/</link>
+      <pubDate>Wed, 01 Feb 2017 09:19:40 +0800</pubDate>
       
-      <guid>https://huangjunwen.github.io/tags/rsa/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>iptables</title>
-      <link>https://huangjunwen.github.io/tags/iptables/</link>
-      <pubDate>Tue, 20 Dec 2016 10:20:54 +0800</pubDate>
-      
-      <guid>https://huangjunwen.github.io/tags/iptables/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>port-knocking</title>
-      <link>https://huangjunwen.github.io/tags/port-knocking/</link>
-      <pubDate>Tue, 20 Dec 2016 10:20:54 +0800</pubDate>
-      
-      <guid>https://huangjunwen.github.io/tags/port-knocking/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>gnu-pg</title>
-      <link>https://huangjunwen.github.io/tags/gnu-pg/</link>
-      <pubDate>Sun, 18 Dec 2016 09:58:58 +0800</pubDate>
-      
-      <guid>https://huangjunwen.github.io/tags/gnu-pg/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>tty</title>
-      <link>https://huangjunwen.github.io/tags/tty/</link>
-      <pubDate>Sun, 18 Dec 2016 09:58:58 +0800</pubDate>
-      
-      <guid>https://huangjunwen.github.io/tags/tty/</guid>
+      <guid>http://127.0.0.1:1313/tags/rsa/</guid>
       <description></description>
     </item>
     

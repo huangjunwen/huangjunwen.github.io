@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>RSA 简介 (2) - 存储格式和标准</title>
+    
+    <link rel="stylesheet" href="/res/libs/fontawesome/css/all.min.css"></link>
+    <link rel="stylesheet" href="/res/libs/chota/css/chota.min.css"></link>
+    <link rel="stylesheet" href="/res/style/site.min.1cfb2065638c6eda7f5ceb0b60110baf5593ae09a1298e64096971386bd084ca.css"></link>
+    <script type="text/javascript" src="/res/script/site.min.6881188133395162222bed24f23dd6cbdd74f0b93a54b35a6b929b5178e10fe9.js"></script>
+    <link id="markdown-body-style" rel="stylesheet" href="/res/style/markdown-body.min.f4f92656c58fcefbc647dacbc170e419ce382a807b91958fc6c683580a8094f8.css"></link>
+    <script type="text/javascript" src="/res/script/markdown-body.min.63397e711af2142bc1376b6549029b00deca5b6ec13cd8f0d4109125ddc524ca.js"></script>
+  </head>
+
+  <body>
+    
+    <div id="header">
+      
+      <nav id="navbar" class="row">
+        <div class="is-left col-12 col-3-md row">
+          <a id="navbar-brand" class="brand" href="/">Coder Papa</a>
+          <label id="navbar-toggle-menu" for="navbar-toggle-menu-state" class="hide-md hide-lg">
+            <span></span>
+            <span></span>
+            <span></span>
+          </label>
+        </div>
+        <input id="navbar-toggle-menu-state" type="checkbox" style="display:none"></input>
+        <div id="navbar-menu" class="is-right col-12 col-9-md row hide-xs-noimportant hide-sm-noimportant">
+          
+          <a href="/posts">Posts</a>
+          
+          <a href="/notes">Notes</a>
+          
+          
+          <a href="/tags">Tags</a>
+          
+          
+          <a href="https://github.com/huangjunwen"><i class='fab fa-github'></i></a>
+          
+          <a href="javascript:void(0)" id="navbar-toggle-mode" onclick="return toggleColorMode()"></a>
+        </div>
+      </nav>
+    </div>
+
+    
+    <div id="main" class="row">
+      <div id="main-left" class="hide-xs hide-sm col-2-md col-3-lg">
+        
+      </div>
+      <div id="main-center" class="col-12 col-8-md col-6-lg mdb">
+        <div id="main-title" class="text-center">
+          
+  <h5 class="no-toc"><span class="breadcrumbnav"><span><a href="/posts/">POSTS</a></span><i class="fa fa-fw fa-angle-double-right"></i><span><a href="/posts/archive/">ARCHIVE</a></span></span></h5>
+  <h1>RSA 简介 (2) - 存储格式和标准</h1>
+  <small>
+    <time class="" datetime="2017-01-26T17:43:37&#43;0800">Thu, 2017/01/26</time>
+  </small>
+  <p>
+    
+    <a href="/tags/rsa/"><span class="tag is-small">rsa</span></a>
+  </p>
+  
+        </div>
+        <div id="main-body">
+          
+  <article id="content-body">
+    <h3 id="rsa-on-disk">RSA on disk</h3>
+<p>如<a href="../rsa-1">上篇</a>所描述，RSA
+的公私钥实际上就是些数字，但我们平时实际使用的是 <code
+class="language-plaintext">.pem</code> 格式（或 <code
+class="language-plaintext">.der</code>）的 key 。</p>
+<p>.pem 格式头部和尾部的有一些标识符（<code
+class="language-plaintext">-----BEGIN XXXX-----</code>）这些是为了让
+parser 可以马上知道这个文件包含的是公钥私钥，或是证书等。</p>
+<p>中间的数据其实是 base64 编码过后的 <a
+href="https://en.wikipedia.org/wiki/X.690#DER_encoding">DER（Distinguished
+Encoding Rules）</a> 编码的 <a
+href="https://en.wikipedia.org/wiki/Abstract_Syntax_Notation_One">ASN.1（Abstract
+Syntax Notation One）</a> 数据。</p>
+<p>写个程序验证以下（dec.py）：</p>
+<pre class="language-python"><code>#!/usr/bin/python
+
+import sys
+from base64 import b64decode
+from pyasn1.codec.der.decoder import decode as der_decode
+
+def read_pem(f, asn1Spec=None):
+
+    return der_decode(
+        b64decode(
+            &#39;&#39;.join([line.strip() for line in f if not line.startswith(&#39;-----&#39;)])
+        ), asn1Spec=asn1Spec
+    )
+
+obj, _ = read_pem(open(sys.argv[1]))
+
+print obj.prettyPrint()</code></pre>
+<p>找一个 rsa private key 来跑一下：</p>
+<pre class="language-shell"><code>$ ./dec.py ca-key.pem
+Sequence:
+ &lt;no-name&gt;=0
+ &lt;no-name&gt;=89302357411304204026963412690370569095819200036751574979369053233.....
+ &lt;no-name&gt;=65537
+ &lt;no-name&gt;=.....
+....</code></pre>
+<p>ASN.1 中 Sequence 相当于一般语言里的 struct，所以这个 private key
+里是一个结构体，包含七八个数字，但所有字段名字都是 <code
+class="language-plaintext">&lt;no-name&gt;</code>，这是因为没有指定
+specifiction。</p>
+<p>修改一下：</p>
+<pre class="language-python"><code># ...
+from pyasn1_modules import rfc2437
+
+# ...
+obj, _ = read_pem(open(sys.argv[1]), asn1Spec=rfc2437.RSAPrivateKey())
+# ...
+</code></pre>
+<p>重新运行一下：</p>
+<pre class="language-shell"><code>$ ./dec.py ca-key.pem
+RSAPrivateKey:
+ version=0
+ modulus=89302357411304204026963412690370569095819200036751574979369053233.....
+ publicExponent=65537
+...</code></pre>
+<p>完整的定义是在 <a
+href="https://en.wikipedia.org/wiki/PKCS_1">PKCS#1</a> 标准中：</p>
+<pre class="language-plaintext"><code>RSAPrivateKey ::= SEQUENCE {
+  version           Version,
+  modulus           INTEGER,  -- n
+  publicExponent    INTEGER,  -- e
+  privateExponent   INTEGER,  -- d
+  prime1            INTEGER,  -- p
+  prime2            INTEGER,  -- q
+  exponent1         INTEGER,  -- d mod (p-1)
+  exponent2         INTEGER,  -- d mod (q-1)
+  coefficient       INTEGER,  -- (inverse of q) mod p
+  otherPrimeInfos   OtherPrimeInfos OPTIONAL
+}</code></pre>
+<p>其中 modulus/publicExponent/privateExponent
+即模/公钥幂/私钥幂，可以看到实际中的 RSA 私钥也是包含 publicExponent
+的； 所以这就是为什么 openssl 工具中能从私钥中导出公钥的原因。</p>
+<p>剩下的其它参数则是使用中国剩余定理加速计算而预先计算好的参数。</p>
+<h3 id="参考">参考</h3>
+<ul>
+<li><a href="http://luca.ntop.org/Teaching/Appunti/asn1.html"
+class="uri">http://luca.ntop.org/Teaching/Appunti/asn1.html</a></li>
+<li><a
+href="https://www.emc.com/collateral/white-papers/h11300-pkcs-1v2-2-rsa-cryptography-standard-wp.pdf"
+class="uri">https://www.emc.com/collateral/white-papers/h11300-pkcs-1v2-2-rsa-cryptography-standard-wp.pdf</a></li>
+<li><a
+href="https://tls.mbed.org/kb/cryptography/asn1-key-structures-in-der-and-pem"
+class="uri">https://tls.mbed.org/kb/cryptography/asn1-key-structures-in-der-and-pem</a></li>
+<li><a
+href="http://crypto.stackexchange.com/questions/1729/why-does-the-pkcs1-rsa-private-key-structure-contain-more-than-just-exponent-and"
+class="uri">http://crypto.stackexchange.com/questions/1729/why-does-the-pkcs1-rsa-private-key-structure-contain-more-than-just-exponent-and</a></li>
+<li><a
+href="http://stackoverflow.com/questions/16899247/how-can-i-decode-a-ssl-certificate-using-python"
+class="uri">http://stackoverflow.com/questions/16899247/how-can-i-decode-a-ssl-certificate-using-python</a></li>
+</ul>
+
+  </article>
+
+        </div>
+      </div>
+      <div id="main-right" class="hide-xs hide-sm col-2-md col-3-lg">
+        
+  
+  <div id="content-toc" class="toc hide-md"></div>
+  
+
+      </div>
+    </div>
+
+    
+    <div id="footer" class="text-center">
+      <p>
+        Powered By <a href="https://gohugo.io/">Hugo</a>/<a href="https://jenil.github.io/chota">Chota</a>,
+        Generated Using <a href="https://github.com/huangjunwen/mdtool">MDTool</a>
+      </p>
+      <p>&copy; 2022. All rights reserved</p>
+    </div>
+
+    
+  
+    <link rel="stylesheet" href="/res/libs/tocbot/css/tocbot.css"></link>
+    <style>
+    #content-toc {
+      position: -webkit-sticky;
+      position: sticky;
+      top: 7rem;
+      padding-left: 2rem;
+      padding-right: 1rem;
+    }
+
+    #content-toc a.toc-link {
+      color: var(--font-color);
+    }
+
+    #content-toc a.toc-link.is-active-link {
+      color: var(--color-darkGrey);
+    }
+
+    #content-toc a.toc-link::before {
+      background-color: var(--bg-color);
+    }
+
+    #content-toc a.toc-link.is-active-link::before {
+      background-color: var(--color-primary);
+    }
+    </style>
+    <script src="/res/libs/tocbot/js/tocbot.min.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', (ev) => {
+      tocbot.init({
+        tocSelector: '#content-toc',
+        contentSelector: '#main-center',
+        ignoreSelector: '.no-toc',
+        headingSelector: 'h1, h2, h3, h4, h5, h6',
+        hasInnerContainers: false,
+        headingsOffset: 80,
+        scrollSmoothOffset: -80
+      });
+    });
+    </script>
+  
+  
+    <script type="text/javascript" src="/res/libs/anchorjs/js/anchor.min.js"></script>
+    <script>anchors.add('#main-body h1, #main-body h2, #main-body h3, #main-body h4, #main-body h5, #main-body h6, #main-body dt');</script>
+  
+
+  </body>
+</html>
