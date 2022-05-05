@@ -35,10 +35,10 @@ Auth(entication) Backend Auth Backend 完成的是认证工作：访问者是谁
     
     <item>
       <title>Shamir Secret Sharding</title>
-      <link>http://127.0.0.1:1313/posts/archive/shamir-secret-sharding/</link>
+      <link>http://127.0.0.1:1313/notes/how-it-works/shamir-secret-sharding/</link>
       <pubDate>Sun, 23 Apr 2017 09:27:43 +0800</pubDate>
       
-      <guid>http://127.0.0.1:1313/posts/archive/shamir-secret-sharding/</guid>
+      <guid>http://127.0.0.1:1313/notes/how-it-works/shamir-secret-sharding/</guid>
       <description>Hashicorp 这家公司的产品都很有意思，其中 Vault 是一个用来集中管理敏感信息（密码，各种 token，证书，key 等等）的工具。
 Vault server 运行起来之后有两种状态：seal/unseal (密封/解封) ，这是因为：
 Vault 的数据是加密储存在磁盘上的：由 encryption key 加密，这个 encryption key 是由 master key 加密储存在磁盘上，而 master key 是不存放在磁盘上。所以当 Vault server 刚启动时，由于 master key 未知，故 encryption key 以及实际数据都是无法被解密访问的，这种状态就称之为seal (密封) ，unseal(解封) 就是重建 master key 的过程。

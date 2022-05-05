@@ -6,41 +6,24 @@
     <description>Recent content in rsa on Coder Papa</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Wed, 01 Feb 2017 09:19:40 +0800</lastBuildDate><atom:link href="http://127.0.0.1:1313/tags/rsa/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 24 Jan 2017 11:52:55 +0800</lastBuildDate><atom:link href="http://127.0.0.1:1313/tags/rsa/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>RSA 简介 (2.1) - ASN.1</title>
-      <link>http://127.0.0.1:1313/posts/archive/rsa-2.1/</link>
-      <pubDate>Wed, 01 Feb 2017 09:19:40 +0800</pubDate>
-      
-      <guid>http://127.0.0.1:1313/posts/archive/rsa-2.1/</guid>
-      <description>记法和编码 ASN.1（Abstract syntax notation one） 是一个对数据（类型/值）的记法和编码的祖父级标准；制定几十年而依然健在且广泛使用。
-对比一下 JSON（Javascript Object Notation），JSON 中的记法和编码是等价的，即它的记法就是编码。
-而 ASN.1 中记法和编码是不一样的，记法主要是为人类服务，用于描述，是抽象且实现无关的，例如 （摘自这里）：
-AirlineFlight ::= SEQUENCE { airline IA5String, flight NumericString, seats SEQUENCE { maximum INTEGER, occupied INTEGER, vacant INTEGER }, airport SEQUENCE { origin IA5String, stop1 [0] IA5String OPTIONAL, stop2 [1] IA5String OPTIONAL, destination IA5String }, crewsize ENUMERATED { six (6), eight (8), ten (10) }, cancel BOOLEAN DEFAULT FALSE }. 而编码则是具体实现序列化以及反序列化的操作，ASN.1 有很多种编码方式，例如：
- Basic Encoding Rule (BER) Canonical Encoding Rules (CER) Distinguished Encoding Rules (DER) XML Encoding Rules (XER) Packed Encoding Rules (PER) …  这篇笔记主要记录 ASN.</description>
-    </item>
-    
-    <item>
-      <title>RSA 简介 (2) - 存储格式和标准</title>
-      <link>http://127.0.0.1:1313/posts/archive/rsa-2/</link>
-      <pubDate>Thu, 26 Jan 2017 17:43:37 +0800</pubDate>
-      
-      <guid>http://127.0.0.1:1313/posts/archive/rsa-2/</guid>
-      <description>RSA on disk 如上篇所描述，RSA 的公私钥实际上就是些数字，但我们平时实际使用的是 .pem 格式（或 .der）的 key 。
-.pem 格式头部和尾部的有一些标识符（-----BEGIN XXXX-----）这些是为了让 parser 可以马上知道这个文件包含的是公钥私钥，或是证书等。
-中间的数据其实是 base64 编码过后的 DER（Distinguished Encoding Rules） 编码的 ASN.1（Abstract Syntax Notation One） 数据。
-写个程序验证以下（dec.py）：
-#!/usr/bin/python import sys from base64 import b64decode from pyasn1.codec.der.decoder import decode as der_decode def read_pem(f, asn1Spec=None): return der_decode( b64decode( &amp;#39;&amp;#39;.join([line.strip() for line in f if not line.startswith(&amp;#39;-----&amp;#39;)]) ), asn1Spec=asn1Spec ) obj, _ = read_pem(open(sys.argv[1])) print obj.prettyPrint() 找一个 rsa private key 来跑一下：
-$ .</description>
-    </item>
-    
-    <item>
-      <title>RSA 简介 (1) - 算法</title>
-      <link>http://127.0.0.1:1313/posts/archive/rsa-1/</link>
+      <title>RSA 简介</title>
+      <link>http://127.0.0.1:1313/notes/how-it-works/rsa/</link>
       <pubDate>Tue, 24 Jan 2017 11:52:55 +0800</pubDate>
       
-      <guid>http://127.0.0.1:1313/posts/archive/rsa-1/</guid>
-      <description>这一系列简单介绍 RSA 公钥加密体系</description>
+      <guid>http://127.0.0.1:1313/notes/how-it-works/rsa/</guid>
+      <description>主要算法 RSA 的原理是在于能够找到三个很大的正整数 \(e,d,n\) 使得对于任何 \(0 \le m \lt n\)：
+\[ (m^e)^d \equiv m \pmod{n} \]
+其中公钥为 \((n,e)\)，可以发送给任何人；私钥为 \((n,d)\)，只能由所有者掌握。RSA 支持 4 种操作：加密/解密，签名/验证签名。
+加密 首先用一些编码手段把需要加密的信息转换成整数 \(m\)，用公钥中的两个参数计算
+\[ c = m^e \pmod{n} \]
+其中 \(c\) 就是加密后的信息了。
+解密 中学知识温习时间：
+\[ \begin{align} ab \pmod{n} &amp;amp;= (xn+a_r)(yn+b_r) \pmod{n} \\ &amp;amp;= a_r b_r \pmod{n} \\ &amp;amp;= (a \pmod{n})(b \pmod{n}) \pmod{n} \end{align} \]
+即在模运算中，只要算余数就可以了。
+因此，由私钥所有者计算
+\[ \begin{align} c^d \pmod{n} &amp;amp;= (m^e \pmod{n})^d \pmod{n} \\ &amp;amp;= (m^e)^d \pmod{n} \\ &amp;amp;= m \pmod{n} \end{align} \]</description>
     </item>
     
   </channel>

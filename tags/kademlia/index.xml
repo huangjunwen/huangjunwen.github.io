@@ -9,10 +9,10 @@
     <lastBuildDate>Sat, 12 Sep 2020 12:23:00 +0800</lastBuildDate><atom:link href="http://127.0.0.1:1313/tags/kademlia/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Kademlia 简介</title>
-      <link>http://127.0.0.1:1313/posts/archive/kademlia/</link>
+      <link>http://127.0.0.1:1313/notes/how-it-works/kademlia/</link>
       <pubDate>Sat, 12 Sep 2020 12:23:00 +0800</pubDate>
       
-      <guid>http://127.0.0.1:1313/posts/archive/kademlia/</guid>
+      <guid>http://127.0.0.1:1313/notes/how-it-works/kademlia/</guid>
       <description>Kademlia 是一种 p2p 网络的分布式哈希表 (DHT: distributed hash table). 有别于单机版的 hash table, p2p DHT 需要将 key-value 键值对存放在大量的 (但不稳定的) p2p 节点上的, 并提供远程的 (RPC) 存取方法.
 键空间 (Key Space) Kademlia 的 key 是 n-bit 的 unsigned int, 故取值范围为 \([0, 2^n-1]\). 例如原论文中使用 160 bits, 又如 ipfs 使用的是 256 bits.
 在键空间上定义 “距离” 为两个 key 之间的 异或 (结果仍然为 n-bit unsigned int):

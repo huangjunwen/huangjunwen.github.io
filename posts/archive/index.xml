@@ -8,20 +8,6 @@
     <language>zh-cn</language>
     <lastBuildDate>Sun, 01 Jan 2017 00:00:00 +0800</lastBuildDate><atom:link href="http://127.0.0.1:1313/posts/archive/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Kademlia 简介</title>
-      <link>http://127.0.0.1:1313/posts/archive/kademlia/</link>
-      <pubDate>Sat, 12 Sep 2020 12:23:00 +0800</pubDate>
-      
-      <guid>http://127.0.0.1:1313/posts/archive/kademlia/</guid>
-      <description>Kademlia 是一种 p2p 网络的分布式哈希表 (DHT: distributed hash table). 有别于单机版的 hash table, p2p DHT 需要将 key-value 键值对存放在大量的 (但不稳定的) p2p 节点上的, 并提供远程的 (RPC) 存取方法.
-键空间 (Key Space) Kademlia 的 key 是 n-bit 的 unsigned int, 故取值范围为 \([0, 2^n-1]\). 例如原论文中使用 160 bits, 又如 ipfs 使用的是 256 bits.
-在键空间上定义 “距离” 为两个 key 之间的 异或 (结果仍然为 n-bit unsigned int):
-\[ Dis(A, B) = A ⊕ B \]
-NOTE: 使用异或作为距离有一些数学属性, 见下面详述, 这里先跳过，我们先看个例子
-上图是一个 n 为 4 的示例，其 key 取值为 [0, 15] （或 [0b0000, 0b1111]），以一棵满二叉树的形式呈现.</description>
-    </item>
-    
-    <item>
       <title>写了一个 MySQL 数据表和查询的 go 代码生成器</title>
       <link>http://127.0.0.1:1313/posts/archive/sqlw-mysql/</link>
       <pubDate>Mon, 10 Sep 2018 20:51:26 +0800</pubDate>
@@ -35,21 +21,6 @@ ORM 的特点在于使用程序员熟悉的对象概念抽象数据库关系，�
 因此我所见的实现往往只能退而求其次，只实现一些基本常用的功能。
 直接使用 SQL 除了使用 ORM 另外一种方法是直接面对关系数据库/SQL 本身，例如有很多人（声称）直接使用 sqlx，但我感觉全部手写会不会也挺麻烦重复的呢？
 所以有一些工具能帮忙生成代码，例如 xo，连接上数据库直接导出 schema 就能生成基本的 CRUD 访问代码，同时也可以根据它的 SQL DSL 生成 SQL 的 wrapper code。整个过程一目了然，没有层层封装的不透明感，生成代码的效率也高，虽然需要手写 SQL，但代码生成过程是经过实际数据库验证的，这就相当可靠了。</description>
-    </item>
-    
-    <item>
-      <title>Greenlet 原理</title>
-      <link>http://127.0.0.1:1313/posts/archive/greenlet/</link>
-      <pubDate>Thu, 15 Mar 2018 09:05:51 +0800</pubDate>
-      
-      <guid>http://127.0.0.1:1313/posts/archive/greenlet/</guid>
-      <description>原理 我们知道，操作系统会给每一个线程分配一个独立的堆栈，它们各自独立运作，记录着该线程的各类运行状态：如函数本地变量，函数返回地址，寄存器状态等等各种上下文；从这个角度看，堆栈几乎就等价于线程
-那么假如想要在用户态实现轻量级的类线程，就同样需要给它们分配独立堆栈，并提供方法在它们之间切换
-Greenlet 就是 cpython 上的一种轻量级线程（协程）的实现，因为 cpython 是用 c 实现的，所以这就要求 Greenlet 的实现要跟 c 那一套保持一致，要让协程里运行的代码感觉自己跑在一个真正的 c 堆栈上
-Greenlet 的做法是这样的：当一个 greenlet 运行时，它的堆栈区间数据将会完整地恢复放在 c 堆栈上，让它“原生态”地执行；若它被挂起，则有可能其部分或全部堆栈区间的数据会被拷贝到堆上保存；这是因为所有同一个线程的 greenlets 共享同一个 c 堆栈的地址空间，它们的堆栈区间会有可能有交集重叠
-我们主要关注 PyGreenlet 的这几个字段来讨论实现原理：
- stack_stop: 该 greenlet 堆栈区间 底 部地址（旧数据方向） stack_start: 该 greenlet 堆栈区间 顶 部地址（新数据方向） stack_prev: greenlet 链表 指针，见下节说明 stack_copy: 该 greenlet 堆栈区间在堆上的拷贝 stack_saved: 该 greenlet 堆栈区间在堆上的拷贝的长度  greenlet 链表 如前所叙述，只有当前运行的 greenlet 是保证其堆栈区间完整地置于 c 堆栈上，其它挂起的 greenlets 的堆栈区间数据则是有可能部分或全部地拷贝到了堆上保存；
-那么任意时刻，c 堆栈就会由多个 greenlets 的部分或全部堆栈区间组成（这些区间有可能是紧贴着的，也可能中间有空隙，但必定不能重叠），Greenlet 库维护一个 greenlet 链表来表达 c 堆栈上这些区间的前后关系，该链表就是由 stack_prev 串联而成的，例如</description>
     </item>
     
     <item>
@@ -93,52 +64,16 @@ Pros：
     </item>
     
     <item>
-      <title>Shamir Secret Sharding</title>
-      <link>http://127.0.0.1:1313/posts/archive/shamir-secret-sharding/</link>
-      <pubDate>Sun, 23 Apr 2017 09:27:43 +0800</pubDate>
-      
-      <guid>http://127.0.0.1:1313/posts/archive/shamir-secret-sharding/</guid>
-      <description>Hashicorp 这家公司的产品都很有意思，其中 Vault 是一个用来集中管理敏感信息（密码，各种 token，证书，key 等等）的工具。
-Vault server 运行起来之后有两种状态：seal/unseal (密封/解封) ，这是因为：
-Vault 的数据是加密储存在磁盘上的：由 encryption key 加密，这个 encryption key 是由 master key 加密储存在磁盘上，而 master key 是不存放在磁盘上。所以当 Vault server 刚启动时，由于 master key 未知，故 encryption key 以及实际数据都是无法被解密访问的，这种状态就称之为seal (密封) ，unseal(解封) 就是重建 master key 的过程。
-由于 master key 太重要了，Vault 使用所谓的 Shamir’s Secret Sharing 算法把这个 master key 切分并分发给 n 个人，只有当这 n 个人里的最少 k 个人授权提供他们持有的部分，vault 才能重构出这个 master key，这个算法挺有趣，所以记录下来：
-目标 密码 \(S\) 需要切分成 \(n\) 份： \(S_1, S_2, ... S_n\)</description>
-    </item>
-    
-    <item>
-      <title>RSA 简介 (2.1) - ASN.1</title>
-      <link>http://127.0.0.1:1313/posts/archive/rsa-2.1/</link>
+      <title>ASN.1</title>
+      <link>http://127.0.0.1:1313/posts/archive/asn.1/</link>
       <pubDate>Wed, 01 Feb 2017 09:19:40 +0800</pubDate>
       
-      <guid>http://127.0.0.1:1313/posts/archive/rsa-2.1/</guid>
+      <guid>http://127.0.0.1:1313/posts/archive/asn.1/</guid>
       <description>记法和编码 ASN.1（Abstract syntax notation one） 是一个对数据（类型/值）的记法和编码的祖父级标准；制定几十年而依然健在且广泛使用。
 对比一下 JSON（Javascript Object Notation），JSON 中的记法和编码是等价的，即它的记法就是编码。
 而 ASN.1 中记法和编码是不一样的，记法主要是为人类服务，用于描述，是抽象且实现无关的，例如 （摘自这里）：
 AirlineFlight ::= SEQUENCE { airline IA5String, flight NumericString, seats SEQUENCE { maximum INTEGER, occupied INTEGER, vacant INTEGER }, airport SEQUENCE { origin IA5String, stop1 [0] IA5String OPTIONAL, stop2 [1] IA5String OPTIONAL, destination IA5String }, crewsize ENUMERATED { six (6), eight (8), ten (10) }, cancel BOOLEAN DEFAULT FALSE }. 而编码则是具体实现序列化以及反序列化的操作，ASN.1 有很多种编码方式，例如：
  Basic Encoding Rule (BER) Canonical Encoding Rules (CER) Distinguished Encoding Rules (DER) XML Encoding Rules (XER) Packed Encoding Rules (PER) …  这篇笔记主要记录 ASN.</description>
-    </item>
-    
-    <item>
-      <title>RSA 简介 (2) - 存储格式和标准</title>
-      <link>http://127.0.0.1:1313/posts/archive/rsa-2/</link>
-      <pubDate>Thu, 26 Jan 2017 17:43:37 +0800</pubDate>
-      
-      <guid>http://127.0.0.1:1313/posts/archive/rsa-2/</guid>
-      <description>RSA on disk 如上篇所描述，RSA 的公私钥实际上就是些数字，但我们平时实际使用的是 .pem 格式（或 .der）的 key 。
-.pem 格式头部和尾部的有一些标识符（-----BEGIN XXXX-----）这些是为了让 parser 可以马上知道这个文件包含的是公钥私钥，或是证书等。
-中间的数据其实是 base64 编码过后的 DER（Distinguished Encoding Rules） 编码的 ASN.1（Abstract Syntax Notation One） 数据。
-写个程序验证以下（dec.py）：
-#!/usr/bin/python import sys from base64 import b64decode from pyasn1.codec.der.decoder import decode as der_decode def read_pem(f, asn1Spec=None): return der_decode( b64decode( &amp;#39;&amp;#39;.join([line.strip() for line in f if not line.startswith(&amp;#39;-----&amp;#39;)]) ), asn1Spec=asn1Spec ) obj, _ = read_pem(open(sys.argv[1])) print obj.prettyPrint() 找一个 rsa private key 来跑一下：
-$ .</description>
-    </item>
-    
-    <item>
-      <title>RSA 简介 (1) - 算法</title>
-      <link>http://127.0.0.1:1313/posts/archive/rsa-1/</link>
-      <pubDate>Tue, 24 Jan 2017 11:52:55 +0800</pubDate>
-      
-      <guid>http://127.0.0.1:1313/posts/archive/rsa-1/</guid>
-      <description>这一系列简单介绍 RSA 公钥加密体系</description>
     </item>
     
     <item>

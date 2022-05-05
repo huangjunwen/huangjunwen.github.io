@@ -88,7 +88,7 @@
       </div>
     </article><article>
       <h1>
-        <a href="/posts/archive/kademlia/">Kademlia 简介</a>
+        <a href="/notes/how-it-works/kademlia/">Kademlia 简介</a>
       </h1>
       <small>
         <time class="" datetime="2020-09-12T12:23:00&#43;0800">Sat, 2020/09/12</time>
@@ -97,7 +97,7 @@
         Kademlia 是一种 p2p 网络的分布式哈希表 (DHT: distributed hash table). 有别于单机版的 hash table, p2p DHT 需要将 key-value 键值对存放在大量的 (但不稳定的) …
       </p>
       <div>
-        <a href="/posts/archive/kademlia/">Read More…</a>
+        <a href="/notes/how-it-works/kademlia/">Read More…</a>
       </div>
     </article><article>
       <h1>
@@ -116,7 +116,7 @@
       </div>
     </article><article>
       <h1>
-        <a href="/posts/archive/greenlet/">Greenlet 原理</a>
+        <a href="/notes/how-it-works/greenlet/">Greenlet 原理</a>
       </h1>
       <small>
         <time class="" datetime="2018-03-15T09:05:51&#43;0800">Thu, 2018/03/15</time>
@@ -126,54 +126,11 @@
 那么假如想要在用户态实现轻量级的类线程，就同 …
       </p>
       <div>
-        <a href="/posts/archive/greenlet/">Read More…</a>
+        <a href="/notes/how-it-works/greenlet/">Read More…</a>
       </div>
     </article><article>
       <h1>
-        <a href="/posts/archive/vault-database-secret-backend/">Vault Database Secret Backend</a>
-      </h1>
-      <small>
-        <time class="" datetime="2017-06-10T16:46:36&#43;0800">Sat, 2017/06/10</time>
-      </small>
-      <p>
-        在当前版本（v0.7.2）这个 backend 还处于 beta 状态；这个 backend 应该是用来统一之前版本中各种数据库的 secret backend 的；使用前需要挂载 vault mount database， …
-      </p>
-      <div>
-        <a href="/posts/archive/vault-database-secret-backend/">Read More…</a>
-      </div>
-    </article><article>
-      <h1>
-        <a href="/posts/archive/vault/">Vault 介绍</a>
-      </h1>
-      <small>
-        <time class="" datetime="2017-06-07T08:14:18&#43;0800">Wed, 2017/06/07</time>
-      </small>
-      <p>
-        之前一篇文章介绍了 Hashicorp Vault 的解封/密封算法。这篇打算记录一下这个软件的其它方面。当前最新版本为 v0.7.2 。
-Vault 是一个相当复杂的系统，总括而言，它是一个集中管理各类敏感信息（如密码/Key/证书等等） …
-      </p>
-      <div>
-        <a href="/posts/archive/vault/">Read More…</a>
-      </div>
-    </article><article>
-      <h1>
-        <a href="/posts/archive/authentication_in_microservice/">微服务中的认证 (authentication) 问题</a>
-      </h1>
-      <small>
-        <time class="" datetime="2017-05-14T19:14:51&#43;0800">Sun, 2017/05/14</time>
-      </small>
-      <p>
-        这帖子有意思 JSON Web token vs. Session
-“单纯”的 JWT，其实跟 client side session 没啥区别，它的优缺点都一样：
-Pros：
- 服务端不需要储存 session 数据 stateless  …
-      </p>
-      <div>
-        <a href="/posts/archive/authentication_in_microservice/">Read More…</a>
-      </div>
-    </article><article>
-      <h1>
-        <a href="/posts/archive/shamir-secret-sharding/">Shamir Secret Sharding</a>
+        <a href="/notes/how-it-works/shamir-secret-sharding/">Shamir Secret Sharding</a>
       </h1>
       <small>
         <time class="" datetime="2017-04-23T09:27:43&#43;0800">Sun, 2017/04/23</time>
@@ -183,61 +140,22 @@ Pros：
 Vault server 运行起来之后有两种状态：seal/unseal (密封/解封) ，这 …
       </p>
       <div>
-        <a href="/posts/archive/shamir-secret-sharding/">Read More…</a>
+        <a href="/notes/how-it-works/shamir-secret-sharding/">Read More…</a>
       </div>
     </article><article>
       <h1>
-        <a href="/posts/archive/rsa-2.1/">RSA 简介 (2.1) - ASN.1</a>
-      </h1>
-      <small>
-        <time class="" datetime="2017-02-01T09:19:40&#43;0800">Wed, 2017/02/01</time>
-      </small>
-      <p>
-        记法和编码 ASN.1（Abstract syntax notation one） 是一个对数据（类型/值）的记法和编码的祖父级标准；制定几十年而依然健在且广泛使用。
-对比一下 JSON（Javascript Object …
-      </p>
-      <div>
-        <a href="/posts/archive/rsa-2.1/">Read More…</a>
-      </div>
-    </article><article>
-      <h1>
-        <a href="/posts/archive/rsa-2/">RSA 简介 (2) - 存储格式和标准</a>
-      </h1>
-      <small>
-        <time class="" datetime="2017-01-26T17:43:37&#43;0800">Thu, 2017/01/26</time>
-      </small>
-      <p>
-        RSA on disk 如上篇所描述，RSA 的公私钥实际上就是些数字，但我们平时实际使用的是 .pem 格式（或 .der）的 key 。
-.pem 格式头部和尾部的有一些标识符（-----BEGIN XXXX-----） …
-      </p>
-      <div>
-        <a href="/posts/archive/rsa-2/">Read More…</a>
-      </div>
-    </article><article>
-      <h1>
-        <a href="/posts/archive/rsa-1/">RSA 简介 (1) - 算法</a>
+        <a href="/notes/how-it-works/rsa/">RSA 简介</a>
       </h1>
       <small>
         <time class="" datetime="2017-01-24T11:52:55&#43;0800">Tue, 2017/01/24</time>
       </small>
       <p>
-        这一系列简单介绍 RSA 公钥加密体系
+        主要算法 RSA 的原理是在于能够找到三个很大的正整数 \(e,d,n\) 使得对于任何 \(0 \le m \lt n\)：
+\[ (m^e)^d \equiv m \pmod{n} \]
+其中公钥为 \((n,e)\)，可以发送给任何 …
       </p>
       <div>
-        <a href="/posts/archive/rsa-1/">Read More…</a>
-      </div>
-    </article><article>
-      <h1>
-        <a href="/posts/archive/port-knocking-using-iptables/">用 iptables 来配置 port knocking</a>
-      </h1>
-      <small>
-        <time class="" datetime="2016-12-20T10:20:54&#43;0800">Tue, 2016/12/20</time>
-      </small>
-      <p>
-        对于正式环境的服务器来说，每当查看到 auth.log 里头那些撞大运的 ssh 登录尝试，心里总是有点惴惴不安的。虽然 public key authentication 号称安全，但是谁说得准呢？而且不知道配置里会不会有错误，要是有多一 …
-      </p>
-      <div>
-        <a href="/posts/archive/port-knocking-using-iptables/">Read More…</a>
+        <a href="/notes/how-it-works/rsa/">Read More…</a>
       </div>
     </article>
   </div>
