@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Intuitionistic Logic</title>
+    
+    <link rel="stylesheet" href="/res/libs/fontawesome/css/all.min.css"></link>
+    <link rel="stylesheet" href="/res/libs/chota/css/chota.min.css"></link>
+    <link rel="stylesheet" href="/res/style/site.min.1cfb2065638c6eda7f5ceb0b60110baf5593ae09a1298e64096971386bd084ca.css"></link>
+    <script type="text/javascript" src="/res/script/site.min.6881188133395162222bed24f23dd6cbdd74f0b93a54b35a6b929b5178e10fe9.js"></script>
+    <link id="markdown-body-style" rel="stylesheet" href="/res/style/markdown-body.min.f4f92656c58fcefbc647dacbc170e419ce382a807b91958fc6c683580a8094f8.css"></link>
+    <script type="text/javascript" src="/res/script/markdown-body.min.63397e711af2142bc1376b6549029b00deca5b6ec13cd8f0d4109125ddc524ca.js"></script>
+  </head>
+
+  <body>
+    
+    <div id="header">
+      
+      <nav id="navbar" class="row">
+        <div class="is-left col-12 col-3-md row">
+          <a id="navbar-brand" class="brand" href="/">Coder Papa</a>
+          <label id="navbar-toggle-menu" for="navbar-toggle-menu-state" class="hide-md hide-lg">
+            <span></span>
+            <span></span>
+            <span></span>
+          </label>
+        </div>
+        <input id="navbar-toggle-menu-state" type="checkbox" style="display:none"></input>
+        <div id="navbar-menu" class="is-right col-12 col-9-md row hide-xs-noimportant hide-sm-noimportant">
+          
+          <a href="/posts">Posts</a>
+          
+          <a href="/notes">Notes</a>
+          
+          
+          <a href="/tags">Tags</a>
+          
+          
+          <a href="https://github.com/huangjunwen"><i class='fab fa-github'></i></a>
+          
+          <a href="javascript:void(0)" id="navbar-toggle-mode" onclick="return toggleColorMode()"></a>
+        </div>
+      </nav>
+    </div>
+
+    
+    <div id="main" class="row">
+      <div id="main-left" class="hide-xs hide-sm col-2-md col-3-lg">
+        
+      </div>
+      <div id="main-center" class="col-12 col-8-md col-6-lg mdb">
+        <div id="main-title" class="text-center">
+          
+  <h5 class="no-toc"><span class="breadcrumbnav"><span><a href="/notes/">NOTES</a></span><i class="fa fa-fw fa-angle-double-right"></i><span><a href="/notes/type-theory/">TYPE THEORY 笔记</a></span></span></h5>
+  <h1>Intuitionistic Logic</h1>
+  <small>
+    <time class="" datetime="2022-05-05T08:08:04Z">Thu, 2022/05/05</time>
+  </small>
+  <p>
+    
+  </p>
+  
+        </div>
+        <div id="main-body">
+          
+  <article id="content-body">
+    <h2 id="intuitionism">Intuitionism</h2>
+<p>直觉主义（Intuitionism）<a href="#fn1" class="footnote-ref"
+id="fnref1" role="doc-noteref"><sup>1</sup></a>是主要由 L. E. J. Brouwer
+以及其学生 Heyting 奠基的一派数学哲学<a href="#fn2" class="footnote-ref"
+id="fnref2" role="doc-noteref"><sup>2</sup></a>，
+其主要观点是数学是人心智的<strong>构造物</strong>：自然数/实数/证明/定理…
+都是心智的构造物，
+这些数学对象是被创造出来的而不是从客观世界中被发现的，<strong>唯有当存在其有效的构造方法时才能证明其存在</strong>
+（即构造性证明，而经典方法允许以<strong>否定其不存在</strong>的方式证明其存在）；另外对无穷的看法也有所不同，
+Brouwer 拒绝实无穷（Actual Infinity）的概念而仅接受潜无穷（Potential
+Infinity），
+因为诸如包含全体自然数的集合其实是没有办法有效的被构造出来，而只有永续的但有限的集合能被构造出来<a
+href="#fn3" class="footnote-ref" id="fnref3"
+role="doc-noteref"><sup>3</sup></a></p>
+<p><em>注
+1：其实我觉得有效构造究竟是什么挺模糊的，实无穷，反证法也是心智的构造吧？</em></p>
+<p><em>注
+2：时间似乎也是重要的参与者，一些难题在现在没有构造的方法，但未来也许有，无穷也需要时间的参与</em></p>
+<h3 id="一个常见的构造性证明的例子">一个常见的构造性证明的例子</h3>
+<blockquote>
+<p>若 \(a\) 和 \(b\) 均是无理数，则 \(a^b\) 可能是有理数</p>
+</blockquote>
+<ul>
+<li>非构造性证明：
+<ul>
+<li>\(\sqrt 2 ^ {\sqrt 2}\) 要么是有理数，要么是无理数
+<ul>
+<li>如果是有理数，则已经得证，因为 \(a=\sqrt 2\) 以及 \(b=\sqrt 2\)
+均是无理数</li>
+<li>如果是无理数，则令 \(a=\sqrt 2 ^ {\sqrt 2}\)，\(b=\sqrt 2\)，易知 \[
+a^b = (\sqrt 2 ^ {\sqrt 2}) ^ {\sqrt 2} = \sqrt 2 ^ {\sqrt 2 \cdot \sqrt
+2} = \sqrt 2 ^ 2 = 2
+\]</li>
+</ul></li>
+<li>该证明是非构造性证明，因为：它依赖于排中律（e.g. 有理数或无理数）来给出两种可能性，
+而究竟是哪一个成立甚至都无关紧要</li>
+</ul></li>
+<li>构造性证明：
+<ul>
+<li>令 \(a = \sqrt 2\) 以及 \(b = log_{2} 9\) 则 \(2^b = (a \cdot a)^b =
+a^b \cdot a^b = 9\) 故 \(a^b = 3\)</li>
+</ul></li>
+</ul>
+<h2 id="bhk-interpretation">BHK interpretation</h2>
+<p>BHK 释义<a href="#fn4" class="footnote-ref" id="fnref4"
+role="doc-noteref"><sup>4</sup></a>（Brouwer–Heyting–Kolmogorov
+interpretation）是直觉主义逻辑的标准解释，如下：</p>
+<dl>
+<dt>BHK interp</dt>
+<dd>
+<ul>
+<li>\(P \wedge Q\) 的证明是 \(\langle p, q \rangle\)，其中 \(p\) 和
+\(q\) 分别是 \(P\) 和 \(Q\) 的证明</li>
+<li>\(P \vee Q\) 的证明是 \(\langle 0, p \rangle\) 或者 \(\langle 1, q
+\rangle\)，其中 \(p\) 和 \(q\) 分别是 \(P\) 和 \(Q\) 的证明</li>
+<li>\(P \rightarrow Q\) 的证明是一个函数 \(f\)，能将 \(P\) 的证明转换为
+\(Q\) 的证明</li>
+<li>\((\exists x \in S)P(x)\) 的证明是 \(\langle s, p \rangle\)，其中
+\(s \in S\)，\(p\) 是 \(P(s)\) 的证明</li>
+<li>\((\forall x \in S)P(x)\) 的证明是一个函数 \(f\)，能将 \(s \in S\)
+转换为 \(P(s)\) 的证明</li>
+<li>\(\bot\) 荒谬（absurdity）没有证明</li>
+<li>\(\neg P\) 是 \(P \rightarrow \bot\) 的缩写，即一个能将 \(P\)
+的证明归于荒谬的函数</li>
+<li>原子命题（\(P\) 等）本身的构造性证明应当在其特定上下文中获得</li>
+</ul>
+</dd>
+</dl>
+<p>对比经典逻辑，可以看出有很大的不同</p>
+<ol type="1">
+<li><p>经典逻辑中，命题是基于二值的组合的；而在直觉主义逻辑中，命题是基于证明的组合的，
+有证明则成立，<strong>支持每一个命题成立的证明各不相同</strong>（一个命题可以有无数个证明，当然，只需要举出一个即可支持其成立）</p></li>
+<li><p>要证明 \(P \vee Q\) 则需要有确定的其中之一的证明，对于排中律（Law
+of Excluded Middle） \[
+P \vee \neg P
+\] 若 \(P\)
+是未解的命题，当下既没有证明也没有证伪的方法（未来也许会有），
+故不能认为是<strong>对所有命题都普遍成立</strong>的公理（注意对<strong>特定命题</strong>是可以成立的）</p>
+<p>但另一方面，<strong>排中律</strong>的双重否动在直觉主义下却是普遍成立的
+\[
+\neg \neg (P \vee \neg P)
+\] （即 \(((P \vee (P \rightarrow \bot)) \rightarrow \bot) \rightarrow
+\bot\)）</p>
+<p>因为它是有证明的<a href="#fn5" class="footnote-ref" id="fnref5"
+role="doc-noteref"><sup>5</sup></a>： \[
+\lambda k \rightarrow k(\langle 1, \lambda p \rightarrow k(\langle 0, p
+\rangle) \rangle)
+\] 其中</p>
+<ul>
+<li>参数 \(k\) 是 \((P \vee (P \rightarrow \bot)) \rightarrow \bot\)
+的证明，即一个接受 \(P \vee (P \rightarrow \bot)\) 的证明会返回 \(\bot\)
+的证明的函数，含义是：排中律可以证伪</li>
+<li>\(\lambda p \rightarrow k(\langle 0, p \rangle)\) 是 \(P \rightarrow
+\bot\) 的证明，其中 \(\langle 0, p \rangle\) 是 \(P \vee (P \rightarrow
+\bot)\) 的证明，含义是：若排中律可以证伪的话，就可以证明 \(P \rightarrow
+\bot\)</li>
+<li>\(\langle 1, \lambda p \rightarrow k(\langle 0, p \rangle)\) 也是
+\(P \vee (P \rightarrow \bot)\) 的证明， 最终对它执行 \(k\) 即可得到
+\(\bot\)</li>
+</ul></li>
+<li><p><strong>双重否定</strong>消除（Double Negation Elimation） \[
+\neg \neg P \rightarrow P
+\] 在直觉主义下也不成立，否则通过 2 就能使得排中律也成立了</p>
+<p>不过双重否定引入（Double Negation Introduction）却是成立的 \[
+P \rightarrow \neg \neg P
+\] （即 \(P \rightarrow ((P \rightarrow \bot) \rightarrow \bot)\)）</p>
+<p>它可以由如下证明 \[
+\lambda p \rightarrow (\lambda q \rightarrow q(p))
+\]</p></li>
+<li><p>这种不对称性也反映在常用的<strong>Proof by
+Contradiction（反证法）/Proof of Negation（不知道怎么翻译）</strong>上<a
+href="#fn6" class="footnote-ref" id="fnref6"
+role="doc-noteref"><sup>6</sup></a>：</p>
+<p>\[
+(P \rightarrow \bot) \rightarrow \neg P
+\] 以上是 Proof of Negation，即如果顺着 \(P\) 能证明荒谬，那么 \(P\)
+能证伪；它由一个 identity 函数证明，因为 BHK 解释下 \(\neg P\) 就是用
+\(P \rightarrow \bot\) 定义的</p>
+<p>但以下看上去类似的反证法是不被直觉主义接受的 \[
+(\neg P \rightarrow \bot) \rightarrow P
+\] 因为它其实就是双重否定消除</p></li>
+</ol>
+<h2 id="todo">TODO</h2>
+<ul>
+<li><a
+href="https://www.newworldencyclopedia.org/entry/Philosophy_of_Mathematics#Intuitionism_and_constructivism"
+class="uri">https://www.newworldencyclopedia.org/entry/Philosophy_of_Mathematics#Intuitionism_and_constructivism</a></li>
+<li><a
+href="https://www.math.uni-hamburg.de/en/personen/khomskii/intuitionistic/PP-2006-25.text.pdf"
+class="uri">https://www.math.uni-hamburg.de/en/personen/khomskii/intuitionistic/PP-2006-25.text.pdf</a></li>
+</ul>
+<section class="footnotes footnotes-end-of-document"
+role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><ul>
+<li><a href="https://plato.stanford.edu/entries/intuitionism/"
+class="uri">https://plato.stanford.edu/entries/intuitionism/</a></li>
+<li><a
+href="https://plato.stanford.edu/entries/philosophy-mathematics/#Int"
+class="uri">https://plato.stanford.edu/entries/philosophy-mathematics/#Int</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Intuitionism"
+class="uri">https://en.wikipedia.org/wiki/Intuitionism</a></li>
+</ul>
+<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></li>
+<li id="fn2" role="doc-endnote"><p>其他主流学派包括 David Hilbert
+的形式主义（Formalism）以及 Frege 的逻辑主义（Logicism）等<a
+href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3" role="doc-endnote"><blockquote>
+<p>摘自 <a href="https://en.wikipedia.org/wiki/Intuitionism#Infinity"
+class="uri">https://en.wikipedia.org/wiki/Intuitionism#Infinity</a></p>
+<p>Brouwer made it clear, as I think beyond any doubt, that there is no
+evidence supporting the belief in the existential character of the
+totality of all natural numbers … the sequence of numbers which grows
+beyond any stage already reached by passing to the next number, is a
+manifold of possibilities open towards infinity; it remains forever in
+the status of creation, but is not a closed realm of things existing in
+themselves. That we blindly converted one into the other is the true
+source of our difficulties, including the antinomies – a source of more
+fundamental nature than Russell’s vicious circle principle indicated</p>
+</blockquote>
+<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></li>
+<li id="fn4" role="doc-endnote"><p><a
+href="https://en.wikipedia.org/wiki/Brouwer%E2%80%93Heyting%E2%80%93Kolmogorov_interpretation"
+class="uri">https://en.wikipedia.org/wiki/Brouwer%E2%80%93Heyting%E2%80%93Kolmogorov_interpretation</a><a
+href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5" role="doc-endnote"><p><a
+href="https://plfa.github.io/Negation/#excluded-middle-is-irrefutable"
+class="uri">https://plfa.github.io/Negation/#excluded-middle-is-irrefutable</a><a
+href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6" role="doc-endnote"><p><a
+href="https://blog.plover.com/math/IL-contradiction.html"
+class="uri">https://blog.plover.com/math/IL-contradiction.html</a><a
+href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+  </article>
+
+        </div>
+      </div>
+      <div id="main-right" class="hide-xs hide-sm col-2-md col-3-lg">
+        
+  
+  <div id="content-toc" class="toc hide-md"></div>
+  
+
+      </div>
+    </div>
+
+    
+    <div id="footer" class="text-center">
+      <p>
+        Powered By <a href="https://gohugo.io/">Hugo</a>/<a href="https://jenil.github.io/chota">Chota</a>,
+        Generated Using <a href="https://github.com/huangjunwen/mdtool">MDTool</a>
+      </p>
+      <p>&copy; 2022. All rights reserved</p>
+    </div>
+
+    
+  
+    <link rel="stylesheet" href="/res/libs/tocbot/css/tocbot.css"></link>
+    <style>
+    #content-toc {
+      position: -webkit-sticky;
+      position: sticky;
+      top: 7rem;
+      padding-left: 2rem;
+      padding-right: 1rem;
+    }
+
+    #content-toc a.toc-link {
+      color: var(--font-color);
+    }
+
+    #content-toc a.toc-link.is-active-link {
+      color: var(--color-darkGrey);
+    }
+
+    #content-toc a.toc-link::before {
+      background-color: var(--bg-color);
+    }
+
+    #content-toc a.toc-link.is-active-link::before {
+      background-color: var(--color-primary);
+    }
+    </style>
+    <script src="/res/libs/tocbot/js/tocbot.min.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', (ev) => {
+      tocbot.init({
+        tocSelector: '#content-toc',
+        contentSelector: '#main-center',
+        ignoreSelector: '.no-toc',
+        headingSelector: 'h1, h2, h3, h4, h5, h6',
+        hasInnerContainers: false,
+        headingsOffset: 80,
+        scrollSmoothOffset: -80
+      });
+    });
+    </script>
+  
+  
+    <script type="text/javascript" src="/res/libs/anchorjs/js/anchor.min.js"></script>
+    <script>anchors.add('#main-body h1, #main-body h2, #main-body h3, #main-body h4, #main-body h5, #main-body h6, #main-body dt');</script>
+  
+
+  </body>
+</html>

@@ -2,10 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://127.0.0.1:1313/posts/2022/install-agda/</loc>
-    <lastmod>2022-04-16T03:24:27+00:00</lastmod>
-  </url><url>
     <loc>http://127.0.0.1:1313/</loc>
+    <lastmod>2022-05-05T08:08:04+00:00</lastmod>
+  </url><url>
+    <loc>http://127.0.0.1:1313/notes/type-theory/intuitionistic-logic/</loc>
+    <lastmod>2022-05-05T08:08:04+00:00</lastmod>
+  </url><url>
+    <loc>http://127.0.0.1:1313/notes/type-theory/</loc>
+    <lastmod>2022-05-05T04:22:02+00:00</lastmod>
+  </url><url>
+    <loc>http://127.0.0.1:1313/posts/2022/install-agda/</loc>
     <lastmod>2022-04-16T03:24:27+00:00</lastmod>
   </url><url>
     <loc>http://127.0.0.1:1313/posts/</loc>
