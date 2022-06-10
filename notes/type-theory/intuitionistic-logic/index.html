@@ -10,8 +10,8 @@
     <link rel="stylesheet" href="/res/libs/chota/css/chota.min.css"></link>
     <link rel="stylesheet" href="/res/style/site.min.1cfb2065638c6eda7f5ceb0b60110baf5593ae09a1298e64096971386bd084ca.css"></link>
     <script type="text/javascript" src="/res/script/site.min.6881188133395162222bed24f23dd6cbdd74f0b93a54b35a6b929b5178e10fe9.js"></script>
-    <link id="markdown-body-style" rel="stylesheet" href="/res/style/markdown-body.min.f4f92656c58fcefbc647dacbc170e419ce382a807b91958fc6c683580a8094f8.css"></link>
-    <script type="text/javascript" src="/res/script/markdown-body.min.63397e711af2142bc1376b6549029b00deca5b6ec13cd8f0d4109125ddc524ca.js"></script>
+    <link id="markdown-body-style" rel="stylesheet" href="/res/style/markdown-body.min.d03821a569aefe7776c65a7b1bf6eb5e0833d3e13d50479a140b21754e877be3.css"></link>
+    <script type="text/javascript" src="/res/script/markdown-body.min.504cd436190b4df563ef53fa086af9b11ed87188d384233eeb75059c5ce7cc2a.js"></script>
   </head>
 
   <body>
@@ -121,73 +121,85 @@ interpretation）是直觉主义逻辑的标准解释，如下：</p>
 \(q\) 分别是 \(P\) 和 \(Q\) 的证明</li>
 <li>\(P \vee Q\) 的证明是 \(\langle 0, p \rangle\) 或者 \(\langle 1, q
 \rangle\)，其中 \(p\) 和 \(q\) 分别是 \(P\) 和 \(Q\) 的证明</li>
-<li>\(P \rightarrow Q\) 的证明是一个函数 \(f\)，能将 \(P\) 的证明转换为
+<li>\(P \Rightarrow Q\) 的证明是一个函数 \(f\)，能将 \(P\) 的证明转换为
 \(Q\) 的证明</li>
 <li>\((\exists x \in S)P(x)\) 的证明是 \(\langle s, p \rangle\)，其中
 \(s \in S\)，\(p\) 是 \(P(s)\) 的证明</li>
 <li>\((\forall x \in S)P(x)\) 的证明是一个函数 \(f\)，能将 \(s \in S\)
 转换为 \(P(s)\) 的证明</li>
 <li>\(\bot\) 荒谬（absurdity）没有证明</li>
-<li>\(\neg P\) 是 \(P \rightarrow \bot\) 的缩写，即一个能将 \(P\)
+<li>\(\neg P\) 是 \(P \Rightarrow \bot\) 的缩写，即一个能将 \(P\)
 的证明归于荒谬的函数</li>
 <li>原子命题（\(P\) 等）本身的构造性证明应当在其特定上下文中获得</li>
 </ul>
 </dd>
 </dl>
-<p>对比经典逻辑，可以看出有很大的不同</p>
-<ol type="1">
-<li><p>经典逻辑中，命题是基于二值的组合的；而在直觉主义逻辑中，命题是基于证明的组合的，
-有证明则成立，<strong>支持每一个命题成立的证明各不相同</strong>（一个命题可以有无数个证明，当然，只需要举出一个即可支持其成立）</p></li>
-<li><p>要证明 \(P \vee Q\) 则需要有确定的其中之一的证明，对于排中律（Law
-of Excluded Middle） \[
-P \vee \neg P
-\] 若 \(P\)
+<p>对比经典逻辑，可以看出有很大的不同：
+在经典逻辑中，命题是基于二值的组合的；而在直觉主义逻辑中，命题是基于证明的组合的，
+有证明则成立，<strong>支持每一个命题成立的证明各不相同</strong>（注意：一个命题可能会有多种证明，但只需要举出一个即可支持其成立）</p>
+<h3 id="排中律">排中律</h3>
+<p>要证明 \(P \vee Q\)
+则需要有确定的其中之一的证明，对于<strong>排中律</strong>（Law of
+Excluded Middle，缩写为 EM） \[
+  P \vee \neg P
+  \] 来说，如果 \(P\)
 是未解的命题，当下既没有证明也没有证伪的方法（未来也许会有），
 故不能认为是<strong>对所有命题都普遍成立</strong>的公理（注意对<strong>特定命题</strong>是可以成立的）</p>
-<p>但另一方面，<strong>排中律</strong>的双重否动在直觉主义下却是普遍成立的
+<p>但另一方面，排中律的双重否动在直觉主义下却是普遍成立的（EM-irrefutable）
 \[
-\neg \neg (P \vee \neg P)
-\] （即 \(((P \vee (P \rightarrow \bot)) \rightarrow \bot) \rightarrow
+  \neg \neg (P \vee \neg P)
+  \] （即 \(((P \vee (P \Rightarrow \bot)) \Rightarrow \bot) \Rightarrow
 \bot\)）</p>
 <p>因为它是有证明的<a href="#fn5" class="footnote-ref" id="fnref5"
 role="doc-noteref"><sup>5</sup></a>： \[
-\lambda k \rightarrow k(\langle 1, \lambda p \rightarrow k(\langle 0, p
-\rangle) \rangle)
-\] 其中</p>
+\lambda k . k(\langle 1, \lambda p . k(\langle 0, p \rangle) \rangle)
+\] 思路是这样的</p>
 <ul>
-<li>参数 \(k\) 是 \((P \vee (P \rightarrow \bot)) \rightarrow \bot\)
-的证明，即一个接受 \(P \vee (P \rightarrow \bot)\) 的证明会返回 \(\bot\)
-的证明的函数，含义是：排中律可以证伪</li>
-<li>\(\lambda p \rightarrow k(\langle 0, p \rangle)\) 是 \(P \rightarrow
-\bot\) 的证明，其中 \(\langle 0, p \rangle\) 是 \(P \vee (P \rightarrow
-\bot)\) 的证明，含义是：若排中律可以证伪的话，就可以证明 \(P \rightarrow
-\bot\)</li>
-<li>\(\langle 1, \lambda p \rightarrow k(\langle 0, p \rangle)\) 也是
-\(P \vee (P \rightarrow \bot)\) 的证明， 最终对它执行 \(k\) 即可得到
-\(\bot\)</li>
-</ul></li>
-<li><p><strong>双重否定</strong>消除（Double Negation Elimation） \[
-\neg \neg P \rightarrow P
-\] 在直觉主义下也不成立，否则通过 2 就能使得排中律也成立了</p>
+<li>参数 \(k\) 是 \((P \vee (P \Rightarrow \bot)) \Rightarrow \bot\)
+的证明， 含义是：排中律可以证伪； 如果我们能构造一个 \(P \vee (P
+\Rightarrow \bot)\) 的证明，则对它应用 \(k\) 就可以获得 \(\bot\) 了；
+不过现在没有 \(P\) 的证明，但可以构造一个 \(P \Rightarrow \bot\)
+的证明（一个函数）</li>
+<li>\(\lambda p . k(\langle 0, p \rangle)\) 就是 \(P \Rightarrow \bot\)
+的证明， 在这个新构造的函数里我们可以从参数处获得 \(P\) 的证明
+\(p\)，因此可以用 \(\langle 0, p \rangle\) 构造 \(P \vee (P \Rightarrow
+\bot)\) 的证明并应用 \(k\) 获得 \(\bot\)，
+整个函数的含义是：在排中律可以证伪（\(k\)）的前提下，可以得到 \(P
+\Rightarrow \bot\) 的证明</li>
+<li>\(\langle 1, \lambda p . k(\langle 0, p \rangle)\)
+是用上一步获得的证明构造 \(P \vee (P \Rightarrow \bot)\) 的证明，
+最终对它应用 \(k\) 即可得到 \(\bot\)</li>
+</ul>
+<h3 id="双重否定消除">双重否定消除</h3>
+<p><strong>双重否定消除</strong>（Double Negation Elimation，缩写为
+DNE） \[
+  \neg \neg P \Rightarrow P
+  \] 在直觉主义下也不成立，否则作用在 EM-irrefutable
+上就能使得排中律也成立了<a href="#fn6" class="footnote-ref" id="fnref6"
+role="doc-noteref"><sup>6</sup></a></p>
 <p>不过双重否定引入（Double Negation Introduction）却是成立的 \[
-P \rightarrow \neg \neg P
-\] （即 \(P \rightarrow ((P \rightarrow \bot) \rightarrow \bot)\)）</p>
+  P \Rightarrow \neg \neg P
+  \] （即 \(P \Rightarrow ((P \Rightarrow \bot) \Rightarrow
+\bot)\)）</p>
 <p>它可以由如下证明 \[
-\lambda p \rightarrow (\lambda q \rightarrow q(p))
-\]</p></li>
-<li><p>这种不对称性也反映在常用的<strong>Proof by
-Contradiction（反证法）/Proof of Negation（不知道怎么翻译）</strong>上<a
-href="#fn6" class="footnote-ref" id="fnref6"
-role="doc-noteref"><sup>6</sup></a>：</p>
+  \lambda p . (\lambda q . q(p))
+  \]</p>
+<h3 id="反证法">反证法</h3>
+<p>这种不对称性也反映在常用的<strong>反证法</strong>（Proof by
+Contradiction）和 <strong>Proof of
+Negation</strong>（不知道怎么翻译）上<a href="#fn7" class="footnote-ref"
+id="fnref7" role="doc-noteref"><sup>7</sup></a>：</p>
 <p>\[
-(P \rightarrow \bot) \rightarrow \neg P
-\] 以上是 Proof of Negation，即如果顺着 \(P\) 能证明荒谬，那么 \(P\)
+  (P \Rightarrow \bot) \Rightarrow \neg P
+  \]</p>
+<p>以上是 Proof of Negation，即如果顺着 \(P\) 能证明荒谬，那么 \(P\)
 能证伪；它由一个 identity 函数证明，因为 BHK 解释下 \(\neg P\) 就是用
-\(P \rightarrow \bot\) 定义的</p>
-<p>但以下看上去类似的反证法是不被直觉主义接受的 \[
-(\neg P \rightarrow \bot) \rightarrow P
-\] 因为它其实就是双重否定消除</p></li>
-</ol>
+\(P \Rightarrow \bot\) 定义的</p>
+<p>但以下看上去类似的反证法是不被直觉主义接受的</p>
+<p>\[
+  (\neg P \Rightarrow \bot) \Rightarrow P
+  \]</p>
+<p>因为它其实就是双重否定消除</p>
 <h2 id="todo">TODO</h2>
 <ul>
 <li><a
@@ -236,10 +248,23 @@ href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 href="https://plfa.github.io/Negation/#excluded-middle-is-irrefutable"
 class="uri">https://plfa.github.io/Negation/#excluded-middle-is-irrefutable</a><a
 href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn6" role="doc-endnote"><p><a
+<li id="fn6" role="doc-endnote"><p>实际上 DNE 和 EM 是等价的（即 \(EM
+\Leftrightarrow DNE\)），另外还有几个也是等价的</p>
+<ul>
+<li>Peirce’s Law： \(((A \Rightarrow B) \Rightarrow A) \Rightarrow
+A\)</li>
+<li>Implication as disjunction： \((A \Rightarrow B) \Rightarrow \neg A
+\vee B\)</li>
+<li>De Morgan： \(\neg (\neg A \wedge \neg B) \Rightarrow A \vee
+B\)</li>
+</ul>
+<p><a href="https://plfa.github.io/Negation/#exercise-classical-stretch"
+class="uri">https://plfa.github.io/Negation/#exercise-classical-stretch</a><a
+href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7" role="doc-endnote"><p><a
 href="https://blog.plover.com/math/IL-contradiction.html"
 class="uri">https://blog.plover.com/math/IL-contradiction.html</a><a
-href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
