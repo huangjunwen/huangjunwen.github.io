@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>vault on Coder Papa</title>
-    <link>http://127.0.0.1:1313/tags/vault/</link>
-    <description>Recent content in vault on Coder Papa</description>
+    <title>未分类 on Coder Papa</title>
+    <link>http://127.0.0.1:1313/notes/unclassified/</link>
+    <description>Recent content in 未分类 on Coder Papa</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sat, 10 Jun 2017 16:46:36 +0800</lastBuildDate><atom:link href="http://127.0.0.1:1313/tags/vault/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 01 Jan 2017 08:49:34 +0000</lastBuildDate><atom:link href="http://127.0.0.1:1313/notes/unclassified/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Vault Database Secret Backend</title>
       <link>http://127.0.0.1:1313/notes/unclassified/vault-database-secret-backend/</link>
@@ -34,16 +34,16 @@ Auth(entication) Backend Auth Backend 完成的是认证工作：访问者是谁
     </item>
     
     <item>
-      <title>Shamir Secret Sharding</title>
-      <link>http://127.0.0.1:1313/notes/how-it-works/shamir-secret-sharding/</link>
-      <pubDate>Sun, 23 Apr 2017 09:27:43 +0800</pubDate>
+      <title>ASN.1</title>
+      <link>http://127.0.0.1:1313/notes/unclassified/asn.1/</link>
+      <pubDate>Wed, 01 Feb 2017 09:19:40 +0800</pubDate>
       
-      <guid>http://127.0.0.1:1313/notes/how-it-works/shamir-secret-sharding/</guid>
-      <description>Hashicorp 这家公司的产品都很有意思，其中 Vault 是一个用来集中管理敏感信息（密码，各种 token，证书，key 等等）的工具。
-Vault server 运行起来之后有两种状态：seal/unseal (密封/解封) ，这是因为：
-Vault 的数据是加密储存在磁盘上的：由 encryption key 加密，这个 encryption key 是由 master key 加密储存在磁盘上，而 master key 是不存放在磁盘上。所以当 Vault server 刚启动时，由于 master key 未知，故 encryption key 以及实际数据都是无法被解密访问的，这种状态就称之为seal (密封) ，unseal(解封) 就是重建 master key 的过程。
-由于 master key 太重要了，Vault 使用所谓的 Shamir’s Secret Sharing 算法把这个 master key 切分并分发给 n 个人，只有当这 n 个人里的最少 k 个人授权提供他们持有的部分，vault 才能重构出这个 master key，这个算法挺有趣，所以记录下来：
-目标 密码 \(S\) 需要切分成 \(n\) 份： \(S_1, S_2, ... S_n\)</description>
+      <guid>http://127.0.0.1:1313/notes/unclassified/asn.1/</guid>
+      <description>记法和编码 ASN.1（Abstract syntax notation one） 是一个对数据（类型/值）的记法和编码的祖父级标准；制定几十年而依然健在且广泛使用。
+对比一下 JSON（Javascript Object Notation），JSON 中的记法和编码是等价的，即它的记法就是编码。
+而 ASN.1 中记法和编码是不一样的，记法主要是为人类服务，用于描述，是抽象且实现无关的，例如 （摘自这里）：
+AirlineFlight ::= SEQUENCE { airline IA5String, flight NumericString, seats SEQUENCE { maximum INTEGER, occupied INTEGER, vacant INTEGER }, airport SEQUENCE { origin IA5String, stop1 [0] IA5String OPTIONAL, stop2 [1] IA5String OPTIONAL, destination IA5String }, crewsize ENUMERATED { six (6), eight (8), ten (10) }, cancel BOOLEAN DEFAULT FALSE }. 而编码则是具体实现序列化以及反序列化的操作，ASN.1 有很多种编码方式，例如：
+ Basic Encoding Rule (BER) Canonical Encoding Rules (CER) Distinguished Encoding Rules (DER) XML Encoding Rules (XER) Packed Encoding Rules (PER) …  这篇笔记主要记录 ASN.</description>
     </item>
     
   </channel>
