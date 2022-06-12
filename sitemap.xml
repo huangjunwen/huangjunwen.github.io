@@ -8,6 +8,12 @@
     <loc>http://127.0.0.1:1313/notes/type-theory/intuitionistic-logic/</loc>
     <lastmod>2022-05-05T08:08:04+00:00</lastmod>
   </url><url>
+    <loc>http://127.0.0.1:1313/tags/logic/</loc>
+    <lastmod>2022-05-05T08:08:04+00:00</lastmod>
+  </url><url>
+    <loc>http://127.0.0.1:1313/tags/</loc>
+    <lastmod>2022-05-05T08:08:04+00:00</lastmod>
+  </url><url>
     <loc>http://127.0.0.1:1313/notes/type-theory/</loc>
     <lastmod>2022-05-05T04:22:02+00:00</lastmod>
   </url><url>
@@ -17,16 +23,13 @@
     <loc>http://127.0.0.1:1313/notes/type-theory/plfa-prepare/</loc>
     <lastmod>2022-04-16T03:24:27+00:00</lastmod>
   </url><url>
-    <loc>http://127.0.0.1:1313/tags/</loc>
-    <lastmod>2022-04-16T03:24:27+00:00</lastmod>
-  </url><url>
-    <loc>http://127.0.0.1:1313/tags/tool/</loc>
-    <lastmod>2022-04-16T03:24:27+00:00</lastmod>
-  </url><url>
     <loc>http://127.0.0.1:1313/notes/introduction-to-mathematical-logic/chap-2-3-to-2-4/</loc>
     <lastmod>2022-02-28T09:09:45+00:00</lastmod>
   </url><url>
     <loc>http://127.0.0.1:1313/posts/</loc>
+    <lastmod>2022-02-19T09:24:49+00:00</lastmod>
+  </url><url>
+    <loc>http://127.0.0.1:1313/tags/tool/</loc>
     <lastmod>2022-02-19T09:24:49+00:00</lastmod>
   </url><url>
     <loc>http://127.0.0.1:1313/posts/2022/new-blog/</loc>
@@ -92,6 +95,9 @@
     <loc>http://127.0.0.1:1313/notes/unclassified/vault/</loc>
     <lastmod>2017-06-07T08:14:18+08:00</lastmod>
   </url><url>
+    <loc>http://127.0.0.1:1313/tags/microservice/</loc>
+    <lastmod>2017-05-14T19:14:51+08:00</lastmod>
+  </url><url>
     <loc>http://127.0.0.1:1313/posts/archive/authentication_in_microservice/</loc>
     <lastmod>2017-05-14T19:14:51+08:00</lastmod>
   </url><url>
@@ -99,6 +105,9 @@
     <lastmod>2017-04-23T09:27:43+08:00</lastmod>
   </url><url>
     <loc>http://127.0.0.1:1313/notes/unclassified/asn.1/</loc>
+    <lastmod>2017-02-01T09:19:40+08:00</lastmod>
+  </url><url>
+    <loc>http://127.0.0.1:1313/tags/format/</loc>
     <lastmod>2017-02-01T09:19:40+08:00</lastmod>
   </url><url>
     <loc>http://127.0.0.1:1313/tags/rsa/</loc>
