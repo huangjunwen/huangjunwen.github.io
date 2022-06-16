@@ -171,6 +171,7 @@ role="doc-noteref"><sup>5</sup></a>： \[
 是用上一步获得的证明构造 \(P \vee (P \Rightarrow \bot)\) 的证明，
 最终对它应用 \(k\) 即可得到 \(\bot\)</li>
 </ul>
+<p>排除掉排中律还会导致下面这些</p>
 <h3 id="双重否定消除">双重否定消除</h3>
 <p><strong>双重否定消除</strong>（Double Negation Elimation，缩写为
 DNE） \[
@@ -201,6 +202,22 @@ id="fnref7" role="doc-noteref"><sup>7</sup></a>：</p>
   (\neg P \Rightarrow \bot) \Rightarrow P
   \]</p>
 <p>因为它其实就是双重否定消除</p>
+<h3 id="全称量词与存在量词">全称量词与存在量词</h3>
+<p>对谓词逻辑也有影响，例如下面</p>
+<p>\[
+(\exists x)(\neg P(x)) \Rightarrow \neg (\forall x)P(x)
+\]</p>
+<p>这在经典逻辑和直觉主义逻辑下都是成立的，即若存在一个 \(P(x)\)
+不成立的实例，全体 \(P(x)\) 都成立这个命题就不成立； 但反过来</p>
+<p>\[
+\neg (\forall x)P(x) \Rightarrow (\exists x)(\neg P(x))
+\]</p>
+<p>在直觉主义中却不普遍成立，因为需要有实际构造出的 \(x\) 以及 \(P(x)\)
+才能得证，而从 \(\neg (\forall x)P(x)\)
+出发没法找到一个普遍的转换方式得出具体的 \(x\)
+（实际上，如果该命题成立的话，也可以推导出 EM<a href="#fn8"
+class="footnote-ref" id="fnref8"
+role="doc-noteref"><sup>8</sup></a>）</p>
 <h2 id="todo">TODO</h2>
 <ul>
 <li><a
@@ -266,6 +283,16 @@ href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 href="https://blog.plover.com/math/IL-contradiction.html"
 class="uri">https://blog.plover.com/math/IL-contradiction.html</a><a
 href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8" role="doc-endnote"><p><a
+href="https://plfa.github.io/Quantifiers/#exercise--implies--recommended"
+class="uri">https://plfa.github.io/Quantifiers/#exercise--implies--recommended</a></p>
+<p>反方向可以推导出 EM 的证明（agda）</p>
+<pre class="language-agda"><code>¬∀-implies-∃¬→em : (∀ {X : Set} {P : X → Set} → ¬ (∀ x → P x) → ∃[ x ] (¬ P x))
+                 ----------------------------
+                 → (∀ {P : Set} → P ⊎ ¬ P)
+¬∀-implies-∃¬→em f {P} with (f {P ⊎ ¬ P} {λ x → ⊥} em-irrefutable)
+...                    | ⟨ p⊎¬p , _ ⟩ = p⊎¬p</code></pre>
+<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></li>
 </ol>
 </section>
 
