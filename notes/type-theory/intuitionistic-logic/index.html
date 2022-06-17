@@ -215,7 +215,7 @@ id="fnref7" role="doc-noteref"><sup>7</sup></a>：</p>
 <p>在直觉主义中却不普遍成立，因为需要有实际构造出的 \(x\) 以及 \(P(x)\)
 才能得证，而从 \(\neg (\forall x)P(x)\)
 出发没法找到一个普遍的转换方式得出具体的 \(x\)
-（实际上，如果该命题成立的话，也可以推导出 EM<a href="#fn8"
+（实际上，如果该命题成立的话，是可以推导出 EM 的<a href="#fn8"
 class="footnote-ref" id="fnref8"
 role="doc-noteref"><sup>8</sup></a>）</p>
 <h2 id="todo">TODO</h2>
@@ -283,16 +283,15 @@ href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 href="https://blog.plover.com/math/IL-contradiction.html"
 class="uri">https://blog.plover.com/math/IL-contradiction.html</a><a
 href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn8" role="doc-endnote"><p><a
-href="https://plfa.github.io/Quantifiers/#exercise--implies--recommended"
-class="uri">https://plfa.github.io/Quantifiers/#exercise--implies--recommended</a></p>
-<p>反方向可以推导出 EM 的证明（agda）</p>
+<li id="fn8" role="doc-endnote"><p>反方向可以推导出 EM
+的证明（agda）</p>
 <pre class="language-agda"><code>¬∀-implies-∃¬→em : (∀ {X : Set} {P : X → Set} → ¬ (∀ x → P x) → ∃[ x ] (¬ P x))
-                 ----------------------------
                  → (∀ {P : Set} → P ⊎ ¬ P)
-¬∀-implies-∃¬→em f {P} with (f {P ⊎ ¬ P} {λ x → ⊥} em-irrefutable)
-...                    | ⟨ p⊎¬p , _ ⟩ = p⊎¬p</code></pre>
-<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></li>
+¬∀-implies-∃¬→em f {P} = proj₁ (f {P ⊎ ¬ P} {λ x → ⊥} em-irrefutable)</code></pre>
+<p><a
+href="https://plfa.github.io/Quantifiers/#exercise--implies--recommended"
+class="uri">https://plfa.github.io/Quantifiers/#exercise--implies--recommended</a><a
+href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
