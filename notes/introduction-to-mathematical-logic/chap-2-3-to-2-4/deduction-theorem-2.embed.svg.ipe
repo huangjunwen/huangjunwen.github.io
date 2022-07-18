@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
 <ipe version="70218" creator="Ipe 7.2.24">
-<info created="D:20220221161534" modified="D:20220401105521" tex="luatex"/>
+<info created="D:20220221161534" modified="D:20220714082349" tex="luatex"/>
 <preamble>\usepackage{ctex}
 \usepackage{bm}
 </preamble>
@@ -456,8 +456,8 @@ h
 </path>
 </group>
 <group>
-<text matrix="1 0 0 1 -124 -190.054" transformations="translations" pos="368 672" stroke="black" type="label" width="288.522" height="35.35" depth="30.17" valign="baseline">\begin{tabular}{l r}
-** $C_j$（非必要，仅当 $C_l$ 和 $C_l \Rightarrow C_j$ 均不依赖于 $B$）&amp; MP\\
+<text matrix="1 0 0 1 -124 -190.054" transformations="translations" pos="368 672" stroke="black" type="label" width="281.519" height="35.35" depth="30.17" valign="baseline">\begin{tabular}{l r}
+** $C_j$（仅当 $C_l$ 和 $C_l \Rightarrow C_j$ 均不依赖于 $B$ 时添加）&amp; MP\\
 $(B \Rightarrow (C_l \Rightarrow C_j)) \Rightarrow ((B \Rightarrow C_l) \Rightarrow (B \Rightarrow C_j))$ &amp; A2 \\
 $(B \Rightarrow C_l) \Rightarrow (B \Rightarrow C_j)$ &amp; MP \\
 $B \Rightarrow C_j$ &amp; MP

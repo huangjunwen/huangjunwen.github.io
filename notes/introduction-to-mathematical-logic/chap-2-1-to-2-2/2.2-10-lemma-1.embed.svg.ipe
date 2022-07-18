@@ -1,9 +1,12 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
 <ipe version="70218" creator="Ipe 7.2.24">
-<info created="D:20220221161534" modified="D:20220402111209" tex="luatex"/>
+<info created="D:20220221161534" modified="D:20220713082545" tex="luatex"/>
 <preamble>\usepackage{ctex}
 \usepackage{bm}
+\boldmath
+\renewcommand{\seriesdefault}{\bfdefault}
+
 </preamble>
 <ipestyle name="basic">
 <symbol name="arrow/arc(spx)">
@@ -315,46 +318,46 @@ h
 <page>
 <layer name="alpha"/>
 <view layers="alpha" active="alpha"/>
-<text layer="alpha" matrix="1 0 0 1 24.368 -111.14" transformations="translations" pos="92 724" stroke="black" type="label" width="114.294" height="11.25" depth="3.75" valign="baseline" size="Large" style="math">t: f(x_1, g(x_2), x_2)</text>
-<text matrix="1 0 0 1 -8 -104" transformations="translations" pos="316 716" stroke="black" type="label" width="200.446" height="12.11" depth="3.75" valign="baseline" size="Large" style="math">t&apos;: f(x_1, g(h(x_2, x_1)), h(x_2, x_1))</text>
-<text matrix="1 0 0 1 -8 -164" transformations="translations" pos="244 768" stroke="black" type="label" width="66.627" height="7.88" depth="2.62" valign="baseline" style="math">x_2 \rightarrow h(x_2, x_1)</text>
-<text matrix="1 0 0 1 43.925 28.86" transformations="translations" pos="104 652" stroke="black" type="label" width="82.737" height="11.25" depth="3.75" valign="baseline" size="Large" style="math">s: (s_1, s_2, ...)</text>
-<text matrix="1 0 0 1 -32 12" transformations="translations" pos="340 668" stroke="black" type="label" width="281.195" height="13.2" depth="3.75" valign="baseline" size="Large">$s&apos;: (s_1, s^{*}(h(x_2, x_1)), ...)$ 即 $(s_1, h(s_2, s_1), ...)$</text>
-<path stroke="black" rarrow="normal/normal">
+<text layer="alpha" matrix="1 0 0 1 -39.632 -111.14" transformations="translations" pos="92 724" stroke="black" type="label" width="132.39" height="11.25" depth="3.75" valign="baseline" size="Large" style="math">t: f(x_1, g(x_2), x_2)</text>
+<text matrix="1 0 0 1 -72 -104" transformations="translations" pos="316 716" stroke="black" type="label" width="232.899" height="12.11" depth="3.75" valign="baseline" size="Large" style="math">t&apos;: f(x_1, g(h(x_2, x_1)), h(x_2, x_1))</text>
+<text matrix="1 0 0 1 -56 -176" transformations="translations" pos="244 768" stroke="black" type="label" width="76.346" height="7.88" depth="2.62" valign="baseline" style="math">x_2 \rightarrow h(x_2, x_1)</text>
+<text matrix="1 0 0 1 -20.075 28.86" transformations="translations" pos="104 652" stroke="black" type="label" width="95.506" height="11.25" depth="3.75" valign="baseline" size="Large" style="math">s: (s_1, s_2, ...)</text>
+<text matrix="1 0 0 1 -96 12" transformations="translations" pos="340 668" stroke="black" type="label" width="322.764" height="13.2" depth="3.75" valign="baseline" size="Large">$s&apos;: (s_1, s^{*}(h(x_2, x_1)), ...)$ 即 $(s_1, h(s_2, s_1), ...)$</text>
+<path matrix="1 0 0 1 -64 0" stroke="black" rarrow="normal/normal">
 192 632 m
 276 648
 356 668 c
 </path>
-<path stroke="black" rarrow="normal/normal">
+<path matrix="1 0 0 1 -64 0" stroke="black" rarrow="normal/normal">
 372 632 m
 260 644
 200 668 c
 </path>
 <path stroke="black" dash="dashed" rarrow="normal/normal">
-316 604 m
-280 592
-256 592
-212 604
-212 604
-212 604 c
+348 600 m
+272 576
+192 576
+160 584
+140 592
+128 604 c
 </path>
-<text matrix="1 0 0 1 -8 -68" transformations="translations" pos="244 768" stroke="black" type="label" width="83.217" height="7.88" depth="2.62" valign="baseline" style="math">s_2 \rightarrow s^{*}(h(x_2, x_1))</text>
+<text matrix="1 0 0 1 -76 -60" transformations="translations" pos="244 768" stroke="black" type="label" width="95.041" height="7.88" depth="2.62" valign="baseline" style="math">s_2 \rightarrow s^{*}(h(x_2, x_1))</text>
 <path stroke="black" dash="dashed" rarrow="normal/normal">
-332 700 m
-308 720
-276 724
-232 720
-204 696 c
+340 700 m
+260 728
+212 740
+156 732
+144 696 c
 </path>
-<text matrix="1 0 0 1 0 -20" transformations="translations" pos="376 756" stroke="black" type="label" width="111.865" height="9.245" depth="2.62" valign="baseline">例子 $i = 2, u = h(x_2, x_1)$</text>
-<text matrix="1 0 0 1 -60 8" transformations="translations" pos="240 516" stroke="black" type="label" width="203.283" height="13.479" depth="4.49" valign="baseline" size="LARGE" style="math">f(s_1, g(h(s_2, s_1)), h(s_2, s_1))</text>
-<path stroke="black" rarrow="normal/normal">
+<text matrix="1 0 0 1 -64 -20" transformations="translations" pos="376 756" stroke="black" type="label" width="125.132" height="9.245" depth="2.62" valign="baseline">例子 $i = 2, u = h(x_2, x_1)$</text>
+<text matrix="1 0 0 1 -124 8" transformations="translations" pos="240 516" stroke="black" type="label" width="239.011" height="13.5" depth="4.5" valign="baseline" size="LARGE" style="math">f(s_1, g(h(s_2, s_1)), h(s_2, s_1))</text>
+<path matrix="1 0 0 1 -64 0" stroke="black" rarrow="normal/normal">
 216 548 m
 180 600 l
 </path>
 <path stroke="black" rarrow="normal/normal">
-320 548 m
-364 600 l
+272 552 m
+384 592 l
 </path>
 </page>
 </ipe>

@@ -165,9 +165,10 @@ href="../chap-2-1-to-2-2/#property-6">Property 6</a> 易知 MP 和 Gen
 <p>一阶谓词演算（没有非逻辑公理）是一致的（\(B\) 和 \(\neg B\)
 不能同时有证明）</p>
 </blockquote>
-<p>证明：如果 \(B\) 和 \(\neg B\) 都是定理（有证明），由 Proposition 2.2
-则两者都是逻辑有效的，这是不可能的， 因为任意解释下 \(B\) 和 \(\neg B\)
-不能同时为真</p>
+<p>证明：如果 \(B\) 和 \(\neg B\) 都是定理（有证明,
+e.g. \(\vdash\)），由 Proposition 2.2
+则两者都是逻辑有效的（e.g. \(\vDash\)），这是不可能的， 因为任意解释下
+\(B\) 和 \(\neg B\) 不能同时为真</p>
 <p>实际上，假如 \(B\) 和 \(\neg B\) 同时有证明，则根据爆炸原理 \(B
 \Rightarrow (\neg B \Rightarrow C)\)（一个重言式，根据 Proposition 2.1
 则也是定理），则会导致任意 \(C\)
@@ -251,14 +252,14 @@ C\)，则 \(\Gamma \vdash B \Rightarrow C\)</p>
 <ol type="1">
 <li><p>右边每一组序列的最后一个公式必定是 \(B \Rightarrow
 C_j\)，这正是演绎定理归纳法要证明的</p></li>
-<li><p>在旧证明中一个 \(C_j\) 如果不依赖于 \(B\)
-则也会出现在新证明中（带 <code class="language-plaintext">*</code> 或
-<code class="language-plaintext">**</code> 的， 其中 <code
-class="language-plaintext">**</code> 处的意思是，如果 \(C_j\)
-的两个前件均不依赖于 \(B\)，则 \(C_j\) 也不依赖，
-此时为了保证新证明包含所有不依赖于 \(B\) 的
-\(C_j\)，把它也添加到序列中，
-实际在本组公式序列中是没有用到的，但有可能为后续某个 Gen 所需要）</p>
+<li><p>在旧证明中如果一个 \(C_j\) 不依赖于
+\(B\)，则也会出现在新证明中：即带 <code
+class="language-plaintext">*</code> 或 <code
+class="language-plaintext">**</code> 处， 其中 <code
+class="language-plaintext">**</code> 处的意思是，该 \(C_j\)
+在本组公式序列里实际上是没有用到的，
+特意补全上去就是为了保证所有不依赖于 \(B\) 的 \(C_j\) 都出现在新证明中，
+也许后续证明（例如某个 Gen）会用到</p>
 <p>同时应该注意到，（不依赖于 \(B\)）的旧证明 \(C_j\) 与新证明中的
 \(C_j\) 依赖于相同的前提集合</p></li>
 <li><p>旧证明 \(C_j\) 与新证明 \(B \Rightarrow C_j\) 依赖于 \(\Gamma\)

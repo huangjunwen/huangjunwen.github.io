@@ -1,11 +1,14 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
 <ipe version="70218" creator="Ipe 7.2.24">
-<info created="D:20220221161534" modified="D:20220713083124" tex="luatex"/>
+<info created="D:20220221161534" modified="D:20220713081822" tex="luatex"/>
 <preamble>\usepackage{ctex}
 \usepackage{bm}
+\usepackage{xcolor}
 \boldmath
-\renewcommand{\seriesdefault}{\bfdefault}</preamble>
+\renewcommand{\seriesdefault}{\bfdefault}
+
+</preamble>
 <ipestyle name="basic">
 <symbol name="arrow/arc(spx)">
 <path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
@@ -316,56 +319,32 @@ h
 <page>
 <layer name="alpha"/>
 <view layers="alpha" active="alpha"/>
-<group layer="alpha" matrix="1 0 0 1 -4.613 0">
-<text matrix="1 0 0 1 -13.013 0.86" transformations="translations" pos="96 720" stroke="black" type="label" width="168.664" height="11.249" depth="5.32" valign="baseline" size="Large" style="math">s = (s_1, ..., s_i, ..., s_j, ...)</text>
-<text matrix="1 0 0 1 -44 -4" transformations="translations" pos="148 708" stroke="black" type="label" width="114.605" height="9.241" depth="2.93" valign="baseline">满足 $B(t) = (\forall x_j)C(t)$</text>
-</group>
-<group matrix="1 0 0 1 56 0">
-<text matrix="1 0 0 1 204 0" transformations="translations" pos="96 720" stroke="black" type="label" width="207.817" height="12.109" depth="5.32" valign="baseline" size="Large" style="math">s&apos; = (s_1, ..., (s^{*})(t), ..., s_j, ...)</text>
-<text matrix="1 0 0 1 184.457 -4" transformations="translations" pos="148 708" stroke="black" type="label" width="127.243" height="9.241" depth="2.93" valign="baseline">满足 $B(x_i) = (\forall x_j)C(x_i)$</text>
-</group>
-<group>
-<text matrix="1 0 0 1 -19.049 -96" transformations="translations" pos="96 720" stroke="black" type="label" width="171.386" height="11.25" depth="3.75" valign="baseline" size="Large" style="math">s^a = (s_1, ..., s_i, ..., a, ...)</text>
-<text matrix="1 0 0 1 -20 -100" transformations="translations" pos="148 708" stroke="black" type="label" width="47.559" height="9.245" depth="2.62" valign="baseline">满足 $C(t)$</text>
-</group>
+<text layer="alpha" matrix="1 0 0 1 -188.972 49.7837" transformations="translations" pos="256.725 624.821" stroke="black" type="label" width="280.403" height="16.5" depth="5.5" valign="baseline" size="huge">$B({\color{red}x_2})$: $(\forall x_1) ({\color{red}x_2} + x_1 &gt; 0)$</text>
+<text matrix="1 0 0 1 -236.206 15.0287" transformations="translations" pos="353.12 703.865" stroke="black" type="label" width="85.629" height="11.597" depth="3.27" valign="baseline" size="LARGE">$t_1$: $x_1 \times 2$</text>
+<text matrix="1 0 0 1 -12.8613 93.6432" transformations="translations" pos="256.725 624.821" stroke="black" type="label" width="271.11" height="13.5" depth="4.5" valign="baseline" size="LARGE">$B(t_1)$: $(\forall {\color{red}x_1}) ({\color{red}x_1} \times 2 + x_1 &gt; 0)$ </text>
+<text matrix="1 0 0 1 -184.635 30.3605" transformations="translations" pos="301.549 714.951" stroke="black" type="label" width="321.684" height="9.245" depth="1.57" valign="baseline">$t_1$ 不能自由替换 $B$ 中的 $x_2$，因为一旦替换 $t_1$ 中的 $x_1$ 会变成被约束</text>
+<text matrix="1 0 0 1 -236.206 -80.9713" transformations="translations" pos="353.12 703.865" stroke="black" type="label" width="85.629" height="11.597" depth="3.27" valign="baseline" size="LARGE">$t_2$: $x_3 \times 2$</text>
+<text matrix="1 0 0 1 -12.8613 -2.2638" transformations="translations" pos="256.725 624.821" stroke="black" type="label" width="265.116" height="13.5" depth="4.5" valign="baseline" size="LARGE">$B(t_2)$: $(\forall x_1) ({\color{red}x_3} \times 2 + x_1 &gt; 0)$</text>
+<text matrix="1 0 0 1 -184.635 -117.639" transformations="translations" pos="301.549 714.951" stroke="black" type="label" width="300.684" height="9.245" depth="1.57" valign="baseline">$t_2$ 能自由替换 $B$ 中的 $x_2$，因为替换后， $t_2$ 中的 $x_3$ 不会被约束</text>
 <path stroke="black" rarrow="normal/normal">
-148 644 m
-148 696 l
+240 724 m
+208 724 l
+</path>
+<path matrix="1 0 0 1 0 -96" stroke="black" rarrow="normal/normal">
+240 724 m
+208 724 l
 </path>
 <path stroke="black" rarrow="normal/normal">
-400 612 m
-284 592
-188 612 c
+112 724 m
+104 712
+104 696
+104 696
+104 696 c
 </path>
-<text matrix="1 0 0 1 -52 -12" transformations="translations" pos="236 592" stroke="black" type="label" width="215.908" height="9.245" depth="2.62" valign="baseline">$t$ 也可自由替换 $C(x_i)$ 中的 $x_i$，由归纳假设得</text>
-<text matrix="1 0 0 1 -52 0" transformations="translations" pos="280 664" stroke="black" type="label" width="146.776" height="18.99" depth="13.77" valign="baseline">\begin{tabular}{l}
-$t$ 可以自由替换 $(\forall x_j)C(x_i)$ \\ 
-中的 $x_i$ 故不能包含变量 $x_j$
-\end{tabular}
-</text>
-<text matrix="1 0 0 1 -104 -8" transformations="translations" pos="164 676" stroke="black" type="label" width="79.782" height="9.241" depth="2.93" valign="baseline">替换 $s_j$ 为任意 $a$</text>
 <path stroke="black" rarrow="normal/normal">
-504 692 m
-504 644 l
+112 632 m
+104 648
+104 664 c
 </path>
-<path stroke="black" dash="dashed" rarrow="normal/normal">
-444 652 m
-372 664 l
-</path>
-<text matrix="1 0 0 1 276.196 -100" transformations="translations" pos="148 708" stroke="black" type="label" width="53.879" height="9.245" depth="2.62" valign="baseline">满足 $C(x_i)$</text>
-<text matrix="1 0 0 1 260 -96" transformations="translations" pos="96 720" stroke="black" type="label" width="217.599" height="14.798" depth="3.75" valign="baseline" size="Large" style="math">s^{a&apos;} = (s_1, ..., (s^a)^{*}(t), ..., a, ...)</text>
-<text matrix="1 0 0 1 356 -56" transformations="translations" pos="96 720" stroke="black" type="label" width="34.721" height="11.25" depth="3.75" valign="baseline" size="Large" style="math">s^{*}(t)</text>
-<group matrix="1 0 0 1 64 0">
-<group>
-<path stroke="black" pen="fat">
-400 656 m
-400 644 l
-</path>
-<path matrix="1 0 0 1 4 0" stroke="black" pen="fat">
-400 656 m
-400 644 l
-</path>
-</group>
-</group>
 </page>
 </ipe>
