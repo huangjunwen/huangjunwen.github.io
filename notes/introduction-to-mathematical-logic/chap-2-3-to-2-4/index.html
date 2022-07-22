@@ -162,8 +162,8 @@ href="../chap-2-1-to-2-2/#property-6">Property 6</a> 易知 MP 和 Gen
 这两个规则都能延续逻辑有效的性质，故所有定理均是逻辑有效的</p>
 <h3 id="corollary-2.3">Corollary 2.3</h3>
 <blockquote>
-<p>一阶谓词演算（没有非逻辑公理）是一致的（\(B\) 和 \(\neg B\)
-不能同时有证明）</p>
+<p><a href="#proper-axioms">一阶谓词演算</a>是一致的（\(B\) 和 \(\neg
+B\) 不能同时有证明）</p>
 </blockquote>
 <p>证明：如果 \(B\) 和 \(\neg B\) 都是定理（有证明,
 e.g. \(\vdash\)），由 Proposition 2.2
@@ -310,7 +310,8 @@ class="language-plaintext">a</code>， 因此可以再次使用演绎定理推�
 <h3 id="exercises">Exercises</h3>
 <h4 id="证明以下定理">2.27 证明以下定理</h4>
 <ul>
-<li><p><code class="language-plaintext">a</code> \(\vdash (\forall x)(B
+<li><p><span id="ex-2-27-a"><code
+class="language-plaintext">a</code></span> \(\vdash (\forall x)(B
 \Rightarrow C) \Rightarrow ((\forall x)B \Rightarrow (\forall x)C)\)</p>
 <p>证明：</p>
 <ol type="1">
@@ -328,7 +329,8 @@ A4</li>
 (\forall x)C\) 注意上述证明只有最后一步是 Gen， 且量词 \(x\)
 不是两个前提的自由变量，故可以使用 DT（Deduction
 Theorem）得出证明</p></li>
-<li><p><code class="language-plaintext">b</code> \(\vdash (\forall x)(B
+<li><p><span id="ex-2-27-b"><code
+class="language-plaintext">b</code></span> \(\vdash (\forall x)(B
 \Rightarrow C) \Rightarrow ((\exists x)B \Rightarrow (\exists x)C)\)</p>
 <p>证明：</p>
 <ol type="1">
@@ -341,7 +343,8 @@ href="../chap-1-4/#lemma-1.11-e">Lemma 1.11#e</a></li>
 <li>\(\neg C \Rightarrow \neg B\) MP 上述两个</li>
 <li>\((\forall x)(\neg C \Rightarrow \neg B)\) Gen</li>
 <li>\((\forall x)(\neg C \Rightarrow \neg B) \Rightarrow ((\forall
-x)(\neg C) \Rightarrow (\forall x)(\neg B))\) 2.27 #a</li>
+x)(\neg C) \Rightarrow (\forall x)(\neg B))\) <a
+href="#ex-2-27-a">2.27#a</a></li>
 <li>\((\forall x)(\neg C) \Rightarrow (\forall x)(\neg B)\) MP
 上述两个</li>
 <li>\(((\forall x)(\neg C) \Rightarrow (\forall x)(\neg B)) \Rightarrow
@@ -353,10 +356,12 @@ href="../chap-1-4/#lemma-1.11-e">Lemma 1.11#e</a></li>
 <p>上述证明了 \((\forall x)(B \Rightarrow C) \vdash (\exists x)B
 \Rightarrow (\exists x)C\)，唯一一步 Gen 其量词变量 \(x\)
 不是前提的自由变量，故可以用 DT</p></li>
-<li><p><code class="language-plaintext">c</code> \(\vdash (\forall x)(B
-\wedge C) \Leftrightarrow (\forall x)B \wedge (\forall x)C\)</p>
+<li><p><span id="ex-2-27-c"><code
+class="language-plaintext">c</code></span> \(\vdash (\forall x)(B \wedge
+C) \Leftrightarrow (\forall x)B \wedge (\forall x)C\)</p>
 <p>证明：TODO</p></li>
-<li><p><code class="language-plaintext">d</code> \(\vdash (\forall
+<li><p><span id="ex-2-27-d"><code
+class="language-plaintext">d</code></span> \(\vdash (\forall
 y_1)...(\forall y_n)B \Rightarrow B\)</p>
 <p>证明：</p>
 <ol type="1">
@@ -366,15 +371,17 @@ y_2)...(\forall y_n)B\) A4</li>
 <li>\((\forall y_2)...(\forall y_n)B\) MP 上述两个</li>
 <li>反复进行上面的操作直到剩下 \(B\)</li>
 </ol></li>
-<li><p><code class="language-plaintext">e</code> \(\vdash \neg (\forall
-x)B \Rightarrow (\exists x) \neg B\)</p>
+<li><p><span id="ex-2-27-e"><code
+class="language-plaintext">e</code></span> \(\vdash \neg (\forall x)B
+\Rightarrow (\exists x) \neg B\)</p>
 <p>证明：</p>
 <ol type="1">
 <li>\(\neg \neg B \Rightarrow B\) <a
 href="../chap-1-4/#lemma-1.11-a">Lemma 1.11#a</a></li>
 <li>\((\forall x)(\neg \neg B \Rightarrow B)\) Gen</li>
 <li>\((\forall x)(\neg \neg B \Rightarrow B) \Rightarrow ((\forall
-x)(\neg \neg B) \Rightarrow (\forall x)B)\) 2.27 #a</li>
+x)(\neg \neg B) \Rightarrow (\forall x)B)\) <a
+href="#ex-2-27-a">2.27#a</a></li>
 <li>\((\forall x)(\neg \neg B) \Rightarrow (\forall x)B\) MP
 上述两个</li>
 <li>\(((\forall x)(\neg \neg B) \Rightarrow (\forall x)B) \Rightarrow
@@ -402,59 +409,60 @@ y_n)(B \Rightarrow C) \Rightarrow ((\forall y_1)...(\forall y_n)B
 <p>这个证明可以表明了添加额外的公理能把 Gen 替换掉</p>
 </blockquote>
 <p>证明：</p>
-<p><em>（以下将 \((\forall y_1)...(\forall y_n)\) 缩写为 \((\forall y_1
-.. y_n)\) 以免括号太多眼花）</em></p>
-<p>首先证明 \(K^{\#}\) 的两个公理也是 \(K\) 中的定理</p>
+<p><em>（以下将 \((\forall y_1)...(\forall y_n)\) 缩写为 \((\forall
+y_{1..n})\) 以免括号太多眼花）</em></p>
+<p>首先证明 \(K^{\#}\) 的两个公理也是 \(K\) 中的公理/定理</p>
 <ul>
-<li><p><code class="language-plaintext">a</code> 很简单，只要对公理应用
-\(n\) 次 Gen 就可以得出</p></li>
+<li><p><code class="language-plaintext">a</code> 很简单，只要对 \(B\)
+应用 \(n\) 次 Gen 就可以得出</p></li>
 <li><p><code class="language-plaintext">b</code> 若 \(n = 0\)，则退化为
 \((B \Rightarrow C) \Rightarrow (B \Rightarrow C)\)，直接用 <a
-href="../chapter-1-2/#lemma-1.8">Lemma 1.8</a> 得出结果， 以下证明 \(n
-&gt; 0\) ：</p>
+href="../chap-1-4/#lemma-1.8">Lemma 1.8</a> 得出结果， 以下证明 \(n &gt;
+0\) ：</p>
 <ol type="1">
-<li>\((\forall y_1 .. y_n)(B \Rightarrow C) \Rightarrow ((\forall y1 ..
-y_n)B \Rightarrow (\forall y1 .. y_n)C)\) Hyp</li>
-<li>\((\forall x)((\forall y_1 .. y_n)(B \Rightarrow C) \Rightarrow
-((\forall y_1 .. y_n)B \Rightarrow (\forall y_1 .. y_n)C))\) Gen</li>
-<li>\((\forall x)(\forall y_1 .. y_n)(B \Rightarrow C) \Rightarrow
-(\forall x)((\forall y_1 .. y_n)B \Rightarrow (\forall y_1 .. y_n)C)\)
-2.27 #a 和 2 MP 得出</li>
-<li>\((\forall x)((\forall y_1 .. y_n)B \Rightarrow (\forall y_1 ..
-y_n)C) \Rightarrow ((\forall x)(\forall y_1 .. y_n)B \Rightarrow
-(\forall x)(\forall y_1 .. y_n)C)\) 2.27 #a</li>
-<li>\((\forall x)(\forall y_1 .. y_n)(B \Rightarrow C) \Rightarrow
-((\forall x)(\forall y_1 .. y_n)B \Rightarrow (\forall x)(\forall y_1 ..
-y_n)C)\) <a href="../chapter-1-2/#corollary-1.10">Corollary 1.10</a> 3
+<li>\((\forall y_{1..n})(B \Rightarrow C) \Rightarrow ((\forall
+y_{1..n})B \Rightarrow (\forall y_{1..n})C)\) Hyp</li>
+<li>\((\forall x)((\forall y_{1..n})(B \Rightarrow C) \Rightarrow
+((\forall y_{1..n})B \Rightarrow (\forall y_{1..n})C))\) Gen</li>
+<li>\((\forall x)(\forall y_{1..n})(B \Rightarrow C) \Rightarrow
+(\forall x)((\forall y_{1..n})B \Rightarrow (\forall y_{1..n})C)\) <a
+href="#ex-2-27-a">2.27#a</a> 和 2 MP 得出</li>
+<li>\((\forall x)((\forall y_{1..n})B \Rightarrow (\forall y_{1..n})C)
+\Rightarrow ((\forall x)(\forall y_{1..n})B \Rightarrow (\forall
+x)(\forall y_{1..n})C)\) <a href="#ex-2-27-a">2.27#a</a></li>
+<li>\((\forall x)(\forall y_{1..n})(B \Rightarrow C) \Rightarrow
+((\forall x)(\forall y_{1..n})B \Rightarrow (\forall x)(\forall
+y_{1..n})C)\) <a href="../chap-1-4/#corollary-1.10">Corollary 1.10</a> 3
 和 4 得出</li>
 </ol>
 <p>反复应用上述步骤，就能添加任意多的量词变量</p></li>
 </ul>
-<p>故 \(K^{\#}\) 中的定理也必定是 \(K\) 中的定理（\(K \ge K^{\#}\)）</p>
-<p>下面用归纳法证明若 \(\vdash_K B\)，则 \(\vdash_{K^{\#}} (\forall y_1
-.. y_n)B\)，令 \(D_1, ..., D_n\) 是 \(\vdash_K B\) 的证明序列，</p>
+<p>由于 \(K^{\#}\) 只有 MP，从这两个公理出发产生的定理也必定是 \(K\)
+中的定理（\(K^{\#} \subseteq K\)）</p>
+<p>下面用归纳法证明若 \(\vdash_K B\)，则 \(\vdash_{K^{\#}} (\forall
+y_{1..n})B\)，令 \(D_1, ..., D_m\) 是 \(\vdash_K B\) 的证明序列，</p>
 <ul>
 <li>\(D_1\) 必定是 \(K\) 中的公理，由公理 <code
 class="language-plaintext">a</code> 直接得出 \(\vdash_{K^{\#}} (\forall
-y_1 .. y_n)D_1\)</li>
-<li>假设 \(i &lt; n\) 时命题成立，现在考虑 \(\vdash_K D_n\)
+y_{1..n})D_1\)</li>
+<li>假设 \(i &lt; m\) 时命题成立，现在考虑 \(\vdash_K D_m\)
 <ul>
-<li>若 \(D_n\) 是 \(K\) 中公理，由 <code
-class="language-plaintext">a</code> 得出 \(\vdash_{K^{\#}} (\forall y_1
-.. y_n)D_n\)</li>
-<li>若 \(D_n\) 是 \(D_l \Rightarrow D_n\) 和 \(D_l\) MP
-而得，由归纳假设有 \(\vdash_{K^{\#}} (\forall y_1 .. y_n)(D_l
-\Rightarrow D_n)\) 以及 \(\vdash_{K^{\#}} (\forall y_1 ..
-y_n)(D_l)\)，由 <code class="language-plaintext">b</code> MP
-两次即可得到 \(\vdash_{K^{\#}} (\forall y_1 .. y_n)D_n\)</li>
-<li>若 \(D_n\) 是 \((\forall x)D_l\)，由归纳假设有 \(\vdash_{K^{\#}}
-(\forall y_1 .. y_n x)D_l\)，也就是 \(\vdash_{K^{\#}} (\forall y_1 ..
-y_n)D_n\)</li>
+<li>若 \(D_m\) 是 \(K\) 中公理，由 <code
+class="language-plaintext">a</code> 得出 \(\vdash_{K^{\#}} (\forall
+y_{1..n})D_m\)</li>
+<li>若 \(D_m\) 是 \(D_l \Rightarrow D_m\) 和 \(D_l\) MP
+而得，由归纳假设有 \(\vdash_{K^{\#}} (\forall y_{1..n})(D_l \Rightarrow
+D_m)\) 以及 \(\vdash_{K^{\#}} (\forall y_{1..n})(D_l)\)，由 <code
+class="language-plaintext">b</code> MP 两次即可得到 \(\vdash_{K^{\#}}
+(\forall y_{1..n})D_m\)</li>
+<li>若 \(D_m\) 是 \((\forall x)D_l\)，由归纳假设有 \(\vdash_{K^{\#}}
+(\forall y_{1..n} x)D_l\)，也就是 \(\vdash_{K^{\#}} (\forall
+y_{1..n})D_m\)</li>
 </ul></li>
 </ul>
-<p>当 \(n = 0\) 时，\(\vdash_{K^{\#}} (\forall y_1 .. y_n)B\) 即
-\(\vdash_{K^{\#}} B\)，故 \(K\) 的定理也必定时 \(K^{\#}\)
-的定理（\(K^{\#} \ge K\)）</p>
+<p>当 \(n = 0\) 时，\(\vdash_{K^{\#}} (\forall y_{1..n})B\) 即
+\(\vdash_{K^{\#}} B\)，故 \(K\) 的定理也必定是 \(K^{\#}\) 的定理（\(K
+\subseteq K^{\#}\)）</p>
 <p>证毕</p>
 <h4 id="证明-extension-of-propositions-2.42.7">2.29 证明 Extension of
 Propositions 2.4–2.7</h4>
