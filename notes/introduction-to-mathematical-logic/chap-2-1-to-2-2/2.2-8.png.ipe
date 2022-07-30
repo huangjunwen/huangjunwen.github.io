@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
 <ipe version="70218" creator="Ipe 7.2.24">
-<info created="D:20220221161534" modified="D:20220713084539" tex="luatex"/>
+<info created="D:20220221161534" modified="D:20220730170331" tex="luatex"/>
 <preamble>\usepackage{ctex}
 \usepackage{bm}
 \boldmath
@@ -317,12 +317,19 @@ h
 <page>
 <layer name="alpha"/>
 <view layers="alpha" active="alpha"/>
-<text layer="alpha" matrix="1 0 0 1 0.7115 -0.2215" transformations="translations" pos="104 708" stroke="black" type="label" width="192.297" height="11.249" depth="5.32" valign="baseline" size="Large" style="math">s: (..., s_{i_1}, ..., s_{i_k}, ..., s_j, ...)</text>
-<text matrix="1 0 0 1 220.319 0" transformations="translations" pos="104 708" stroke="black" type="label" width="196.928" height="12.102" depth="6.98" valign="baseline" size="Large" style="math">s&apos;: (..., s&apos;_{i_1}, ..., s&apos;_{i_k}, ..., s&apos;_j, ...)</text>
-<text matrix="1 0 0 1 0 -86.8875" transformations="translations" pos="104 708" stroke="black" type="label" width="195.019" height="11.249" depth="4.97" valign="baseline" size="Large" style="math">s^a: (..., s_{i_1}, ..., s_{i_k}, ..., a, ...)</text>
-<text matrix="1 0 0 1 220 -88" transformations="translations" pos="104 708" stroke="black" type="label" width="198.617" height="14.8" depth="6.62" valign="baseline" size="Large" style="math">s^{a&apos;}: (..., s&apos;_{i_1}, ..., s&apos;_{i_k}, ..., a, ...)</text>
-<text matrix="1 0 0 1 -172 16" transformations="translations" pos="280 784" stroke="black" type="label" width="89.219" height="11.249" depth="5.32" valign="baseline" size="Large" style="math">B = (\forall x_j)C</text>
-<path matrix="1 0 0 1 16 -4" stroke="black" dash="dashed">
+<path layer="alpha" fill="0.976 0.937 0.867">
+80 828 m
+80 504 l
+548 504 l
+548 828 l
+h
+</path>
+<text matrix="1 0 0 1 0.7115 -0.2215" transformations="translations" pos="104 708" stroke="0.314 0.286 0.271" type="label" width="192.297" height="11.249" depth="5.32" valign="baseline" size="Large" style="math">s: (..., s_{i_1}, ..., s_{i_k}, ..., s_j, ...)</text>
+<text matrix="1 0 0 1 220.319 0" transformations="translations" pos="104 708" stroke="0.314 0.286 0.271" type="label" width="196.928" height="12.102" depth="6.98" valign="baseline" size="Large" style="math">s&apos;: (..., s&apos;_{i_1}, ..., s&apos;_{i_k}, ..., s&apos;_j, ...)</text>
+<text matrix="1 0 0 1 0 -86.8875" transformations="translations" pos="104 708" stroke="0.314 0.286 0.271" type="label" width="195.019" height="11.249" depth="4.97" valign="baseline" size="Large" style="math">s^a: (..., s_{i_1}, ..., s_{i_k}, ..., a, ...)</text>
+<text matrix="1 0 0 1 220 -88" transformations="translations" pos="104 708" stroke="0.314 0.286 0.271" type="label" width="198.617" height="14.8" depth="6.62" valign="baseline" size="Large" style="math">s^{a&apos;}: (..., s&apos;_{i_1}, ..., s&apos;_{i_k}, ..., a, ...)</text>
+<text matrix="1 0 0 1 -172 16" transformations="translations" pos="280 784" stroke="0.314 0.286 0.271" type="label" width="89.219" height="11.249" depth="5.32" valign="baseline" size="Large" style="math">B = (\forall x_j)C</text>
+<path matrix="1 0 0 1 16 -4" stroke="0.314 0.286 0.271" dash="dashed">
 156 720 m
 208 760
 276 764
@@ -330,7 +337,7 @@ h
 368 728
 368 728 c
 </path>
-<path matrix="1 0 0 1 60 0" stroke="black" dash="dashed">
+<path matrix="1 0 0 1 60 0" stroke="0.314 0.286 0.271" dash="dashed">
 156 720 m
 208 760
 276 764
@@ -338,11 +345,11 @@ h
 368 728
 368 728 c
 </path>
-<path matrix="1 0 0 1 20 -4" stroke="black" rarrow="normal/normal">
+<path matrix="1 0 0 1 20 -4" stroke="0.314 0.286 0.271" rarrow="normal/normal">
 244 636 m
 244 700 l
 </path>
-<path matrix="1 0 0 1 8 0" stroke="black" dash="dashed">
+<path matrix="1 0 0 1 8 0" stroke="0.314 0.286 0.271" dash="dashed">
 160 612 m
 216 560
 308 564
@@ -350,7 +357,7 @@ h
 380 612
 380 612 c
 </path>
-<path matrix="1 0 0 1 60 0" stroke="black" dash="dashed">
+<path matrix="1 0 0 1 60 0" stroke="0.314 0.286 0.271" dash="dashed">
 160 612 m
 216 560
 308 564
@@ -358,7 +365,7 @@ h
 380 612
 380 612 c
 </path>
-<path matrix="1 0 0 1 108 0" stroke="black" dash="dashed">
+<path matrix="1 0 0 1 108 0" stroke="0.314 0.286 0.271" dash="dashed">
 160 612 m
 216 560
 308 564
@@ -366,20 +373,20 @@ h
 380 612
 380 612 c
 </path>
-<path matrix="1 0 0 1 244 -4" stroke="black" rarrow="normal/normal">
+<path matrix="1 0 0 1 244 -4" stroke="0.314 0.286 0.271" rarrow="normal/normal">
 244 636 m
 244 700 l
 </path>
-<text matrix="1 0 0 1 -84 -4" transformations="translations" pos="256 776" stroke="black" type="label" width="285.006" height="9.241" depth="2.57" valign="baseline">$B$ 有且仅有自由变量 $x_{i_1}, ..., x_{i_k}$，且 $s$ 和 $s&apos;$ 的这些项都相等</text>
-<text matrix="1 0 0 1 -135.324 -232" transformations="translations" pos="256 776" stroke="black" type="label" width="355.98" height="9.585" depth="2.93" valign="baseline">$C$ 有且仅有自由变量 $x_{i_1}, ..., x_{i_k}$ 和可能的 $x_j$，且 $s^a$ 和 $s^{a&apos;}$ 的这些项都相等</text>
-<text matrix="1 0 0 1 16 -4" transformations="translations" pos="176 532" stroke="black" type="label" width="205.941" height="9.584" depth="1.26" valign="baseline">由归纳假设，$s^a$ 和 $s^{a&apos;}$ 同时满足或不满足 $C$</text>
-<path matrix="1 0 0 1 24 -4" stroke="black" dash="dotted">
+<text matrix="1 0 0 1 -84 -4" transformations="translations" pos="256 776" stroke="0.314 0.286 0.271" type="label" width="285.006" height="9.241" depth="2.57" valign="baseline">$B$ 有且仅有自由变量 $x_{i_1}, ..., x_{i_k}$，且 $s$ 和 $s&apos;$ 的这些项都相等</text>
+<text matrix="1 0 0 1 -135.324 -232" transformations="translations" pos="256 776" stroke="0.314 0.286 0.271" type="label" width="355.98" height="9.585" depth="2.93" valign="baseline">$C$ 有且仅有自由变量 $x_{i_1}, ..., x_{i_k}$ 和可能的 $x_j$，且 $s^a$ 和 $s^{a&apos;}$ 的这些项都相等</text>
+<text matrix="1 0 0 1 16 -4" transformations="translations" pos="176 532" stroke="0.314 0.286 0.271" type="label" width="205.941" height="9.584" depth="1.26" valign="baseline">由归纳假设，$s^a$ 和 $s^{a&apos;}$ 同时满足或不满足 $C$</text>
+<path matrix="1 0 0 1 24 -4" stroke="0.314 0.286 0.271" dash="dotted">
 244 700 m
 316 684
 372 688
 412 688
 460 700 c
 </path>
-<text matrix="1 0 0 1 24 -16" transformations="translations" pos="332 680" stroke="black" type="label" width="52.5" height="9.24" depth="1.26" valign="baseline">不一定相等</text>
+<text matrix="1 0 0 1 24 -16" transformations="translations" pos="332 680" stroke="0.314 0.286 0.271" type="label" width="52.5" height="9.24" depth="1.26" valign="baseline">不一定相等</text>
 </page>
 </ipe>

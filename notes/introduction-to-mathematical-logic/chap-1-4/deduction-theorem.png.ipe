@@ -1,10 +1,11 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
 <ipe version="70218" creator="Ipe 7.2.24">
-<info created="D:20220221161534" modified="D:20220223115444" tex="luatex"/>
+<info created="D:20220221161534" modified="D:20220730173857" tex="luatex"/>
 <preamble>\usepackage{ctex}
 \usepackage{bm}
-</preamble>
+\boldmath
+\renewcommand{\seriesdefault}{\bfdefault}</preamble>
 <ipestyle name="basic">
 <symbol name="arrow/arc(spx)">
 <path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
@@ -315,14 +316,21 @@ h
 <page>
 <layer name="alpha"/>
 <view layers="alpha" active="alpha"/>
-<text layer="alpha" matrix="1 0 0 1 3.53 -24.66" transformations="translations" pos="76 724" stroke="black" type="label" width="77.704" height="9" depth="3" valign="baseline" size="large" style="math">\bm{\Gamma \cup \{ B \} \vdash C_1}</text>
-<text matrix="1 0 0 1 -112 21.1287" transformations="translations" pos="192 604" stroke="black" type="label" width="77.071" height="9" depth="3.35" valign="baseline" size="large" style="math">\bm{\Gamma \cup \{ B \} \vdash C_j}</text>
-<path matrix="1 0 0 1 32 12" stroke="black" arrow="normal/normal">
+<path layer="alpha" fill="0.976 0.937 0.867">
+24 816 m
+24 488 l
+572 488 l
+572 816 l
+h
+</path>
+<text matrix="1 0 0 1 3.53 -24.66" transformations="translations" pos="76 724" stroke="0.314 0.286 0.271" type="label" width="79.504" height="9" depth="3" valign="baseline" size="large" style="math">\Gamma \cup \{ B \} \vdash C_1</text>
+<text matrix="1 0 0 1 -112 21.1287" transformations="translations" pos="192 604" stroke="0.314 0.286 0.271" type="label" width="78.871" height="9" depth="3.35" valign="baseline" size="large" style="math">\Gamma \cup \{ B \} \vdash C_j</text>
+<path matrix="1 0 0 1 32 12" stroke="0.314 0.286 0.271" arrow="normal/normal">
 136 684 m
 156 676
 188 684 c
 </path>
-<path matrix="1 0 0 1 32 12" stroke="black" arrow="normal/normal">
+<path matrix="1 0 0 1 32 12" stroke="0.314 0.286 0.271" arrow="normal/normal">
 136 696 m
 160 704
 188 704
@@ -330,100 +338,100 @@ h
 188 704
 192 704 c
 </path>
-<path matrix="1 0 0 1 32 12" stroke="black" arrow="normal/normal">
+<path matrix="1 0 0 1 32 12" stroke="0.314 0.286 0.271" arrow="normal/normal">
 132 700 m
 160 724
 192 736 c
 </path>
-<text matrix="1 0 0 1 32 12" transformations="translations" pos="176 716" stroke="black" type="label" width="10.5" height="9.24" depth="1.26" valign="baseline">或</text>
-<text matrix="1 0 0 1 32 12" transformations="translations" pos="160 692" stroke="black" type="label" width="10.5" height="9.24" depth="1.26" valign="baseline">或</text>
-<text matrix="1 0 0 1 8 12" transformations="translations" pos="220 732" stroke="black" type="label" width="46.97" height="9.245" depth="1.57" valign="baseline">$C_1$ 是公理</text>
-<text matrix="1 0 0 1 28 8" transformations="translations" pos="204 708" stroke="black" type="label" width="31.37" height="7.18" depth="1.57" valign="baseline" style="math">C_1 \in \Gamma</text>
-<text matrix="1 0 0 1 24 8" transformations="translations" pos="204 688" stroke="black" type="label" width="34.465" height="7.18" depth="1.57" valign="baseline" style="math">C_1 = B</text>
-<text matrix="1 0 0 1 -32 20" transformations="translations" pos="348 708" stroke="black" type="label" width="103.867" height="7.88" depth="2.62" valign="baseline" style="math">A1: \bm{C_1 \Rightarrow (B \Rightarrow C_1)}</text>
-<text matrix="1 0 0 1 44 12" transformations="translations" pos="400 724" stroke="black" type="label" width="16.779" height="7.172" depth="0" valign="baseline">MP</text>
-<text matrix="1 0 0 1 7.879 -8" transformations="translations" pos="456 708" stroke="black" type="label" width="69.838" height="8.333" depth="1.8" valign="baseline" size="large" style="math">\bm{\Gamma \vdash B \Rightarrow C_1}</text>
-<path stroke="black" rarrow="normal/normal">
+<text matrix="1 0 0 1 32 12" transformations="translations" pos="176 716" stroke="0.314 0.286 0.271" type="label" width="10.5" height="9.24" depth="1.26" valign="baseline">或</text>
+<text matrix="1 0 0 1 32 12" transformations="translations" pos="160 692" stroke="0.314 0.286 0.271" type="label" width="10.5" height="9.24" depth="1.26" valign="baseline">或</text>
+<text matrix="1 0 0 1 8 12" transformations="translations" pos="220 732" stroke="0.314 0.286 0.271" type="label" width="48.586" height="9.245" depth="1.57" valign="baseline">$C_1$ 是公理</text>
+<text matrix="1 0 0 1 28 8" transformations="translations" pos="204 708" stroke="0.314 0.286 0.271" type="label" width="35.61" height="7.209" depth="1.57" valign="baseline" style="math">C_1 \in \Gamma</text>
+<text matrix="1 0 0 1 24 8" transformations="translations" pos="204 688" stroke="0.314 0.286 0.271" type="label" width="39.294" height="7.209" depth="1.57" valign="baseline" style="math">C_1 = B</text>
+<text matrix="1 0 0 1 -32 20" transformations="translations" pos="348 708" stroke="0.314 0.286 0.271" type="label" width="108.971" height="7.88" depth="2.62" valign="baseline" style="math">A1: C_1 \Rightarrow (B \Rightarrow C_1)</text>
+<text matrix="1 0 0 1 44 12" transformations="translations" pos="400 724" stroke="0.314 0.286 0.271" type="label" width="17.147" height="7.203" depth="0" valign="baseline">MP</text>
+<text matrix="1 0 0 1 7.879 -8" transformations="translations" pos="456 708" stroke="0.314 0.286 0.271" type="label" width="71.838" height="8.333" depth="1.8" valign="baseline" size="large" style="math">\Gamma \vdash B \Rightarrow C_1</text>
+<path stroke="0.314 0.286 0.271" rarrow="normal/normal">
 316 740 m
 304 756
 292 752
 292 752 c
 </path>
-<path stroke="black" rarrow="normal/normal">
+<path stroke="0.314 0.286 0.271" rarrow="normal/normal">
 312 728 m
 296 716
 272 720
 272 720 c
 </path>
-<path stroke="black" rarrow="normal/normal">
+<path stroke="0.314 0.286 0.271" rarrow="normal/normal">
 456 700 m
 376 692
 272 700
 272 700 c
 </path>
-<text matrix="1 0 0 1 -32 -8" transformations="translations" pos="336 712" stroke="black" type="label" width="91.779" height="7.176" depth="0.23" valign="baseline">Lemma 1.8: $B \Rightarrow B$</text>
-<path matrix="1 0 0 1 0 24" stroke="black" arrow="normal/normal">
+<text matrix="1 0 0 1 -32 -8" transformations="translations" pos="336 712" stroke="0.314 0.286 0.271" type="label" width="96.289" height="7.21" depth="0.11" valign="baseline">Lemma 1.8: $B \Rightarrow B$</text>
+<path matrix="1 0 0 1 0 24" stroke="0.314 0.286 0.271" arrow="normal/normal">
 164 608 m
 184 628
 208 644 c
 </path>
-<path matrix="1 0 0 1 0 24" stroke="black" cap="1">
+<path matrix="1 0 0 1 0 24" stroke="0.314 0.286 0.271" cap="1">
 220 616 m
 220 616 l
 </path>
-<path matrix="1 0 0 1 0 24" stroke="black" arrow="normal/normal">
+<path matrix="1 0 0 1 0 24" stroke="0.314 0.286 0.271" arrow="normal/normal">
 160 604 m
 196 616
 216 628 c
 </path>
-<path matrix="1 0 0 1 0 24" stroke="black" arrow="normal/normal">
+<path matrix="1 0 0 1 0 24" stroke="0.314 0.286 0.271" arrow="normal/normal">
 160 600 m
 200 604
 228 612 c
 </path>
-<text matrix="1 0 0 1 16 -68" transformations="translations" pos="176 716" stroke="black" type="label" width="10.5" height="9.24" depth="1.26" valign="baseline">或</text>
-<text matrix="1 0 0 1 24 -80" transformations="translations" pos="176 716" stroke="black" type="label" width="10.5" height="9.24" depth="1.26" valign="baseline">或</text>
-<text matrix="1 0 0 1 4 -100" transformations="translations" pos="176 716" stroke="black" type="label" width="10.5" height="9.24" depth="1.26" valign="baseline">或</text>
-<text matrix="1 0 0 1 -8 -60" transformations="translations" pos="220 732" stroke="black" type="label" width="46.699" height="9.241" depth="2.93" valign="baseline">$C_j$ 是公理</text>
-<text matrix="1 0 0 1 16 -56" transformations="translations" pos="204 708" stroke="black" type="label" width="31.098" height="7.176" depth="2.93" valign="baseline" style="math">C_j \in \Gamma</text>
-<text matrix="1 0 0 1 28 -52" transformations="translations" pos="204 688" stroke="black" type="label" width="34.193" height="7.176" depth="2.93" valign="baseline" style="math">C_j = B</text>
-<text matrix="1 0 0 1 8.35 -82.2073" transformations="translations" pos="456 708" stroke="black" type="label" width="69.204" height="8.333" depth="3.35" valign="baseline" size="large" style="math">\bm{\Gamma \vdash B \Rightarrow C_j}</text>
-<path matrix="1 0 0 1 0 24" stroke="black" arrow="normal/normal">
+<text matrix="1 0 0 1 16 -68" transformations="translations" pos="176 716" stroke="0.314 0.286 0.271" type="label" width="10.5" height="9.24" depth="1.26" valign="baseline">或</text>
+<text matrix="1 0 0 1 24 -80" transformations="translations" pos="176 716" stroke="0.314 0.286 0.271" type="label" width="10.5" height="9.24" depth="1.26" valign="baseline">或</text>
+<text matrix="1 0 0 1 4 -100" transformations="translations" pos="176 716" stroke="0.314 0.286 0.271" type="label" width="10.5" height="9.24" depth="1.26" valign="baseline">或</text>
+<text matrix="1 0 0 1 -8 -60" transformations="translations" pos="220 732" stroke="0.314 0.286 0.271" type="label" width="48.143" height="9.241" depth="2.93" valign="baseline">$C_j$ 是公理</text>
+<text matrix="1 0 0 1 16 -56" transformations="translations" pos="204 708" stroke="0.314 0.286 0.271" type="label" width="35.167" height="7.205" depth="2.93" valign="baseline" style="math">C_j \in \Gamma</text>
+<text matrix="1 0 0 1 28 -52" transformations="translations" pos="204 688" stroke="0.314 0.286 0.271" type="label" width="38.852" height="7.205" depth="2.93" valign="baseline" style="math">C_j = B</text>
+<text matrix="1 0 0 1 8.35 -82.2073" transformations="translations" pos="456 708" stroke="0.314 0.286 0.271" type="label" width="71.204" height="8.333" depth="3.35" valign="baseline" size="large" style="math">\Gamma \vdash B \Rightarrow C_j</text>
+<path matrix="1 0 0 1 0 24" stroke="0.314 0.286 0.271" arrow="normal/normal">
 260 632 m
 356 628
 456 612 c
 </path>
-<text matrix="1 0 0 1 -4 -16" transformations="translations" pos="312 656" stroke="black" type="label" width="96.387" height="19.36" depth="3.3" valign="baseline" size="huge">证明同 $C_1$</text>
-<path stroke="black" arrow="normal/normal">
-272 640 m
+<text matrix="1 0 0 1 -4 -16" transformations="translations" pos="312 656" stroke="0.314 0.286 0.271" type="label" width="100.797" height="19.36" depth="3.3" valign="baseline" size="huge">证明同 $C_1$</text>
+<path stroke="0.314 0.286 0.271" arrow="normal/normal">
+280 640 m
 352 648
 452 632 c
 </path>
-<path stroke="black" arrow="normal/normal">
+<path stroke="0.314 0.286 0.271" arrow="normal/normal">
 276 668 m
 368 656
 456 640 c
 </path>
-<text matrix="1 0 0 1 -8 8" transformations="translations" pos="208 592" stroke="black" type="label" width="125.422" height="9.241" depth="2.93" valign="baseline">由 MP $C_l$ 和 $C_l \Rightarrow C_j$ 所得</text>
-<path stroke="black" arrow="normal/normal">
+<text matrix="1 0 0 1 -8 8" transformations="translations" pos="208 592" stroke="0.314 0.286 0.271" type="label" width="132.345" height="9.241" depth="2.93" valign="baseline">由 MP $C_l$ 和 $C_l \Rightarrow C_j$ 所得</text>
+<path stroke="0.314 0.286 0.271" arrow="normal/normal">
 160 620 m
 168 604
 196 604 c
 </path>
-<text matrix="1 0 0 1 -116 -32" transformations="translations" pos="208 592" stroke="black" type="label" width="52.5" height="9.24" depth="1.26" valign="baseline">归纳假设得</text>
-<text matrix="1 0 0 1 -60 -24" transformations="translations" pos="208 592" stroke="black" type="label" width="54.199" height="7.297" depth="1.57" valign="baseline" style="math">\Gamma \vdash B \Rightarrow C_l</text>
-<text matrix="1 0 0 1 -60 -40" transformations="translations" pos="208 592" stroke="black" type="label" width="90.402" height="7.876" depth="2.93" valign="baseline" style="math">\Gamma \vdash B \Rightarrow (C_l \Rightarrow C_j)</text>
-<path stroke="black" arrow="normal/normal">
+<text matrix="1 0 0 1 -116 -32" transformations="translations" pos="208 592" stroke="0.314 0.286 0.271" type="label" width="52.5" height="9.24" depth="1.26" valign="baseline">归纳假设得</text>
+<text matrix="1 0 0 1 -60 -24" transformations="translations" pos="208 592" stroke="0.314 0.286 0.271" type="label" width="61.631" height="7.297" depth="1.57" valign="baseline" style="math">\Gamma \vdash B \Rightarrow C_l</text>
+<text matrix="1 0 0 1 -60 -40" transformations="translations" pos="208 592" stroke="0.314 0.286 0.271" type="label" width="102.952" height="7.876" depth="2.93" valign="baseline" style="math">\Gamma \vdash B \Rightarrow (C_l \Rightarrow C_j)</text>
+<path stroke="0.314 0.286 0.271" arrow="normal/normal">
 232 596 m
 232 592
 160 592
 132 584
 132 572 c
 </path>
-<text matrix="1 0 0 1 -92 4" transformations="translations" pos="332 572" stroke="black" type="label" width="255.176" height="7.876" depth="2.93" valign="baseline" style="math">A2: \bm{(B \Rightarrow (C_l
+<text matrix="1 0 0 1 -92 4" transformations="translations" pos="332 572" stroke="0.314 0.286 0.271" type="label" width="263.78" height="7.876" depth="2.93" valign="baseline" style="math">A2: (B \Rightarrow (C_l
 \Rightarrow C_j)) \Rightarrow ((B \Rightarrow C_l) \Rightarrow (B
-\Rightarrow C_j))}</text>
-<path stroke="black" arrow="normal/normal">
+\Rightarrow C_j))</text>
+<path stroke="0.314 0.286 0.271" arrow="normal/normal">
 228 564 m
 268 560
 308 552
@@ -431,7 +439,7 @@ h
 344 556
 336 572 c
 </path>
-<path stroke="black" arrow="normal/normal">
+<path stroke="0.314 0.286 0.271" arrow="normal/normal">
 336 592 m
 340 604
 384 596
@@ -439,10 +447,10 @@ h
 472 604
 480 620 c
 </path>
-<text matrix="1 0 0 1 -4 -8" transformations="translations" pos="412 608" stroke="black" type="label" width="16.779" height="7.172" depth="0" valign="baseline">MP</text>
-<text matrix="1 0 0 1 -2.131 0.448835" transformations="translations" pos="140 664" stroke="black" type="label" width="20.125" height="1.633" depth="0" valign="baseline" size="large">\bm{......}</text>
-<text matrix="1 0 0 1 14.562 0" transformations="translations" pos="496 664" stroke="black" type="label" width="23" height="1.867" depth="0" valign="baseline" size="large" style="math">\bm{......}</text>
-<path stroke="black" arrow="normal/normal">
+<text matrix="1 0 0 1 -4 -8" transformations="translations" pos="412 608" stroke="0.314 0.286 0.271" type="label" width="17.147" height="7.203" depth="0" valign="baseline">MP</text>
+<text matrix="1 0 0 1 -2.131 0.448835" transformations="translations" pos="140 664" stroke="0.314 0.286 0.271" type="label" width="20.016" height="1.872" depth="0" valign="baseline" size="large">......</text>
+<text matrix="1 0 0 1 14.562 0" transformations="translations" pos="496 664" stroke="0.314 0.286 0.271" type="label" width="23" height="1.867" depth="0" valign="baseline" size="large" style="math">......</text>
+<path stroke="0.314 0.286 0.271" arrow="normal/normal">
 424 732 m
 440 736
 468 716 c

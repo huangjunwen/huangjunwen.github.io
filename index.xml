@@ -41,7 +41,7 @@ $ cabal v2-update $ cabal v2-install Agda-2.6.1.3 $ cabal v2-install --lib ieee7
       <guid>http://127.0.0.1:1313/notes/introduction-to-mathematical-logic/chap-2-3-to-2-4/</guid>
       <description>2.3 First-Order Theories 一阶理论：一个一阶理论 \(\mathcal{K}\) 使用一个一阶语言的符号及其公式，以及如下这些公理（公理分两种： 逻辑公理和非逻辑公理）以及演绎规则
 2.3.1 Logical Axioms  逻辑公理  如果 \(B\)，\(C\)，\(D\) 都是合式公式，则如下是 \(\mathcal{K}\) 的逻辑公理
- A1: \(B \Rightarrow (C \Rightarrow B)\) A2: \((B \Rightarrow (C \Rightarrow D)) \Rightarrow ((B \Rightarrow C) \Rightarrow (B \Rightarrow D))\) A3: \((\neg C \Rightarrow \neg B) \Rightarrow ((\neg C \Rightarrow B) \Rightarrow C)\) A4: 如果 \(B(x_i)\) 是一个合式公式，且项 \(t\) 可以自由替换 \(x_i\) 则 \((\forall x_i)B(x_i) \Rightarrow B(t)\) （特别地，\(t\) 可以是 \(x_i\)，于是总有 \((\forall x_i)B \Rightarrow B\)） A5: 如果 \(B\) 不包含 \(x_i\) 的自由所在，则 \((\forall x_i)(B \Rightarrow C) \Rightarrow (B \Rightarrow (\forall x_i)C)\)    2.</description>
+ A1: \(B \Rightarrow (C \Rightarrow B)\) A2: \((B \Rightarrow (C \Rightarrow D)) \Rightarrow ((B \Rightarrow C) \Rightarrow (B \Rightarrow D))\) A3: \((\neg C \Rightarrow \neg B) \Rightarrow ((\neg C \Rightarrow B) \Rightarrow C)\) A4: 如果 \(B(x_i)\) 是一个合式公式，且项 \(t\) 可以自由替换 \(x_i\) 则 \((\forall x_i)B(x_i) \Rightarrow B(t)\) （特别地，\(t\) 可以是 \(x_i\)，于是总有 \((\forall x_i)B \Rightarrow B\)） A5: 如果 \(B\) 不包含 \(x_i\) 的自由变量，则 \((\forall x_i)(B \Rightarrow C) \Rightarrow (B \Rightarrow (\forall x_i)C)\)    2.</description>
     </item>
     
     <item>
@@ -80,8 +80,7 @@ Pandoc pandoc 也是可以作为 hugo 的 markdown 渲染引擎的 2，用它有
       
       <guid>http://127.0.0.1:1313/notes/introduction-to-mathematical-logic/chap-1-5-to-1-6/</guid>
       <description>1.5 Independence: Many-Valued Logics  Independent  一个理论中的公理子集 \(Y\) 被称为独立的 （independent），如果：该子集中某个（还是任意？）式子都不可以由 \(Y\) 以外的公理推导出来   Proposition 1.17  公理 A1~A3 是独立的，即任意一个都不可由其他两个推导出来
- 证明：
-A1 独立的证明 考虑下面这个多值逻辑表
+ Proof  A1 独立的证明 考虑下面这个多值逻辑表
 \[ \begin{array} {c c c} A &amp;amp; \neg A &amp;amp; row \\ 0 &amp;amp; 1 &amp;amp; (a)\\ 1 &amp;amp; 1 &amp;amp; (b) \\ 2 &amp;amp; 0 &amp;amp; (c) \\ \end{array} \hspace{8em} \begin{array} {c c c c} A &amp;amp; B &amp;amp; A \Rightarrow B &amp;amp; row \\ 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; (1) \\ 1 &amp;amp; 0 &amp;amp; 2 &amp;amp; (2) \\ 2 &amp;amp; 0 &amp;amp; 0 &amp;amp; (3) \\ 0 &amp;amp; 1 &amp;amp; 2 &amp;amp; (4) \\ 1 &amp;amp; 1 &amp;amp; 2 &amp;amp; (5) \\ 2 &amp;amp; 1 &amp;amp; 0 &amp;amp; (6) \\ 0 &amp;amp; 2 &amp;amp; 2 &amp;amp; (7) \\ 1 &amp;amp; 2 &amp;amp; 0 &amp;amp; (8) \\ 2 &amp;amp; 2 &amp;amp; 0 &amp;amp; (9) \\ \end{array} \]</description>
     </item>
     

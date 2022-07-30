@@ -1,10 +1,9 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
 <ipe version="70218" creator="Ipe 7.2.24">
-<info created="D:20220221161534" modified="D:20220713081822" tex="luatex"/>
+<info created="D:20220221161534" modified="D:20220730170827" tex="luatex"/>
 <preamble>\usepackage{ctex}
 \usepackage{bm}
-\usepackage{xcolor}
 \boldmath
 \renewcommand{\seriesdefault}{\bfdefault}
 
@@ -319,32 +318,53 @@ h
 <page>
 <layer name="alpha"/>
 <view layers="alpha" active="alpha"/>
-<text layer="alpha" matrix="1 0 0 1 -188.972 49.7837" transformations="translations" pos="256.725 624.821" stroke="black" type="label" width="280.403" height="16.5" depth="5.5" valign="baseline" size="huge">$B({\color{red}x_2})$: $(\forall x_1) ({\color{red}x_2} + x_1 &gt; 0)$</text>
-<text matrix="1 0 0 1 -236.206 15.0287" transformations="translations" pos="353.12 703.865" stroke="black" type="label" width="85.629" height="11.597" depth="3.27" valign="baseline" size="LARGE">$t_1$: $x_1 \times 2$</text>
-<text matrix="1 0 0 1 -12.8613 93.6432" transformations="translations" pos="256.725 624.821" stroke="black" type="label" width="271.11" height="13.5" depth="4.5" valign="baseline" size="LARGE">$B(t_1)$: $(\forall {\color{red}x_1}) ({\color{red}x_1} \times 2 + x_1 &gt; 0)$ </text>
-<text matrix="1 0 0 1 -184.635 30.3605" transformations="translations" pos="301.549 714.951" stroke="black" type="label" width="321.684" height="9.245" depth="1.57" valign="baseline">$t_1$ 不能自由替换 $B$ 中的 $x_2$，因为一旦替换 $t_1$ 中的 $x_1$ 会变成被约束</text>
-<text matrix="1 0 0 1 -236.206 -80.9713" transformations="translations" pos="353.12 703.865" stroke="black" type="label" width="85.629" height="11.597" depth="3.27" valign="baseline" size="LARGE">$t_2$: $x_3 \times 2$</text>
-<text matrix="1 0 0 1 -12.8613 -2.2638" transformations="translations" pos="256.725 624.821" stroke="black" type="label" width="265.116" height="13.5" depth="4.5" valign="baseline" size="LARGE">$B(t_2)$: $(\forall x_1) ({\color{red}x_3} \times 2 + x_1 &gt; 0)$</text>
-<text matrix="1 0 0 1 -184.635 -117.639" transformations="translations" pos="301.549 714.951" stroke="black" type="label" width="300.684" height="9.245" depth="1.57" valign="baseline">$t_2$ 能自由替换 $B$ 中的 $x_2$，因为替换后， $t_2$ 中的 $x_3$ 不会被约束</text>
-<path stroke="black" rarrow="normal/normal">
-240 724 m
-208 724 l
+<path layer="alpha" fill="0.976 0.937 0.867">
+24 772 m
+24 484 l
+592 484 l
+592 772 l
+h
 </path>
-<path matrix="1 0 0 1 0 -96" stroke="black" rarrow="normal/normal">
-240 724 m
-208 724 l
+<text matrix="1 0 0 1 -39.632 -111.14" transformations="translations" pos="92 724" stroke="0.314 0.286 0.271" type="label" width="132.39" height="11.25" depth="3.75" valign="baseline" size="Large" style="math">t: f(x_1, g(x_2), x_2)</text>
+<text matrix="1 0 0 1 -72 -104" transformations="translations" pos="316 716" stroke="0.314 0.286 0.271" type="label" width="232.899" height="12.11" depth="3.75" valign="baseline" size="Large" style="math">t&apos;: f(x_1, g(h(x_2, x_1)), h(x_2, x_1))</text>
+<text matrix="1 0 0 1 -56 -176" transformations="translations" pos="244 768" stroke="0.314 0.286 0.271" type="label" width="76.346" height="7.88" depth="2.62" valign="baseline" style="math">x_2 \rightarrow h(x_2, x_1)</text>
+<text matrix="1 0 0 1 -20.075 28.86" transformations="translations" pos="104 652" stroke="0.314 0.286 0.271" type="label" width="95.506" height="11.25" depth="3.75" valign="baseline" size="Large" style="math">s: (s_1, s_2, ...)</text>
+<text matrix="1 0 0 1 -96 12" transformations="translations" pos="340 668" stroke="0.314 0.286 0.271" type="label" width="322.764" height="13.2" depth="3.75" valign="baseline" size="Large">$s&apos;: (s_1, s^{*}(h(x_2, x_1)), ...)$ 即 $(s_1, h(s_2, s_1), ...)$</text>
+<path matrix="1 0 0 1 -64 0" stroke="0.314 0.286 0.271" rarrow="normal/normal">
+192 632 m
+276 648
+356 668 c
 </path>
-<path stroke="black" rarrow="normal/normal">
-112 724 m
-104 712
-104 696
-104 696
-104 696 c
+<path matrix="1 0 0 1 -64 0" stroke="0.314 0.286 0.271" rarrow="normal/normal">
+372 632 m
+260 644
+200 668 c
 </path>
-<path stroke="black" rarrow="normal/normal">
-112 632 m
-104 648
-104 664 c
+<path stroke="0.314 0.286 0.271" dash="dashed" rarrow="normal/normal">
+348 600 m
+272 576
+192 576
+160 584
+140 592
+128 604 c
+</path>
+<text matrix="1 0 0 1 -76 -60" transformations="translations" pos="244 768" stroke="0.314 0.286 0.271" type="label" width="95.041" height="7.88" depth="2.62" valign="baseline" style="math">s_2 \rightarrow s^{*}(h(x_2, x_1))</text>
+<path stroke="0.314 0.286 0.271" dash="dashed" rarrow="normal/normal">
+340 700 m
+260 728
+212 740
+156 732
+144 696 c
+</path>
+<text matrix="1 0 0 1 -64 -20" transformations="translations" pos="376 756" stroke="0.314 0.286 0.271" type="label" width="125.132" height="9.245" depth="2.62" valign="baseline">例子 $i = 2, u = h(x_2, x_1)$</text>
+<text matrix="1 0 0 1 -124 8" transformations="translations" pos="240 516" stroke="0.314 0.286 0.271" type="label" width="239.011" height="13.5" depth="4.5" valign="baseline" size="LARGE" style="math">f(s_1, g(h(s_2, s_1)), h(s_2, s_1))</text>
+<path matrix="1 0 0 1 -64 0" stroke="0.314 0.286 0.271" rarrow="normal/normal">
+216 548 m
+180 600 l
+</path>
+<path stroke="0.314 0.286 0.271" rarrow="normal/normal">
+272 552 m
+384 592 l
 </path>
 </page>
 </ipe>

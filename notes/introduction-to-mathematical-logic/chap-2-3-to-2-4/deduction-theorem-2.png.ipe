@@ -1,13 +1,11 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
 <ipe version="70218" creator="Ipe 7.2.24">
-<info created="D:20220221161534" modified="D:20220713082545" tex="luatex"/>
+<info created="D:20220221161534" modified="D:20220730173927" tex="luatex"/>
 <preamble>\usepackage{ctex}
 \usepackage{bm}
 \boldmath
-\renewcommand{\seriesdefault}{\bfdefault}
-
-</preamble>
+\renewcommand{\seriesdefault}{\bfdefault}</preamble>
 <ipestyle name="basic">
 <symbol name="arrow/arc(spx)">
 <path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
@@ -318,46 +316,149 @@ h
 <page>
 <layer name="alpha"/>
 <view layers="alpha" active="alpha"/>
-<text layer="alpha" matrix="1 0 0 1 -39.632 -111.14" transformations="translations" pos="92 724" stroke="black" type="label" width="132.39" height="11.25" depth="3.75" valign="baseline" size="Large" style="math">t: f(x_1, g(x_2), x_2)</text>
-<text matrix="1 0 0 1 -72 -104" transformations="translations" pos="316 716" stroke="black" type="label" width="232.899" height="12.11" depth="3.75" valign="baseline" size="Large" style="math">t&apos;: f(x_1, g(h(x_2, x_1)), h(x_2, x_1))</text>
-<text matrix="1 0 0 1 -56 -176" transformations="translations" pos="244 768" stroke="black" type="label" width="76.346" height="7.88" depth="2.62" valign="baseline" style="math">x_2 \rightarrow h(x_2, x_1)</text>
-<text matrix="1 0 0 1 -20.075 28.86" transformations="translations" pos="104 652" stroke="black" type="label" width="95.506" height="11.25" depth="3.75" valign="baseline" size="Large" style="math">s: (s_1, s_2, ...)</text>
-<text matrix="1 0 0 1 -96 12" transformations="translations" pos="340 668" stroke="black" type="label" width="322.764" height="13.2" depth="3.75" valign="baseline" size="Large">$s&apos;: (s_1, s^{*}(h(x_2, x_1)), ...)$ 即 $(s_1, h(s_2, s_1), ...)$</text>
-<path matrix="1 0 0 1 -64 0" stroke="black" rarrow="normal/normal">
-192 632 m
-276 648
-356 668 c
+<path layer="alpha" fill="0.976 0.937 0.867">
+32 780 m
+32 328 l
+576 328 l
+576 780 l
+h
 </path>
-<path matrix="1 0 0 1 -64 0" stroke="black" rarrow="normal/normal">
-372 632 m
-260 644
-200 668 c
+<text matrix="1 0 0 1 57.838 -7.995" transformations="translations" pos="52 740" stroke="0.314 0.286 0.271" type="label" width="81.224" height="18.051" depth="5.06" valign="baseline" size="Huge" style="math">\Gamma, B \vdash</text>
+<text matrix="1 0 0 1 196 -8" transformations="translations" pos="52 740" stroke="0.314 0.286 0.271" type="label" width="44.152" height="18.056" depth="0" valign="baseline" size="Huge" style="math">\Gamma \vdash</text>
+<group matrix="1 0 0 1 -36 0">
+<text matrix="1 0 0 1 -124 -190.054" transformations="translations" pos="368 672" stroke="0.314 0.286 0.271" type="label" width="291" height="35.35" depth="30.17" valign="baseline">\begin{tabular}{l r}
+** $C_j$（仅当 $C_l$ 和 $C_l \Rightarrow C_j$ 均不依赖于 $B$ 时添加）&amp; MP\\
+$(B \Rightarrow (C_l \Rightarrow C_j)) \Rightarrow ((B \Rightarrow C_l) \Rightarrow (B \Rightarrow C_j))$ &amp; A2 \\
+$(B \Rightarrow C_l) \Rightarrow (B \Rightarrow C_j)$ &amp; MP \\
+$B \Rightarrow C_j$ &amp; MP
+\end{tabular}</text>
+<path matrix="1 0 0 1 0 0.948" stroke="0.314 0.286 0.271" pen="fat">
+244 516 m
+244 448 l
+536 448 l
+536 516 l
+h
 </path>
-<path stroke="black" dash="dashed" rarrow="normal/normal">
-348 600 m
-272 576
-192 576
-160 584
-140 592
-128 604 c
+</group>
+<text matrix="1 0 0 1 -160 19.247" transformations="translations" pos="368 672" stroke="0.314 0.286 0.271" type="label" width="123.913" height="27.17" depth="21.97" valign="baseline">\begin{tabular}{l r}
+* $C_j$ &amp; Ax \\ 
+$C_j \Rightarrow (B \Rightarrow C_j)$ &amp; A1 \\
+$B \Rightarrow C_j$ &amp; MP
+\end{tabular}</text>
+<path matrix="1 0 0 1 -36 0" stroke="0.314 0.286 0.271" pen="fat">
+244 720 m
+244 668 l
+368 668 l
+368 720 l
+h
 </path>
-<text matrix="1 0 0 1 -76 -60" transformations="translations" pos="244 768" stroke="black" type="label" width="95.041" height="7.88" depth="2.62" valign="baseline" style="math">s_2 \rightarrow s^{*}(h(x_2, x_1))</text>
-<path stroke="black" dash="dashed" rarrow="normal/normal">
-340 700 m
-260 728
-212 740
-156 732
-144 696 c
+<text matrix="1 0 0 1 -160 -43.476" transformations="translations" pos="368 672" stroke="0.314 0.286 0.271" type="label" width="126.37" height="27.17" depth="21.97" valign="baseline">\begin{tabular}{l r}
+* $C_j$ &amp; Hyp \\ 
+$C_j \Rightarrow (B \Rightarrow C_j)$ &amp; A1 \\
+$B \Rightarrow C_j$ &amp; MP
+\end{tabular}</text>
+<path matrix="1 0 0 1 -36 0" stroke="0.314 0.286 0.271" pen="fat">
+244 656 m
+244 600 l
+368 600 l
+368 656 l
+h
 </path>
-<text matrix="1 0 0 1 -64 -20" transformations="translations" pos="376 756" stroke="black" type="label" width="125.132" height="9.245" depth="2.62" valign="baseline">例子 $i = 2, u = h(x_2, x_1)$</text>
-<text matrix="1 0 0 1 -124 8" transformations="translations" pos="240 516" stroke="black" type="label" width="239.011" height="13.5" depth="4.5" valign="baseline" size="LARGE" style="math">f(s_1, g(h(s_2, s_1)), h(s_2, s_1))</text>
-<path matrix="1 0 0 1 -64 0" stroke="black" rarrow="normal/normal">
-216 548 m
-180 600 l
+<text matrix="1 0 0 1 -160 -115.262" transformations="translations" pos="368 672" stroke="0.314 0.286 0.271" type="label" width="128.648" height="35.35" depth="30.17" valign="baseline">\begin{tabular}{l r}
+... &amp; \\
+Lemma 1.8 &amp; A1/A2/MP \\
+... &amp; \\
+$B \Rightarrow C_j$ &amp;  MP
+\end{tabular}</text>
+<path matrix="1 0 0 1 -36 -0.0243584" stroke="0.314 0.286 0.271" pen="fat">
+243.599 592.136 m
+243.599 526.542 l
+373.361 526.542 l
+373.361 592.136 l
+h
 </path>
-<path stroke="black" rarrow="normal/normal">
-272 552 m
-384 592 l
+<path matrix="1 0 0 1 -36 0" stroke="0.314 0.286 0.271" pen="fat">
+244 440 m
+244 368 l
+368 368 l
+368 440 l
+h
+</path>
+<text matrix="1 0 0 1 -160 -280" transformations="translations" pos="368 672" stroke="0.314 0.286 0.271" type="label" width="125.761" height="27.17" depth="21.97" valign="baseline">\begin{tabular}{l r}
+* $C_j: (\forall x_i)C_l$ &amp; Gen \\ 
+$C_j \Rightarrow (B \Rightarrow C_j)$ &amp; A1 \\
+$B \Rightarrow C_j$ &amp; MP
+\end{tabular}</text>
+<text matrix="1 0 0 1 -88 -36" transformations="translations" pos="316 464" stroke="0.314 0.286 0.271" type="label" width="84.487" height="9.245" depth="1.57" valign="baseline">$C_l$ 不依赖于 $B$ 时</text>
+<path matrix="1 0 0 1 -28 0" stroke="0.314 0.286 0.271" pen="fat">
+372 440 m
+372 368 l
+572 368 l
+572 440 l
+h
+</path>
+<text matrix="1 0 0 1 -12 -280" transformations="translations" pos="368 672" stroke="0.314 0.286 0.271" type="label" width="189.067" height="27.17" depth="21.97" valign="baseline">\begin{tabular}{l r}
+$(\forall x_i)(B \Rightarrow C_l) \Rightarrow (B \Rightarrow C_j)$ &amp; A5 \\ 
+$(\forall x_i)(B \Rightarrow C_l)$ &amp; Gen \\
+$B \Rightarrow C_j$ &amp; MP
+\end{tabular}</text>
+<text matrix="1 0 0 1 -72 -20" transformations="translations" pos="420 448" stroke="0.314 0.286 0.271" type="label" width="192.258" height="9.245" depth="1.57" valign="baseline">$C_l$ 依赖于 $B$ 且 $x_i$ 不是 $B$ 的自由变量时</text>
+<text matrix="1 0 0 1 15.281 12.774" transformations="translations" pos="108 676" stroke="0.314 0.286 0.271" type="label" width="54.546" height="10.56" depth="3.35" valign="baseline" size="large">$C_j$ 是公理</text>
+<path matrix="1 0 0 1 -28 -1.296" stroke="0.314 0.286 0.271" pen="fat">
+224 720 m
+224 668 l
+132 668 l
+132 720 l
+h
+</path>
+<text matrix="1 0 0 1 29.185 -50.387" transformations="translations" pos="108 676" stroke="0.314 0.286 0.271" type="label" width="39.527" height="8.233" depth="3.35" valign="baseline" size="large" style="math">C_j \in \Gamma</text>
+<path matrix="1 0 0 1 -28 1.408" stroke="0.314 0.286 0.271" pen="fat">
+224 656 m
+224 600 l
+136 600 l
+136 656 l
+h
+</path>
+<text matrix="1 0 0 1 25.838 -115.908" transformations="translations" pos="108 676" stroke="0.314 0.286 0.271" type="label" width="45.519" height="10.56" depth="3.35" valign="baseline" size="large">$C_j$ 是 $B$</text>
+<path matrix="1 0 0 1 -28 0" stroke="0.314 0.286 0.271" pen="fat">
+144 592.112 m
+144 528 l
+224 528 l
+224 592.112 l
+h
+</path>
+<path matrix="1 0 0 1 -28 4.112" stroke="0.314 0.286 0.271" pen="fat">
+188 560 m
+188 560 l
+188 560 l
+188 560 l
+h
+</path>
+<path matrix="1 0 0 1 -28 4.112" stroke="0.314 0.286 0.271" pen="fat">
+184 560 m
+184 560 l
+184 560 l
+184 560 l
+h
+</path>
+<text matrix="1 0 0 1 -17.992 -194.099" transformations="translations" pos="108 676" stroke="0.314 0.286 0.271" type="label" width="95.659" height="21.71" depth="15.73" valign="baseline" size="large">\begin{tabular}{c}
+$C_j$ 由 $C_l \Rightarrow C_j$ \\
+和 $C_l$ MP 而成
+\end{tabular}</text>
+<path matrix="1 0 0 1 -28 1.296" stroke="0.314 0.286 0.271" pen="fat">
+104 516 m
+104 448 l
+224 448 l
+224 516 l
+h
+</path>
+<text matrix="1 0 0 1 -30.021 12" transformations="translations" pos="136 388" stroke="0.314 0.286 0.271" type="label" width="77.487" height="10.56" depth="3.35" valign="baseline" size="large">$C_j$ 是 $(\forall x_i)C_l$</text>
+<path matrix="1 0 0 1 -28 4" stroke="0.314 0.286 0.271" pen="fat">
+116 436 m
+116 364 l
+224 364 l
+224 436 l
+h
 </path>
 </page>
 </ipe>

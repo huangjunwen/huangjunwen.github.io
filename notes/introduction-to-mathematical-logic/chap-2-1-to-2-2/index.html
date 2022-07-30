@@ -10,8 +10,8 @@
     <link rel="stylesheet" href="/res/libs/chota/css/chota.min.css"></link>
     <link rel="stylesheet" href="/res/style/site.min.1cfb2065638c6eda7f5ceb0b60110baf5593ae09a1298e64096971386bd084ca.css"></link>
     <script type="text/javascript" src="/res/script/site.min.6881188133395162222bed24f23dd6cbdd74f0b93a54b35a6b929b5178e10fe9.js"></script>
-    <link id="markdown-body-style" rel="stylesheet" href="/res/style/markdown-body.min.d03821a569aefe7776c65a7b1bf6eb5e0833d3e13d50479a140b21754e877be3.css"></link>
-    <script type="text/javascript" src="/res/script/markdown-body.min.1bdc576e3acf2cbe4a5a0d073acedad7bc6868439910fea129693a24b1d81b23.js"></script>
+    <link id="markdown-body-style" rel="stylesheet" href="/res/style/markdown-body.min.d312d9f13f8c0bc92f4ce5c8b2f23bc1ee35c4f43af65da316403e3c7d8c9624.css"></link>
+    <script type="text/javascript" src="/res/script/markdown-body.min.a6a10b3328945990fade36e6fee4eab6131402292da617dc8c6d0258507f0c72.js"></script>
   </head>
 
   <body>
@@ -136,7 +136,7 @@ href="../chap-1-4/#connective-alias">上一章</a>，\(((\exists x) B)\)
 for \(x_i\)</em>）； 这里的意思是，<strong>如果将 \(t\) 替换到
 \(B(x_i)\) 中所有 \(x_i\) 的自由所在成为 \(B(t)\)，\(t\)
 中不会有变量因为如此而变得被约束了</strong></p>
-<p><img src="free.embed.svg" /></p>
+<p><img src="free.png" /></p>
 <p>以下这些很明显：</p>
 <ol type="1">
 <li>一个不包含任何变量的项可以自由替换掉任意合式公式中的任意变量</li>
@@ -259,82 +259,152 @@ id="fnref5" role="doc-noteref"><sup>5</sup></a></li>
 <p><span id="property-1">当且仅当 \(\neg B\) 是真时，\(B\)
 是假的；当且仅当 \(\neg B\) 是假时，\(B\) 是真的</span></p>
 </blockquote>
+<div class="proof">
+<div class="proof-label">
+Proof
+</div>
+<div class="proof-content">
 <ul>
 <li>\(\neg B\) 为真等价于所有 \(s\) 满足 \(\neg B\) 当且仅当所有 \(s\)
 不满足 \(B\) 等价于 \(B\) 为假</li>
 <li>\(\neg B\) 为假等价于所有 \(s\) 不满足 \(\neg B\) 当且仅当所有 \(s\)
 满足 \(\neg\neg B\) 等价于 \(B\) 为真（这里需要有 \(\neg\neg B =
 B\)）</li>
-</ul></li>
+</ul>
+</div>
+</div></li>
 <li><blockquote>
 <p><span id="property-2">\(\vDash_M B\) 和 \(\vDash_M \neg B\)
 不能同时为真</span></p>
 </blockquote>
+<div class="proof">
+<div class="proof-label">
+Proof
+</div>
+<div class="proof-content">
 <p>如果同时为真，对于一个 \(s\) 来说，就既满足 \(B\) 又不满足 \(B\)
-了，这是不可能的</p></li>
+了，这是不可能的</p>
+</div>
+</div></li>
 <li><blockquote>
 <p><span id="property-3">如果 \(\vDash_M B\) 且 \(\vDash_M B \Rightarrow
 C\)，则 \(\vDash_M C\)</span></p>
 </blockquote>
+<div class="proof">
+<div class="proof-label">
+Proof
+</div>
+<div class="proof-content">
 <p>如果一个 \(s\) 同时满足 \(B\) 和 \(B \Rightarrow C\)，则 \(s\) 也满足
 \(C\)，因为 \(s\) 满足 \(B \Rightarrow C\)， 所以 \(s\) 满足 \(C\) 或者
 \(s\) <strong>不</strong> 满足 \(B\)，但 \(s\) 满足 \(B\)，故 \(s\)
-只能满足 \(C\)</p></li>
+只能满足 \(C\)</p>
+</div>
+</div></li>
 <li><blockquote>
 <p><span id="property-4">当且仅当 \(\vDash_M B\) 且 \(\vDash_M \neg C\)
 时，\(B \Rightarrow C\) 为假</span></p>
 </blockquote>
+<div class="proof">
+<div class="proof-label">
+Proof
+</div>
+<div class="proof-content">
 <p>任意一个 \(s\) 都满足 \(B\) 且不满足 \(C\)，故不满足 \(B \Rightarrow
-C\)</p></li>
+C\)</p>
+</div>
+</div></li>
 <li><p><span id="property-5">其他联结词</span></p>
 <ul>
 <li><blockquote>
 <p>当且仅当 \(s\) 满足 \(B\) 和 \(C\) 时，满足 \(B \wedge C\)</p>
 </blockquote>
+<div class="proof">
+<div class="proof-label">
+Proof
+</div>
+<div class="proof-content">
 <p>\(s\) 满足 \(\neg (B \Rightarrow \neg C)\) 当且仅当不满足 \(B
 \Rightarrow \neg C\)，当且仅当 \(s\) 满足 \(B\) 且不满足 \(\neg C\)，
-当且仅当 \(s\) 同时满足 \(B\) 和 \(C\)</p></li>
+当且仅当 \(s\) 同时满足 \(B\) 和 \(C\)</p>
+</div>
+</div></li>
 <li><blockquote>
 <p>当且仅当 \(s\) 满足 \(B\) 或 \(C\) 时，满足 \(B \vee C\)</p>
 </blockquote>
+<div class="proof">
+<div class="proof-label">
+Proof
+</div>
+<div class="proof-content">
 <p>\(s\) 满足 \((\neg B) \Rightarrow C\) 当且仅当 \(s\) 不满足 \(\neg
-B\) 或满足 \(C\)，当且仅当 \(s\) 满足 \(B\) 或 \(C\)</p></li>
+B\) 或满足 \(C\)，当且仅当 \(s\) 满足 \(B\) 或 \(C\)</p>
+</div>
+</div></li>
 <li><blockquote>
 <p>当且仅当 \(s\) 同时满足 \(B\) 和 \(C\)，或者同时不满足 \(B\) 和 \(C\)
 时，满足 \(B \Leftrightarrow C\)</p>
 </blockquote>
+<div class="proof">
+<div class="proof-label">
+Proof
+</div>
+<div class="proof-content">
 <p>\(s\) 满足 \(B \Leftrightarrow C\) 当且仅当 \(s\) 满足 \(B
 \Rightarrow C\) 和 \(C \Rightarrow B\)， 当且仅当 \(B\) 和 \(C\)
-同时满足或同时不满足，否则总可以有 \(T \Rightarrow F\)</p></li>
+同时满足或同时不满足，否则总可以有 \(T \Rightarrow F\)</p>
+</div>
+</div></li>
 <li><blockquote>
 <p>当且仅当存在一个 \(c\) 替换掉 \(s\) 的第 \(i\) 项后满足 \(B\)
 时，\(s\) 满足 \((\exists x_i)B\)</p>
 </blockquote>
+<div class="proof">
+<div class="proof-label">
+Proof
+</div>
+<div class="proof-content">
 <p>\(s\) 满足 \(\neg (\forall x_i)\neg B\) 当且仅当 \(s\) 不满足
 \((\forall x_i)\neg B\)， 当且仅当至少存在一个 \(c\) 替换掉 \(s_i\)
 后不满足 \(\neg B\)，当且仅当至少存在一个 \(c\) 替换掉 \(s_i\) 后满足
-\(B\)</p></li>
+\(B\)</p>
+</div>
+</div></li>
 </ul></li>
 <li><blockquote>
 <p><span id="property-6">\(\vDash_M B\) 当且仅当 \(\vDash_M (\forall
 x_i)B\)</span></p>
 </blockquote>
+<div class="proof">
+<div class="proof-label">
+Proof
+</div>
+<div class="proof-content">
 <p>\(\vDash_M B\) 时任意 \(s\) 都满足 \(B\)，自然对任意 \(s\) 替换其
 \(s_i\) 为任意值仍然满足 \(B\)， 故 \(\vDash_M (\forall x_i)B\)；当
 \(\vDash_M (\forall x_i)B\) 时任意 \(s\) 替换 \(s_i\) 为任意值仍然满足
 \(B\)，这也意味着任意 \(s\) 均满足 \(B\)，即 \(\vDash_M B\)</p>
+</div>
+</div>
 <p>这个结果可以扩展为 \(B\) 为真当且仅当其闭包（closure，即在 \(B\)
 前添加所有自由变量全称量词前缀，例如 \(A_1^2(x_2, x_5)\) 的闭包为
 \((\forall x_5)(\forall x_2)A_1^2(x_2, x_5)\)）为真</p></li>
 <li><blockquote>
 <p><span id="property-7">所有重言式在任何解释下都是真的</span></p>
 </blockquote>
+<div class="proof">
+<div class="proof-label">
+Proof
+</div>
+<div class="proof-content">
 <p>例如 <a href="../chap-1-4/#A1">A1</a> 的一个实例可以是 \(A_1^1(x_1)
 \Rightarrow (A_1^1(x_2) \Rightarrow A_1^1(x_1))\)； 对 \(L\)
 的三条公理来说，任意 \(s\) 都是满足的，故这几个公理总是真的，又根据性质
 3 MP 保真，故所有 \(L\) 中的定理均真； 又由 <a
 href="../chap-1-4/#proposition-1.14-completeness-theorem">Proposition
-1.14</a> 所有重言式均是定理，故总是真的</p></li>
+1.14</a> 所有重言式均是定理，故总是真的</p>
+</div>
+</div></li>
 <li><blockquote>
 <p><span id="property-8">若 \(B\) 有且仅有自由变量 \(x_{i_1}, ...,
 x_{i_k}\)，又 \(s\) 和 \(s'\) 的第 \(i_1, ..., i_k\) 项均相等， 那么
@@ -342,8 +412,13 @@ x_{i_k}\)，又 \(s\) 和 \(s'\) 的第 \(i_1, ..., i_k\) 项均相等， 那么
 </blockquote>
 <p>首先证明一个 Lemma： 若项 \(t\) 包含的变量均在一个集合 \(\{x_{i_1},
 ..., x_{i_k}\}\) 中，而 \(s\) 和 \(s'\) 的 第 \(i_1, ..., i_k\)
-项均相同，则 \(s^{ * }(t) = (s')^{ * }(t)\)；以 \(t\)
-中函数符号数目作归纳法：</p>
+项均相同，则 \(s^{ * }(t) = (s')^{ * }(t)\)</p>
+<div class="proof">
+<div class="proof-label">
+Proof
+</div>
+<div class="proof-content">
+<p>以 \(t\) 中函数符号数目作归纳法：</p>
 <ul>
 <li>函数符号数目为 0 时可能为常量或者变量：
 <ul>
@@ -387,9 +462,10 @@ s'_{i_1}, ..., s'_{i_k} \rangle\)； 易知 \(C\) 中包含自由变量 \(x_{i_1
 \(s^{a}\) 都满足 \(C\)，则任意 \(s^{a'}\) 都满足 \(C\)，也就是 \(s'\)
 满足 \(B\) 了； 若 \(s\) 不满足 \(B\)，则存在一个 \(a\) 使得 \(s^{a}\)
 不满足 \(C\)，也就 \(s^{a'}\) 不满足 \(C\)，故 \(s'\) 不满足 \(B\)</p>
-<p><img src="2.2-8.embed.svg" /></p></li>
+<p><img src="2.2-8.png" /></p></li>
 </ul>
-<p>证毕</p>
+</div>
+</div>
 <p>令 \(B(x_{i_1}, ..., x_{i_k})\) 是一个有且仅有 \(x_{i_1}, ...,
 x_{i_k}\) 这些自由变量的合式公式，所有满足之的 k-tuple \(\langle b_1,
 ..., b_k \rangle\) 的集合称之为由 \(B\) 定义的关系（或如果
@@ -400,9 +476,16 @@ b_k]\)</p></li>
 是封闭式子（没有自由变量），则对于任意解释 \(M\) 下，要么 \(\vDash_M
 B\)，要么 \(\vDash_M \neg B\)</span>：</p>
 </blockquote>
+<div class="proof">
+<div class="proof-label">
+Proof
+</div>
+<div class="proof-content">
 <p>由 8 得出任意 \(s\) 和 \(s'\) 要么同时满足 \(B\)，要么同时不满足
 \(B\)，由是要么所有 sequence 都满足 \(B\) 要么没有 sequence 满足
-\(B\)，即要么是真的要么是假的；</p></li>
+\(B\)，即要么是真的要么是假的；</p>
+</div>
+</div></li>
 <li><blockquote>
 <p><span id="property-10">假如项 \(t\) 可以自由替换 \(B(x_i)\) 中的
 \(x_i\)，那么在任意解释下 \((\forall x_i)B(x_i) \Rightarrow B(t)\)
@@ -414,7 +497,12 @@ B\)，要么 \(\vDash_M \neg B\)</span>：</p>
 中所有 \(x_i\) 替换为 \(u\) 所得； \(s\) 是一个 sequence，\(s'\) 是将
 \(s\) 的第 \(i\) 项替换为 \(s^{*}(u)\) 所得； 那么有 \(s^{*}(t') =
 (s')^{*}(t)\)</p>
-<p>以 \(t\) 中函数符号数目归纳：</p>
+<div class="proof">
+<div class="proof-label">
+Proof
+</div>
+<div class="proof-content">
+以 \(t\) 中函数符号数目归纳：
 <ul>
 <li>当 0 时，有三种情况
 <ul>
@@ -429,12 +517,19 @@ B\)，要么 \(\vDash_M \neg B\)</span>：</p>
 t_n')\)，故 \(s^{*}(f^n_m(t_1', ...))=(f^n_m)^M(s^{*}(t_1'),
 ...)=(f^n_m)^M((s')^{*}(t_1), ...)=(s')^{*}(f^n_m(t_1, ...))\)</li>
 </ul>
-<p><img src="2.2-10-lemma-1.embed.svg" /></p>
+<p><img src="2.2-10-lemma-1.png" /></p>
+</div>
+</div>
 <p>直观含义就是，<strong>在 \(s^{*}(t)\) 中，替换 \(t\) 中的某个变量
 \(x_i\) 成另外一个项，跟替换 \(s_i\) 为某个值是等价的</strong></p></li>
 <li><p>Lemma 2：若项 \(t\) 可以自由替换 \(B(x_i)\) 中的 \(x_i\)，那么
 \(s\) 满足 \(B(t)\) 当且仅当 \(s'\) 满足 \(B(x_i)\) （其中 \(s'\) 是将
 \(s\) 的第 \(i\) 项替换为 \(s^{*}(t)\) 而得）</p>
+<div class="proof">
+<div class="proof-label">
+Proof
+</div>
+<div class="proof-content">
 <p>以 \(B(x_i)\) 中联结词和量词数目归纳：</p>
 <ul>
 <li>当 0 时，即 \(B(x_i) = A_m^n(t_1, ...)\)，\(s'\) 满足 \(B(x_i)\)
@@ -448,7 +543,7 @@ t_n')\)，故 \(s^{*}(f^n_m(t_1', ...))=(f^n_m)^M(s^{*}(t_1'),
 <li>若 \(B(x_i) = (\forall x_j)C(x_i)\)
 <ul>
 <li><p>若 \(i = j\)，则 \(B(x_i) = B(t) = (\forall x_i)C(x_i)\)（因为
-\(B\) 中没有 \(x_i\) 的自由所在），若 \(s'\) 满足 \(B(x_i)\)， 则 \(s\)
+\(B\) 中没有 \(x_i\) 的自由变量），若 \(s'\) 满足 \(B(x_i)\)， 则 \(s\)
 也满足 \(B(x_i)\)（即 \(B(t)\)），因为 \(s\) 和 \(s'\) 仅在第 \(i\)
 项不一样且 \(x_i\) 不是 \(B(x_i)\) 的自由变量</p></li>
 <li><p>若 \(i \ne j\) 且 \(s\) 满足 \(B(t) = (\forall x_j)C(t)\)；则将
@@ -464,25 +559,34 @@ t_n')\)，故 \(s^{*}(f^n_m(t_1', ...))=(f^n_m)^M(s^{*}(t_1'),
 项不一样，而所有 \(a\) 下 \(s^{a'}\) 均满足 \(C(x_i)\)，故 \(s'\) 满足
 \(B(x_i) = (\forall x_j)B(x_i)\)</p>
 <p>反之如果 \(s\) 不满足 \(B(t)\) 证明过程也类似</p>
-<p><img src="2.2-10-lemma-2.embed.svg" /></p></li>
+<p><img src="2.2-10-lemma-2.png" /></p></li>
 </ul></li>
-</ul></li>
+</ul>
+</div>
+</div></li>
 <li><p>最后，若任意 \(s\) 满足 \((\forall
 x_i)B(x_i)\)，则特别地，\(s'\)（将 \(s\) 第 \(i\) 项替换为 \(s^{ *
 }(t)\) 而得）满足 \(B(x_i)\)， 则由 Lemma 2 得 \(s\) 满足
 \(B(t)\)，证毕</p></li>
 </ul></li>
 <li><blockquote>
-<p><span id="property-11">如果 \(B\) 中没有 \(x_i\) 的自由所在，
+<p><span id="property-11">如果 \(B\) 中没有 \(x_i\) 的自由变量，
 那么在任意解释下 \((\forall x_i)(B \Rightarrow C) \Rightarrow (B
 \Rightarrow (\forall x_i)C)\) 为真</span>：</p>
 </blockquote>
+<div class="proof">
+<div class="proof-label">
+Proof
+</div>
+<div class="proof-content">
 <p>否则，存在一个 \(s\)，满足 \((\forall x_i)(B \Rightarrow C)\) 和
 \(B\) 且不满足 \((\forall x_i)C\)，也就存在一个 \(s'\) （与 \(s\)
 最多在第 \(i\) 项不一样）不满足 \(C\)；另一方面，由于 \((\forall x_i)(B
-\Rightarrow C)\) 和 \(B\) 都没有 \(x_i\) 的自由所在，根据 8 得 \(s'\)
+\Rightarrow C)\) 和 \(B\) 都没有 \(x_i\) 的自由变量，根据 8 得 \(s'\)
 也满足 \((\forall x_i)(B \Rightarrow C)\) 和 \(B\)，特别地 \(s'\) 也满足
-\(B \Rightarrow C\)， 最终得出 \(s'\) 满足 \(C\) 矛盾</p></li>
+\(B \Rightarrow C\)， 最终得出 \(s'\) 满足 \(C\) 矛盾</p>
+</div>
+</div></li>
 </ol>
 <section class="footnotes footnotes-end-of-document"
 role="doc-endnotes">

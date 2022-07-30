@@ -10,8 +10,8 @@
     <link rel="stylesheet" href="/res/libs/chota/css/chota.min.css"></link>
     <link rel="stylesheet" href="/res/style/site.min.1cfb2065638c6eda7f5ceb0b60110baf5593ae09a1298e64096971386bd084ca.css"></link>
     <script type="text/javascript" src="/res/script/site.min.6881188133395162222bed24f23dd6cbdd74f0b93a54b35a6b929b5178e10fe9.js"></script>
-    <link id="markdown-body-style" rel="stylesheet" href="/res/style/markdown-body.min.d03821a569aefe7776c65a7b1bf6eb5e0833d3e13d50479a140b21754e877be3.css"></link>
-    <script type="text/javascript" src="/res/script/markdown-body.min.1bdc576e3acf2cbe4a5a0d073acedad7bc6868439910fea129693a24b1d81b23.js"></script>
+    <link id="markdown-body-style" rel="stylesheet" href="/res/style/markdown-body.min.d312d9f13f8c0bc92f4ce5c8b2f23bc1ee35c4f43af65da316403e3c7d8c9624.css"></link>
+    <script type="text/javascript" src="/res/script/markdown-body.min.a6a10b3328945990fade36e6fee4eab6131402292da617dc8c6d0258507f0c72.js"></script>
   </head>
 
   <body>
@@ -131,21 +131,35 @@ class="language-plaintext">pandoc --mathjax</code>，因此需要自己写一个
 <p>有时图片或其他 asset 需要由别的格式转换而成（e.g. graphviz 的 dot
 转换为 png），
 可以简单写个脚本监听文件变化然后进行处理，例如下面是一个将 ipe
-格式的文件转换为 svg 的脚本， 用到 <code
+格式的文件转换为 svg/png 的脚本， 用到 <code
 class="language-plaintext">iperender</code> 和 <code
 class="language-plaintext">inkscape</code> 对图片进行处理，<code
 class="language-plaintext">inotifywait</code> 监听变化时执行 （这里用
 inkscape 主要是将 svg 中的所有 id 去掉，以适配微信公众号环境）</p>
 <pre class="language-sh"><code>#!/bin/bash
 
+# gen-img.sh
+
 ipe2svg () {
   # *.svg.ipe -&gt; *.svg
   local src=$1
   local target=${src%.ipe}
   if [ $src -nt $target ]; then
-    iperender -svg -transparent $src /dev/stdout | \
-      inkscape -lp --export-filename=- --actions=&quot;select-all:all;verb:ObjectToPath;verb:FileVacuum&quot; | \
+    iperender -svg $src /dev/stdout | \
+      inkscape -lp --export-filename=- --actions=&quot;select-all:all;clone-unlink-recursively&quot; --vacuum-defs | \
       sed &#39;s/rgb(0\%,0\%,0\%)/currentColor/g&#39; &gt; $target
+    echo &quot;$target is regenerated&quot;
+  else
+    echo &quot;$target is already up-to-date&quot;
+  fi
+}
+
+ipe2png () {
+  # *.png.ipe -&gt; *.png
+  local src=$1
+  local target=${src%.ipe}
+  if [ $src -nt $target ]; then
+    iperender -png -resolution 256 $src $target
     echo &quot;$target is regenerated&quot;
   else
     echo &quot;$target is already up-to-date&quot;
@@ -156,8 +170,18 @@ find . -name &#39;*.svg.ipe&#39; -print | while read file; do \
   ipe2svg $file; \
 done
 
+find . -name &#39;*.png.ipe&#39; -print | while read file; do \
+  ipe2png $file; \
+done
+
 inotifywait -rmq -e close_write,moved_to . | while read dir action file; do \
-  case $file in *.svg.ipe) ipe2svg $dir/$file ;; esac \
+  case $file in
+    *.svg.ipe)
+      ipe2svg $dir/$file
+      ;;
+    *.png.ipe)
+      ipe2png $dir/$file
+  esac
 done</code></pre>
 <section class="footnotes footnotes-end-of-document"
 role="doc-endnotes">
