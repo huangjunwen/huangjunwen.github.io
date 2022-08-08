@@ -363,27 +363,171 @@ Proof
 <blockquote>
 <p><span id="lemma-1.11-a"><code
 class="language-plaintext">a</code></span> \(\neg\neg B \Rightarrow B\)
-双重否定消除（Double Negation Elimation）</p>
+双重否定消除（Double Negation Elimation，DNE）</p>
+</blockquote>
+<div class="proof">
+<div class="proof-label">
+Proof
+</div>
+<div class="proof-content">
+<p>只要证明了 \(\neg \neg B \vdash B\) 即可通过 DT 得证</p>
+<ol type="1">
+<li>\(\neg \neg B\) Hyp</li>
+<li>\(\neg \neg B \Rightarrow (\neg B \Rightarrow \neg \neg B)\) A1</li>
+<li>\(\neg B \Rightarrow \neg \neg B\) MP 1 和 2</li>
+<li>\(\neg B \Rightarrow \neg B\) <a href="#lemma-1.8">Lemma
+1.8</a></li>
+<li>\((\neg B \Rightarrow \neg \neg B) \Rightarrow ((\neg B \Rightarrow
+\neg B) \Rightarrow B)\) A3</li>
+<li>\(B\) 5 连续 MP 3 和 4 即可</li>
+</ol>
+</div>
+</div>
+<blockquote>
 <p><span id="lemma-1.11-b"><code
 class="language-plaintext">b</code></span> \(B \Rightarrow \neg\neg B\)
-双重否定引入（Double Negation Introduction）</p>
+双重否定引入（Double Negation Introduction，DNI）</p>
+</blockquote>
+<div class="proof">
+<div class="proof-label">
+Proof
+</div>
+<div class="proof-content">
+<p>只要证明了 \(B \vdash \neg \neg B\) 即可通过 DT 得证</p>
+<ol type="1">
+<li>\(B\) Hyp</li>
+<li>\(B \Rightarrow (\neg \neg \neg B \Rightarrow B)\) A1</li>
+<li>\(\neg \neg \neg B \Rightarrow B\) MP 1 和 2</li>
+<li>\(\neg \neg \neg B \Rightarrow \neg B\) 双重否定消除</li>
+<li>\((\neg \neg \neg B \Rightarrow \neg B) \Rightarrow ((\neg \neg \neg
+B \Rightarrow B) \Rightarrow \neg \neg B)\) A3</li>
+<li>\(\neg \neg B\) 对 5 连续 MP 4 和 3 即可</li>
+</ol>
+</div>
+</div>
+<blockquote>
 <p><span id="lemma-1.11-c"><code
 class="language-plaintext">c</code></span> \(\neg B \Rightarrow (B
 \Rightarrow C)\) （爆炸原理 Principle of Explosion/Vacuous Truth ?）</p>
+</blockquote>
+<div class="proof">
+<div class="proof-label">
+Proof
+</div>
+<div class="proof-content">
+<p>只要证明了 \(\neg B, B \vdash C\) 即可通过两次 DT 得证</p>
+<ol type="1">
+<li>\(\neg B\) Hyp</li>
+<li>\(\neg B \Rightarrow (\neg C \Rightarrow \neg B)\) A1</li>
+<li>\(\neg C \Rightarrow \neg B\) MP 1 和 2</li>
+<li>\(B\) Hyp</li>
+<li>\(B \Rightarrow (\neg C \Rightarrow B)\) A1</li>
+<li>\(\neg C \Rightarrow B\) MP 4 和 5</li>
+<li>\((\neg C \Rightarrow \neg B) \Rightarrow ((\neg C \Rightarrow B)
+\Rightarrow C)\) A3</li>
+<li>\(C\) 对 7 连续 MP 3 和 6 即可</li>
+</ol>
+</div>
+</div>
+<blockquote>
 <p><span id="lemma-1.11-d"><code
 class="language-plaintext">d</code></span> \((\neg C \Rightarrow \neg B)
 \Rightarrow (B \Rightarrow C)\) 换质换位律-逆 （Contraposition）</p>
+</blockquote>
+<div class="proof">
+<div class="proof-label">
+Proof
+</div>
+<div class="proof-content">
+<p>只要证明了 \(\neg C \Rightarrow \neg B, B \vdash C\) 即可通过两次 DT
+得证</p>
+<ol type="1">
+<li>\(B\) Hyp</li>
+<li>\(B \Rightarrow (\neg C \Rightarrow B)\) A1</li>
+<li>\(\neg C \Rightarrow B\) MP 1 和 2</li>
+<li>\(\neg C \Rightarrow \neg B\) Hyp</li>
+<li>\((\neg C \Rightarrow \neg B) \Rightarrow ((\neg C \Rightarrow B)
+\Rightarrow C)\) A3</li>
+<li>\(C\) 对 5 连续 MP 4 和 3 即可</li>
+</ol>
+</div>
+</div>
+<blockquote>
 <p><span id="lemma-1.11-e"><code
 class="language-plaintext">e</code></span> \((B \Rightarrow C)
 \Rightarrow (\neg C \Rightarrow \neg B)\) 换质换位律
 （Contraposition）</p>
+</blockquote>
+<div class="proof">
+<div class="proof-label">
+Proof
+</div>
+<div class="proof-content">
+<p>只要证明 \(B \Rightarrow C, \neg C \vdash \neg B\) 即可通过两次 DT
+得证</p>
+<ol type="1">
+<li>\(\neg C\) Hyp</li>
+<li>\(\neg C \Rightarrow (\neg \neg B \Rightarrow \neg C)\) A1</li>
+<li>\(\neg \neg B \Rightarrow \neg C\) MP 1 和 2</li>
+<li>\(B \Rightarrow C\) Hyp</li>
+<li>\(\neg \neg B \Rightarrow C\) 用 DNE 和 DT 易证 \(B \Rightarrow C
+\vdash \neg \neg B \Rightarrow C\)</li>
+<li>\((\neg \neg B \Rightarrow \neg C) \Rightarrow ((\neg \neg B
+\Rightarrow C) \Rightarrow \neg B)\) A3</li>
+<li>\(\neg B\) 对 6 连续 MP 3 和 5 即可</li>
+</ol>
+</div>
+</div>
+<blockquote>
 <p><span id="lemma-1.11-f"><code
 class="language-plaintext">f</code></span> \(B \Rightarrow (\neg C
 \Rightarrow \neg (B \Rightarrow C))\)</p>
+</blockquote>
+<div class="proof">
+<div class="proof-label">
+Proof
+</div>
+<div class="proof-content">
+<ol type="1">
+<li>\(B, B \Rightarrow C \vdash C\) 易知</li>
+<li>\(B \vdash (B \Rightarrow C) \Rightarrow C\) DT</li>
+<li>\(B \vdash ((B \Rightarrow C) \Rightarrow C) \Rightarrow (\neg C
+\Rightarrow \neg (B \Rightarrow C))\) <a href="#lemma-1.11-e">Lemma
+1.11#e</a></li>
+<li>\(B \vdash \neg C \Rightarrow \neg (B \Rightarrow C)\) MP 2 和
+3</li>
+<li>\(\vdash B \Rightarrow (\neg C \Rightarrow \neg (B \Rightarrow C))\)
+DT</li>
+</ol>
+</div>
+</div>
+<blockquote>
 <p><span id="lemma-1.11-g"><code
 class="language-plaintext">g</code></span> \((B \Rightarrow C)
 \Rightarrow ((\neg B \Rightarrow C) \Rightarrow C)\)</p>
 </blockquote>
+<div class="proof">
+<div class="proof-label">
+Proof
+</div>
+<div class="proof-content">
+<p>只要证明 \(B \Rightarrow C, \neg B \Rightarrow C \vdash C\)
+即可通过两次 DT 得证</p>
+<ol type="1">
+<li>\(B \Rightarrow C\) Hyp</li>
+<li>\((B \Rightarrow C) \Rightarrow (\neg C \Rightarrow \neg B)\) <a
+href="#lemma-1.11-e">Lemma 1.11#e</a></li>
+<li>\(\neg C \Rightarrow \neg B\) MP 1 和 2</li>
+<li>\(\neg B \Rightarrow C\) Hyp</li>
+<li>\((\neg B \Rightarrow C) \Rightarrow (\neg C \Rightarrow \neg \neg
+B)\) <a href="#lemma-1.11-e">Lemma 1.11#e</a></li>
+<li>\(\neg C \Rightarrow \neg \neg B\) MP 4 和 5</li>
+<li>\((\neg C \Rightarrow \neg \neg B) \Rightarrow ((\neg C \Rightarrow
+\neg B) \Rightarrow C)\) A3</li>
+<li>\(C\) 对 7 连续 MP 6 和 3 即可</li>
+</ol>
+</div>
+</div>
 <h3 id="proposition-1.12">Proposition 1.12</h3>
 <blockquote>
 <p>\(\mathcal{L}\) 中每一个定理都是一个重言式</p>

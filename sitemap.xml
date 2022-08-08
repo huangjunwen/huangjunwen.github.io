@@ -5,7 +5,7 @@
     <loc>http://127.0.0.1:1313/</loc>
     <lastmod>2022-05-05T08:08:04+00:00</lastmod>
   </url><url>
-    <loc>http://127.0.0.1:1313/notes/type-theory/intuitionistic-logic/</loc>
+    <loc>http://127.0.0.1:1313/notes/2022/intuitionistic-logic/</loc>
     <lastmod>2022-05-05T08:08:04+00:00</lastmod>
   </url><url>
     <loc>http://127.0.0.1:1313/tags/logic/</loc>
@@ -14,13 +14,16 @@
     <loc>http://127.0.0.1:1313/tags/</loc>
     <lastmod>2022-05-05T08:08:04+00:00</lastmod>
   </url><url>
-    <loc>http://127.0.0.1:1313/notes/type-theory/</loc>
+    <loc>http://127.0.0.1:1313/tags/type-theory/</loc>
+    <lastmod>2022-05-05T08:08:04+00:00</lastmod>
+  </url><url>
+    <loc>http://127.0.0.1:1313/notes/2022/</loc>
     <lastmod>2022-05-05T04:22:02+00:00</lastmod>
   </url><url>
     <loc>http://127.0.0.1:1313/tags/agda/</loc>
     <lastmod>2022-04-16T03:24:27+00:00</lastmod>
   </url><url>
-    <loc>http://127.0.0.1:1313/notes/type-theory/plfa-prepare/</loc>
+    <loc>http://127.0.0.1:1313/notes/2022/plfa-prepare/</loc>
     <lastmod>2022-04-16T03:24:27+00:00</lastmod>
   </url><url>
     <loc>http://127.0.0.1:1313/notes/introduction-to-mathematical-logic/chap-2-3-to-2-4/</loc>
@@ -65,7 +68,10 @@
     <loc>http://127.0.0.1:1313/tags/kademlia/</loc>
     <lastmod>2020-09-12T12:23:00+08:00</lastmod>
   </url><url>
-    <loc>http://127.0.0.1:1313/notes/how-it-works/kademlia/</loc>
+    <loc>http://127.0.0.1:1313/notes/archive/kademlia/</loc>
+    <lastmod>2020-09-12T12:23:00+08:00</lastmod>
+  </url><url>
+    <loc>http://127.0.0.1:1313/tags/%E7%AE%80%E6%98%93%E5%8E%9F%E7%90%86/</loc>
     <lastmod>2020-09-12T12:23:00+08:00</lastmod>
   </url><url>
     <loc>http://127.0.0.1:1313/tags/golang/</loc>
@@ -77,22 +83,19 @@
     <loc>http://127.0.0.1:1313/posts/archive/sqlw-mysql/</loc>
     <lastmod>2018-09-10T20:51:26+08:00</lastmod>
   </url><url>
-    <loc>http://127.0.0.1:1313/notes/how-it-works/greenlet/</loc>
+    <loc>http://127.0.0.1:1313/notes/archive/greenlet/</loc>
     <lastmod>2018-03-15T09:05:51+08:00</lastmod>
   </url><url>
     <loc>http://127.0.0.1:1313/tags/python/</loc>
     <lastmod>2018-03-15T09:05:51+08:00</lastmod>
   </url><url>
-    <loc>http://127.0.0.1:1313/notes/how-it-works/</loc>
-    <lastmod>2018-01-01T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>http://127.0.0.1:1313/tags/vault/</loc>
     <lastmod>2017-06-10T16:46:36+08:00</lastmod>
   </url><url>
-    <loc>http://127.0.0.1:1313/notes/unclassified/vault-database-secret-backend/</loc>
+    <loc>http://127.0.0.1:1313/notes/archive/vault-database-secret-backend/</loc>
     <lastmod>2017-06-10T16:46:36+08:00</lastmod>
   </url><url>
-    <loc>http://127.0.0.1:1313/notes/unclassified/vault/</loc>
+    <loc>http://127.0.0.1:1313/notes/archive/vault/</loc>
     <lastmod>2017-06-07T08:14:18+08:00</lastmod>
   </url><url>
     <loc>http://127.0.0.1:1313/tags/microservice/</loc>
@@ -101,10 +104,10 @@
     <loc>http://127.0.0.1:1313/posts/archive/authentication_in_microservice/</loc>
     <lastmod>2017-05-14T19:14:51+08:00</lastmod>
   </url><url>
-    <loc>http://127.0.0.1:1313/notes/how-it-works/shamir-secret-sharding/</loc>
+    <loc>http://127.0.0.1:1313/notes/archive/shamir-secret-sharding/</loc>
     <lastmod>2017-04-23T09:27:43+08:00</lastmod>
   </url><url>
-    <loc>http://127.0.0.1:1313/notes/unclassified/asn.1/</loc>
+    <loc>http://127.0.0.1:1313/notes/archive/asn.1/</loc>
     <lastmod>2017-02-01T09:19:40+08:00</lastmod>
   </url><url>
     <loc>http://127.0.0.1:1313/tags/format/</loc>
@@ -113,10 +116,10 @@
     <loc>http://127.0.0.1:1313/tags/rsa/</loc>
     <lastmod>2017-01-24T11:52:55+08:00</lastmod>
   </url><url>
-    <loc>http://127.0.0.1:1313/notes/how-it-works/rsa/</loc>
+    <loc>http://127.0.0.1:1313/notes/archive/rsa/</loc>
     <lastmod>2017-01-24T11:52:55+08:00</lastmod>
   </url><url>
-    <loc>http://127.0.0.1:1313/notes/unclassified/</loc>
+    <loc>http://127.0.0.1:1313/notes/archive/</loc>
     <lastmod>2017-01-01T08:49:34+00:00</lastmod>
   </url><url>
     <loc>http://127.0.0.1:1313/posts/archive/</loc>

@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Type Theory 笔记 on Coder Papa</title>
-    <link>http://127.0.0.1:1313/notes/type-theory/</link>
-    <description>Recent content in Type Theory 笔记 on Coder Papa</description>
+    <title>2022 on Coder Papa</title>
+    <link>http://127.0.0.1:1313/notes/2022/</link>
+    <description>Recent content in 2022 on Coder Papa</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Thu, 05 May 2022 04:22:02 +0000</lastBuildDate><atom:link href="http://127.0.0.1:1313/notes/type-theory/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 05 May 2022 04:22:02 +0000</lastBuildDate><atom:link href="http://127.0.0.1:1313/notes/2022/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Intuitionistic Logic</title>
-      <link>http://127.0.0.1:1313/notes/type-theory/intuitionistic-logic/</link>
+      <link>http://127.0.0.1:1313/notes/2022/intuitionistic-logic/</link>
       <pubDate>Thu, 05 May 2022 08:08:04 +0000</pubDate>
       
-      <guid>http://127.0.0.1:1313/notes/type-theory/intuitionistic-logic/</guid>
+      <guid>http://127.0.0.1:1313/notes/2022/intuitionistic-logic/</guid>
       <description>Intuitionism 直觉主义（Intuitionism）1是主要由 L. E. J. Brouwer 以及其学生 Heyting 奠基的一派数学哲学2， 其主要观点是数学是人心智的构造物：自然数/实数/证明/定理… 都是心智的构造物， 这些数学对象是被创造出来的而不是从客观世界中被发现的，唯有当存在其有效的构造方法时才能证明其存在 （即构造性证明，而经典方法允许以否定其不存在的方式证明其存在）；另外对无穷的看法也有所不同， Brouwer 拒绝实无穷（Actual Infinity）的概念而仅接受潜无穷（Potential Infinity）， 因为诸如包含全体自然数的集合其实是没有办法有效的被构造出来，而只有永续的但有限的集合能被构造出来3
 注 1：其实我觉得有效构造究竟是什么挺模糊的，实无穷，反证法也是心智的构造吧？
 注 2：时间似乎也是重要的参与者，一些难题在现在没有构造的方法，但未来也许有，无穷也需要时间的参与
@@ -22,10 +22,10 @@
     
     <item>
       <title>PLFA 准备篇</title>
-      <link>http://127.0.0.1:1313/notes/type-theory/plfa-prepare/</link>
+      <link>http://127.0.0.1:1313/notes/2022/plfa-prepare/</link>
       <pubDate>Sat, 16 Apr 2022 03:24:27 +0000</pubDate>
       
-      <guid>http://127.0.0.1:1313/notes/type-theory/plfa-prepare/</guid>
+      <guid>http://127.0.0.1:1313/notes/2022/plfa-prepare/</guid>
       <description>准备开始看 Programming Language Foundations in Agda (plfa)，需要准备环境
 安装 haskell Agda 是用 haskell 写的，故首先需要按照 haskell，ubuntu 20 上最简单的方式就是
 $ sudo apt install haskell-platform 安装 Agda 我用 haskell cabal 安装 agda

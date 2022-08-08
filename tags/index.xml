@@ -17,6 +17,15 @@
     </item>
     
     <item>
+      <title>type-theory</title>
+      <link>http://127.0.0.1:1313/tags/type-theory/</link>
+      <pubDate>Thu, 05 May 2022 08:08:04 +0000</pubDate>
+      
+      <guid>http://127.0.0.1:1313/tags/type-theory/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>agda</title>
       <link>http://127.0.0.1:1313/tags/agda/</link>
       <pubDate>Sat, 16 Apr 2022 03:24:27 +0000</pubDate>
@@ -49,6 +58,15 @@
       <pubDate>Sat, 12 Sep 2020 12:23:00 +0800</pubDate>
       
       <guid>http://127.0.0.1:1313/tags/kademlia/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>简易原理</title>
+      <link>http://127.0.0.1:1313/tags/%E7%AE%80%E6%98%93%E5%8E%9F%E7%90%86/</link>
+      <pubDate>Sat, 12 Sep 2020 12:23:00 +0800</pubDate>
+      
+      <guid>http://127.0.0.1:1313/tags/%E7%AE%80%E6%98%93%E5%8E%9F%E7%90%86/</guid>
       <description></description>
     </item>
     

@@ -9,10 +9,10 @@
     <lastBuildDate>Sat, 16 Apr 2022 03:24:27 +0000</lastBuildDate><atom:link href="http://127.0.0.1:1313/tags/agda/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>PLFA 准备篇</title>
-      <link>http://127.0.0.1:1313/notes/type-theory/plfa-prepare/</link>
+      <link>http://127.0.0.1:1313/notes/2022/plfa-prepare/</link>
       <pubDate>Sat, 16 Apr 2022 03:24:27 +0000</pubDate>
       
-      <guid>http://127.0.0.1:1313/notes/type-theory/plfa-prepare/</guid>
+      <guid>http://127.0.0.1:1313/notes/2022/plfa-prepare/</guid>
       <description>准备开始看 Programming Language Foundations in Agda (plfa)，需要准备环境
 安装 haskell Agda 是用 haskell 写的，故首先需要按照 haskell，ubuntu 20 上最简单的方式就是
 $ sudo apt install haskell-platform 安装 Agda 我用 haskell cabal 安装 agda
