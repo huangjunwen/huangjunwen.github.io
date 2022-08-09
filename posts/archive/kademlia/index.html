@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Kademlia 简介</title>
+    
+    <link rel="stylesheet" href="/res/libs/fontawesome/css/all.min.css"></link>
+    <link rel="stylesheet" href="/res/libs/chota/css/chota.min.css"></link>
+    <link rel="stylesheet" href="/res/style/site.min.1cfb2065638c6eda7f5ceb0b60110baf5593ae09a1298e64096971386bd084ca.css"></link>
+    <script type="text/javascript" src="/res/script/site.min.6881188133395162222bed24f23dd6cbdd74f0b93a54b35a6b929b5178e10fe9.js"></script>
+    <link id="markdown-body-style" rel="stylesheet" href="/res/style/markdown-body.min.fbc98dd0188bbc6cff6adb3737a0533833576a79ec29055581d245edb0581ac0.css"></link>
+    <script type="text/javascript" src="/res/script/markdown-body.min.a6a10b3328945990fade36e6fee4eab6131402292da617dc8c6d0258507f0c72.js"></script>
+  </head>
+
+  <body>
+    
+    <div id="header">
+      
+      <nav id="navbar" class="row">
+        <div class="is-left col-12 col-3-md row">
+          <a id="navbar-brand" class="brand" href="/">Coder Papa</a>
+          <label id="navbar-toggle-menu" for="navbar-toggle-menu-state" class="hide-md hide-lg">
+            <span></span>
+            <span></span>
+            <span></span>
+          </label>
+        </div>
+        <input id="navbar-toggle-menu-state" type="checkbox" style="display:none"></input>
+        <div id="navbar-menu" class="is-right col-12 col-9-md row hide-xs-noimportant hide-sm-noimportant">
+          
+          <a href="/posts">Posts</a>
+          
+          
+          <a href="/categories">Categories</a>
+          
+          <a href="/tags">Tags</a>
+          
+          
+          <a href="https://github.com/huangjunwen"><i class='fab fa-github'></i></a>
+          
+          <a href="javascript:void(0)" id="navbar-toggle-mode" onclick="return toggleColorMode()"></a>
+        </div>
+      </nav>
+    </div>
+
+    
+    <div id="main" class="row">
+      <div id="main-left" class="hide-xs hide-sm col-2-md col-3-lg">
+        
+      </div>
+      <div id="main-center" class="col-12 col-8-md col-6-lg mdb">
+        <div id="main-title" class="text-center">
+          
+  <h5 class="no-toc"><span class="breadcrumbnav"><span><a href="/posts/">POSTS</a></span><i class="fa fa-fw fa-angle-double-right"></i><span><a href="/posts/archive/">ARCHIVE</a></span></span></h5>
+  <h1>Kademlia 简介</h1>
+  <small>
+    <time class="" datetime="2020-09-12T12:23:00&#43;0800">Sat, 2020/09/12</time>
+  </small>
+  <p>
+    
+    <a href="/tags/kademlia/"><span class="tag is-small">kademlia</span></a>
+  </p>
+  
+        </div>
+        <div id="main-body">
+          
+  <article id="content-body">
+    <p><a href="https://en.wikipedia.org/wiki/Kademlia">Kademlia</a> 是一种
+p2p 网络的分布式哈希表 (<a
+href="https://en.wikipedia.org/wiki/Distributed_hash_table">DHT</a>:
+distributed hash table). 有别于单机版的 hash table, p2p DHT 需要将
+key-value 键值对存放在大量的 (但不稳定的) p2p 节点上的, 并提供远程的
+(RPC) 存取方法.</p>
+<h3 id="键空间-key-space">键空间 (Key Space)</h3>
+<p>Kademlia 的 key 是 n-bit 的 unsigned int, 故取值范围为 \([0,
+2^n-1]\). 例如原论文中使用 160 bits, 又如 ipfs 使用的是 256 bits.</p>
+<p>在键空间上定义 “距离” 为两个 key 之间的 <strong>异或</strong>
+(结果仍然为 n-bit unsigned int):</p>
+<p>\[
+Dis(A, B) = A ⊕ B
+\]</p>
+<p><em>NOTE: 使用异或作为距离有一些数学属性, 见下面详述,
+这里先跳过，我们先看个例子</em></p>
+<p><img src="key_space.png" /></p>
+<p>上图是一个 n 为 4 的示例，其 key 取值为 <strong>[0, 15]</strong> （或
+<strong>[0b0000, 0b1111]</strong>），以一棵满二叉树的形式呈现.</p>
+<p>我们取其中一个 key 来实际计算一下它跟其他 key
+之间的距离，例如图中绿色的 \(0b0110\)（下面称之为
+<strong>G</strong>）:</p>
+<ul>
+<li>在<strong>父</strong>节点处分岔的 （共一个 key，图中标识为
+k-bucket-1）
+<ul>
+<li>\(G ⊕ 0b0111 = 1\)</li>
+</ul></li>
+<li>在<strong>爷</strong>节点处分岔的 （共两个 key，图中标识为
+k-bucket-2）
+<ul>
+<li>\(G ⊕ 0b0101 = 3\)</li>
+<li>\(G ⊕ 0b0100 = 2\)</li>
+</ul></li>
+<li>在<strong>太爷</strong>节点处分岔的 (共 4 个 key, 图中标识为
+k-bucket-3)
+<ul>
+<li>\(G ⊕ 0b0011 = 5\)</li>
+<li>\(G ⊕ 0b0010 = 4\)</li>
+<li>\(G ⊕ 0b0001 = 7\)</li>
+<li>\(G ⊕ 0b0000 = 6\)</li>
+</ul></li>
+<li>在<strong>根</strong>节点就已经分岔的 （共 8 个 key，图中标识为
+k-bucket-4）
+<ul>
+<li>\(G ⊕ 0b1111 = 9\)</li>
+<li>\(G ⊕ 0b1110 = 8\)</li>
+<li>\(G ⊕ 0b1101 = 11\)</li>
+<li>\(G ⊕ 0b1100 = 10\)</li>
+<li>\(G ⊕ 0b1011 = 13\)</li>
+<li>\(G ⊕ 0b1010 = 12\)</li>
+<li>\(G ⊕ 0b1001 = 15\)</li>
+<li>\(G ⊕ 0b1000 = 14\)</li>
+</ul></li>
+</ul>
+<p>可以发现，在这棵二叉树上，跟 <strong>G</strong> 越<strong>亲</strong>
+（越晚分岔）的 key 距离越近.</p>
+<p>其实很好理解，因为越<strong>亲</strong>的 key
+它们二进制表示的共同前缀就越长；反之则共同前缀短，即某个高位就不一致了，
+不一致时异或得 1，由于二进制高位权重大，则距离就（大）远了，对比:</p>
+<ul>
+<li>距离最近的，前 3 位都一致，只有最后一位不一致 \[
+\frac{
+  \begin{align}
+    \quad 0b0110 \\
+    ⊕ 0b0111
+  \end{align}
+}{\quad 0b0001}
+\]</li>
+<li>距离最远的，第一位就不一致了（实际每一位都不一致） \[
+\frac{
+  \begin{align}
+    \quad 0b0110 \\
+    ⊕ 0b1001
+  \end{align}
+}{\quad 0b1111}
+\]</li>
+</ul>
+<p>kademlia 将跟 <strong>G</strong> 二进制共同前缀长度一样的键值归到一个
+<strong>桶（k-bucket）</strong> 里，例如这里 n 为 4，故有 4
+个桶；每一个桶里的键值跟 <strong>G</strong> 的距离处于 \([2^{n-i-1},
+2^{n-i}-1]\) 区间之内（其中 \(i\) 是二进制共同前缀长度）.</p>
+<h3 id="todo-.">TODO ….</h3>
+<h3 id="异或距离的数学属性">异或距离的数学属性</h3>
+<ul>
+<li>任意 key 跟自己的距离是零: \(Dis(A, A) = A ⊕ A = 0\)</li>
+<li>两个不同的 key 之间的距离大于零: \(Dis(A, B) &gt; 0\)</li>
+<li>对称的: \(Dis(A, B) = Dis(B, A)\)</li>
+<li>满足三角不等式, 即给定三个 key, 满足 \[
+Dis(A, C) \le Dis(A, B) + Dis(B, C)
+\]
+<ul>
+<li>这是因为 \[
+\begin{eqnarray}
+Dis(A, C) &amp;=&amp; A ⊕ C \\
+          &amp;=&amp; A ⊕ B ⊕ B ⊕ C \\
+          &amp;=&amp; Dis(A, B) ⊕ Dis(B, C) \\
+          &amp;\le&amp; Dis(A, B) + Dis(B, C)
+\end{eqnarray}
+\]</li>
+<li>其中最后一步不等式 \(X ⊕ Y ≤ X + Y\) 是因为异或实际上就是不带进位
+(carry) 的加法，故必然小于等于加法得出的结果</li>
+</ul></li>
+</ul>
+<h3 id="参考">参考</h3>
+<ol type="1">
+<li><a
+href="https://pdos.csail.mit.edu/~petar/papers/maymounkov-kademlia-lncs.pdf"
+class="uri">https://pdos.csail.mit.edu/~petar/papers/maymounkov-kademlia-lncs.pdf</a></li>
+</ol>
+<!-- 
+*. https://metaquestions.me/2014/08/01/shortest-distance-between-two-points-is-not-always-a-straight-line/
+*. https://groups.google.com/g/maidsafe-development/c/OzBIvyBUHMI
+*. https://stackoverflow.com/questions/25751928/kademlia-xor-metric-properties-purposes
+*. https://medium.com/@maidsafe/structuring-network-with-xor-431e785b5ee7
+-->
+
+  </article>
+
+        </div>
+      </div>
+      <div id="main-right" class="hide-xs hide-sm col-2-md col-3-lg">
+        
+  
+  <div id="content-toc" class="toc hide-md"></div>
+  
+
+      </div>
+    </div>
+
+    
+    <div id="footer" class="text-center">
+      <p>
+        Powered By <a href="https://gohugo.io/">Hugo</a>/<a href="https://jenil.github.io/chota">Chota</a>,
+        Generated Using <a href="https://github.com/huangjunwen/mdtool">MDTool</a>
+      </p>
+      <p>&copy; 2022. All rights reserved</p>
+    </div>
+
+    
+  
+    <link rel="stylesheet" href="/res/libs/tocbot/css/tocbot.css"></link>
+    <style>
+    #content-toc {
+      position: -webkit-sticky;
+      position: sticky;
+      top: 7rem;
+      padding-left: 2rem;
+      padding-right: 1rem;
+    }
+
+    #content-toc a.toc-link {
+      color: var(--font-color);
+    }
+
+    #content-toc a.toc-link.is-active-link {
+      color: var(--color-darkGrey);
+    }
+
+    #content-toc a.toc-link::before {
+      background-color: var(--bg-color);
+    }
+
+    #content-toc a.toc-link.is-active-link::before {
+      background-color: var(--color-primary);
+    }
+    </style>
+    <script src="/res/libs/tocbot/js/tocbot.min.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', (ev) => {
+      tocbot.init({
+        tocSelector: '#content-toc',
+        contentSelector: '#main-center',
+        ignoreSelector: '.no-toc',
+        headingSelector: 'h1, h2, h3, h4, h5, h6',
+        hasInnerContainers: false,
+        headingsOffset: 80,
+        scrollSmoothOffset: -80
+      });
+    });
+    </script>
+  
+  
+    <script type="text/javascript" src="/res/libs/anchorjs/js/anchor.min.js"></script>
+    <script>anchors.add('#main-body h1, #main-body h2, #main-body h3, #main-body h4, #main-body h5, #main-body h6, #main-body dt');</script>
+  
+
+  </body>
+</html>

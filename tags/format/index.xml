@@ -9,10 +9,10 @@
     <lastBuildDate>Wed, 01 Feb 2017 09:19:40 +0800</lastBuildDate><atom:link href="http://127.0.0.1:1313/tags/format/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>ASN.1</title>
-      <link>http://127.0.0.1:1313/notes/archive/asn.1/</link>
+      <link>http://127.0.0.1:1313/posts/archive/asn.1/</link>
       <pubDate>Wed, 01 Feb 2017 09:19:40 +0800</pubDate>
       
-      <guid>http://127.0.0.1:1313/notes/archive/asn.1/</guid>
+      <guid>http://127.0.0.1:1313/posts/archive/asn.1/</guid>
       <description>记法和编码 ASN.1（Abstract syntax notation one） 是一个对数据（类型/值）的记法和编码的祖父级标准；制定几十年而依然健在且广泛使用。
 对比一下 JSON（Javascript Object Notation），JSON 中的记法和编码是等价的，即它的记法就是编码。
 而 ASN.1 中记法和编码是不一样的，记法主要是为人类服务，用于描述，是抽象且实现无关的，例如 （摘自这里）：

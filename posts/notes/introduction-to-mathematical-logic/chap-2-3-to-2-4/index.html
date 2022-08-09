@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Chapter 2: First-Order Logic and Model Theory (2.3~2.4)</title>
+    
+    <link rel="stylesheet" href="/res/libs/fontawesome/css/all.min.css"></link>
+    <link rel="stylesheet" href="/res/libs/chota/css/chota.min.css"></link>
+    <link rel="stylesheet" href="/res/style/site.min.1cfb2065638c6eda7f5ceb0b60110baf5593ae09a1298e64096971386bd084ca.css"></link>
+    <script type="text/javascript" src="/res/script/site.min.6881188133395162222bed24f23dd6cbdd74f0b93a54b35a6b929b5178e10fe9.js"></script>
+    <link id="markdown-body-style" rel="stylesheet" href="/res/style/markdown-body.min.fbc98dd0188bbc6cff6adb3737a0533833576a79ec29055581d245edb0581ac0.css"></link>
+    <script type="text/javascript" src="/res/script/markdown-body.min.a6a10b3328945990fade36e6fee4eab6131402292da617dc8c6d0258507f0c72.js"></script>
+  </head>
+
+  <body>
+    
+    <div id="header">
+      
+      <nav id="navbar" class="row">
+        <div class="is-left col-12 col-3-md row">
+          <a id="navbar-brand" class="brand" href="/">Coder Papa</a>
+          <label id="navbar-toggle-menu" for="navbar-toggle-menu-state" class="hide-md hide-lg">
+            <span></span>
+            <span></span>
+            <span></span>
+          </label>
+        </div>
+        <input id="navbar-toggle-menu-state" type="checkbox" style="display:none"></input>
+        <div id="navbar-menu" class="is-right col-12 col-9-md row hide-xs-noimportant hide-sm-noimportant">
+          
+          <a href="/posts">Posts</a>
+          
+          
+          <a href="/categories">Categories</a>
+          
+          <a href="/tags">Tags</a>
+          
+          
+          <a href="https://github.com/huangjunwen"><i class='fab fa-github'></i></a>
+          
+          <a href="javascript:void(0)" id="navbar-toggle-mode" onclick="return toggleColorMode()"></a>
+        </div>
+      </nav>
+    </div>
+
+    
+    <div id="main" class="row">
+      <div id="main-left" class="hide-xs hide-sm col-2-md col-3-lg">
+        
+      </div>
+      <div id="main-center" class="col-12 col-8-md col-6-lg mdb">
+        <div id="main-title" class="text-center">
+          
+  <h5 class="no-toc"><span class="breadcrumbnav"><span><a href="/posts/">POSTS</a></span><i class="fa fa-fw fa-angle-double-right"></i><span><a href="/posts/notes/">NOTES</a></span><i class="fa fa-fw fa-angle-double-right"></i><span><a href="/posts/notes/introduction-to-mathematical-logic/">INTRODUCTION TO MATHEMATICAL LOGIC 笔记</a></span></span></h5>
+  <h1>Chapter 2: First-Order Logic and Model Theory (2.3~2.4)</h1>
+  <small>
+    <time class="" datetime="2022-02-28T09:09:45Z">Mon, 2022/02/28</time>
+  </small>
+  <p>
+    
+  </p>
+  
+        </div>
+        <div id="main-body">
+          
+  <article id="content-body">
+    <h2 id="first-order-theories">2.3 First-Order Theories</h2>
+<p>一阶理论：一个一阶理论 \(\mathcal{K}\)
+使用一个一阶语言的符号及其公式，以及如下这些公理（公理分两种：
+逻辑公理和非逻辑公理）以及演绎规则</p>
+<h3 id="logical-axioms">2.3.1 Logical Axioms</h3>
+<dl>
+<dt>逻辑公理</dt>
+<dd>
+<p>如果 \(B\)，\(C\)，\(D\) 都是合式公式，则如下是 \(\mathcal{K}\)
+的逻辑公理</p>
+<ul>
+<li><span id="A1">A1:</span> \(B \Rightarrow (C \Rightarrow B)\)</li>
+<li><span id="A2">A2:</span> \((B \Rightarrow (C \Rightarrow D))
+\Rightarrow ((B \Rightarrow C) \Rightarrow (B \Rightarrow D))\)</li>
+<li><span id="A3">A3:</span> \((\neg C \Rightarrow \neg B) \Rightarrow
+((\neg C \Rightarrow B) \Rightarrow C)\)</li>
+<li><span id="A4">A4:</span> 如果 \(B(x_i)\) 是一个合式公式，且项 \(t\)
+可以自由替换 \(x_i\) 则 \((\forall x_i)B(x_i) \Rightarrow B(t)\)
+（特别地，\(t\) 可以是 \(x_i\)，于是总有 \((\forall x_i)B \Rightarrow
+B\)）</li>
+<li><span id="A5">A5:</span> 如果 \(B\) 不包含 \(x_i\) 的自由变量，则
+\((\forall x_i)(B \Rightarrow C) \Rightarrow (B \Rightarrow (\forall
+x_i)C)\)</li>
+</ul>
+</dd>
+</dl>
+<h3 id="proper-axioms">2.3.2 Proper Axioms</h3>
+<p>每一个理论都有可能有其他的非逻辑公理，也可能完全没有，如果没有的话则称为<strong>一阶谓词演算</strong>（first-order
+predicate calculus）</p>
+<h3 id="rules-of-inference">2.3.3 Rules of Inference</h3>
+<p>演绎规则有两个</p>
+<ol type="1">
+<li>Modus ponens（缩写为 MP)：\(B\) 和 \(B \Rightarrow C\) 推出
+\(C\)</li>
+<li>Generalization（缩写为 Gen)：\(B\) 推出 \((\forall x_i)B\)</li>
+</ol>
+<p>注意到根据 2.2 的 <a href="../chap-2-1-to-2-2/#property-3">Property
+3</a> 和 <a href="../chap-2-1-to-2-2/#property-6">Property 6</a>，
+在一个解释下，如果对为真的式子运用 MP 和 Gen 仍然会得出为真的式子</p>
+<p>一些一阶理论的例子</p>
+<ol type="1">
+<li>Partial order：该理论使用的语言只有一个谓词符号 \(A_1^2(x_i, x_j)\)
+写作 \(x_i &lt; x_j\)，并且有两个非逻辑公理
+<ol type="1">
+<li>\((\forall x_1)(\neg x_1 &lt; x_1)\) （irreflexivity）</li>
+<li>\((\forall x_1)(\forall x_2)(\forall x_3)(x_1 &lt; x_2 \wedge x_2
+&lt; x_3 \Rightarrow x_1 &lt; x_3)\) （transitivity）</li>
+</ol></li>
+<li>Group theory：该理论使用语言有一个谓词符号 \(A_1^2(t, s)\) 写作 \(t
+= s\)，一个函数符号 \(f_1^2(t, s)\) 写作 \(t + s\)， 一个常量符号
+\(a_1\) 写作 0，并且有以下非逻辑公理
+<ol type="1">
+<li>\((\forall x_1)(\forall x_2)(\forall x_3)(x_1 + (x_2 + x_3) = (x_1 +
+x_2) + x_3)\) （associativity）</li>
+<li>\((\forall x_1)(0 + x_1 = x_1)\) （identiy）</li>
+<li>\((\forall x_1)(\exists x_2)(x_2 + x_1 = 0)\) （inverse）</li>
+<li>\((\forall x_1)(x_1 = x_1)\) （reflexivity of =）</li>
+<li>\((\forall x_1)(\forall x_2)(x_1 = x_2 \Rightarrow x_2 = x_1)\)
+（symmetry of =）</li>
+<li>\((\forall x_1)(\forall x_2)(\forall x_3)(x_1 = x_2 \wedge x_2 = x_3
+\Rightarrow x_1 = x_3)\) （transitivity of =）</li>
+<li>\((\forall x_1)(\forall x_2)(\forall x_3)(x_2 = x_3 \Rightarrow x_1
++ x_2 = x_1 + x_3 \wedge x_2 + x_1 = x_3 + x_1)\) （substitutivity of
+=）</li>
+</ol></li>
+</ol>
+<h2 id="properties-of-first-order-theories">2.4 Properties of
+First-Order Theories</h2>
+<h3 id="proposition-2.1">Proposition 2.1</h3>
+<blockquote>
+<p>\(\mathcal{K}\) 中的重言式 \(B\) 也是 \(\mathcal{K}\)
+的定理，且其证明只需要公理 A1~A3 和 MP</p>
+</blockquote>
+<div class="proof">
+<div class="proof-label">
+Proof
+</div>
+<div class="proof-content">
+<p>\(B\) 是由一个 \(\mathcal{L}\) 中的重言式 \(B_{\mathcal{L}}\) 替换其
+statement letters 为特定 wf 所得的， 由 <a
+href="../chap-1-4/#proposition-1.14-completeness-theorem">Proposition
+1.14</a> 存在一个 \(\mathcal{L}\) 中的证明， 将该证明中这些 statement
+letters 替换为其对应 wf（如果证明里出现其他没有出现在
+\(B_{\mathcal{L}}\) 中的 statement letters 则替换为任意 wf）即可得到一个
+\(\mathcal{K}\) 中 \(B\) 的证明，且只用到 A1~A3 和 MP</p>
+</div>
+</div>
+<h3 id="proposition-2.2">Proposition 2.2</h3>
+<blockquote>
+<p>一阶谓词演算（没有非逻辑公理）的定理在所有解释下都是真的（逻辑有效
+logically valid）</p>
+</blockquote>
+<div class="proof">
+<div class="proof-label">
+Proof
+</div>
+<div class="proof-content">
+<p>由 <a href="../chap-2-1-to-2-2/#property-7">Property 7</a> 公理 A1~A3
+是逻辑有效的，由 <a href="../chap-2-1-to-2-2/#property-10">Property
+10</a> 公理 A4 是逻辑有效的，由 <a
+href="../chap-2-1-to-2-2/#property-11">Property 11</a> 公理 A5
+逻辑有效，又由 <a href="../chap-2-1-to-2-2/#property-3">Property 3</a>
+和 <a href="../chap-2-1-to-2-2/#property-6">Property 6</a> 易知 MP 和
+Gen 这两个规则都能延续逻辑有效的性质，故所有定理均是逻辑有效的</p>
+</div>
+</div>
+<h3 id="corollary-2.3">Corollary 2.3</h3>
+<blockquote>
+<p><a href="#proper-axioms">一阶谓词演算</a>是一致的（\(B\) 和 \(\neg
+B\) 不能同时有证明）</p>
+</blockquote>
+<div class="proof">
+<div class="proof-label">
+Proof
+</div>
+<div class="proof-content">
+<p>如果 \(B\) 和 \(\neg B\) 都是定理（有证明, e.g. \(\vdash\)），由
+Proposition 2.2 则两者都是逻辑有效的（e.g. \(\vDash\)），这是不可能的，
+因为任意解释下 \(B\) 和 \(\neg B\) 不能同时为真</p>
+<p>实际上，假如 \(B\) 和 \(\neg B\) 同时有证明，则根据爆炸原理 \(B
+\Rightarrow (\neg B \Rightarrow C)\)（一个重言式，根据 Proposition 2.1
+则也是定理），则会导致任意 \(C\)
+都可以证明；这又能推导出，假如有任意公式不是定理的话，则 \(\mathcal{K}\)
+一致</p>
+</div>
+</div>
+<h3 id="演绎定理的一些前置说明"><em>演绎定理的一些前置说明</em></h3>
+<p>命题演算里的演绎定理没办法原封不动地移植到一阶理论中，例如 \(B
+\vdash_{\mathcal{K}} (\forall x_i)B\) 总是成立（Gen）， 但
+\(\vdash_{\mathcal{K}} B \Rightarrow (\forall x_i)B\)
+却不一定成立（相当意外的）：例如 \(x_1 = 0 \Rightarrow (\forall x_1)x_1
+= 0\) <a href="#fn1" class="footnote-ref" id="fnref1"
+role="doc-noteref"><sup>1</sup></a>，当 \(x_1 = 0\)
+时不成立，故其不是逻辑有效，由 Proposition 2.2 知不可能是定理</p>
+<p>一个有修改但依然有用的演绎定理是可以推导出来的，不过首先要一些额外的定义</p>
+<dl>
+<dt>Depend upon</dt>
+<dd>
+<p>令 \(\Gamma\) 是一个合式公式集，合式公式 \(B \in \Gamma\)，又 \(D_1,
+D_2, ..., D_n\) 是从 \(\Gamma\) 推导出的一个证明； 称 \(D_i\)
+依赖于（depend upon）\(B\) 当且仅当：</p>
+<ol type="1">
+<li>\(D_i\) 就是 \(B\)，或者</li>
+<li>\(D_i\) 是一些前面的公式用 MP 或 Gen
+产生的直接结果，而这些前面的公式中至少有一个是依赖于 \(B\) 的</li>
+</ol>
+</dd>
+</dl>
+<h3 id="proposition-2.4">Proposition 2.4</h3>
+<blockquote>
+<p>假如 \(C\) 在 \(\Gamma, B \vdash C\) 的一个证明中不依赖于 \(B\)，则有
+\(\Gamma \vdash C\)</p>
+</blockquote>
+<div class="proof">
+<div class="proof-label">
+Proof
+</div>
+<div class="proof-content">
+<p>直觉可知从 \(C\) 开始往前上溯（MP 时上溯两个源头，Gen
+则上溯一个源头，其他的停止）一直到证明的开始， 所经过的公式不可能有
+\(B\)，这些经过的公式就构成了 \(\Gamma \vdash C\)
+的证明（亦即是原来证明的的一个子集）</p>
+<p>书里用归纳法证明：</p>
+<p>设 \(\Gamma, B \vdash C\) 的一个证明序列是 \(D_1, D_2, ...,
+D_n\)（其中 \(D_n\) 就是 \(C\) 了），且 \(C\) 不依赖于 \(B\)； 归纳假设
+\(i &lt; n\) 时，若 \(D_i\) 不依赖于 \(B\)，则 \(\Gamma \vdash
+D_i\)；现在考虑 \(D_n\)，若 \(D_n \in \Gamma\)
+或者是一个公理，则直接得出 \(\Gamma \vdash D_n\)，若是由前面的一条公式
+Gen 或 前面两条公式 MP 所得，由于 \(D_n\) 不依赖于
+\(B\)，那之前的这一条或两条公式也不依赖于
+\(B\)，用归纳假设就得出它们可以仅由 \(\Gamma\) 推出，因此 \(D_n\)
+也就可以仅由 \(\Gamma\) 推出了</p>
+</div>
+</div>
+<h3 id="proposition-2.5-deduction-theorem">Proposition 2.5 (Deduction
+Theorem)</h3>
+<p>（拗口的）演绎定理</p>
+<blockquote>
+<p>假设在 \(\Gamma, B \vdash C\) 的证明序列（步骤） \(D_1, D_2, ...,
+D_n\) 里，不存在 Gen 某个公式的步骤且该公式依赖于 \(B\)
+且添加的量词变量是 \(B\) 的自由变量，则 \(\Gamma \vdash B \Rightarrow
+C\)</p>
+</blockquote>
+<div class="proof">
+<div class="proof-label">
+Proof
+</div>
+<div class="proof-content">
+<p><img src="deduction-theorem.png" /></p>
+<p>如上图，基本上跟命题逻辑里的演绎定理证明过程是一样的，只是多了 Gen
+的分支情况（虚线框内）</p>
+</div>
+</div>
+<p>不过这个演绎定理里的条件太过拗口冗长，下面这些弱一些的推论可能在实际中更有用</p>
+<h3 id="corollary-2.6">Corollary 2.6</h3>
+<blockquote>
+<p>如果 \(\Gamma, B \vdash C\) 的证明序列中没有涉及到添加 \(B\)
+的自由变量为量词的 Gen 的话，则 \(\Gamma \vdash B \Rightarrow C\)</p>
+</blockquote>
+<h3 id="corollary-2.7">Corollary 2.7</h3>
+<blockquote>
+<p>如果 \(B\) 是封闭公式的话（没有自由变量）且 \(\Gamma, B \vdash
+C\)，则 \(\Gamma \vdash B \Rightarrow C\)</p>
+</blockquote>
+<h3 id="extension-of-propositions-2.42.7">Extension of Propositions
+2.4–2.7</h3>
+<p><em>（这一段有点不太好理解，直接按我自己的理解方式来说明）</em></p>
+<p>演绎定理实际上是将旧证明 \(\Gamma, B \vdash C_j\) 转换为新证明
+\(\Gamma \vdash B \Rightarrow C_j\) 的一个算法
+（当然首先旧证明序列必须满足上述那些条件）；如下是一种具体方法</p>
+<p><img src="deduction-theorem-2.png" /></p>
+<p>按顺序读取旧证明的每一步 \(C_j\)，在上图左边确定 \(C_j\)
+所属，然后输出对应右边的一组公式序列，
+这些一组组的公式序列连接起来即组成新的证明</p>
+<p>观察上图可知：</p>
+<ol type="1">
+<li><p>右边每一组序列的最后一个公式必定是 \(B \Rightarrow
+C_j\)，这正是演绎定理归纳法要证明的</p></li>
+<li><p>所有不依赖于 \(B\) 的 \(C_j\) 会同时出现在新旧证明中：见 <code
+class="language-plaintext">*</code> 或 <code
+class="language-plaintext">**</code> 处， 其中 <code
+class="language-plaintext">**</code> 处的意思是，该 \(C_j\)
+在本组公式序列里实际上是没有用到的，
+特意补全上去就是为了保证所有不依赖于 \(B\) 的 \(C_j\)
+也都出现在新证明中， 也许后续证明（例如某个 Gen）会用到</p></li>
+<li><p>所有不依赖于 \(B\) 的 \(C_j\)
+不单止会同时出现在新旧证明，而且它们的 \(\Gamma\) 依赖集也是一样的
+（因为证明过程是完全相同的）</p></li>
+<li><p>旧证明 \(C_j\) 与对应新证明 \(B \Rightarrow C_j\) 也有相同的
+\(\Gamma\) 依赖集</p>
+<div class="proof">
+<div class="proof-label">
+Proof
+</div>
+<div class="proof-content">
+<p>以 \(j\) 进行归纳</p>
+<ul>
+<li>若 \(C_j\) 是公理，不依赖于 \(\Gamma\) 中任何前提，对应右侧 \(B
+\Rightarrow C_j\) 仅由公理 MP 得出，也不依赖于 \(\Gamma\)
+中任何前提</li>
+<li>若 \(C_j \in \Gamma\)，则依赖于自身，右侧由 \(C_j\) 和公理 MP
+得出，故也依赖于 \(C_j\)</li>
+<li>若 \(C_j\) 是 \(B\)，不依赖于 \(\Gamma\) 中任何前提，右侧是 <a
+href="../chap-1-4/#lemma-1.8">Lemma 1.8</a>， 无任何依赖，自然也不依赖于
+\(\Gamma\) 中任何前提</li>
+<li>若 \(C_j\) 为 \(C_l \Rightarrow C_j\) 和 \(C_l\) MP 所得，则其
+\(\Gamma\) 依赖集为这两前件依赖集的并集， 由归纳假设，该并集等于 \(B
+\Rightarrow (C_l \Rightarrow C_j)\)¹ 和 \(B \Rightarrow C_l\)²
+依赖集的并集， 右侧恰好涉及到公式 ¹² （两个 MP），因此两侧 \(\Gamma\)
+依赖集相同</li>
+<li>若 \(C_j\) 为 \((\forall x_i)C_l\)，则其依赖集等于 \(C_l\)
+的依赖集； 右侧有两种可能的输出，第一种用到 Gen \(C_l\)，由 3
+知新旧证明中的 \(C_l\) 是有相同依赖集的； 第二种用到 Gen \(B \Rightarrow
+C_l\)，由归纳假设知左侧 \(C_l\) 和右侧 \(B \Rightarrow C_l\)
+也是有相同依赖集的</li>
+</ul>
+</div>
+</div></li>
+<li><p>当且仅当旧证明有 Gen 时（\((\forall x_i)C_l\)），新证明有
+Gen（\((\forall x_i)C_l\) 或者 \((\forall x_i)(B \Rightarrow
+C_l)\)），由 3 和 4 知两边的 \(\Gamma\)
+依赖集一样，且两边添加的量词变量也一样（\(x_i\)），
+因此可以得出下面的结论</p></li>
+</ol>
+<blockquote>
+<p>如果 \(\Gamma, A, B \vdash C\) 的证明满足</p>
+<ul>
+<li><code class="language-plaintext">a</code> 没有一个 Gen
+的步骤是依赖于 \(A\) 的且其添加的量词变量是 \(A\) 的自由变量</li>
+<li><code class="language-plaintext">b</code> 没有一个 Gen
+的步骤是依赖于 \(B\) 的且其添加的量词变量是 \(B\) 的自由变量</li>
+</ul>
+<p>则可以直接 \(\Gamma \vdash A \Rightarrow (B \Rightarrow C)\)</p>
+</blockquote>
+<div class="proof">
+<div class="proof-label">
+Proof
+</div>
+<div class="proof-content">
+<p>由 <code class="language-plaintext">b</code> 和演绎定理可得新证明
+\(\Gamma, A \vdash B \Rightarrow C\)，由 5 和 <code
+class="language-plaintext">a</code> 可知，这个新的证明也满足 <code
+class="language-plaintext">a</code>， 因此可以再次使用演绎定理推出
+\(\Gamma \vdash A \Rightarrow (B \Rightarrow C)\)</p>
+</div>
+</div>
+<p>这个结论可以推而广之，只要原始证明对多个前提都满足条件的话，则可以一步多次演绎定理</p>
+<h3 id="exercises">Exercises</h3>
+<h4 id="证明以下定理">2.27 证明以下定理</h4>
+<ul>
+<li><p><span id="ex-2-27-a"><code
+class="language-plaintext">a</code></span> \(\vdash (\forall x)(B
+\Rightarrow C) \Rightarrow ((\forall x)B \Rightarrow (\forall x)C)\)</p>
+<div class="proof">
+<div class="proof-label">
+Proof
+</div>
+<div class="proof-content">
+<ol type="1">
+<li>\((\forall x)(B \Rightarrow C)\) Hyp</li>
+<li>\((\forall x)(B \Rightarrow C) \Rightarrow (B \Rightarrow C)\)
+A4</li>
+<li>\(B \Rightarrow C\) MP 上述两个</li>
+<li>\((\forall x)B\) Hyp</li>
+<li>\((\forall x)B \Rightarrow B\) A4</li>
+<li>\(B\) MP 上述两个</li>
+<li>\(C\) MP 3 和 6</li>
+<li>\((\forall x)C\) Gen</li>
+</ol>
+<p>上述证明了 \((\forall x)(B \Rightarrow C), (\forall x)B \vdash
+(\forall x)C\) 注意上述证明只有最后一步是 Gen， 且量词 \(x\)
+不是两个前提的自由变量，故可以使用 DT（Deduction Theorem）得出证明</p>
+</div>
+</div></li>
+<li><p><span id="ex-2-27-b"><code
+class="language-plaintext">b</code></span> \(\vdash (\forall x)(B
+\Rightarrow C) \Rightarrow ((\exists x)B \Rightarrow (\exists x)C)\)</p>
+<div class="proof">
+<div class="proof-label">
+Proof
+</div>
+<div class="proof-content">
+<ol type="1">
+<li>\((\forall x)(B \Rightarrow C)\) Hyp</li>
+<li>\((\forall x)(B \Rightarrow C) \Rightarrow (B \Rightarrow C)\)
+A4</li>
+<li>\(B \Rightarrow C\) MP 上述两个</li>
+<li>\((B \Rightarrow C) \Rightarrow (\neg C \Rightarrow \neg B)\) <a
+href="../chap-1-4/#lemma-1.11-e">Lemma 1.11#e</a></li>
+<li>\(\neg C \Rightarrow \neg B\) MP 上述两个</li>
+<li>\((\forall x)(\neg C \Rightarrow \neg B)\) Gen</li>
+<li>\((\forall x)(\neg C \Rightarrow \neg B) \Rightarrow ((\forall
+x)(\neg C) \Rightarrow (\forall x)(\neg B))\) <a
+href="#ex-2-27-a">2.27#a</a></li>
+<li>\((\forall x)(\neg C) \Rightarrow (\forall x)(\neg B)\) MP
+上述两个</li>
+<li>\(((\forall x)(\neg C) \Rightarrow (\forall x)(\neg B)) \Rightarrow
+(\neg (\forall x)(\neg B) \Rightarrow \neg (\forall x)(\neg C))\) <a
+href="../chap-1-4/#lemma-1.11-e">Lemma 1.11#e</a></li>
+<li>\(\neg (\forall x)(\neg B) \Rightarrow \neg (\forall x)(\neg C)\) MP
+上述两个</li>
+</ol>
+<p>上述证明了 \((\forall x)(B \Rightarrow C) \vdash (\exists x)B
+\Rightarrow (\exists x)C\)，唯一一步 Gen 其量词变量 \(x\)
+不是前提的自由变量，故可以用 DT</p>
+</div>
+</div></li>
+<li><p><span id="ex-2-27-c"><code
+class="language-plaintext">c</code></span> \(\vdash (\forall x)(B \wedge
+C) \Leftrightarrow (\forall x)B \wedge (\forall x)C\)</p>
+<div class="proof">
+<div class="proof-label">
+Proof
+</div>
+<div class="proof-content">
+<p>TODO</p>
+</div>
+</div></li>
+<li><p><span id="ex-2-27-d"><code
+class="language-plaintext">d</code></span> \(\vdash (\forall
+y_1)...(\forall y_n)B \Rightarrow B\)</p>
+<div class="proof">
+<div class="proof-label">
+Proof
+</div>
+<div class="proof-content">
+<ol type="1">
+<li>\((\forall y_1)...(\forall y_n)B\) Hyp</li>
+<li>\((\forall y_1)...(\forall y_n)B \Rightarrow (\forall
+y_2)...(\forall y_n)B\) A4</li>
+<li>\((\forall y_2)...(\forall y_n)B\) MP 上述两个</li>
+<li>反复进行上面的操作直到剩下 \(B\)</li>
+</ol>
+</div>
+</div></li>
+<li><p><span id="ex-2-27-e"><code
+class="language-plaintext">e</code></span> \(\vdash \neg (\forall x)B
+\Rightarrow (\exists x) \neg B\)</p>
+<div class="proof">
+<div class="proof-label">
+Proof
+</div>
+<div class="proof-content">
+<ol type="1">
+<li>\(\neg \neg B \Rightarrow B\) <a
+href="../chap-1-4/#lemma-1.11-a">Lemma 1.11#a</a></li>
+<li>\((\forall x)(\neg \neg B \Rightarrow B)\) Gen</li>
+<li>\((\forall x)(\neg \neg B \Rightarrow B) \Rightarrow ((\forall
+x)(\neg \neg B) \Rightarrow (\forall x)B)\) <a
+href="#ex-2-27-a">2.27#a</a></li>
+<li>\((\forall x)(\neg \neg B) \Rightarrow (\forall x)B\) MP
+上述两个</li>
+<li>\(((\forall x)(\neg \neg B) \Rightarrow (\forall x)B) \Rightarrow
+(\neg(\forall x)B \Rightarrow \neg (\forall x)(\neg \neg B))\) <a
+href="../chap-1-4/#lemma-1.11-e">Lemma 1.11#e</a></li>
+<li>\(\neg(\forall x)B \Rightarrow \neg (\forall x)(\neg \neg B)\) MP
+上述两个</li>
+</ol>
+</div>
+</div></li>
+</ul>
+<h4 id="证明以下两个理论有相同的定理集合">2.28
+证明以下两个理论有相同的定理集合</h4>
+<blockquote>
+<p>令 \(K\) 是一个一阶理论，令 \(K^{\#}\)
+是一个有如下公理的形式化理论：</p>
+<ul>
+<li><code class="language-plaintext">a</code> \((\forall y_1)...(\forall
+y_n)B\)，其中 \(B\) 是 \(K\) 中的公理，\(y_1, ..., y_n (n \ge 0)\)
+是任意变量</li>
+<li><code class="language-plaintext">b</code> \((\forall y_1)...(\forall
+y_n)(B \Rightarrow C) \Rightarrow ((\forall y_1)...(\forall y_n)B
+\Rightarrow (\forall y_1)...(\forall y_n)C)\)， 其中 \(B\) 和 \(C\)
+是任意公式，\(y_1, ..., y_n\) 是任意变量</li>
+</ul>
+<p>且 MP 是 \(K^{\#}\) 的唯一演绎规则</p>
+<p>这个证明可以表明了添加额外的公理能把 Gen 替换掉</p>
+</blockquote>
+<div class="proof">
+<div class="proof-label">
+Proof
+</div>
+<div class="proof-content">
+<p><em>（以下将 \((\forall y_1)...(\forall y_n)\) 缩写为 \((\forall
+y_{1..n})\) 以免括号太多眼花）</em></p>
+<p>首先证明 \(K^{\#}\) 的两个公理也是 \(K\) 中的公理/定理</p>
+<ul>
+<li><p><code class="language-plaintext">a</code> 很简单，只要对 \(B\)
+应用 \(n\) 次 Gen 就可以得出</p></li>
+<li><p><code class="language-plaintext">b</code> 若 \(n = 0\)，则退化为
+\((B \Rightarrow C) \Rightarrow (B \Rightarrow C)\)，直接用 <a
+href="../chap-1-4/#lemma-1.8">Lemma 1.8</a> 得出结果， 以下证明 \(n &gt;
+0\) ：</p>
+<ol type="1">
+<li>\((\forall y_{1..n})(B \Rightarrow C) \Rightarrow ((\forall
+y_{1..n})B \Rightarrow (\forall y_{1..n})C)\) Hyp</li>
+<li>\((\forall x)((\forall y_{1..n})(B \Rightarrow C) \Rightarrow
+((\forall y_{1..n})B \Rightarrow (\forall y_{1..n})C))\) Gen</li>
+<li>\((\forall x)(\forall y_{1..n})(B \Rightarrow C) \Rightarrow
+(\forall x)((\forall y_{1..n})B \Rightarrow (\forall y_{1..n})C)\) <a
+href="#ex-2-27-a">2.27#a</a> 和 2 MP 得出</li>
+<li>\((\forall x)((\forall y_{1..n})B \Rightarrow (\forall y_{1..n})C)
+\Rightarrow ((\forall x)(\forall y_{1..n})B \Rightarrow (\forall
+x)(\forall y_{1..n})C)\) <a href="#ex-2-27-a">2.27#a</a></li>
+<li>\((\forall x)(\forall y_{1..n})(B \Rightarrow C) \Rightarrow
+((\forall x)(\forall y_{1..n})B \Rightarrow (\forall x)(\forall
+y_{1..n})C)\) <a href="../chap-1-4/#corollary-1.10">Corollary 1.10</a> 3
+和 4 得出</li>
+</ol>
+<p>反复应用上述步骤，就能添加任意多的量词变量</p></li>
+</ul>
+<p>由于 \(K^{\#}\) 只有 MP，从这两个公理出发产生的定理也必定是 \(K\)
+中的定理（\(K^{\#} \subseteq K\)）</p>
+<p>下面用归纳法证明若 \(\vdash_K B\)，则 \(\vdash_{K^{\#}} (\forall
+y_{1..n})B\)，令 \(D_1, ..., D_m\) 是 \(\vdash_K B\) 的证明序列，</p>
+<ul>
+<li>\(D_1\) 必定是 \(K\) 中的公理，由公理 <code
+class="language-plaintext">a</code> 直接得出 \(\vdash_{K^{\#}} (\forall
+y_{1..n})D_1\)</li>
+<li>假设 \(i &lt; m\) 时命题成立，现在考虑 \(\vdash_K D_m\)
+<ul>
+<li>若 \(D_m\) 是 \(K\) 中公理，由 <code
+class="language-plaintext">a</code> 得出 \(\vdash_{K^{\#}} (\forall
+y_{1..n})D_m\)</li>
+<li>若 \(D_m\) 是 \(D_l \Rightarrow D_m\) 和 \(D_l\) MP
+而得，由归纳假设有 \(\vdash_{K^{\#}} (\forall y_{1..n})(D_l \Rightarrow
+D_m)\) 以及 \(\vdash_{K^{\#}} (\forall y_{1..n})(D_l)\)，由 <code
+class="language-plaintext">b</code> MP 两次即可得到 \(\vdash_{K^{\#}}
+(\forall y_{1..n})D_m\)</li>
+<li>若 \(D_m\) 是 \((\forall x)D_l\)，由归纳假设有 \(\vdash_{K^{\#}}
+(\forall y_{1..n} x)D_l\)，也就是 \(\vdash_{K^{\#}} (\forall
+y_{1..n})D_m\)</li>
+</ul></li>
+</ul>
+<p>当 \(n = 0\) 时，\(\vdash_{K^{\#}} (\forall y_{1..n})B\) 即
+\(\vdash_{K^{\#}} B\)，故 \(K\) 的定理也必定是 \(K^{\#}\) 的定理（\(K
+\subseteq K^{\#}\)）</p>
+</div>
+</div>
+<h4 id="证明-extension-of-propositions-2.42.7">2.29 证明 Extension of
+Propositions 2.4–2.7</h4>
+<p>上面已经证明了</p>
+<section class="footnotes footnotes-end-of-document"
+role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p><a
+href="https://math.stackexchange.com/q/4163851/975791"
+class="uri">https://math.stackexchange.com/q/4163851/975791</a><a
+href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+  </article>
+
+        </div>
+      </div>
+      <div id="main-right" class="hide-xs hide-sm col-2-md col-3-lg">
+        
+  
+  <div id="content-toc" class="toc hide-md"></div>
+  
+
+      </div>
+    </div>
+
+    
+    <div id="footer" class="text-center">
+      <p>
+        Powered By <a href="https://gohugo.io/">Hugo</a>/<a href="https://jenil.github.io/chota">Chota</a>,
+        Generated Using <a href="https://github.com/huangjunwen/mdtool">MDTool</a>
+      </p>
+      <p>&copy; 2022. All rights reserved</p>
+    </div>
+
+    
+  
+    <link rel="stylesheet" href="/res/libs/tocbot/css/tocbot.css"></link>
+    <style>
+    #content-toc {
+      position: -webkit-sticky;
+      position: sticky;
+      top: 7rem;
+      padding-left: 2rem;
+      padding-right: 1rem;
+    }
+
+    #content-toc a.toc-link {
+      color: var(--font-color);
+    }
+
+    #content-toc a.toc-link.is-active-link {
+      color: var(--color-darkGrey);
+    }
+
+    #content-toc a.toc-link::before {
+      background-color: var(--bg-color);
+    }
+
+    #content-toc a.toc-link.is-active-link::before {
+      background-color: var(--color-primary);
+    }
+    </style>
+    <script src="/res/libs/tocbot/js/tocbot.min.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', (ev) => {
+      tocbot.init({
+        tocSelector: '#content-toc',
+        contentSelector: '#main-center',
+        ignoreSelector: '.no-toc',
+        headingSelector: 'h1, h2, h3, h4, h5, h6',
+        hasInnerContainers: false,
+        headingsOffset: 80,
+        scrollSmoothOffset: -80
+      });
+    });
+    </script>
+  
+  
+    <script type="text/javascript" src="/res/libs/anchorjs/js/anchor.min.js"></script>
+    <script>anchors.add('#main-body h1, #main-body h2, #main-body h3, #main-body h4, #main-body h5, #main-body h6, #main-body dt');</script>
+  
+
+  </body>
+</html>

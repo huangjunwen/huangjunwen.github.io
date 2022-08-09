@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Vault 介绍</title>
+    
+    <link rel="stylesheet" href="/res/libs/fontawesome/css/all.min.css"></link>
+    <link rel="stylesheet" href="/res/libs/chota/css/chota.min.css"></link>
+    <link rel="stylesheet" href="/res/style/site.min.1cfb2065638c6eda7f5ceb0b60110baf5593ae09a1298e64096971386bd084ca.css"></link>
+    <script type="text/javascript" src="/res/script/site.min.6881188133395162222bed24f23dd6cbdd74f0b93a54b35a6b929b5178e10fe9.js"></script>
+    <link id="markdown-body-style" rel="stylesheet" href="/res/style/markdown-body.min.fbc98dd0188bbc6cff6adb3737a0533833576a79ec29055581d245edb0581ac0.css"></link>
+    <script type="text/javascript" src="/res/script/markdown-body.min.a6a10b3328945990fade36e6fee4eab6131402292da617dc8c6d0258507f0c72.js"></script>
+  </head>
+
+  <body>
+    
+    <div id="header">
+      
+      <nav id="navbar" class="row">
+        <div class="is-left col-12 col-3-md row">
+          <a id="navbar-brand" class="brand" href="/">Coder Papa</a>
+          <label id="navbar-toggle-menu" for="navbar-toggle-menu-state" class="hide-md hide-lg">
+            <span></span>
+            <span></span>
+            <span></span>
+          </label>
+        </div>
+        <input id="navbar-toggle-menu-state" type="checkbox" style="display:none"></input>
+        <div id="navbar-menu" class="is-right col-12 col-9-md row hide-xs-noimportant hide-sm-noimportant">
+          
+          <a href="/posts">Posts</a>
+          
+          
+          <a href="/categories">Categories</a>
+          
+          <a href="/tags">Tags</a>
+          
+          
+          <a href="https://github.com/huangjunwen"><i class='fab fa-github'></i></a>
+          
+          <a href="javascript:void(0)" id="navbar-toggle-mode" onclick="return toggleColorMode()"></a>
+        </div>
+      </nav>
+    </div>
+
+    
+    <div id="main" class="row">
+      <div id="main-left" class="hide-xs hide-sm col-2-md col-3-lg">
+        
+      </div>
+      <div id="main-center" class="col-12 col-8-md col-6-lg mdb">
+        <div id="main-title" class="text-center">
+          
+  <h5 class="no-toc"><span class="breadcrumbnav"><span><a href="/posts/">POSTS</a></span><i class="fa fa-fw fa-angle-double-right"></i><span><a href="/posts/archive/">ARCHIVE</a></span></span></h5>
+  <h1>Vault 介绍</h1>
+  <small>
+    <time class="" datetime="2017-06-07T08:14:18&#43;0800">Wed, 2017/06/07</time>
+  </small>
+  <p>
+    
+    <a href="/tags/vault/"><span class="tag is-small">vault</span></a>
+  </p>
+  
+        </div>
+        <div id="main-body">
+          
+  <article id="content-body">
+    <p>之前一篇<a href="../shamir-secret-sharding/">文章</a>介绍了 <a
+href="https://www.vaultproject.io/">Hashicorp Vault</a>
+的解封/密封算法。这篇打算记录一下这个软件的其它方面。当前最新版本为
+v0.7.2 。</p>
+<p>Vault
+是一个相当复杂的系统，总括而言，它是一个集中管理各类敏感信息（如密码/Key/证书等等）的软件（服务）。Vault
+采用类似 Unix <a
+href="https://en.wikipedia.org/wiki/Everything_is_a_file">“一切皆文件”</a>
+的方式组织及暴露各类信息：所有操作都是对某个路径的 read/write
+（实际上是对某个 HTTP 路径 POST/GET/LIST/DELETE 等） ，例如：</p>
+<ul>
+<li><code class="language-plaintext">/sys</code>
+目录下是各种配置路径，此目录不可被卸载，其下路径各有用途，如 <code
+class="language-plaintext">/sys/seal</code> 和 <code
+class="language-plaintext">/sys/unseal</code> 这两个路径是用来密封/解封
+vault 的。</li>
+<li><code class="language-plaintext">/secret</code> 目录下挂载的是 <a
+href="https://www.vaultproject.io/docs/secrets/generic/index.html">Generic
+Secret
+Backend</a>，用于存放一般用途的敏感信息，其下路径组织结构由用户自行决定，我们平时实际使用访问最多的应该也是这个。</li>
+<li>… 更多目录路径说明可参看 <a
+href="https://www.vaultproject.io/api/index.html">API 文档</a></li>
+</ul>
+<p>读取/写入的数据一般都是 JSON 格式。</p>
+<h2 id="backends">Backends</h2>
+<p>Vault 主要由几类 backends 合作组成：</p>
+<p>Auth -&gt; Secret -&gt; Storage(Physical) -&gt; Audit</p>
+<p>认证 -&gt; 实际操作 -&gt; 落盘储存 -&gt; 日志</p>
+<h3 id="authentication-backend">Auth(entication) Backend</h3>
+<p>Auth Backend
+完成的是认证工作：访问者是谁。有多种可通过挂载添加，默认情况下它们会挂载在
+<code class="language-plaintext">auth/&lt;type&gt;</code>
+下，以下是其中一些认证方式：</p>
+<ul>
+<li><a href="https://www.vaultproject.io/docs/auth/token.html">token</a>
+这个 Backend 是 Vault
+的核心认证方式，默认挂载，不可卸载，非常重要，下一小节详细描述</li>
+<li><a
+href="https://www.vaultproject.io/docs/auth/userpass.html">userpass</a>
+用户名密码认证</li>
+<li><a
+href="https://www.vaultproject.io/docs/auth/github.html">github</a> 用
+Github 的认证服务</li>
+<li><a href="https://www.vaultproject.io/docs/auth/cert.html">cert</a>
+用 tls 证书认证</li>
+<li><a
+href="https://www.vaultproject.io/docs/auth/approle.html">approle</a>
+<em>TODO</em></li>
+</ul>
+<h4 id="token-令牌">Token （令牌）</h4>
+<p>对外部而言，顾名思义，有了令牌就能通行，它是访问者身份的象征；实际上，Vault
+对外 API 中绝大部分（除了像 seal/unseal 这种）都需要令牌才能访问：访问的
+HTTP 请求头部需要加上 <code
+class="language-plaintext">X-Vault-Token: xxxxxx</code>
+（命令行其实也是调用 HTTP API 的，Token 保存在 <code
+class="language-plaintext">~/.vault_token</code> 里以供其使用）</p>
+<p>对内部而言，Token 是 Vault
+里多个组件间的结合点，关联对应许多信息：</p>
+<ul>
+<li>树状层次：除了 root tokens 和 orphan tokens 外都有父 token，故所有
+tokens 形成一个树（森林）状层次结构，当父 token 被吊销时，其所有子孙
+tokens 都会同时被吊销</li>
+<li>限时：token
+是有使用时限的（TTL），超时时会被吊销，可以续租延长时限的（但不超过某个最大值），也可以是周期性的
+token（可通过周期性地续租无限延长使用时间）</li>
+<li>限次：token
+可以限制使用次数，默认是不限制，超过使用次数后会被吊销，这个可以用作实现
+one-time-password</li>
+<li>访问控制策略（Access Control Policies）：这是最关键的，每个 token
+都关联一个访问控制策略列表（如 <code
+class="language-plaintext">["default", "dev"]</code>），访问控制策略就是
+Vault 里头的权限控制机制，例如 <code
+class="language-plaintext">default</code> 策略是这样的：</li>
+</ul>
+<pre class="language-shell"><code>$ vault policies default  # 查看名为 default 的控制策略
+
+# Allow tokens to look up their own properties
+path &quot;auth/token/lookup-self&quot; {
+    capabilities = [&quot;read&quot;]
+}
+
+# Allow tokens to renew themselves
+path &quot;auth/token/renew-self&quot; {
+    capabilities = [&quot;update&quot;]
+}
+
+# Allow tokens to revoke themselves
+path &quot;auth/token/revoke-self&quot; {
+    capabilities = [&quot;update&quot;]
+}
+
+# Allow a token to look up its own capabilities on a path
+path &quot;sys/capabilities-self&quot; {
+    capabilities = [&quot;update&quot;]
+}
+
+...
+</code></pre>
+<p>归功于“一切皆文件”的统一设计，能干什么不能干什么（create/read/update/delete/list/sudo/deny）都统一到一组路径上的读写权限。详情可参看
+<a href="https://www.vaultproject.io/docs/concepts/policies.html"
+class="uri">https://www.vaultproject.io/docs/concepts/policies.html</a></p>
+<p>整个流程应该是这样子的：用户（人/机器）携带着令牌调用某个 API，Vault
+检查这个令牌是否已被吊销，是否超过使用限制，访问的操作/路径是否被允许，如果都通过了这些检查，才会实际执行操作。</p>
+<p>那么好了，令牌本身又是从哪里来的呢？方法有几个：</p>
+<ul>
+<li>root tokens 可以在 Vault 初始化的时候获得，也可以在之后通过 <code
+class="language-plaintext">vault generate-root</code> 命令或 <a
+href="https://www.vaultproject.io/api/system/generate-root.html">/sys/generate-root</a>
+API 创建新的（需要 unseal key），root token 是 token 中的
+superuser，啥都可以做，且一般没有超时时间</li>
+<li>通过 <code class="language-plaintext">vault token-create</code>
+命令或 <a
+href="https://godoc.org/github.com/hashicorp/vault/api#TokenAuth.Create">/auth/token/create</a>
+API 为当前 token 手动创建子 token，子 token 的访问控制策略只能是当前
+token 的子集</li>
+<li>其它 auth backends 完成对认证后，其实返回的也是
+token（所以从这个角度看，Vault 其实就只有 token
+一种认证方式），至于返回的是什么样的 token，则决定于这个 auth backend
+的配置是怎么样的；例如 Github 可以关联某个 team 或者某个 user
+到指定访问控制策略，当这个 team 的成员或这个用户用 Github 的 Personal
+Access Token 完成认证后，就返回关联此策略的一个 token</li>
+</ul>
+<p>关于 token 的更详细文档可以参看这里： <a
+href="https://www.vaultproject.io/docs/concepts/tokens.html"
+class="uri">https://www.vaultproject.io/docs/concepts/tokens.html</a></p>
+<h3 id="secret-backend">Secret Backend</h3>
+<p>用来存放（生成）秘密的地方；不同的 backend
+类似于不同的虚拟文件系统（tmpfs，udev
+等），可以挂载到不同的目录，读写到不同的 backend
+下会有各自不同的作用，如：</p>
+<ul>
+<li><a
+href="https://www.vaultproject.io/api/secret/generic/index.html">generic</a>
+前文也提及过，一般用途的 backend</li>
+<li><a
+href="https://www.vaultproject.io/docs/secrets/databases/index.html">database</a>
+用来管理数据库连接信息，具体参看另一篇<a
+href="../vault-database-secret-backend/">博文</a></li>
+<li><a
+href="https://www.vaultproject.io/api/secret/pki/index.html">pki</a>
+用来管理（生成） X.509 证书 <em>TODO</em></li>
+<li><a
+href="https://www.vaultproject.io/api/secret/cubbyhole/index.html">cubbyhole</a>
+类似于 generic secret backend 可以存放任意秘密，但不同之处在于它是 token
+scoped 的
+<ul>
+<li>解释：举个类比，很多 Unix 系统有一个文件夹 <code
+class="language-plaintext">/dev/fd</code>，像一个私有的空间，每一个进程访问都只能看到本进程的打开了的文件描述符；cubbyhole
+类似于此，每一个 token
+能访问到的都是一个只有自己能访问到的私有空间，当这个 token
+销毁的时候，存储在这里面的所有秘密也一并被销毁</li>
+<li>用处：例如我们从 Vault
+中读取了一些秘密，这个秘密可能会通过很多中间环节才能送到最终的使用者手上，中间环节越多，泄漏的可能性就越大（例如不小心被
+log 下来了等），那么可以通过创建一个寿命非常短（例如几秒）且只能用一次的
+token，把密码放到此 token 的 cubbyhole 里，中间环节传输的则是这个
+token，即使泄漏了，由于其限时限次，秘密泄漏的可能性就大大降低了，同时如果泄漏了，日志里面必定会有所记录（偷取访问一次/正常访问一次，第二次失败），这是所谓
+<a
+href="https://www.vaultproject.io/docs/secrets/cubbyhole/index.html#response-wrapping">Response
+Wrapping</a>；其实这不就有点像 OAuth2 的流程一样，拿一个很短命的 code
+去换取 Access Token （秘密）</li>
+<li><a
+href="https://www.hashicorp.com/blog/cubbyhole-authentication-principles"
+class="uri">https://www.hashicorp.com/blog/cubbyhole-authentication-principles</a></li>
+<li><a
+href="https://www.vaultproject.io/docs/secrets/cubbyhole/index.html"
+class="uri">https://www.vaultproject.io/docs/secrets/cubbyhole/index.html</a></li>
+</ul></li>
+</ul>
+<h3 id="storage-physical-backend">Storage (Physical) Backend</h3>
+<p>数据真正落盘的地方（注：到达 Storage Backend
+时，数据都已经处于加密状态了，安全并不依赖于 Storage backend，实际上它是
+untrusted 的，下面代码里有提到），需要在服务启动时在<a
+href="https://www.vaultproject.io/docs/configuration/storage/index.html">配置</a>里面指定；这类
+backend 同样有很多种，例如：</p>
+<ul>
+<li><a
+href="https://www.vaultproject.io/docs/configuration/storage/in-memory.html">inmem</a>
+存放在内存中（dev 模式下即是使用 inmen backend
+的，一旦重启，数据就丢失了）</li>
+<li><a
+href="https://www.vaultproject.io/docs/configuration/storage/filesystem.html">file</a>
+直接存放在本地文件里</li>
+<li><a
+href="https://www.vaultproject.io/docs/configuration/storage/mysql.html">mysql</a>
+存放在 MySQL 数据库里</li>
+<li><a
+href="https://www.vaultproject.io/docs/configuration/storage/consul.html">consul</a>/<a
+href="https://www.vaultproject.io/docs/configuration/storage/etcd.html">etcd</a>
+存放在 Key-Value 集群中（高可用）</li>
+</ul>
+<p>例如使用 mysql backend，vault init
+后可以看到数据库里头实际上创建了一个表而已，此表就两个字段 <code
+class="language-plaintext">vault_key</code> 和 <code
+class="language-plaintext">vault_value</code>:</p>
+<ul>
+<li><code class="language-plaintext">vault_key</code> 是形如 <code
+class="language-plaintext">sys/policy/default</code> <code
+class="language-plaintext">logical/12345678-1234-1234-1234-123456790abc/ca</code>
+等等这类内部路径名称。注意：路径是没有加密的，所以 Vault
+的文档某个地方（我忘了在哪里了）指出不要把敏感信息暴露在路径上</li>
+<li><code class="language-plaintext">vault_value</code>
+大部分是加密后的二进制数据，也有些是明文的，如 <code
+class="language-plaintext">core/seal-config</code>
+记录密封算法跟参数：</li>
+</ul>
+<pre class="language-json"><code>{&quot;type&quot;:&quot;shamir&quot;,&quot;secret_shares&quot;:5,&quot;secret_threshold&quot;:3,&quot;pgp_keys&quot;:null,&quot;nonce&quot;:&quot;&quot;,&quot;backup&quot;:false,&quot;stored_shares&quot;:0}</code></pre>
+<p>这部分信息是在没解封前就要用到的，所以只能用明文；我尝试了下改了参数，例如把
+<code class="language-plaintext">secret_threshold</code> 改成 1
+看看能不能只要一个 key 就能解封，结果…当然是不能啦 :-)</p>
+<p>看了一下相关的代码，发现其实这部分很好理解，实际上只要提供以下这个 <a
+href="https://godoc.org/github.com/hashicorp/vault/physical#Backend">interface</a>
+就能用作 storage backend 了（其实就是一个可以枚举的 Key-Value store
+即可）：</p>
+<pre class="language-go"><code>// Backend is the interface required for a physical
+// backend. A physical backend is used to durably store
+// data outside of Vault. As such, it is completely untrusted,
+// and is only accessed via a security barrier. The backends
+// must represent keys in a hierarchical manner. All methods
+// are expected to be thread safe.
+type Backend interface {
+    // Put is used to insert or update an entry
+    Put(entry *Entry) error
+
+    // Get is used to fetch an entry
+    Get(key string) (*Entry, error)
+
+    // Delete is used to permanently delete an entry
+    Delete(key string) error
+
+    // List is used ot list all the keys under a given
+    // prefix, up to the next prefix.
+    List(prefix string) ([]string, error)
+}</code></pre>
+<p>注意这里提到的 “As such, it is completely untrusted, …”</p>
+<h3 id="audit-backend">Audit Backend</h3>
+<p>记日志的，对于敏感信息，日志会进行 HMAC-SHA256
+哈希，这样做可以避免暴露明文但仍然能进行对照检查；另外如果启动了至少一个
+audit backends 的话，对 Vault
+的每一个请求都会<strong>阻塞</strong>直到其中一个日志完成记录，这样就能保证没有任何的操作不被记录下来</p>
+
+  </article>
+
+        </div>
+      </div>
+      <div id="main-right" class="hide-xs hide-sm col-2-md col-3-lg">
+        
+  
+  <div id="content-toc" class="toc hide-md"></div>
+  
+
+      </div>
+    </div>
+
+    
+    <div id="footer" class="text-center">
+      <p>
+        Powered By <a href="https://gohugo.io/">Hugo</a>/<a href="https://jenil.github.io/chota">Chota</a>,
+        Generated Using <a href="https://github.com/huangjunwen/mdtool">MDTool</a>
+      </p>
+      <p>&copy; 2022. All rights reserved</p>
+    </div>
+
+    
+  
+    <link rel="stylesheet" href="/res/libs/tocbot/css/tocbot.css"></link>
+    <style>
+    #content-toc {
+      position: -webkit-sticky;
+      position: sticky;
+      top: 7rem;
+      padding-left: 2rem;
+      padding-right: 1rem;
+    }
+
+    #content-toc a.toc-link {
+      color: var(--font-color);
+    }
+
+    #content-toc a.toc-link.is-active-link {
+      color: var(--color-darkGrey);
+    }
+
+    #content-toc a.toc-link::before {
+      background-color: var(--bg-color);
+    }
+
+    #content-toc a.toc-link.is-active-link::before {
+      background-color: var(--color-primary);
+    }
+    </style>
+    <script src="/res/libs/tocbot/js/tocbot.min.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', (ev) => {
+      tocbot.init({
+        tocSelector: '#content-toc',
+        contentSelector: '#main-center',
+        ignoreSelector: '.no-toc',
+        headingSelector: 'h1, h2, h3, h4, h5, h6',
+        hasInnerContainers: false,
+        headingsOffset: 80,
+        scrollSmoothOffset: -80
+      });
+    });
+    </script>
+  
+  
+    <script type="text/javascript" src="/res/libs/anchorjs/js/anchor.min.js"></script>
+    <script>anchors.add('#main-body h1, #main-body h2, #main-body h3, #main-body h4, #main-body h5, #main-body h6, #main-body dt');</script>
+  
+
+  </body>
+</html>
