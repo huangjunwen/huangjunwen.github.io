@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
 <ipe version="70218" creator="Ipe 7.2.24">
-<info created="D:20220217210333" modified="D:20220813161352" tex="luatex"/>
+<info created="D:20220813162247" modified="D:20220813170703" tex="luatex"/>
 <preamble>\usepackage{ctex}
 \usepackage{bm}
 \boldmath
@@ -316,51 +316,56 @@ h
 <page>
 <layer name="alpha"/>
 <view layers="alpha" active="alpha"/>
-<path layer="alpha" matrix="1 0 0 1 60 112" stroke="black" pen="heavier">
-59.0593 0 0 59.0593 108 424 e
+<text layer="alpha" matrix="1 0 0 1 -96 -4" transformations="translations" pos="176 736" stroke="black" type="label" width="254.805" height="13.5" depth="4.5" valign="baseline" size="LARGE" style="math">((P \vee (P \Rightarrow \bot)) \Rightarrow \bot) \Rightarrow \bot)</text>
+<text matrix="1 0 0 1 -20 60" transformations="translations" pos="188 636" stroke="black" type="label" width="24.187" height="10.417" depth="0" valign="baseline" size="Large" style="math">\lambda k.</text>
+<path matrix="1 0 0 1 -68 -12" stroke="black" rarrow="normal/normal">
+368 712 m
+268 712 l
 </path>
-<text matrix="1 0 0 1 4 96" transformations="translations" pos="144 512" stroke="black" type="label" width="47.166" height="10.295" depth="1.28" valign="baseline" size="Large" style="math">A \in A</text>
-<path matrix="1 0 0 1 44 88" stroke="black" pen="heavier">
-14.4222 0 0 14.4222 144 432 e
+<text matrix="1 0 0 1 -72 -16" transformations="translations" pos="388 712" stroke="black" type="label" width="7.969" height="10.417" depth="0" valign="baseline" size="Large" style="math">?</text>
+<path matrix="1 0 0 1 -68 -4" stroke="black">
+160 724 m
+336 724 l
 </path>
-<text matrix="1 0 0 1 16 96" transformations="translations" pos="172 444" stroke="black" type="label" width="10.433" height="8.233" depth="0" valign="baseline" size="large" style="math">A</text>
-<path matrix="1 0 0 1 300 112" stroke="black" pen="heavier">
-59.0593 0 0 59.0593 108 424 e
+<text matrix="1 0 0 1 112 16" transformations="translations" pos="188 636" stroke="black" type="label" width="30.427" height="11.25" depth="3.75" valign="baseline" size="Large" style="math">k( ? )</text>
+<path matrix="1 0 0 1 0 -8" stroke="black" rarrow="normal/normal">
+320 680 m
+320 696 l
 </path>
-<text matrix="1 0 0 1 244 96" transformations="translations" pos="144 512" stroke="black" type="label" width="47.166" height="11.253" depth="1.28" valign="baseline" size="Large" style="math">A \notin A</text>
-<path matrix="1 0 0 1 340 72" stroke="black" pen="heavier">
-14.4222 0 0 14.4222 144 432 e
+<text matrix="1 0 0 1 -4 -8" transformations="translations" pos="368 704" stroke="black" type="label" width="98.407" height="13.2" depth="1.8" valign="baseline" size="Large">需要 $\bot$ 的证明</text>
+<text matrix="1 0 0 1 -4 -52" transformations="translations" pos="368 704" stroke="black" type="label" width="184.015" height="13.2" depth="3.75" valign="baseline" size="Large">需要 $P \vee (P \Rightarrow \bot)$ 的证明</text>
+<text matrix="1 0 0 1 92 -36" transformations="translations" pos="188 636" stroke="black" type="label" width="59.948" height="11.25" depth="3.75" valign="baseline" size="Large" style="math">k(\langle 1, ? \rangle)</text>
+<path matrix="1 0 0 1 0 -60" stroke="black" rarrow="normal/normal">
+320 680 m
+320 696 l
 </path>
-<text matrix="1 0 0 1 312 80" transformations="translations" pos="172 444" stroke="black" type="label" width="10.433" height="8.233" depth="0" valign="baseline" size="large" style="math">A</text>
-<path matrix="0.482799 0 0 1.71429 149.371 -268.571" stroke="black" pen="heavier" arrow="normal/normal">
-196 476 m
-284 488
-392 472 c
+<text matrix="1 0 0 1 -4 -104" transformations="translations" pos="368 704" stroke="black" type="label" width="138.482" height="13.2" depth="1.8" valign="baseline" size="Large">需要 $P \Rightarrow \bot$ 的证明</text>
+<path matrix="1 0 0 1 0 -104" stroke="black" rarrow="normal/normal">
+320 680 m
+320 696 l
 </path>
-<path matrix="0.452128 0 0 2 158.766 -352" stroke="black" pen="heavier" rarrow="normal/normal">
-200 432 m
-276 424
-392 436 c
+<text matrix="1 0 0 1 -76 -144" transformations="translations" pos="368 704" stroke="black" type="label" width="53.492" height="10.417" depth="0" valign="baseline" size="Large" style="math">P \Rightarrow \bot</text>
+<text matrix="1 0 0 1 96 -100" transformations="translations" pos="188 636" stroke="black" type="label" width="23.868" height="10.413" depth="2.92" valign="baseline" size="Large" style="math">\lambda p.</text>
+<path stroke="black">
+288 552 m
+304 552 l
 </path>
-<text matrix="1 0 0 1 4 84" transformations="translations" pos="224 504" stroke="black" type="label" width="120" height="27.7" depth="21.74" valign="baseline" size="large">\parbox{10em}{若 $A$ 是自指集, 则 $A \notin A$ 因为 $A$ 仅包含非自指集}</text>
-<text matrix="1 0 0 1 4 72" transformations="translations" pos="220 400" stroke="black" type="label" width="120" height="27.7" depth="21.74" valign="baseline" size="large">\parbox{10em}{若 $A$ 不是自指集, 则 $A \in A$ 因为 $A$ 包含所有非自指集}</text>
-<path matrix="0.778733 0 0 0.778733 197.717 142.837" stroke="black" pen="heavier">
-86.1626 0 0 86.1626 112 704 e
+<path stroke="black" rarrow="normal/normal">
+328 540 m
+312 540 l
 </path>
-<text matrix="1 0 0 1 128 0" transformations="translations" pos="112 768" stroke="black" type="label" width="112.468" height="11.25" depth="3.75" valign="baseline" size="Large" style="math">A = \{S | S \notin S\}</text>
-<path matrix="0.778733 0 0 0.778733 88.6944 121.033" stroke="black" pen="heavier">
-23.3238 0 0 23.3238 284 744 e
+<text matrix="1 0 0 1 -52 -176" transformations="translations" pos="388 712" stroke="black" type="label" width="7.969" height="10.417" depth="0" valign="baseline" size="Large" style="math">?</text>
+<text matrix="1 0 0 1 -4 -168" transformations="translations" pos="368 704" stroke="black" type="label" width="98.407" height="13.2" depth="1.8" valign="baseline" size="Large">需要 $\bot$ 的证明</text>
+<text matrix="1 0 0 1 132 -144" transformations="translations" pos="188 636" stroke="black" type="label" width="30.427" height="11.25" depth="3.75" valign="baseline" size="Large" style="math">k( ? )</text>
+<path matrix="1 0 0 1 20 -168" stroke="black" rarrow="normal/normal">
+320 680 m
+320 696 l
 </path>
-<path matrix="0.778733 0 0 0.778733 23.2808 108.573" stroke="black" pen="heavier">
-33.9411 0 0 33.9411 312 712 e
+<text matrix="1 0 0 1 -4 -212" transformations="translations" pos="368 704" stroke="black" type="label" width="184.015" height="13.2" depth="3.75" valign="baseline" size="Large">需要 $P \vee (P \Rightarrow \bot)$ 的证明</text>
+<text matrix="1 0 0 1 112 -188" transformations="translations" pos="188 636" stroke="black" type="label" width="60.993" height="11.25" depth="3.75" valign="baseline" size="Large" style="math">k(\langle 0, p \rangle)</text>
+<path matrix="1 0 0 1 20 -212" stroke="black" rarrow="normal/normal">
+320 680 m
+320 696 l
 </path>
-<path matrix="0.718144 0 0 0.718144 201.012 194.739" stroke="black" pen="heavier">
-25.6125 0 0 25.6125 80 728 e
-</path>
-<text matrix="0.778733 0 0 0.778733 175.027 160.642" transformations="translations" pos="88 712" stroke="black" type="label" width="31.1" height="6.75" depth="0.77" valign="baseline" size="small" style="math">X \notin X</text>
-<text matrix="0.778733 0 0 0.778733 97.1541 155.297" transformations="translations" pos="256 696" stroke="black" type="label" width="29.392" height="6.75" depth="0.77" valign="baseline" size="small" style="math">Y \notin Y</text>
-<text matrix="0.778733 0 0 0.778733 2.82109 152.182" transformations="translations" pos="312 652" stroke="black" type="label" width="37.083" height="9.007" depth="1.02" valign="baseline" size="large" style="math">Z \notin Z</text>
-<text matrix="0.778733 0 0 0.778733 185.257 167.756" transformations="translations" pos="160 632" stroke="black" type="label" width="25.02" height="2.34" depth="0" valign="baseline" size="Large">......</text>
-<text matrix="1 0 0 1 -92 -164" transformations="translations" pos="336 688" stroke="black" type="label" width="86.887" height="15.402" depth="1.88" valign="baseline" size="huge">$A \in A$ ?</text>
 </page>
 </ipe>
