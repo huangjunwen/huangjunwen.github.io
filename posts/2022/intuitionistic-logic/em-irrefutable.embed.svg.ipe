@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
 <ipe version="70218" creator="Ipe 7.2.24">
-<info created="D:20220813162247" modified="D:20220813170703" tex="luatex"/>
+<info created="D:20220813162247" modified="D:20220813223149" tex="luatex"/>
 <preamble>\usepackage{ctex}
 \usepackage{bm}
 \boldmath
@@ -316,56 +316,107 @@ h
 <page>
 <layer name="alpha"/>
 <view layers="alpha" active="alpha"/>
-<text layer="alpha" matrix="1 0 0 1 -96 -4" transformations="translations" pos="176 736" stroke="black" type="label" width="254.805" height="13.5" depth="4.5" valign="baseline" size="LARGE" style="math">((P \vee (P \Rightarrow \bot)) \Rightarrow \bot) \Rightarrow \bot)</text>
-<text matrix="1 0 0 1 -20 60" transformations="translations" pos="188 636" stroke="black" type="label" width="24.187" height="10.417" depth="0" valign="baseline" size="Large" style="math">\lambda k.</text>
-<path matrix="1 0 0 1 -68 -12" stroke="black" rarrow="normal/normal">
-368 712 m
-268 712 l
-</path>
-<text matrix="1 0 0 1 -72 -16" transformations="translations" pos="388 712" stroke="black" type="label" width="7.969" height="10.417" depth="0" valign="baseline" size="Large" style="math">?</text>
-<path matrix="1 0 0 1 -68 -4" stroke="black">
+<text layer="alpha" matrix="1 0 0 1 -164 20" transformations="translations" pos="176 736" stroke="black" type="label" width="254.805" height="13.5" depth="4.5" valign="baseline" size="LARGE" style="math">((P \vee (P \Rightarrow \bot)) \Rightarrow \bot) \Rightarrow \bot)</text>
+<text matrix="1 0 0 1 -88 84" transformations="translations" pos="188 636" stroke="black" type="label" width="24.187" height="10.417" depth="0" valign="baseline" size="Large" style="math">\lambda k.</text>
+<text matrix="1 0 0 1 -140 8" transformations="translations" pos="388 712" stroke="black" type="label" width="7.969" height="10.417" depth="0" valign="baseline" size="Large" style="math">?</text>
+<path matrix="1 0 0 1 -136 20" stroke="black">
 160 724 m
 336 724 l
 </path>
-<text matrix="1 0 0 1 112 16" transformations="translations" pos="188 636" stroke="black" type="label" width="30.427" height="11.25" depth="3.75" valign="baseline" size="Large" style="math">k( ? )</text>
-<path matrix="1 0 0 1 0 -8" stroke="black" rarrow="normal/normal">
-320 680 m
-320 696 l
-</path>
-<text matrix="1 0 0 1 -4 -8" transformations="translations" pos="368 704" stroke="black" type="label" width="98.407" height="13.2" depth="1.8" valign="baseline" size="Large">需要 $\bot$ 的证明</text>
-<text matrix="1 0 0 1 -4 -52" transformations="translations" pos="368 704" stroke="black" type="label" width="184.015" height="13.2" depth="3.75" valign="baseline" size="Large">需要 $P \vee (P \Rightarrow \bot)$ 的证明</text>
-<text matrix="1 0 0 1 92 -36" transformations="translations" pos="188 636" stroke="black" type="label" width="59.948" height="11.25" depth="3.75" valign="baseline" size="Large" style="math">k(\langle 1, ? \rangle)</text>
-<path matrix="1 0 0 1 0 -60" stroke="black" rarrow="normal/normal">
-320 680 m
-320 696 l
-</path>
-<text matrix="1 0 0 1 -4 -104" transformations="translations" pos="368 704" stroke="black" type="label" width="138.482" height="13.2" depth="1.8" valign="baseline" size="Large">需要 $P \Rightarrow \bot$ 的证明</text>
-<path matrix="1 0 0 1 0 -104" stroke="black" rarrow="normal/normal">
-320 680 m
-320 696 l
-</path>
-<text matrix="1 0 0 1 -76 -144" transformations="translations" pos="368 704" stroke="black" type="label" width="53.492" height="10.417" depth="0" valign="baseline" size="Large" style="math">P \Rightarrow \bot</text>
-<text matrix="1 0 0 1 96 -100" transformations="translations" pos="188 636" stroke="black" type="label" width="23.868" height="10.413" depth="2.92" valign="baseline" size="Large" style="math">\lambda p.</text>
+<text matrix="1 0 0 1 -8 40" transformations="translations" pos="188 636" stroke="black" type="label" width="131.051" height="11.25" depth="3.75" valign="baseline" size="Large" style="math">k( \;\;\;\;\;\;\;\;\;\;\;?\;\;\;\;\;\;\;\;\;\;)</text>
+<text matrix="1 0 0 1 -44 16" transformations="translations" pos="368 704" stroke="black" type="label" width="116.737" height="13.2" depth="1.8" valign="baseline" size="Large">1. 需要 $\bot$ 的证明</text>
+<text matrix="1 0 0 1 -44 -28" transformations="translations" pos="368 704" stroke="black" type="label" width="202.345" height="13.2" depth="3.75" valign="baseline" size="Large">2. 需要 $P \vee (P \Rightarrow \bot)$ 的证明</text>
+<text matrix="1 0 0 1 8 -12" transformations="translations" pos="188 636" stroke="black" type="label" width="109.363" height="11.25" depth="3.75" valign="baseline" size="Large" style="math">\langle 1, \;\;\;\;\;\;?\;\;\;\;\;\;\;\;\; \rangle</text>
+<text matrix="1 0 0 1 -44 -80" transformations="translations" pos="368 704" stroke="black" type="label" width="156.812" height="13.2" depth="1.8" valign="baseline" size="Large">3. 需要 $P \Rightarrow \bot$ 的证明</text>
+<text matrix="1 0 0 1 -144 -120" transformations="translations" pos="368 704" stroke="black" type="label" width="63.075" height="10.417" depth="0" valign="baseline" size="Large" style="math">P \; \Rightarrow \; \bot</text>
+<text matrix="1 0 0 1 32 -76" transformations="translations" pos="188 636" stroke="black" type="label" width="23.868" height="10.413" depth="2.92" valign="baseline" size="Large" style="math">\lambda p.</text>
 <path stroke="black">
-288 552 m
-304 552 l
+220 576 m
+240 576 l
+</path>
+<text matrix="1 0 0 1 -112 -152" transformations="translations" pos="388 712" stroke="black" type="label" width="7.969" height="10.417" depth="0" valign="baseline" size="Large" style="math">?</text>
+<text matrix="1 0 0 1 -44 -144" transformations="translations" pos="368 704" stroke="black" type="label" width="116.737" height="13.2" depth="1.8" valign="baseline" size="Large">4. 需要 $\bot$ 的证明</text>
+<text matrix="1 0 0 1 56 -120" transformations="translations" pos="188 636" stroke="black" type="label" width="59.177" height="11.25" depth="3.75" valign="baseline" size="Large" style="math">k(\;\;\;?\;\;\;)</text>
+<text matrix="1 0 0 1 -44 -188" transformations="translations" pos="368 704" stroke="black" type="label" width="202.345" height="13.2" depth="3.75" valign="baseline" size="Large">5. 需要 $P \vee (P \Rightarrow \bot)$ 的证明</text>
+<text matrix="1 0 0 1 72 -164" transformations="translations" pos="188 636" stroke="black" type="label" width="38.534" height="11.25" depth="3.75" valign="baseline" size="Large" style="math">\langle 0, p \rangle</text>
+<path stroke="black" rarrow="normal/normal">
+184 696 m
+184 708
+192 712
+240 708
+248 716 c
 </path>
 <path stroke="black" rarrow="normal/normal">
-328 540 m
-312 540 l
+304 696 m
+304 708
+292 708
+264 708
+248 716 c
 </path>
-<text matrix="1 0 0 1 -52 -176" transformations="translations" pos="388 712" stroke="black" type="label" width="7.969" height="10.417" depth="0" valign="baseline" size="Large" style="math">?</text>
-<text matrix="1 0 0 1 -4 -168" transformations="translations" pos="368 704" stroke="black" type="label" width="98.407" height="13.2" depth="1.8" valign="baseline" size="Large">需要 $\bot$ 的证明</text>
-<text matrix="1 0 0 1 132 -144" transformations="translations" pos="188 636" stroke="black" type="label" width="30.427" height="11.25" depth="3.75" valign="baseline" size="Large" style="math">k( ? )</text>
-<path matrix="1 0 0 1 20 -168" stroke="black" rarrow="normal/normal">
-320 680 m
-320 696 l
+<path stroke="black" rarrow="normal/normal">
+200 644 m
+200 656
+216 656
+244 656
+252 668 c
 </path>
-<text matrix="1 0 0 1 -4 -212" transformations="translations" pos="368 704" stroke="black" type="label" width="184.015" height="13.2" depth="3.75" valign="baseline" size="Large">需要 $P \vee (P \Rightarrow \bot)$ 的证明</text>
-<text matrix="1 0 0 1 112 -188" transformations="translations" pos="188 636" stroke="black" type="label" width="60.993" height="11.25" depth="3.75" valign="baseline" size="Large" style="math">k(\langle 0, p \rangle)</text>
-<path matrix="1 0 0 1 20 -212" stroke="black" rarrow="normal/normal">
-320 680 m
-320 696 l
+<path stroke="black" rarrow="normal/normal">
+300 644 m
+300 656
+288 656
+260 656
+252 668 c
+</path>
+<path stroke="black" rarrow="normal/normal">
+224 600 m
+224 612
+240 612
+248 612
+252 620 c
+</path>
+<path stroke="black" rarrow="normal/normal">
+248 532 m
+248 544
+260 544
+272 544
+280 556 c
+</path>
+<path stroke="black" rarrow="normal/normal">
+280 600 m
+280 612
+268 612
+260 612
+252 620 c
+</path>
+<path stroke="black" rarrow="normal/normal">
+300 532 m
+300 544
+292 544
+284 544
+280 556 c
+</path>
+<path stroke="black" rarrow="normal/normal">
+264 488 m
+264 500
+272 500
+276 500
+280 508 c
+</path>
+<path stroke="black" rarrow="normal/normal">
+292 488 m
+292 500
+284 500
+280 500
+280 508 c
+</path>
+<text matrix="1 0 0 1 -44 -232" transformations="translations" pos="368 704" stroke="black" type="label" width="232.345" height="13.2" depth="3.75" valign="baseline" size="Large">6. 这个就是 $P \vee (P \Rightarrow \bot)$ 的证明</text>
+<path stroke="black">
+244 744 m
+260 744 l
+</path>
+<path matrix="1 0 0 1 28 -168" stroke="black">
+244 744 m
+260 744 l
 </path>
 </page>
 </ipe>
