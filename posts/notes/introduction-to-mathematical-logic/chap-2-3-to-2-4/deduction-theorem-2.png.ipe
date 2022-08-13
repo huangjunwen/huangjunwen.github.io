@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
 <ipe version="70218" creator="Ipe 7.2.24">
-<info created="D:20220221161534" modified="D:20220730173927" tex="luatex"/>
+<info created="D:20220221161534" modified="D:20220814065910" tex="luatex"/>
 <preamble>\usepackage{ctex}
 \usepackage{bm}
 \boldmath
