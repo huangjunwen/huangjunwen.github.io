@@ -2,22 +2,28 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://127.0.0.1:1313/categories/</loc>
-    <lastmod>2022-05-05T08:08:04+00:00</lastmod>
-  </url><url>
     <loc>http://127.0.0.1:1313/</loc>
+    <lastmod>2022-08-27T10:14:17+00:00</lastmod>
+  </url><url>
+    <loc>http://127.0.0.1:1313/posts/2022/jupyterlite/</loc>
+    <lastmod>2022-08-27T10:14:17+00:00</lastmod>
+  </url><url>
+    <loc>http://127.0.0.1:1313/posts/</loc>
+    <lastmod>2022-08-27T10:14:17+00:00</lastmod>
+  </url><url>
+    <loc>http://127.0.0.1:1313/tags/python/</loc>
+    <lastmod>2022-08-27T10:14:17+00:00</lastmod>
+  </url><url>
+    <loc>http://127.0.0.1:1313/tags/</loc>
+    <lastmod>2022-08-27T10:14:17+00:00</lastmod>
+  </url><url>
+    <loc>http://127.0.0.1:1313/categories/</loc>
     <lastmod>2022-05-05T08:08:04+00:00</lastmod>
   </url><url>
     <loc>http://127.0.0.1:1313/posts/2022/intuitionistic-logic/</loc>
     <lastmod>2022-05-05T08:08:04+00:00</lastmod>
   </url><url>
     <loc>http://127.0.0.1:1313/tags/logic/</loc>
-    <lastmod>2022-05-05T08:08:04+00:00</lastmod>
-  </url><url>
-    <loc>http://127.0.0.1:1313/posts/</loc>
-    <lastmod>2022-05-05T08:08:04+00:00</lastmod>
-  </url><url>
-    <loc>http://127.0.0.1:1313/tags/</loc>
     <lastmod>2022-05-05T08:08:04+00:00</lastmod>
   </url><url>
     <loc>http://127.0.0.1:1313/categories/type-theory/</loc>
@@ -87,9 +93,6 @@
     <lastmod>2018-03-15T09:05:51+08:00</lastmod>
   </url><url>
     <loc>http://127.0.0.1:1313/posts/archive/greenlet/</loc>
-    <lastmod>2018-03-15T09:05:51+08:00</lastmod>
-  </url><url>
-    <loc>http://127.0.0.1:1313/tags/python/</loc>
     <lastmod>2018-03-15T09:05:51+08:00</lastmod>
   </url><url>
     <loc>http://127.0.0.1:1313/tags/vault/</loc>
