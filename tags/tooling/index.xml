@@ -17,7 +17,8 @@
 需求 大致如下
 内容应该可以很容易跨平台发布，例如除了本身作为博客的网站外，也能发布到微信公众号或其他内容平台， 甚至可以单独输出成文档 写作时要有实时反馈 内容使用的格式不能过于依赖专有或特定软件 仅使用开源工具  格式 Markdown 熟悉，简单，广泛应用
  https://www.markdownguide.org/basic-syntax/ https://www.markdownguide.org/extended-syntax/  Tex 功能强大，表达丰富，不过需要些时间学习；另外 markdown 中也可以嵌入 math mode 的公式，这已经解决很大一部分问题了
-Svg 配图首选，缩放无损，文本可编辑，众多编辑器可用1
+Svg 缩放无损，文本可编辑，众多编辑器可用1
+PNG TODO
 工具 Hugo 速度快，编辑即可看到效果
 Pandoc pandoc 也是可以作为 hugo 的 markdown 渲染引擎的 2，用它有多个好处
  能识别 latex 式的 math mode（$...$/$$...$$） 可以写 filter！用 外部程序 或者 lua 脚本 直接修改 pandoc 的 ast pandoc 本身就是用来转换格式的（e.g. markdown -&amp;gt; pdf） 更多扩展  整合 整合起来就是：内容为 markdown 格式，尽量少使用专有的扩展，pandoc 负责将其转换格式，其中最主要的 html 格式则交由 hugo + js + css 进一步处理及呈现</description>

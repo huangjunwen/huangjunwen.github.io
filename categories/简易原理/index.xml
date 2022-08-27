@@ -46,7 +46,7 @@ Greenlet 的做法是这样的：当一个 greenlet 运行时，它的堆栈区�
 Vault server 运行起来之后有两种状态：seal/unseal (密封/解封) ，这是因为：
 Vault 的数据是加密储存在磁盘上的：由 encryption key 加密，这个 encryption key 是由 master key 加密储存在磁盘上，而 master key 是不存放在磁盘上。所以当 Vault server 刚启动时，由于 master key 未知，故 encryption key 以及实际数据都是无法被解密访问的，这种状态就称之为seal (密封) ，unseal(解封) 就是重建 master key 的过程。
 由于 master key 太重要了，Vault 使用所谓的 Shamir’s Secret Sharing 算法把这个 master key 切分并分发给 n 个人，只有当这 n 个人里的最少 k 个人授权提供他们持有的部分，vault 才能重构出这个 master key，这个算法挺有趣，所以记录下来：
-目标 密码 \(S\) 需要切分成 \(n\) 份： \(S_1, S_2, ... S_n\)</description>
+目标 密码 \(S\) 需要切分成 \(n\) 份： \(S_1, S_2, ... S_n\)，且满足以下：</description>
     </item>
     
     <item>

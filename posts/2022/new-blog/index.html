@@ -93,8 +93,10 @@ class="uri">https://www.markdownguide.org/extended-syntax/</a></li>
 <p>功能强大，表达丰富，不过需要些时间学习；另外 markdown 中也可以嵌入
 math mode 的公式，这已经解决很大一部分问题了</p>
 <h3 id="svg">Svg</h3>
-<p>配图首选，缩放无损，文本可编辑，众多编辑器可用<a href="#fn1"
+<p>缩放无损，文本可编辑，众多编辑器可用<a href="#fn1"
 class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<h3 id="png">PNG</h3>
+<p>TODO</p>
 <h2 id="工具">工具</h2>
 <h3 id="hugo">Hugo</h3>
 <p>速度快，编辑即可看到效果</p>
@@ -184,6 +186,9 @@ inotifywait -rmq -e close_write,moved_to . | while read dir action file; do \
       ipe2png $dir/$file
   esac
 done</code></pre>
+<hr />
+<p>Updated: 2022-08-27 新增一个 <a href="autogen.py">autogen.py</a>
+用于完成更复杂的自动生成逻辑</p>
 <section class="footnotes footnotes-end-of-document"
 role="doc-endnotes">
 <hr />
