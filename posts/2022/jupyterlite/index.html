@@ -61,6 +61,7 @@
   <p>
     
     <a href="/tags/python/"><span class="tag is-small">python</span></a>
+    <a href="/tags/jupyter/"><span class="tag is-small">jupyter</span></a>
     
   </p>
   
@@ -69,27 +70,26 @@
           
   <article id="content-body">
     <p>最近总是接触各种
-Jupyter…（JupyterNotebook/JupyterHub），发现居然还有可以完全跑在浏览器上的
-<a
+Jupyter…（JupyterLab/JupyterHub），发现居然还有可以完全跑在浏览器上的 <a
 href="https://github.com/jupyterlite/jupyterlite">Jupyterlite</a>，那是不是可以直接放一个到这儿呢？</p>
 <h2 id="大致的概念">大致的概念</h2>
-<p>原来的 JupyterNotebook 是传统的 CS 模式，各种语言（e.g. python）的
-kernel 是跑在服务端的</p>
-<p>但现在 python（和一些常用的库）也有了 WebAssembly 的移植版（e.g. <a
-href="https://pyodide.org/en/stable/">pyodide</a>）， 这样 kernel
+<p>原来的 Jupyter 是传统的 CS 模式，各种语言（e.g. python）的 kernel
+是跑在服务端的</p>
+<p>但现在也有了 python（和一些常用的库）的 WebAssembly 移植版（e.g. <a
+href="https://pyodide.org/en/stable/">pyodide</a>）， 这样一来 kernel
 也可以在浏览器上实现了 （e.g. <a
 href="https://jupyterlite.readthedocs.io/en/latest/quickstart/using.html#a-python-kernel-powered-by-pyodide">pyolite</a>），
-因此也就可以创建一个全静态的 site，UI 和 kernel 都在浏览器中运行，
-中间用 <a
+因此可以创建一个全静态的 site，UI 和 kernel 都在浏览器中运行， 中间用 <a
 href="https://jupyterlite.readthedocs.io/en/latest/quickstart/using.html#kernels">mock-socket</a>
-假装通讯， 这样就可以把 notebook 那一套 CS 模式移植过来</p>
+假装通讯， 完整地把 notebook 那一套 CS 模式移植过来</p>
 <h2 id="部署流程">部署流程</h2>
 <h3 id="安装-jupyterlite-cli">安装 jupyterlite CLI</h3>
 <p><code
 class="language-plaintext">pip install --pre jupyterlite</code>（现在还处于
 <a
 href="https://github.com/jupyterlite/jupyterlite/releases/tag/v0.1.0b12">pre-release</a>
-的状态）</p>
+的状态）， 更多可安装的 addons 可以看<a
+href="https://jupyterlite.readthedocs.io/en/latest/reference/cli.html#addon-dependencies">这里</a></p>
 <h3 id="生成-site">生成 site</h3>
 <p>引自 jupyterlite CLI <a
 href="https://jupyterlite.readthedocs.io/en/latest/reference/cli.html#cli">文档</a>，</p>
@@ -105,9 +105,12 @@ of combining…</p>
 <p>… into a ready-to-deploy (and optionally reproducible) Jupyter sites
 which require an HTTP server, but no application server.</p>
 </blockquote>
-<p>主要命令 <a
-href="https://jupyterlite.readthedocs.io/en/latest/reference/cli.html#build"><code
-class="language-plaintext">jupyter lite build</code></a>，一些重要参数</p>
+<p>按我的需求来说就是提供额外的 config/wheels/notebook，然后用这个 CLI
+合并上 jupyterlite 本身的静态资源 （e.g. core assets，应该是指 UI 和
+kernel 等）输出一个 site</p>
+<p>主要用到命令 <code
+class="language-plaintext">jupyter lite build</code>（<a
+href="https://jupyterlite.readthedocs.io/en/latest/reference/cli.html#build">doc</a>），一些重要参数</p>
 <ul>
 <li><code class="language-plaintext">--config</code> 可以指定一个 JSON
 配置，默认是当前目录下名为 <code
@@ -122,7 +125,7 @@ href="https://jupyterlite.readthedocs.io/en/latest/reference/cli.html#the-lite-d
 </ul>
 <h3 id="例子">例子</h3>
 <p>以下是一个 build script 和配置的例子：它会首先创建 python virutal env
-然后安装 jupyterlite 最后 build 一个 site 到目录 <code
+然后安装 jupyterlite 最后输出 site 到目录 <code
 class="language-plaintext">jl</code> 中， 这里根据 <a
 href="https://jupyterlite.readthedocs.io/en/latest/howto/configure/advanced/offline.html">Create
 a JupyterLite archive that can be used offline</a> 下载完整的 pyodide
@@ -185,17 +188,18 @@ class="language-plaintext">jupyter_lite_config.json</code></p>
   }
 }</code></pre></li>
 </ul>
+<h3 id="内容">内容</h3>
+<p>可将内容（<code class="language-plaintext">*.ipynb</code>）放置到
+LiteDir 的 <code class="language-plaintext">files</code> 目录中，再次跑
+build script 即可更新到 site 中， 详细说明见 <a
+href="https://jupyterlite.readthedocs.io/en/latest/howto/content/files.html">Adding
+content: notebook, files and static assets</a></p>
 <h3 id="部署">部署</h3>
 <p>部署方式有多种，例如可以在 github 上新建一个名为 <code
 class="language-plaintext">jupyterlite</code> 的项目，把刚才生成的 site
 push 上去，并且设置 github page， 这样它就可以在 <code
 class="language-plaintext">&lt;username&gt;.github.io/jupyterlite</code>
 这个路径上访问得到了</p>
-<h3 id="内容">内容</h3>
-<p>如上所述，可将内容（<code
-class="language-plaintext">*.ipynb</code>）放置到 LiteDir 的 <code
-class="language-plaintext">files</code> 目录中，再次跑 build script
-即可更新到 site 中</p>
 <h2 id="使用">使用</h2>
 <h3 id="不同之处">不同之处</h3>
 <p>原 CS 模式下，packages 是在服务器上安装好，可以直接 <code
@@ -204,7 +208,7 @@ pyodide 自带的那些包外， 需要首先 <code
 class="language-plaintext">piplite.install</code> 才能 <code
 class="language-plaintext">import</code>，例如：</p>
 <pre class="language-python code"><code>import pyjokes
-pyjokes</code></pre>
+pyjokes.get_joke()</code></pre>
 <p>这是会失败的</p>
 <pre class="language-python code"><code>import piplite
 await piplite.install(&#39;pyjokes&#39;)
