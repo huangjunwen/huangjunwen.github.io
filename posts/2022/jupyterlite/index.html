@@ -192,7 +192,7 @@ class="language-plaintext">&lt;username&gt;.github.io/jupyterlite</code>
 <h3 id="内容">内容</h3>
 <p>如上所述，可将内容（<code
 class="language-plaintext">*.ipynb</code>）放置到 LiteDir 的 files
-里，然后再次跑 build script 即可更新 site 中的内容</p>
+里，然后再次跑 build script 即可更新到 site 中</p>
 <h2 id="使用">使用</h2>
 <h3 id="不同之处">不同之处</h3>
 <p>原 CS 模式下，packages 是在服务器上安装好，可以直接 <code
@@ -207,13 +207,12 @@ toml</code></pre>
 await piplite.install(&#39;toml&#39;)
 import toml
 toml</code></pre>
-<p>这样才行，看看效果：<a
-href="https://huangjunwen.github.io/jupyterlite/lab?path=posts%2F2022%2Fjupyterlite%2Findex.ipynb"
-class="uri">https://huangjunwen.github.io/jupyterlite/lab?path=posts%2F2022%2Fjupyterlite%2Findex.ipynb</a></p>
+<p>这样才行，看看<a
+href="/jupyterlite/lab?path=posts%2F2022%2Fjupyterlite%2Findex.ipynb">效果</a></p>
 <p>注：上面将 whl url 写到 <code
 class="language-plaintext">piplite_urls</code> 中只是将 wheel 提前下载到
 site 中，并告诉 jupyterlite 如果要 piplite install 这个包则不要去 pypi
-找而是在本地找，但要使用它之前还是需要 <code
+找而是在 site 里找，但要使用它之前还是需要 <code
 class="language-plaintext">piplite.install</code> 的</p>
 
   </article>
