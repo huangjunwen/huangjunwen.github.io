@@ -13,15 +13,13 @@
       <pubDate>Sat, 27 Aug 2022 10:14:17 +0000</pubDate>
       
       <guid>http://127.0.0.1:1313/posts/2022/jupyterlite/</guid>
-      <description>最近总是接触各种 Jupyter…（JupyterNotebook/JupyterHub），发现居然还有一个可以完全跑在浏览器上的 Jupyterlite，那是不是可以直接放一个到这儿呢？开干
+      <description>最近总是接触各种 Jupyter…（JupyterNotebook/JupyterHub），发现居然还有可以完全跑在浏览器上的 Jupyterlite，那是不是可以直接放一个到这儿呢？
 大致的概念 原来的 JupyterNotebook 是传统的 CS 模式，各种语言（e.g. python）的 kernel 是跑在服务端的
-但现在 python（和一些常用的库）也有了 WebAssembly 的 port（e.g. pyodide）， 这样 kernel 也可以在浏览器上实现了，于是可以创建一个全静态的 site，UI 和 kernel 都在浏览器中运行， 中间用 mock-socket 假装通讯，这样就可以把 notebook 那一套 CS 模式移植过来
-部署流程 安装 jupyterlite pip install --pre jupyterlite（现在还处于 pre-release 的状态）
-生成 site 运行装好的 jupyterlite：jupyter lite build，该命令会
- 尝试读取配置  默认是在当前目录找 jupyter_lite_config.json，可通过 --config 修改
- 例子可看这里
- jupyter lite -h 也有一些说明
-$ jupyter lite -h ... --output-dir=&amp;lt;CPath&amp;gt; Where to build the JupyterLite site.</description>
+但现在 python（和一些常用的库）也有了 WebAssembly 的移植版（e.g. pyodide）， 这样 kernel 也可以在浏览器上实现了 （e.g. pyolite）， 因此也就可以创建一个全静态的 site，UI 和 kernel 都在浏览器中运行， 中间用 mock-socket 假装通讯， 这样就可以把 notebook 那一套 CS 模式移植过来
+部署流程 安装 jupyterlite CLI pip install --pre jupyterlite（现在还处于 pre-release 的状态）
+生成 site 引自 jupyterlite CLI 文档，
+ The jupyter lite (or jupyter-lite) CLI provides tools for lifecycle of combining…
+ the core JupyterLite static assets extra application features like Lab Extensions and settings kernel-specific resources like Python wheels user-authored content like Notebooks  … into a ready-to-deploy (and optionally reproducible) Jupyter sites which require an HTTP server, but no application server.</description>
     </item>
     
     <item>
