@@ -80,31 +80,55 @@ href="https://pyodide.org/en/stable/">pyodide</a>）， 这样 kernel
 也可以在浏览器上实现了，于是可以创建一个全静态的 site，UI 和 kernel
 都在浏览器中运行， 中间用 mock-socket 假装通讯，这样就可以把 notebook
 那一套 CS 模式移植过来</p>
-<h2 id="大致的流程">大致的流程</h2>
-<ol type="1">
-<li>安装 jupyterlite</li>
-<li>用装好的 jupyterlite 生成一个 site</li>
-</ol>
-<h2 id="具体的流程">具体的流程</h2>
+<h2 id="部署流程">部署流程</h2>
 <h3 id="安装-jupyterlite">安装 jupyterlite</h3>
-<p>其实就是 <code
+<p><code
 class="language-plaintext">pip install --pre jupyterlite</code>（现在还处于
 <a
 href="https://github.com/jupyterlite/jupyterlite/releases/tag/v0.1.0b12">pre-release</a>
 的状态）</p>
 <h3 id="生成-site">生成 site</h3>
 <p>运行装好的 jupyterlite：<code
-class="language-plaintext">jupyter lite build</code>，该命令会在 <a
-href="https://jupyterlite.readthedocs.io/en/latest/reference/cli.html#the-lite-dir">LiteDir</a>（默认当前目录）
-读取配置（默认为 <code
-class="language-plaintext">jupyter_lite_config.json</code><a href="#fn1"
-class="footnote-ref" id="fnref1"
-role="doc-noteref"><sup>1</sup></a>），复制内容 （例如 LiteDir 下如果有
-<code class="language-plaintext">files</code>
-目录则会直接复制到输出目录<a href="#fn2" class="footnote-ref"
-id="fnref2" role="doc-noteref"><sup>2</sup></a>）等，
-然后输出到一个目录（默认为 <code
-class="language-plaintext">_output</code>），该目录下就是 site 了</p>
+class="language-plaintext">jupyter lite build</code>，该命令会</p>
+<ul>
+<li>尝试读取配置
+<ul>
+<li><p>默认是在当前目录找 <code
+class="language-plaintext">jupyter_lite_config.json</code>，可通过 <code
+class="language-plaintext">--config</code> 修改</p></li>
+<li><p>例子可看<a
+href="https://github.com/jupyterlite/jupyterlite/blob/main/examples/jupyter_lite_config.json">这里</a></p></li>
+<li><p><code class="language-plaintext">jupyter lite -h</code>
+也有一些说明</p>
+<pre class="language-shell"><code>$ jupyter lite -h
+...
+--output-dir=&lt;CPath&gt;
+    Where to build the JupyterLite site. env: JUPYTERLITE_OUTPUT_DIR
+    Default: traitlets.Undefined
+    Equivalent to: [--LiteBuildConfig.output_dir]
+...
+--piplite-wheels=&lt;typedtuple-item-1&gt;...
+    Local paths or URLs of piplite-compatible wheels to copy and index
+    Default: ()
+    Equivalent to: [--LiteBuildConfig.piplite_urls]
+...
+--pyodide=&lt;Unicode&gt;
+    Local path or URL of a pyodide distribution tarball
+    Default: &#39;&#39;
+    Equivalent to: [--LiteBuildConfig.pyodide_url]</code></pre></li>
+</ul></li>
+<li>复制内容：<a
+href="https://jupyterlite.readthedocs.io/en/latest/howto/content/files.html"
+class="uri">https://jupyterlite.readthedocs.io/en/latest/howto/content/files.html</a>
+<ul>
+<li>例如若 <a
+href="https://jupyterlite.readthedocs.io/en/latest/reference/cli.html#the-lite-dir">LiteDir</a>
+下有文件夹 <code class="language-plaintext">files</code>，
+则会复制到输出目录并进行索引</li>
+</ul></li>
+<li>最终将 site assets 输出到一个目录（默认为 <code
+class="language-plaintext">_output</code>），</li>
+</ul>
 <h3 id="例子">例子</h3>
 <p>以下是一个 build script 和配置：它会首先创建 python virutal env
 然后安装 jupyterlite 最后 build 一个 site 到目录 <code
@@ -169,6 +193,7 @@ class="language-plaintext">&lt;username&gt;.github.io/jupyterlite</code>
 <p>如上所述，可将内容（<code
 class="language-plaintext">*.ipynb</code>）放置到 LiteDir 的 files
 里，然后再次跑 build script 即可更新 site 中的内容</p>
+<h2 id="使用">使用</h2>
 <h3 id="不同之处">不同之处</h3>
 <p>原 CS 模式下，packages 是在服务器上安装好，可以直接 <code
 class="language-plaintext">import</code>，而在 jupyterlite 中，似乎除
@@ -190,38 +215,6 @@ class="language-plaintext">piplite_urls</code> 中只是将 wheel 提前下载�
 site 中，并告诉 jupyterlite 如果要 piplite install 这个包则不要去 pypi
 找而是在本地找，但要使用它之前还是需要 <code
 class="language-plaintext">piplite.install</code> 的</p>
-<section class="footnotes footnotes-end-of-document"
-role="doc-endnotes">
-<hr />
-<ol>
-<li id="fn1" role="doc-endnote"><p>在这里可以看到一个官方的配置例子 <a
-href="https://github.com/jupyterlite/jupyterlite/blob/main/examples/jupyter_lite_config.json"
-class="uri">https://github.com/jupyterlite/jupyterlite/blob/main/examples/jupyter_lite_config.json</a></p>
-<p>另外运行 <code class="language-plaintext">jupyter lite -h</code>
-也可以看到具体说明</p>
-<pre class="language-shell"><code>$ jupyter lite -h
-...
---output-dir=&lt;CPath&gt;
-    Where to build the JupyterLite site. env: JUPYTERLITE_OUTPUT_DIR
-    Default: traitlets.Undefined
-    Equivalent to: [--LiteBuildConfig.output_dir]
-...
---piplite-wheels=&lt;typedtuple-item-1&gt;...
-    Local paths or URLs of piplite-compatible wheels to copy and index
-    Default: ()
-    Equivalent to: [--LiteBuildConfig.piplite_urls]
-...
---pyodide=&lt;Unicode&gt;
-    Local path or URL of a pyodide distribution tarball
-    Default: &#39;&#39;
-    Equivalent to: [--LiteBuildConfig.pyodide_url]</code></pre>
-<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></li>
-<li id="fn2" role="doc-endnote"><p><a
-href="https://jupyterlite.readthedocs.io/en/latest/howto/content/files.html"
-class="uri">https://jupyterlite.readthedocs.io/en/latest/howto/content/files.html</a><a
-href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-</ol>
-</section>
 
   </article>
 
