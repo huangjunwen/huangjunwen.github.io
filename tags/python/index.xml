@@ -15,9 +15,9 @@
       <guid>http://127.0.0.1:1313/posts/2022/jupyterlite/</guid>
       <description>最近总是接触各种 Jupyter…（JupyterNotebook/JupyterHub），发现居然还有一个可以完全跑在浏览器上的 Jupyterlite，那是不是可以直接放一个到这儿呢？开干
 大致的概念 原来的 JupyterNotebook 是传统的 CS 模式，各种语言（e.g. python）的 kernel 是跑在服务端的
-但现在 python（和一些常用的库）也有了 WebAssembly 的 port（e.g. pyodide）， 这些 kernel 也就可以在浏览器上实现了，于是可以创建一个全静态的 site，UI 和 kernel 都在浏览器中运行， 中间用 mock-socket 假装通讯，这样就可以把 notebook 那一套 CS 模式移植过来了
+但现在 python（和一些常用的库）也有了 WebAssembly 的 port（e.g. pyodide）， 这样 kernel 也可以在浏览器上实现了，于是可以创建一个全静态的 site，UI 和 kernel 都在浏览器中运行， 中间用 mock-socket 假装通讯，这样就可以把 notebook 那一套 CS 模式移植过来
 大致的流程 安装 jupyterlite 用装好的 jupyterlite 生成一个 site  具体的流程 安装 jupyterlite 其实就是 pip install --pre jupyterlite（现在还处于 pre-release 的状态）
-生成 site 运行装好的 jupyterlite：jupyter lite build，该命令会默认在当前目录（称之为 LiteDir）尝试找一个 jupyter_lite_config.json1 的文件作为配置然后生成 site
+生成 site 运行装好的 jupyterlite：jupyter lite build，该命令会在 LiteDir（默认当前目录） 读取配置（默认为 jupyter_lite_config.json1），复制内容 （例如 LiteDir 下如果有 files 目录则会直接复制到输出目录2）等， 然后输出到一个目录（默认为 _output），该目录下就是 site 了
 例子 以下是一个 build script 和配置：它会首先创建 python virutal env 然后安装 jupyterlite 最后 build 一个 site 到目录 jl 中， 这里根据 Create a JupyterLite archive that can be used offline 下载完整的 pyodide 以及 mathjax（不需要用 CDN），另外也添加了预下载的 toml-0.</description>
     </item>
     
