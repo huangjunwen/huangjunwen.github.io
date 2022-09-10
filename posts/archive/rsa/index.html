@@ -69,7 +69,7 @@
         <div id="main-body">
           
   <article id="content-body">
-    <h3 id="主要算法">主要算法</h3>
+    <h2 id="主要算法简介">主要算法简介</h2>
 <p><a href="https://en.wikipedia.org/wiki/RSA_(cryptosystem)">RSA</a>
 的原理是在于能够找到三个很大的正整数 \(e,d,n\) 使得对于任何 \(0 \le m
 \lt n\)：</p>
@@ -79,24 +79,15 @@
 <p>其中公钥为 \((n,e)\)，可以发送给任何人；私钥为
 \((n,d)\)，只能由所有者掌握。RSA 支持 4
 种操作：加密/解密，签名/验证签名。</p>
-<h4 id="加密">加密</h4>
+<h3 id="加密">加密</h3>
 <p>首先用一些编码手段把需要加密的信息转换成整数
 \(m\)，用公钥中的两个参数计算</p>
 <p>\[
 c = m^e \pmod{n}
 \]</p>
 <p>其中 \(c\) 就是加密后的信息了。</p>
-<h4 id="解密">解密</h4>
-<p>中学知识温习时间：</p>
-<p>\[
-\begin{align}
-ab \pmod{n} &amp;= (xn+a_r)(yn+b_r) \pmod{n} \\
-            &amp;= a_r b_r \pmod{n} \\
-            &amp;= (a \pmod{n})(b \pmod{n}) \pmod{n}
-\end{align}
-\]</p>
-<p>即在模运算中，只要算余数就可以了。</p>
-<p>因此，由私钥所有者计算</p>
+<h3 id="解密">解密</h3>
+<p>由私钥所有者计算</p>
 <p>\[
 \begin{align}
 c^d \pmod{n} &amp;= (m^e \pmod{n})^d \pmod{n} \\
@@ -104,8 +95,10 @@ c^d \pmod{n} &amp;= (m^e \pmod{n})^d \pmod{n} \\
              &amp;= m \pmod{n}
 \end{align}
 \]</p>
-<p>就能还原原来的信息了。</p>
-<h4 id="签名">签名</h4>
+<p>就能还原原来的信息了（乘积与其余数乘积同余，见同余命题 <a
+href="#congruence-prop-a"><code
+class="language-plaintext">a</code></a>）</p>
+<h3 id="签名">签名</h3>
 <ol type="1">
 <li>首先对要签名的信息作一个 <a
 href="https://en.wikipedia.org/wiki/Cryptographic_hash_function">message
@@ -113,14 +106,14 @@ digest</a>，常用的如 MD5 和 SHA 系列；</li>
 <li>然后把这个 digest 转换成整数 \(m\) 使得 \(1 \le m \lt n\)；</li>
 <li>最后用私钥 \((n,d)\) 计算 \(s = m^d \pmod{n}\)</li>
 </ol>
-<h4 id="验证签名">验证签名</h4>
+<h3 id="验签">验签</h3>
 <ol type="1">
 <li>用公钥 \((n,e)\) 计算 \(v = s^e \pmod{n}\)</li>
 <li>把 \(v\) 转换回 digest</li>
 <li>独立对要签名的信息再作一次 digest</li>
 <li>对比这两个 digest，如果相同的话，那这个签名就是有效的</li>
 </ol>
-<h4 id="小结">小结</h4>
+<h3 id="note">Note</h3>
 <p>可以看到加解密和签名验签刚好是两个方向：前者是公钥加密发送给所有者解密，后者是用私钥签名发送给其他人用公钥验签；所以这就是为何一般<a
 href="http://www.di-mgt.com.au/rsa_alg.html#weaknesses">不建议使用相同的
 key 同时用作加密和签名</a>：</p>
@@ -131,9 +124,28 @@ signing, only in reverse, if an attacker can convince a key holder to
 sign an unformatted encrypted messageusing the same key then she gets
 the original.</p>
 </blockquote>
-<h3 id="实际算法">实际算法</h3>
-<p>包括 key 的生成算法，计算时的优化，对信息的编码等，以及 RSA
-的数学上的证明；有兴趣可以看一下下面参考的链接，稍微摘录一些简单而重要的点：</p>
+<h3 id="公私钥生成">公私钥生成</h3>
+<p>生成 \(e,d,n\) 的算法大致如下：</p>
+<ol type="1">
+<li>生成两个大的随机质数 \(p\) 和 \(q\)</li>
+<li>计算 \(n = pq\)，\(n\) 是公钥的一部分</li>
+<li>计算 \(n\) 的<a href="#eulers-totient-function">欧拉函数</a>
+\(\varphi(n) = (p - 1)(q - 1)\)</li>
+<li>选择公钥幂 \(1 &lt; e &lt; \varphi(n)\)，且 \(e\) 和 \(\varphi(n)\)
+互质</li>
+<li>计算私钥幂 \(d\) 使得 \(ed \equiv 1 \pmod{\varphi(n)}\)</li>
+<li>\((e, n)\) 是公钥，其余 \(p,q,d,\varphi(n)\) 这些都需要保密</li>
+</ol>
+<p>通过这样算法生成出来的 \(e,d,n\) 即可满足最开始的要求，证明可看<a
+href="#rsa-正确性证明">下面</a></p>
+<p>注意 \(e\) 和 \(n\) 是公开的，而通过 \(\varphi(n)\) 和 \(e\)
+则可以算出 \(d\)，故其实 RSA 的安全性即来自于 <strong>从 \(n\)
+难以计算出 \(\varphi(n) = (p - 1)(q - 1) = (n + 1) - (p +
+q)\)</strong>， 这是因为<a
+href="https://en.wikipedia.org/wiki/Integer_factorization">大数质数分解</a><strong>目前</strong>没有有效算法，
+也就是从 \(n\) 难以分解出 \(p,q\)，也就难以算出 \(\varphi(n)\) 了</p>
+<h2 id="实现细节">实现细节</h2>
+<p>更多细节有兴趣可以看一下下面参考的链接，稍微摘录一些：</p>
 <ul>
 <li>计算 \(y = x^e \pmod{n}\) （所谓 modular
 exponentiation）的复杂度大约为 \(O(k^3)\)，其中 \(k\) 是 \(n\)
@@ -152,13 +164,6 @@ exponentiation）的复杂度大约为 \(O(k^3)\)，其中 \(k\) 是 \(n\)
 不是素数。显然这些数字的二进制表示只有两个
 1，如上述原因，在加密的过程中能节省计算时间。实际应用中一般都是使用
 65537 ，因为小的 \(e\) 不太安全。</li>
-<li>模 \(n\)
-一般是由两个(\(n=pq\))或更多个随机产生（且满足一些数学条件）的大素数（所谓
-“multi-prime” RSA）相乘而得。</li>
-<li>私钥幂 \(d\) 是从模 \(n\) 的因子（\(p,q\)）以及 \(e\)
-推导出来，由于模是公开的（公钥的一部分），故 RSA
-的其中一个安全因素在于：<a
-href="https://en.wikipedia.org/wiki/Integer_factorization">分解一个大数</a>是困难的。</li>
 <li>多个素数相乘结果作为模的一个好处是可以更快速的计算 \(m = c^d
 \pmod{n}\)
 <ul>
@@ -169,7 +174,7 @@ href="http://www.di-mgt.com.au/crt_rsa.html#crtarithmetic">四分之一</a>：\(
 = O(\cfrac{k^3}{4})\)</li>
 </ul></li>
 </ul>
-<h3 id="存储格式">存储格式</h3>
+<h2 id="存储格式">存储格式</h2>
 <p>如上所述，RSA 的公私钥实际上就是些数字，但我们平时实际使用的是 <code
 class="language-plaintext">.pem</code> 格式（或 <code
 class="language-plaintext">.der</code>）的 key 。</p>
@@ -181,52 +186,36 @@ href="https://en.wikipedia.org/wiki/X.690#DER_encoding">DER（Distinguished
 Encoding Rules）</a> 编码的 <a
 href="https://en.wikipedia.org/wiki/Abstract_Syntax_Notation_One">ASN.1（Abstract
 Syntax Notation One）</a> 数据。</p>
-<p>写个程序验证以下（dec.py）：</p>
-<pre class="language-python"><code>#!/usr/bin/python
-
-import sys
+<p>不妨写个程序看一下（<code
+class="language-plaintext">dec.py</code>）：</p>
+<pre class="language-.python"><code>import sys
 from base64 import b64decode
 from pyasn1.codec.der.decoder import decode as der_decode
-
-def read_pem(f, asn1Spec=None):
-
-    return der_decode(
-        b64decode(
-            &#39;&#39;.join([line.strip() for line in f if not line.startswith(&#39;-----&#39;)])
-        ), asn1Spec=asn1Spec
-    )
-
-obj, _ = read_pem(open(sys.argv[1]))
-
-print obj.prettyPrint()</code></pre>
-<p>找一个 rsa private key 来跑一下：</p>
-<pre class="language-shell"><code>$ ./dec.py ca-key.pem
-Sequence:
- &lt;no-name&gt;=0
- &lt;no-name&gt;=89302357411304204026963412690370569095819200036751574979369053233.....
- &lt;no-name&gt;=65537
- &lt;no-name&gt;=.....
-....</code></pre>
-<p>ASN.1 中 Sequence 相当于一般语言里的 struct，所以这个 private key
-里是一个结构体，包含七八个数字，但所有字段名字都是 <code
-class="language-plaintext">&lt;no-name&gt;</code>，这是因为没有指定
-specifiction。</p>
-<p>修改一下：</p>
-<pre class="language-python"><code># ...
 from pyasn1_modules import rfc2437
 
-# ...
-obj, _ = read_pem(open(sys.argv[1]), asn1Spec=rfc2437.RSAPrivateKey())
-# ...
-</code></pre>
-<p>重新运行一下：</p>
-<pre class="language-shell"><code>$ ./dec.py ca-key.pem
+def read_key_pem(src):
+    if isinstance(src, bytes):
+        src = src.decode(&#39;ascii&#39;)
+    data = &#39;&#39;.join((line.strip() for line in src.split(&#39;\n&#39;) if not line.startswith(&#39;-----&#39;)))
+    return der_decode(b64decode(data), asn1Spec=rfc2437.RSAPrivateKey())[0]
+
+obj = read_key_pem(open(sys.argv[1]).read())
+print(obj.prettyPrint())</code></pre>
+<p>生成一个 rsa private key 来跑一下：</p>
+<pre class="language-shell"><code>$ openssl genrsa -out pri.pem 2048
+Generating RSA private key, 2048 bit long modulus (2 primes)
+...........................+++++
+............+++++
+e is 65537 (0x010001)
+$ python ./dec.py pri.pem
 RSAPrivateKey:
  version=0
- modulus=89302357411304204026963412690370569095819200036751574979369053233.....
+ modulus=30078218357432552470030675464869....
  publicExponent=65537
-...</code></pre>
-<p>完整的定义是在 <a
+ privateExponent=5666198999662210....
+ prime1=17622717115310961559542629....
+ ...</code></pre>
+<p>可以看到实际上存储的就是上面所述的各种数字，完整的定义是在 <a
 href="https://en.wikipedia.org/wiki/PKCS_1">PKCS#1</a> 标准中：</p>
 <pre class="language-plaintext"><code>RSAPrivateKey ::= SEQUENCE {
   version           Version,
@@ -243,27 +232,217 @@ href="https://en.wikipedia.org/wiki/PKCS_1">PKCS#1</a> 标准中：</p>
 <p>其中 modulus/publicExponent/privateExponent
 即模/公钥幂/私钥幂，可以看到实际中的 RSA 私钥也是包含 publicExponent
 的； 所以这就是为什么 openssl 工具中能从私钥中导出公钥的原因。</p>
-<p>剩下的其它参数则是使用中国剩余定理加速计算而预先计算好的参数。</p>
-<h3 id="参考">参考</h3>
+<p><em>更新 2022-09-10: 现在也可以用 <a
+href="/jupyterlite/lab?path=posts%2Farchive%2Frsa%2Frsa.ipynb">jupyterlite</a>
+来跑上述程序啦～</em></p>
+<h2 id="相关数学">相关数学</h2>
+<h3 id="同余命题">同余命题</h3>
+<p>仅列出一些会用到同余式命题</p>
+<blockquote>
+<p><span id="congruence-prop-a"><code
+class="language-plaintext">a</code></span> \(ab \equiv r_ar_b
+\pmod{n}\)，其中 \(r_a = a \pmod{n}\)，\(r_b = b \pmod{n}\)</p>
+</blockquote>
+<div class="proof">
+<div class="proof-label">
+Proof
+</div>
+<div class="proof-content">
+<p>设 \(a = k_an + r_a\)，\(b = k_bn + r_b\)，则 \(ab = k_ak_bn^2 +
+k_ar_bn + k_br_an + r_ar_b\)， 则有 \(ab \equiv r_ar_b \pmod{n}\)</p>
+</div>
+</div>
+<blockquote>
+<p><span id="congruence-prop-b"><code
+class="language-plaintext">b</code></span> 若 \(a\) 和 \(n\) 互质，且
+\(ab \equiv ac \pmod{n}\)，则有 \(b \equiv c \pmod{n}\)</p>
+</blockquote>
+<div class="proof">
+<div class="proof-label">
+Proof
+</div>
+<div class="proof-content">
+<ol type="1">
+<li>由于 \(ab \equiv ac \pmod{n}\)，故有 \(ab = kn + r\) 和 \(ac = qn +
+r\)</li>
+<li>两式相减得 \(a(b - c) = (k - q)n\)</li>
+<li>由于 \(a\) 和 \(n\) 互质，则 \(n\) 必然是 \(b - c\) 的因子，即 \(b -
+c \equiv 0 \pmod{n}\)，即 \(b \equiv c \pmod{n}\)</li>
+</ol>
+</div>
+</div>
+<blockquote>
+<p><span id="congruence-prop-c"><code
+class="language-plaintext">c</code></span> 若 \(a\) 和 \(b\) 均与 \(n\)
+互质，则 \(ab \pmod{n}\) 也与 \(n\) 互质</p>
+</blockquote>
+<div class="proof">
+<div class="proof-label">
+Proof
+</div>
+<div class="proof-content">
+<p>令 \(ab = kn + r\)，若余数 \(r\) 与 \(n\) 不互质，则存在一个 \(n\) 和
+\(r\) 的公共因子 \(x\) 且 \(x &gt; 1\)， 于是有 \(ab = (kn_x +
+r_x)x\)，但无论 \(a\) 还是 \(b\) 都跟 \(n\) 互质，不可能有 \(x\)
+作为因子，矛盾</p>
+</div>
+</div>
+<blockquote>
+<p><span id="congruence-prop-d"><code
+class="language-plaintext">d</code></span> 若 \(a \equiv b \pmod{p}\) 且
+\(a \equiv b \pmod{q}\)，又 \(p\) 和 \(q\) 互质， 则有 \(a \equiv b
+\pmod{pq}\)</p>
+</blockquote>
+<div class="proof">
+<div class="proof-label">
+Proof
+</div>
+<div class="proof-content">
+<p>由于 \(a - b\) 能同时被 \(p\) 和 \(q\) 整除，所以也能被 \(lcm(p, q)\)
+（最小公倍数）整除，又因为 \(p\) 和 \(q\) 互质， 故 \(lcm(p, q) =
+pq\)</p>
+</div>
+</div>
+<h3 id="eulers-totient-function">Euler’s totient function</h3>
+<dl>
+<dt>欧拉函数</dt>
+<dd>
+\(\varphi(n)\) 定义为所有小于<strong>等于</strong> \(n\) 且和 \(n\)
+互质的自然数总数
+</dd>
+</dl>
+<p>例如</p>
+<p>\[\begin{eqnarray}
+\varphi(1) &amp;= |\{1\}| &amp;= 1 \\
+\varphi(2) &amp;= |\{1\}| &amp;= 1 \\
+\varphi(3) &amp;= |\{1, 2\}| &amp;= 2 \\
+\varphi(4) &amp;= |\{1, 3\}| &amp;= 2 \\
+\varphi(5) &amp;= |\{1, 2, 3, 4\}| &amp;= 4 \\
+\varphi(6) &amp;= |\{1, 5\}| &amp;= 2 \\
+\varphi(7) &amp;= |\{1, 2, 3, 4, 5, 6\}| &amp;= 6 \\
+\varphi(8) &amp;= |\{1, 3, 5, 7\}| &amp;= 4 \\
+\varphi(9) &amp;= |\{1, 2, 4, 5, 7, 8\}| &amp;= 6 \\
+\end{eqnarray}\]</p>
+<p>特别地</p>
+<blockquote>
+<p>若 \(n\) 是质数，则 \(\varphi(n) = n - 1\)</p>
+</blockquote>
+<p>因为除了 \(n\) 自己外，其他小于它的数均与之互质</p>
+<blockquote>
+<p>若 \(n = pq\) 且 \(p,q\) 均为质数，则 \(\varphi(n) = (p - 1)(q -
+1)\)</p>
+</blockquote>
+<p>这是因为少于等于 \(n\) 且跟 \(n\)
+<strong>不</strong>互质的只能是：</p>
+<ul>
+<li>\(p\) 的倍数，即 \(p, 2p, ...., qp\) 共 \(q\) 个</li>
+<li>或者是 \(q\) 的倍数，即 \(q, 2q, ...., pq\) 共 \(p\) 个</li>
+</ul>
+<p>于是 \(\varphi(n) = n - q - p + 1 = (p - 1)(q - 1)\)（\(pq\)
+多减了一次所以加 1）</p>
+<h3 id="eulers-theorem">Euler’s theorem</h3>
+<p>欧拉定理</p>
+<blockquote>
+<p>若 \(a\) 和 \(n\) 互质，有 \[a^{\varphi(n)} \equiv 1 \pmod{n}\]</p>
+</blockquote>
+<div class="proof">
+<div class="proof-label">
+Proof
+</div>
+<div class="proof-content">
+<p>假设所有小于等于 \(n\) 且和 \(n\) 互质的自然数集合为 \(S_n = \{s_1,
+s_2, ..., s_{\varphi(n)}\}\)，令 \(a\) 为任意与 \(n\) 互质的自然数，
+再令 \(r_i = as_i \pmod{n}\)，则所有 \(r_i\) 组成集合 \(R_n = \{r_1,
+r_2, ..., r_{\varphi(n)}\}\)，下面证明实际上 \(S_n = R_n\)：</p>
+<ul>
+<li><strong>任一 \(r_i\) 也与 \(n\) 互质，因此 \(r_i \in S_n\)
+</strong>；这是根据同余命题 <a href="#congruence-prop-c"><code
+class="language-plaintext">c</code></a> 得出的，因为 \(a\) 和 \(s_i\)
+均与 \(n\) 互质</li>
+<li><strong>若 \(i \neq j\)，则 \(as_i \not\equiv as_j \pmod{n}\)，因此
+\(r_i \neq r_j\)</strong>，否则若 \(as_i \equiv as_j \pmod{n}\)，又
+\(a\) 和 \(n\) 互质， 根据同余命题 <a href="#congruence-prop-b"><code
+class="language-plaintext">b</code></a> 推出 \(s_i \equiv s_j \pmod{n}\)
+矛盾</li>
+</ul>
+<p>因此 \(R_n\) 中也有 \(\varphi(n)\) 个各不相同又都是 \(S_n\)
+中的元素，于是只能有 \(S_n = R_n\) 了</p>
+<p>若把这两个集合中的所有元素相乘就有</p>
+<p>\[
+(ar_1 \pmod{n})(ar_2 \pmod{n})...(ar_{\varphi(n)} \pmod{n}) =
+r_1r_2...r_{\varphi(n)}
+\]</p>
+<p>取模且根据同余命题 <a href="#congruence-prop-a"><code
+class="language-plaintext">a</code></a></p>
+<p>\[
+a^{\varphi(n)}r_1r_2...r_{\varphi(n)} \equiv r_1r_2...r_{\varphi(n)}
+\pmod{n}
+\]</p>
+<p>使用同余命题 <a href="#congruence-prop-b"><code
+class="language-plaintext">b</code></a> 约掉
+\(r_1r_2...r_{\varphi(n)}\)，因为这些都与 \(n\) 互质</p>
+<p>\[
+a^{\varphi(n)} \equiv 1 \pmod{n}
+\]</p>
+</div>
+</div>
+<h3 id="rsa-正确性证明">RSA 正确性证明</h3>
+<blockquote>
+<p>若 \(p,q\) 均为质数，\(n = pq\)，又 \(ed \equiv 1
+\pmod{\varphi(n)}\)，则对于任意 \(0 \le m \lt n\)， 有 \(m^{ed} \equiv m
+\pmod{n}\)</p>
+</blockquote>
+<div class="proof">
+<div class="proof-label">
+Proof
+</div>
+<div class="proof-content">
+<p>\(ed \equiv 1 \pmod{\varphi(n)}\) 即存在 \(k \ge 0\) 使得 \(ed =
+k\varphi(n) + 1 = k(p - 1)(q - 1) + 1\)</p>
+<ul>
+<li><p>若 \(m = 0\)，显然</p></li>
+<li><p>若 \(m &gt; 0\) 且与 \(n\) 互质，则由上面<a
+href="#eulers-theorem">欧拉定理</a>可得 \(m^{\varphi(n)} \equiv 1
+\pmod{n}\)，于是有</p>
+<p>\[
+m^{ed} = m^{k\varphi(n) + 1} = m \cdot (m^{\varphi(n)})^k \equiv m \cdot
+(1)^k \equiv m \pmod{n}
+\]</p></li>
+<li><p>若 \(m &gt; 0\) 且不与 \(n\) 互质，则 \(m\) 要么是 \(p\)
+的倍数，要么是 \(q\) 的倍数，但不能同时为 \(p\) 和 \(q\) 的倍数，
+因为这两个质数的最小公倍数即 \(n\)，而 \(m &lt; n\)</p>
+<p>不妨假设是 \(p\) 的倍数，且不是 \(q\) 的倍数</p>
+<ol type="1">
+<li><p>\(m\) 是 \(p\) 倍数则 \[
+m^{ed} \equiv 0 \equiv m \pmod{p}
+\]</p></li>
+<li><p>\(m\) 不是 \(q\) 倍数故与之互质，再次由<a
+href="#eulers-theorem">欧拉定理</a>得出 \(m^{\varphi(q)} = m^{q - 1}
+\equiv 1 \pmod{q}\)，于是</p>
+<p>\[
+m^{ed} = m \cdot (m^{(q - 1)})^{k(p - 1)} \equiv m \cdot (1)^{k(p - 1)}
+\equiv m \pmod{q}
+\]</p></li>
+</ol>
+<p>由同余命题 <a href="#congruence-prop-d"><code
+class="language-plaintext">d</code></a> 就能得出 \(m^{ed} \equiv m
+\pmod{pq}\)</p></li>
+</ul>
+</div>
+</div>
+<h2 id="参考">参考</h2>
 <ul>
 <li><a href="http://www.di-mgt.com.au/rsa_alg.html"
 class="uri">http://www.di-mgt.com.au/rsa_alg.html</a></li>
 <li><a href="http://www.di-mgt.com.au/rsa_theory.html"
 class="uri">http://www.di-mgt.com.au/rsa_theory.html</a></li>
-<li><a href="http://luca.ntop.org/Teaching/Appunti/asn1.html"
-class="uri">http://luca.ntop.org/Teaching/Appunti/asn1.html</a></li>
-<li><a
-href="https://www.emc.com/collateral/white-papers/h11300-pkcs-1v2-2-rsa-cryptography-standard-wp.pdf"
-class="uri">https://www.emc.com/collateral/white-papers/h11300-pkcs-1v2-2-rsa-cryptography-standard-wp.pdf</a></li>
-<li><a
-href="https://tls.mbed.org/kb/cryptography/asn1-key-structures-in-der-and-pem"
-class="uri">https://tls.mbed.org/kb/cryptography/asn1-key-structures-in-der-and-pem</a></li>
+<li><a href="https://en.wikipedia.org/wiki/RSA_(cryptosystem)"
+class="uri">https://en.wikipedia.org/wiki/RSA_(cryptosystem)</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Euler%27s_totient_function"
+class="uri">https://en.wikipedia.org/wiki/Euler%27s_totient_function</a></li>
 <li><a
 href="http://crypto.stackexchange.com/questions/1729/why-does-the-pkcs1-rsa-private-key-structure-contain-more-than-just-exponent-and"
 class="uri">http://crypto.stackexchange.com/questions/1729/why-does-the-pkcs1-rsa-private-key-structure-contain-more-than-just-exponent-and</a></li>
-<li><a
-href="http://stackoverflow.com/questions/16899247/how-can-i-decode-a-ssl-certificate-using-python"
-class="uri">http://stackoverflow.com/questions/16899247/how-can-i-decode-a-ssl-certificate-using-python</a></li>
 </ul>
 
   </article>

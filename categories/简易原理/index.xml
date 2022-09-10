@@ -55,17 +55,16 @@ Vault 的数据是加密储存在磁盘上的：由 encryption key 加密，这�
       <pubDate>Tue, 24 Jan 2017 11:52:55 +0800</pubDate>
       
       <guid>http://127.0.0.1:1313/posts/archive/rsa/</guid>
-      <description>主要算法 RSA 的原理是在于能够找到三个很大的正整数 \(e,d,n\) 使得对于任何 \(0 \le m \lt n\)：
+      <description>主要算法简介 RSA 的原理是在于能够找到三个很大的正整数 \(e,d,n\) 使得对于任何 \(0 \le m \lt n\)：
 \[ (m^e)^d \equiv m \pmod{n} \]
 其中公钥为 \((n,e)\)，可以发送给任何人；私钥为 \((n,d)\)，只能由所有者掌握。RSA 支持 4 种操作：加密/解密，签名/验证签名。
 加密 首先用一些编码手段把需要加密的信息转换成整数 \(m\)，用公钥中的两个参数计算
 \[ c = m^e \pmod{n} \]
 其中 \(c\) 就是加密后的信息了。
-解密 中学知识温习时间：
-\[ \begin{align} ab \pmod{n} &amp;amp;= (xn+a_r)(yn+b_r) \pmod{n} \\ &amp;amp;= a_r b_r \pmod{n} \\ &amp;amp;= (a \pmod{n})(b \pmod{n}) \pmod{n} \end{align} \]
-即在模运算中，只要算余数就可以了。
-因此，由私钥所有者计算
-\[ \begin{align} c^d \pmod{n} &amp;amp;= (m^e \pmod{n})^d \pmod{n} \\ &amp;amp;= (m^e)^d \pmod{n} \\ &amp;amp;= m \pmod{n} \end{align} \]</description>
+解密 由私钥所有者计算
+\[ \begin{align} c^d \pmod{n} &amp;amp;= (m^e \pmod{n})^d \pmod{n} \\ &amp;amp;= (m^e)^d \pmod{n} \\ &amp;amp;= m \pmod{n} \end{align} \]
+就能还原原来的信息了（乘积与其余数乘积同余，见同余命题 a）
+签名 首先对要签名的信息作一个 message digest，常用的如 MD5 和 SHA 系列； 然后把这个 digest 转换成整数 \(m\) 使得 \(1 \le m \lt n\)； 最后用私钥 \((n,d)\) 计算 \(s = m^d \pmod{n}\)  验签 用公钥 \((n,e)\) 计算 \(v = s^e \pmod{n}\) 把 \(v\) 转换回 digest 独立对要签名的信息再作一次 digest 对比这两个 digest，如果相同的话，那这个签名就是有效的  Note 可以看到加解密和签名验签刚好是两个方向：前者是公钥加密发送给所有者解密，后者是用私钥签名发送给其他人用公钥验签；所以这就是为何一般不建议使用相同的 key 同时用作加密和签名：</description>
     </item>
     
   </channel>
