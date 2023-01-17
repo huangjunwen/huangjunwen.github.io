@@ -26,10 +26,10 @@ Pandoc pandoc 也是可以作为 hugo 的 markdown 渲染引擎的 2，用它有
     
     <item>
       <title>写了一个 MySQL 数据表和查询的 go 代码生成器</title>
-      <link>http://127.0.0.1:1313/posts/archive/sqlw-mysql/</link>
+      <link>http://127.0.0.1:1313/posts/2018/sqlw-mysql/</link>
       <pubDate>Mon, 10 Sep 2018 20:51:26 +0800</pubDate>
       
-      <guid>http://127.0.0.1:1313/posts/archive/sqlw-mysql/</guid>
+      <guid>http://127.0.0.1:1313/posts/2018/sqlw-mysql/</guid>
       <description>项目地址 https://github.com/huangjunwen/sqlw-mysql
 动机 最近这段时间开始用 go 写网站，遇到各种新老问题。其中一个老问题是如何访问 MySQL 数据库。
 使用 ORM (Object Relationship Mapping) 大致浏览了一些热门的实现，感觉不是很合眼缘，跟动态语言的实现（例如 SQLAlchemy ）差不少。
@@ -42,10 +42,10 @@ ORM 的特点在于使用程序员熟悉的对象概念抽象数据库关系，�
     
     <item>
       <title>用 iptables 来配置 port knocking</title>
-      <link>http://127.0.0.1:1313/posts/archive/port-knocking-using-iptables/</link>
+      <link>http://127.0.0.1:1313/posts/2016/port-knocking-using-iptables/</link>
       <pubDate>Tue, 20 Dec 2016 10:20:54 +0800</pubDate>
       
-      <guid>http://127.0.0.1:1313/posts/archive/port-knocking-using-iptables/</guid>
+      <guid>http://127.0.0.1:1313/posts/2016/port-knocking-using-iptables/</guid>
       <description>对于正式环境的服务器来说，每当查看到 auth.log 里头那些撞大运的 ssh 登录尝试，心里总是有点惴惴不安的。虽然 public key authentication 号称安全，但是谁说得准呢？而且不知道配置里会不会有错误，要是有多一层的防护总是好的。
 以前听说过 Port knocking 这种技术了，大致的思路就是设定一系列随机端口（例如：7421，3411，9088等等）作为暗号，用户在访问服务器之前，要依次“敲”一下这几个端口（即相继发送网络包到这几个端口上），这些端口当然是关闭状态啦，但服务器上可以侦察得到这些敲门，如果暗号对了，就给访问者 ip 开放服务端口（例如22）。
 还有一些更高级的，例如在网络包里存放加密信息等，不过这就复杂了，暂且不表。

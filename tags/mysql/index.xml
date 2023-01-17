@@ -9,10 +9,10 @@
     <lastBuildDate>Mon, 10 Sep 2018 20:51:26 +0800</lastBuildDate><atom:link href="http://127.0.0.1:1313/tags/mysql/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>写了一个 MySQL 数据表和查询的 go 代码生成器</title>
-      <link>http://127.0.0.1:1313/posts/archive/sqlw-mysql/</link>
+      <link>http://127.0.0.1:1313/posts/2018/sqlw-mysql/</link>
       <pubDate>Mon, 10 Sep 2018 20:51:26 +0800</pubDate>
       
-      <guid>http://127.0.0.1:1313/posts/archive/sqlw-mysql/</guid>
+      <guid>http://127.0.0.1:1313/posts/2018/sqlw-mysql/</guid>
       <description>项目地址 https://github.com/huangjunwen/sqlw-mysql
 动机 最近这段时间开始用 go 写网站，遇到各种新老问题。其中一个老问题是如何访问 MySQL 数据库。
 使用 ORM (Object Relationship Mapping) 大致浏览了一些热门的实现，感觉不是很合眼缘，跟动态语言的实现（例如 SQLAlchemy ）差不少。

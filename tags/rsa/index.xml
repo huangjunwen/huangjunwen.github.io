@@ -9,10 +9,10 @@
     <lastBuildDate>Tue, 24 Jan 2017 11:52:55 +0800</lastBuildDate><atom:link href="http://127.0.0.1:1313/tags/rsa/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>RSA 简介</title>
-      <link>http://127.0.0.1:1313/posts/archive/rsa/</link>
+      <link>http://127.0.0.1:1313/posts/2017/rsa/</link>
       <pubDate>Tue, 24 Jan 2017 11:52:55 +0800</pubDate>
       
-      <guid>http://127.0.0.1:1313/posts/archive/rsa/</guid>
+      <guid>http://127.0.0.1:1313/posts/2017/rsa/</guid>
       <description>主要算法简介 RSA 的原理是在于能够找到三个很大的正整数 \(e,d,n\) 使得对于任何 \(0 \le m \lt n\)：
 \[ (m^e)^d \equiv m \pmod{n} \]
 其中公钥为 \((n,e)\)，可以发送给任何人；私钥为 \((n,d)\)，只能由所有者掌握。RSA 支持 4 种操作：加密/解密，签名/验证签名。

@@ -140,10 +140,10 @@ Pandoc pandoc 也是可以作为 hugo 的 markdown 渲染引擎的 2，用它有
     
     <item>
       <title>Kademlia 简介</title>
-      <link>http://127.0.0.1:1313/posts/archive/kademlia/</link>
+      <link>http://127.0.0.1:1313/posts/2020/kademlia/</link>
       <pubDate>Sat, 12 Sep 2020 12:23:00 +0800</pubDate>
       
-      <guid>http://127.0.0.1:1313/posts/archive/kademlia/</guid>
+      <guid>http://127.0.0.1:1313/posts/2020/kademlia/</guid>
       <description>Kademlia 是一种 p2p 网络的分布式哈希表 (DHT: distributed hash table). 有别于单机版的 hash table, p2p DHT 需要将 key-value 键值对存放在大量的 (但不稳定的) p2p 节点上的, 并提供远程的 (RPC) 存取方法.
 键空间 (Key Space) Kademlia 的 key 是 n-bit 的 unsigned int, 故取值范围为 \([0, 2^n-1]\). 例如原论文中使用 160 bits, 又如 ipfs 使用的是 256 bits.
 在键空间上定义 “距离” 为两个 key 之间的 异或 (结果仍然为 n-bit unsigned int):
@@ -154,10 +154,10 @@ NOTE: 使用异或作为距离有一些数学属性, 见下面详述, 这里先�
     
     <item>
       <title>写了一个 MySQL 数据表和查询的 go 代码生成器</title>
-      <link>http://127.0.0.1:1313/posts/archive/sqlw-mysql/</link>
+      <link>http://127.0.0.1:1313/posts/2018/sqlw-mysql/</link>
       <pubDate>Mon, 10 Sep 2018 20:51:26 +0800</pubDate>
       
-      <guid>http://127.0.0.1:1313/posts/archive/sqlw-mysql/</guid>
+      <guid>http://127.0.0.1:1313/posts/2018/sqlw-mysql/</guid>
       <description>项目地址 https://github.com/huangjunwen/sqlw-mysql
 动机 最近这段时间开始用 go 写网站，遇到各种新老问题。其中一个老问题是如何访问 MySQL 数据库。
 使用 ORM (Object Relationship Mapping) 大致浏览了一些热门的实现，感觉不是很合眼缘，跟动态语言的实现（例如 SQLAlchemy ）差不少。
@@ -170,10 +170,10 @@ ORM 的特点在于使用程序员熟悉的对象概念抽象数据库关系，�
     
     <item>
       <title>Greenlet 原理</title>
-      <link>http://127.0.0.1:1313/posts/archive/greenlet/</link>
+      <link>http://127.0.0.1:1313/posts/2018/greenlet/</link>
       <pubDate>Thu, 15 Mar 2018 09:05:51 +0800</pubDate>
       
-      <guid>http://127.0.0.1:1313/posts/archive/greenlet/</guid>
+      <guid>http://127.0.0.1:1313/posts/2018/greenlet/</guid>
       <description>原理 我们知道，操作系统会给每一个线程分配一个独立的堆栈，它们各自独立运作，记录着该线程的各类运行状态：如函数本地变量，函数返回地址，寄存器状态等等各种上下文；从这个角度看，堆栈几乎就等价于线程
 那么假如想要在用户态实现轻量级的类线程，就同样需要给它们分配独立堆栈，并提供方法在它们之间切换
 Greenlet 就是 cpython 上的一种轻量级线程（协程）的实现，因为 cpython 是用 c 实现的，所以这就要求 Greenlet 的实现要跟 c 那一套保持一致，要让协程里运行的代码感觉自己跑在一个真正的 c 堆栈上
@@ -185,20 +185,20 @@ Greenlet 的做法是这样的：当一个 greenlet 运行时，它的堆栈区�
     
     <item>
       <title>Vault Database Secret Backend</title>
-      <link>http://127.0.0.1:1313/posts/archive/vault-database-secret-backend/</link>
+      <link>http://127.0.0.1:1313/posts/2017/vault-database-secret-backend/</link>
       <pubDate>Sat, 10 Jun 2017 16:46:36 +0800</pubDate>
       
-      <guid>http://127.0.0.1:1313/posts/archive/vault-database-secret-backend/</guid>
+      <guid>http://127.0.0.1:1313/posts/2017/vault-database-secret-backend/</guid>
       <description>在当前版本（v0.7.2）这个 backend 还处于 beta 状态；这个 backend 应该是用来统一之前版本中各种数据库的 secret backend 的；使用前需要挂载 vault mount database，这里用 MySQL 来演示它的主要工作流程：
  写入数据库配置，路径在 database/config/$db_name ，主要参数有：  db_name 这个配置的名字 plugin_name 指定用何种数据库 driver plugin（mysql/postgres 等） connection_url 指定连接参数（注：这个连接参数是用来连数据库以创建用户的，需要有对应的权限） allowed_roles 指定的是允许哪些角色使用此配置（角色是啥下一步就会说明） 安全考虑：这个路径即使读权限也需要严格限制，因为它包含了相当高权限的数据库用户信息 例子：   $ export db_name=&amp;quot;test&amp;quot; $ export role_name=&amp;quot;test_reader&amp;quot; $ export plugin_name=&amp;quot;mysql-legacy-database-plugin&amp;quot; # mysql 有多个 plugin，它们的区别这是创建的数据库用户名最大长度不一样，因为不同版本用户名长度有变化 $ export connection_url=&amp;quot;root:password@tcp(127.0.0.1:3306)/&amp;quot; # 不要忘了最后的 / $ vault write database/config/$db_name \ &amp;gt; plugin_name=$plugin_name \ &amp;gt; connection_url=$connection_url \ &amp;gt; allowed_roles=&amp;quot;$role_name&amp;quot; ... The following warnings were returned from the Vault server: * Read access to this endpoint should be controlled via ACLs as it will return the connection details as is, including passwords, if any.</description>
     </item>
     
     <item>
       <title>Vault 介绍</title>
-      <link>http://127.0.0.1:1313/posts/archive/vault/</link>
+      <link>http://127.0.0.1:1313/posts/2017/vault/</link>
       <pubDate>Wed, 07 Jun 2017 08:14:18 +0800</pubDate>
       
-      <guid>http://127.0.0.1:1313/posts/archive/vault/</guid>
+      <guid>http://127.0.0.1:1313/posts/2017/vault/</guid>
       <description>之前一篇文章介绍了 Hashicorp Vault 的解封/密封算法。这篇打算记录一下这个软件的其它方面。当前最新版本为 v0.7.2 。
 Vault 是一个相当复杂的系统，总括而言，它是一个集中管理各类敏感信息（如密码/Key/证书等等）的软件（服务）。Vault 采用类似 Unix “一切皆文件” 的方式组织及暴露各类信息：所有操作都是对某个路径的 read/write （实际上是对某个 HTTP 路径 POST/GET/LIST/DELETE 等） ，例如：
  /sys 目录下是各种配置路径，此目录不可被卸载，其下路径各有用途，如 /sys/seal 和 /sys/unseal 这两个路径是用来密封/解封 vault 的。 /secret 目录下挂载的是 Generic Secret Backend，用于存放一般用途的敏感信息，其下路径组织结构由用户自行决定，我们平时实际使用访问最多的应该也是这个。 … 更多目录路径说明可参看 API 文档  读取/写入的数据一般都是 JSON 格式。
@@ -211,10 +211,10 @@ Auth(entication) Backend Auth Backend 完成的是认证工作：访问者是谁
     
     <item>
       <title>微服务中的认证 (authentication) 问题</title>
-      <link>http://127.0.0.1:1313/posts/archive/authentication_in_microservice/</link>
+      <link>http://127.0.0.1:1313/posts/2017/authentication_in_microservice/</link>
       <pubDate>Sun, 14 May 2017 19:14:51 +0800</pubDate>
       
-      <guid>http://127.0.0.1:1313/posts/archive/authentication_in_microservice/</guid>
+      <guid>http://127.0.0.1:1313/posts/2017/authentication_in_microservice/</guid>
       <description>这帖子有意思 JSON Web token vs. Session
 “单纯”的 JWT，其实跟 client side session 没啥区别，它的优缺点都一样：
 Pros：
@@ -225,10 +225,10 @@ Pros：
     
     <item>
       <title>Shamir Secret Sharding</title>
-      <link>http://127.0.0.1:1313/posts/archive/shamir-secret-sharding/</link>
+      <link>http://127.0.0.1:1313/posts/2017/shamir-secret-sharding/</link>
       <pubDate>Sun, 23 Apr 2017 09:27:43 +0800</pubDate>
       
-      <guid>http://127.0.0.1:1313/posts/archive/shamir-secret-sharding/</guid>
+      <guid>http://127.0.0.1:1313/posts/2017/shamir-secret-sharding/</guid>
       <description>Hashicorp 这家公司的产品都很有意思，其中 Vault 是一个用来集中管理敏感信息（密码，各种 token，证书，key 等等）的工具。
 Vault server 运行起来之后有两种状态：seal/unseal (密封/解封) ，这是因为：
 Vault 的数据是加密储存在磁盘上的：由 encryption key 加密，这个 encryption key 是由 master key 加密储存在磁盘上，而 master key 是不存放在磁盘上。所以当 Vault server 刚启动时，由于 master key 未知，故 encryption key 以及实际数据都是无法被解密访问的，这种状态就称之为seal (密封) ，unseal(解封) 就是重建 master key 的过程。
@@ -238,10 +238,10 @@ Vault 的数据是加密储存在磁盘上的：由 encryption key 加密，这�
     
     <item>
       <title>ASN.1</title>
-      <link>http://127.0.0.1:1313/posts/archive/asn.1/</link>
+      <link>http://127.0.0.1:1313/posts/2017/asn.1/</link>
       <pubDate>Wed, 01 Feb 2017 09:19:40 +0800</pubDate>
       
-      <guid>http://127.0.0.1:1313/posts/archive/asn.1/</guid>
+      <guid>http://127.0.0.1:1313/posts/2017/asn.1/</guid>
       <description>记法和编码 ASN.1（Abstract syntax notation one） 是一个对数据（类型/值）的记法和编码的祖父级标准；制定几十年而依然健在且广泛使用。
 对比一下 JSON（Javascript Object Notation），JSON 中的记法和编码是等价的，即它的记法就是编码。
 而 ASN.1 中记法和编码是不一样的，记法主要是为人类服务，用于描述，是抽象且实现无关的，例如 （摘自这里）：
@@ -251,10 +251,10 @@ AirlineFlight ::= SEQUENCE { airline IA5String, flight NumericString, seats SEQU
     
     <item>
       <title>RSA 简介</title>
-      <link>http://127.0.0.1:1313/posts/archive/rsa/</link>
+      <link>http://127.0.0.1:1313/posts/2017/rsa/</link>
       <pubDate>Tue, 24 Jan 2017 11:52:55 +0800</pubDate>
       
-      <guid>http://127.0.0.1:1313/posts/archive/rsa/</guid>
+      <guid>http://127.0.0.1:1313/posts/2017/rsa/</guid>
       <description>主要算法简介 RSA 的原理是在于能够找到三个很大的正整数 \(e,d,n\) 使得对于任何 \(0 \le m \lt n\)：
 \[ (m^e)^d \equiv m \pmod{n} \]
 其中公钥为 \((n,e)\)，可以发送给任何人；私钥为 \((n,d)\)，只能由所有者掌握。RSA 支持 4 种操作：加密/解密，签名/验证签名。
@@ -269,10 +269,10 @@ AirlineFlight ::= SEQUENCE { airline IA5String, flight NumericString, seats SEQU
     
     <item>
       <title>用 iptables 来配置 port knocking</title>
-      <link>http://127.0.0.1:1313/posts/archive/port-knocking-using-iptables/</link>
+      <link>http://127.0.0.1:1313/posts/2016/port-knocking-using-iptables/</link>
       <pubDate>Tue, 20 Dec 2016 10:20:54 +0800</pubDate>
       
-      <guid>http://127.0.0.1:1313/posts/archive/port-knocking-using-iptables/</guid>
+      <guid>http://127.0.0.1:1313/posts/2016/port-knocking-using-iptables/</guid>
       <description>对于正式环境的服务器来说，每当查看到 auth.log 里头那些撞大运的 ssh 登录尝试，心里总是有点惴惴不安的。虽然 public key authentication 号称安全，但是谁说得准呢？而且不知道配置里会不会有错误，要是有多一层的防护总是好的。
 以前听说过 Port knocking 这种技术了，大致的思路就是设定一系列随机端口（例如：7421，3411，9088等等）作为暗号，用户在访问服务器之前，要依次“敲”一下这几个端口（即相继发送网络包到这几个端口上），这些端口当然是关闭状态啦，但服务器上可以侦察得到这些敲门，如果暗号对了，就给访问者 ip 开放服务端口（例如22）。
 还有一些更高级的，例如在网络包里存放加密信息等，不过这就复杂了，暂且不表。

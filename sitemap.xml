@@ -74,7 +74,7 @@
     <loc>http://127.0.0.1:1313/tags/kademlia/</loc>
     <lastmod>2020-09-12T12:23:00+08:00</lastmod>
   </url><url>
-    <loc>http://127.0.0.1:1313/posts/archive/kademlia/</loc>
+    <loc>http://127.0.0.1:1313/posts/2020/kademlia/</loc>
     <lastmod>2020-09-12T12:23:00+08:00</lastmod>
   </url><url>
     <loc>http://127.0.0.1:1313/tags/p2p/</loc>
@@ -83,28 +83,34 @@
     <loc>http://127.0.0.1:1313/categories/%E7%AE%80%E6%98%93%E5%8E%9F%E7%90%86/</loc>
     <lastmod>2020-09-12T12:23:00+08:00</lastmod>
   </url><url>
+    <loc>http://127.0.0.1:1313/posts/2020/</loc>
+    <lastmod>2020-01-01T00:00:00+08:00</lastmod>
+  </url><url>
     <loc>http://127.0.0.1:1313/tags/golang/</loc>
     <lastmod>2018-09-10T20:51:26+08:00</lastmod>
   </url><url>
     <loc>http://127.0.0.1:1313/tags/mysql/</loc>
     <lastmod>2018-09-10T20:51:26+08:00</lastmod>
   </url><url>
-    <loc>http://127.0.0.1:1313/posts/archive/sqlw-mysql/</loc>
+    <loc>http://127.0.0.1:1313/posts/2018/sqlw-mysql/</loc>
     <lastmod>2018-09-10T20:51:26+08:00</lastmod>
   </url><url>
     <loc>http://127.0.0.1:1313/tags/greenlet/</loc>
     <lastmod>2018-03-15T09:05:51+08:00</lastmod>
   </url><url>
-    <loc>http://127.0.0.1:1313/posts/archive/greenlet/</loc>
+    <loc>http://127.0.0.1:1313/posts/2018/greenlet/</loc>
     <lastmod>2018-03-15T09:05:51+08:00</lastmod>
+  </url><url>
+    <loc>http://127.0.0.1:1313/posts/2018/</loc>
+    <lastmod>2018-01-01T00:00:00+08:00</lastmod>
   </url><url>
     <loc>http://127.0.0.1:1313/tags/vault/</loc>
     <lastmod>2017-06-10T16:46:36+08:00</lastmod>
   </url><url>
-    <loc>http://127.0.0.1:1313/posts/archive/vault-database-secret-backend/</loc>
+    <loc>http://127.0.0.1:1313/posts/2017/vault-database-secret-backend/</loc>
     <lastmod>2017-06-10T16:46:36+08:00</lastmod>
   </url><url>
-    <loc>http://127.0.0.1:1313/posts/archive/vault/</loc>
+    <loc>http://127.0.0.1:1313/posts/2017/vault/</loc>
     <lastmod>2017-06-07T08:14:18+08:00</lastmod>
   </url><url>
     <loc>http://127.0.0.1:1313/tags/authen/</loc>
@@ -113,19 +119,19 @@
     <loc>http://127.0.0.1:1313/tags/microservice/</loc>
     <lastmod>2017-05-14T19:14:51+08:00</lastmod>
   </url><url>
-    <loc>http://127.0.0.1:1313/posts/archive/authentication_in_microservice/</loc>
+    <loc>http://127.0.0.1:1313/posts/2017/authentication_in_microservice/</loc>
     <lastmod>2017-05-14T19:14:51+08:00</lastmod>
   </url><url>
     <loc>http://127.0.0.1:1313/tags/secret-sharing/</loc>
     <lastmod>2017-04-23T09:27:43+08:00</lastmod>
   </url><url>
-    <loc>http://127.0.0.1:1313/posts/archive/shamir-secret-sharding/</loc>
+    <loc>http://127.0.0.1:1313/posts/2017/shamir-secret-sharding/</loc>
     <lastmod>2017-04-23T09:27:43+08:00</lastmod>
   </url><url>
     <loc>http://127.0.0.1:1313/tags/asn/</loc>
     <lastmod>2017-02-01T09:19:40+08:00</lastmod>
   </url><url>
-    <loc>http://127.0.0.1:1313/posts/archive/asn.1/</loc>
+    <loc>http://127.0.0.1:1313/posts/2017/asn.1/</loc>
     <lastmod>2017-02-01T09:19:40+08:00</lastmod>
   </url><url>
     <loc>http://127.0.0.1:1313/tags/format/</loc>
@@ -134,16 +140,19 @@
     <loc>http://127.0.0.1:1313/tags/rsa/</loc>
     <lastmod>2017-01-24T11:52:55+08:00</lastmod>
   </url><url>
-    <loc>http://127.0.0.1:1313/posts/archive/rsa/</loc>
+    <loc>http://127.0.0.1:1313/posts/2017/rsa/</loc>
     <lastmod>2017-01-24T11:52:55+08:00</lastmod>
+  </url><url>
+    <loc>http://127.0.0.1:1313/posts/2017/</loc>
+    <lastmod>2017-01-01T00:00:00+08:00</lastmod>
   </url><url>
     <loc>http://127.0.0.1:1313/tags/iptables/</loc>
     <lastmod>2016-12-20T10:20:54+08:00</lastmod>
   </url><url>
-    <loc>http://127.0.0.1:1313/posts/archive/port-knocking-using-iptables/</loc>
+    <loc>http://127.0.0.1:1313/posts/2016/port-knocking-using-iptables/</loc>
     <lastmod>2016-12-20T10:20:54+08:00</lastmod>
   </url><url>
-    <loc>http://127.0.0.1:1313/posts/archive/</loc>
+    <loc>http://127.0.0.1:1313/posts/2016/</loc>
     <lastmod>2016-01-01T00:00:00+08:00</lastmod>
   </url><url>
     <loc>http://127.0.0.1:1313/posts/notes/</loc>

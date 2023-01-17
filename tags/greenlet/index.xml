@@ -9,10 +9,10 @@
     <lastBuildDate>Thu, 15 Mar 2018 09:05:51 +0800</lastBuildDate><atom:link href="http://127.0.0.1:1313/tags/greenlet/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Greenlet 原理</title>
-      <link>http://127.0.0.1:1313/posts/archive/greenlet/</link>
+      <link>http://127.0.0.1:1313/posts/2018/greenlet/</link>
       <pubDate>Thu, 15 Mar 2018 09:05:51 +0800</pubDate>
       
-      <guid>http://127.0.0.1:1313/posts/archive/greenlet/</guid>
+      <guid>http://127.0.0.1:1313/posts/2018/greenlet/</guid>
       <description>原理 我们知道，操作系统会给每一个线程分配一个独立的堆栈，它们各自独立运作，记录着该线程的各类运行状态：如函数本地变量，函数返回地址，寄存器状态等等各种上下文；从这个角度看，堆栈几乎就等价于线程
 那么假如想要在用户态实现轻量级的类线程，就同样需要给它们分配独立堆栈，并提供方法在它们之间切换
 Greenlet 就是 cpython 上的一种轻量级线程（协程）的实现，因为 cpython 是用 c 实现的，所以这就要求 Greenlet 的实现要跟 c 那一套保持一致，要让协程里运行的代码感觉自己跑在一个真正的 c 堆栈上
