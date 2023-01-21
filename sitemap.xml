@@ -23,6 +23,9 @@
     <loc>http://127.0.0.1:1313/categories/</loc>
     <lastmod>2022-05-05T08:08:04+00:00</lastmod>
   </url><url>
+    <loc>http://127.0.0.1:1313/tags/intuitionism/</loc>
+    <lastmod>2022-05-05T08:08:04+00:00</lastmod>
+  </url><url>
     <loc>http://127.0.0.1:1313/posts/2022/intuitionistic-logic/</loc>
     <lastmod>2022-05-05T08:08:04+00:00</lastmod>
   </url><url>
@@ -147,6 +150,9 @@
     <lastmod>2017-01-01T00:00:00+08:00</lastmod>
   </url><url>
     <loc>http://127.0.0.1:1313/tags/iptables/</loc>
+    <lastmod>2016-12-20T10:20:54+08:00</lastmod>
+  </url><url>
+    <loc>http://127.0.0.1:1313/tags/ops/</loc>
     <lastmod>2016-12-20T10:20:54+08:00</lastmod>
   </url><url>
     <loc>http://127.0.0.1:1313/posts/2016/port-knocking-using-iptables/</loc>
