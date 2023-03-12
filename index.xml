@@ -6,7 +6,16 @@
     <description>Recent content on Coder Papa</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sun, 01 Jan 2023 00:00:00 +0800</lastBuildDate><atom:link href="http://127.0.0.1:1313/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 26 Feb 2023 01:28:06 +0000</lastBuildDate><atom:link href="http://127.0.0.1:1313/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Good Links</title>
+      <link>http://127.0.0.1:1313/posts/notes/good-links/</link>
+      <pubDate>Sun, 26 Feb 2023 01:28:06 +0000</pubDate>
+      
+      <guid>http://127.0.0.1:1313/posts/notes/good-links/</guid>
+      <description>Logic Matters -&amp;gt; Teach Yourself logic: https://www.logicmatters.net/tyl/</description>
+    </item>
+    
     <item>
       <title>Jupyterlite</title>
       <link>http://127.0.0.1:1313/posts/2022/jupyterlite/</link>

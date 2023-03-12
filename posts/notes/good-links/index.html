@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>notes</title>
+    <title>Good Links</title>
     
     <link rel="stylesheet" href="/res/libs/fontawesome/css/all.min.css"></link>
     <link rel="stylesheet" href="/res/libs/chota/css/chota.min.css"></link>
@@ -53,58 +53,34 @@
       <div id="main-center" class="col-12 col-8-md col-6-lg mdb">
         <div id="main-title" class="text-center">
           
-  <h5><span class="breadcrumbnav"><span><a href="/posts/">POSTS</a></span><i class="fa fa-fw fa-angle-double-right"></i><span><a href="/posts/notes/">NOTES</a></span></span></h5>
+  <h5 class="no-toc"><span class="breadcrumbnav"><span><a href="/posts/">POSTS</a></span><i class="fa fa-fw fa-angle-double-right"></i><span><a href="/posts/notes/">NOTES</a></span></span></h5>
+  <h1>Good Links</h1>
+  <small>
+    <time class="" datetime="2023-02-26T01:28:06Z">Sun, 2023/02/26</time>
+  </small>
   <p>
     
     
   </p>
-
+  
         </div>
         <div id="main-body">
           
   <article id="content-body">
-    <blockquote>
-<p>读书/学习笔记</p>
-</blockquote>
+    <p>Logic Matters -&gt; Teach Yourself logic: <a
+href="https://www.logicmatters.net/tyl/"
+class="uri">https://www.logicmatters.net/tyl/</a></p>
 
   </article>
-  <div id="list-body" class="is-center">
-    <ul>
-    <li>
-        <p>
-          <a href="/posts/notes/good-links/">Good Links</a>
-          <small>
-            
-              <time class="" datetime="2023-02-26T01:28:06Z">Sun, 2023/02/26</time>
-            
-          </small>
-        </p>
-      </li><li>
-        <p>
-          <a href="/posts/notes/plfa/">Programming Language Foundations in Agda 笔记</a>
-          <small>
-            
-              <span><i class="fa fa-fw fa-angle-double-right"></i>1</span>
-            
-          </small>
-        </p>
-      </li><li>
-        <p>
-          <a href="/posts/notes/introduction-to-mathematical-logic/">Introduction to Mathematical Logic 笔记</a>
-          <small>
-            
-              <span><i class="fa fa-fw fa-angle-double-right"></i>6</span>
-            
-          </small>
-        </p>
-      </li>
-    </ul>
-  </div>
 
         </div>
       </div>
       <div id="main-right" class="hide-xs hide-sm col-2-md col-3-lg">
         
+  
+  <div id="content-toc" class="toc hide-md"></div>
+  
+
       </div>
     </div>
 
@@ -118,5 +94,52 @@
     </div>
 
     
+  
+    <link rel="stylesheet" href="/res/libs/tocbot/css/tocbot.css"></link>
+    <style>
+    #content-toc {
+      position: -webkit-sticky;
+      position: sticky;
+      top: 7rem;
+      padding-left: 2rem;
+      padding-right: 1rem;
+    }
+
+    #content-toc a.toc-link {
+      color: var(--font-color);
+    }
+
+    #content-toc a.toc-link.is-active-link {
+      color: var(--color-darkGrey);
+    }
+
+    #content-toc a.toc-link::before {
+      background-color: var(--bg-color);
+    }
+
+    #content-toc a.toc-link.is-active-link::before {
+      background-color: var(--color-primary);
+    }
+    </style>
+    <script src="/res/libs/tocbot/js/tocbot.min.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', (ev) => {
+      tocbot.init({
+        tocSelector: '#content-toc',
+        contentSelector: '#main-center',
+        ignoreSelector: '.no-toc',
+        headingSelector: 'h1, h2, h3, h4, h5, h6',
+        hasInnerContainers: false,
+        headingsOffset: 80,
+        scrollSmoothOffset: -80
+      });
+    });
+    </script>
+  
+  
+    <script type="text/javascript" src="/res/libs/anchorjs/js/anchor.min.js"></script>
+    <script>anchors.add('#main-body h1, #main-body h2, #main-body h3, #main-body h4, #main-body h5, #main-body h6, #main-body dt');</script>
+  
+
   </body>
 </html>
