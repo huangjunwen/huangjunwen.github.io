@@ -25,10 +25,12 @@
       <description>最近总是接触各种 Jupyter…（JupyterLab/JupyterHub），发现居然还有可以完全跑在浏览器上的 Jupyterlite，那是不是可以直接放一个到这儿呢？
 大致的概念 原来的 Jupyter 是传统的 CS 模式，各种语言（e.g. python）的 kernel 是跑在服务端的
 但现在也有了 python（和一些常用的库）的 WebAssembly 移植版（e.g. pyodide）， 这样一来 kernel 也可以在浏览器上实现了 （e.g. pyolite）， 因此可以创建一个全静态的 site，UI 和 kernel 都在浏览器中运行， 中间用 mock-socket 假装通讯， 完整地把 notebook 那一套 CS 模式移植过来
-部署流程 安装 jupyterlite CLI pip install --pre jupyterlite（现在还处于 pre-release 的状态）， 更多可安装的 addons 可以看这里
-生成 site 引自 jupyterlite CLI 文档，
- The jupyter lite (or jupyter-lite) CLI provides tools for lifecycle of combining…
- the core JupyterLite static assets extra application features like Lab Extensions and settings kernel-specific resources like Python wheels user-authored content like Notebooks  … into a ready-to-deploy (and optionally reproducible) Jupyter sites which require an HTTP server, but no application server.</description>
+部署 2023-04-07 更新
+目前 jupyterlite 已经发布 0.1.0 版本，部署到 gthub page 已十分简单，基本上就是 clone 一个 template repo 即可，见这里
+内容 在 repo 里有一个 content 目录，把内容（例如 ipynb 文件）放入该目录即可
+另外发现 https://github.com/jupyterlab-contrib/jupyterlab-open-url-parameter 安装了该 extension 后允许在 url 参数中直接指定内容的地址， 例如访问
+ https://your-name.github.io/jupyterlite/lab/?fromURL=/path/to/your.ipynb
+ 则打开的 jupyterlite 会自动打开该 notebook</description>
     </item>
     
     <item>

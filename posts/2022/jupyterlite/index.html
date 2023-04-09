@@ -62,6 +62,7 @@
     
     <a href="/tags/python/"><span class="tag is-small">python</span></a>
     <a href="/tags/jupyter/"><span class="tag is-small">jupyter</span></a>
+    <a href="/tags/jl/"><span class="tag is-small">jl</span></a>
     
   </p>
   
@@ -82,124 +83,24 @@ href="https://jupyterlite.readthedocs.io/en/latest/quickstart/using.html#a-pytho
 因此可以创建一个全静态的 site，UI 和 kernel 都在浏览器中运行， 中间用 <a
 href="https://jupyterlite.readthedocs.io/en/latest/quickstart/using.html#kernels">mock-socket</a>
 假装通讯， 完整地把 notebook 那一套 CS 模式移植过来</p>
-<h2 id="部署流程">部署流程</h2>
-<h3 id="安装-jupyterlite-cli">安装 jupyterlite CLI</h3>
-<p><code
-class="language-plaintext">pip install --pre jupyterlite</code>（现在还处于
-<a
-href="https://github.com/jupyterlite/jupyterlite/releases/tag/v0.1.0b12">pre-release</a>
-的状态）， 更多可安装的 addons 可以看<a
-href="https://jupyterlite.readthedocs.io/en/latest/reference/cli.html#addon-dependencies">这里</a></p>
-<h3 id="生成-site">生成 site</h3>
-<p>引自 jupyterlite CLI <a
-href="https://jupyterlite.readthedocs.io/en/latest/reference/cli.html#cli">文档</a>，</p>
+<h2 id="部署">部署</h2>
+<p><em>2023-04-07 更新</em></p>
+<p>目前 jupyterlite 已经发布 0.1.0 版本，部署到 gthub page
+已十分简单，基本上就是 clone 一个 template repo 即可，见<a
+href="https://jupyterlite.readthedocs.io/en/latest/quickstart/deploy.html">这里</a></p>
+<h2 id="内容">内容</h2>
+<p>在 repo 里有一个 content 目录，把内容（例如 ipynb
+文件）放入该目录即可</p>
+<p>另外发现 <a
+href="https://github.com/jupyterlab-contrib/jupyterlab-open-url-parameter"
+class="uri">https://github.com/jupyterlab-contrib/jupyterlab-open-url-parameter</a>
+安装了该 extension 后允许在 url 参数中直接指定内容的地址， 例如访问</p>
 <blockquote>
-<p>The jupyter lite (or jupyter-lite) CLI provides tools for lifecycle
-of combining…</p>
-<ul>
-<li>the core JupyterLite static assets</li>
-<li>extra application features like Lab Extensions and settings</li>
-<li>kernel-specific resources like Python wheels</li>
-<li>user-authored content like Notebooks</li>
-</ul>
-<p>… into a ready-to-deploy (and optionally reproducible) Jupyter sites
-which require an HTTP server, but no application server.</p>
+<p><a
+href="https://your-name.github.io/jupyterlite/lab/?fromURL=/path/to/your.ipynb"
+class="uri">https://your-name.github.io/jupyterlite/lab/?fromURL=/path/to/your.ipynb</a></p>
 </blockquote>
-<p>按我的需求来说就是提供额外的 config/wheels/notebook，然后用这个 CLI
-合并上 jupyterlite 本身的静态资源 （e.g. core assets，应该是指 UI 和
-kernel 等）输出一个 site</p>
-<p>主要用到命令 <code
-class="language-plaintext">jupyter lite build</code>（<a
-href="https://jupyterlite.readthedocs.io/en/latest/reference/cli.html#build">doc</a>），一些重要参数</p>
-<ul>
-<li><code class="language-plaintext">--config</code> 可以指定一个 JSON
-配置，默认是当前目录下名为 <code
-class="language-plaintext">jupyter_lite_config.json</code> 的文件，
-例子可看<a
-href="https://github.com/jupyterlite/jupyterlite/blob/main/examples/jupyter_lite_config.json">这里</a></li>
-<li><code class="language-plaintext">--lite-dir</code> 指定 <a
-href="https://jupyterlite.readthedocs.io/en/latest/reference/cli.html#the-lite-dir">LiteDir</a>，
-这个目录主要包含用户提供的内容等</li>
-<li><code class="language-plaintext">--output-dir</code> 输出 site
-的目录</li>
-</ul>
-<h3 id="例子">例子</h3>
-<p>以下是一个 build script 和配置的例子：它会首先创建 python virutal env
-然后安装 jupyterlite 最后输出 site 到目录 <code
-class="language-plaintext">jl</code> 中， 这里根据 <a
-href="https://jupyterlite.readthedocs.io/en/latest/howto/configure/advanced/offline.html">Create
-a JupyterLite archive that can be used offline</a> 下载完整的 pyodide
-以及 mathjax（不需要用 CDN），另外也示范性地添加预下载的 <code
-class="language-plaintext">pyjokes</code> wheel（不需要从 pypi 下载），
-这样创建出来的 site 即使完全不联网也是能运作的，只是体积比较大</p>
-<ul>
-<li><p><code class="language-plaintext">build.sh</code></p>
-<pre class="language-bash"><code>#!/bin/bash
-
-# Directory containing build.sh
-SCRIPT_DIR=$( cd -- &quot;$( dirname -- &quot;${BASH_SOURCE[0]}&quot; )&quot; &amp;&gt; /dev/null &amp;&amp; pwd )
-# Python venv
-VENV_DIR=$SCRIPT_DIR/venv
-# Pyodide download path
-PYODIDE_VER=0.21.1
-PYODIDE_PATH=$SCRIPT_DIR/pyodide.tar.bz2
-# Output directory
-OUTPUT_DIR=$SCRIPT_DIR/jl
-
-echo &quot;==== Script dir: $SCRIPT_DIR&quot;
-echo &quot;==== Python venv dir: $VENV_DIR&quot;
-echo &quot;==== Pyodide version: $PYODIDE_VER&quot;
-echo &quot;==== Pyodide path: $PYODIDE_PATH&quot;
-echo &quot;==== Output dir: $OUTPUT_DIR&quot;
-
-cd $SCRIPT_DIR
-
-if [ ! -d $VENV_DIR ]; then
-  echo &quot;==== Python venv not found, create a new one&quot;
-  python3 -m venv $VENV_DIR
-else
-  echo &quot;==== Python venv found&quot;
-fi
-
-echo &quot;==== Activating venv&quot;
-source $VENV_DIR/bin/activate
-
-echo &quot;==== Run pip install jupyterlite[piplite,mathjax]&quot;
-pip install --pre jupyterlite[piplite,mathjax]
-
-if [ ! -f $PYODIDE_PATH ]; then
-  echo &quot;==== Pyodide not found, try to download... (or you can manally download it)&quot;
-  wget --verbose -O $PYODIDE_PATH \
-    https://github.com/pyodide/pyodide/releases/download/${PYODIDE_VER}/pyodide-build-${PYODIDE_VER}.tar.bz2
-else
-  echo &quot;==== Pyodide found&quot;
-fi
-
-echo &quot;==== Run jupyter lite build...&quot;
-jupyter lite build --lite-dir=$SCRIPT_DIR --output-dir=$OUTPUT_DIR --pyodide=$PYODIDE_PATH --config=$SCRIPT_DIR/jupyter_lite_config.json
-</code></pre></li>
-<li><p><code
-class="language-plaintext">jupyter_lite_config.json</code></p>
-<pre class="language-json"><code>{
-  &quot;LiteBuildConfig&quot;: {
-    &quot;piplite_urls&quot;: [
-      &quot;https://files.pythonhosted.org/packages/6a/0e/4a824a4fc93b9725a985fcea7115927b72f2ca6966008300a982cb869720/pyjokes-0.6.0-py2.py3-none-any.whl&quot;
-    ]
-  }
-}</code></pre></li>
-</ul>
-<h3 id="内容">内容</h3>
-<p>可将内容（<code class="language-plaintext">*.ipynb</code>）放置到
-LiteDir 的 <code class="language-plaintext">files</code> 目录中，再次跑
-build script 即可更新到 site 中， 详细说明见 <a
-href="https://jupyterlite.readthedocs.io/en/latest/howto/content/files.html">Adding
-content: notebook, files and static assets</a></p>
-<h3 id="部署">部署</h3>
-<p>部署方式有多种，例如可以在 github 上新建一个名为 <code
-class="language-plaintext">jupyterlite</code> 的项目，把刚才生成的 site
-push 上去，并且设置 github page， 这样它就可以在 <code
-class="language-plaintext">&lt;username&gt;.github.io/jupyterlite</code>
-这个路径上访问得到了</p>
+<p>则打开的 jupyterlite 会自动打开该 notebook</p>
 <h2 id="使用">使用</h2>
 <h3 id="不同之处">不同之处</h3>
 <p>原 CS 模式下，packages 是在服务器上安装好，可以直接 <code
@@ -215,12 +116,7 @@ await piplite.install(&#39;pyjokes&#39;)
 import pyjokes
 pyjokes.get_joke()</code></pre>
 <p>这样才行，看看<a
-href="/jupyterlite/lab?path=posts%2F2022%2Fjupyterlite%2Findex.ipynb">效果</a></p>
-<p>注：上面将 whl url 写到 <code
-class="language-plaintext">piplite_urls</code> 中只是将 wheel 提前下载到
-site 中，并告诉 jupyterlite 如果要 piplite install 这个包则不要去 pypi
-找而是在 site 里找，但要使用它之前还是需要 <code
-class="language-plaintext">piplite.install</code> 的</p>
+href="/jl/lab?fromURL=/posts/2022/jupyterlite/jl.ipynb">效果</a></p>
 
   </article>
 
