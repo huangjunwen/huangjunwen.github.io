@@ -2,14 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://127.0.0.1:1313/</loc>
-    <lastmod>2023-02-26T01:28:06+00:00</lastmod>
+    <loc>http://127.0.0.1:1313/posts/notes/a-mathematical-introduction-to-logic/chap-1-sentential-logic/</loc>
+    <lastmod>2023-04-16T07:34:14+00:00</lastmod>
   </url><url>
-    <loc>http://127.0.0.1:1313/posts/notes/good-links/</loc>
-    <lastmod>2023-02-26T01:28:06+00:00</lastmod>
+    <loc>http://127.0.0.1:1313/</loc>
+    <lastmod>2023-04-16T07:34:14+00:00</lastmod>
   </url><url>
     <loc>http://127.0.0.1:1313/posts/</loc>
-    <lastmod>2023-02-26T01:28:06+00:00</lastmod>
+    <lastmod>2023-04-16T07:34:14+00:00</lastmod>
+  </url><url>
+    <loc>http://127.0.0.1:1313/posts/notes/a-mathematical-introduction-to-logic/</loc>
+    <lastmod>2023-04-16T01:40:48+00:00</lastmod>
+  </url><url>
+    <loc>http://127.0.0.1:1313/tags/logic/</loc>
+    <lastmod>2023-04-16T01:40:48+00:00</lastmod>
+  </url><url>
+    <loc>http://127.0.0.1:1313/tags/</loc>
+    <lastmod>2023-04-16T01:40:48+00:00</lastmod>
   </url><url>
     <loc>http://127.0.0.1:1313/tags/jl/</loc>
     <lastmod>2022-08-27T10:14:17+00:00</lastmod>
@@ -23,9 +32,6 @@
     <loc>http://127.0.0.1:1313/tags/python/</loc>
     <lastmod>2022-08-27T10:14:17+00:00</lastmod>
   </url><url>
-    <loc>http://127.0.0.1:1313/tags/</loc>
-    <lastmod>2022-08-27T10:14:17+00:00</lastmod>
-  </url><url>
     <loc>http://127.0.0.1:1313/categories/</loc>
     <lastmod>2022-05-05T08:08:04+00:00</lastmod>
   </url><url>
@@ -33,9 +39,6 @@
     <lastmod>2022-05-05T08:08:04+00:00</lastmod>
   </url><url>
     <loc>http://127.0.0.1:1313/posts/2022/intuitionistic-logic/</loc>
-    <lastmod>2022-05-05T08:08:04+00:00</lastmod>
-  </url><url>
-    <loc>http://127.0.0.1:1313/tags/logic/</loc>
     <lastmod>2022-05-05T08:08:04+00:00</lastmod>
   </url><url>
     <loc>http://127.0.0.1:1313/categories/type-theory/</loc>
@@ -166,6 +169,9 @@
   </url><url>
     <loc>http://127.0.0.1:1313/posts/2016/</loc>
     <lastmod>2016-01-01T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>http://127.0.0.1:1313/posts/notes/good-links/</loc>
+    <lastmod>2000-01-01T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://127.0.0.1:1313/posts/notes/</loc>
     <lastmod>2000-01-01T00:00:00+00:00</lastmod>

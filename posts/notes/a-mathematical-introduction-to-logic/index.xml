@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>A Mathematical Introduction to Logic 笔记 on Coder Papa</title>
+    <link>http://127.0.0.1:1313/posts/notes/a-mathematical-introduction-to-logic/</link>
+    <description>Recent content in A Mathematical Introduction to Logic 笔记 on Coder Papa</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 16 Apr 2023 01:40:48 +0000</lastBuildDate><atom:link href="http://127.0.0.1:1313/posts/notes/a-mathematical-introduction-to-logic/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Chap One. Sentential Logic</title>
+      <link>http://127.0.0.1:1313/posts/notes/a-mathematical-introduction-to-logic/chap-1-sentential-logic/</link>
+      <pubDate>Sun, 16 Apr 2023 07:34:14 +0000</pubDate>
+      
+      <guid>http://127.0.0.1:1313/posts/notes/a-mathematical-introduction-to-logic/chap-1-sentential-logic/</guid>
+      <description>1.4 Induction and Recursion Induction 归纳（Induction） 是数学中非常常见的一种构造：由属于集合 \(U\) 的一些初始元素（initial elements）开始，不断应用一些特定操作，而最终获得的一个 \(U\) 的子集
+我们感兴趣的是包含这些初始元素并闭合于（closed under）这些特定操作的最小集合
+一个直接的例子：\(U\) 是所有表达式的集合，初始元素是所有命题符号（sentence symbol），操作是 \(\varepsilon_{\neg}, \varepsilon_{\wedge}\) 等， 最终构造出的子集则是所有合式公式（well formed formulas, wffs）的集合
+为了易于讨论（也基本不失一般性），考虑初始元素集合 \(B \subseteq U\)，一组函数 \(F\)，仅包含两个函数
+\[ \begin{gather} f: U \times U \rightarrow U \\ g: U \rightarrow U \end{gather} \]
+如果 \(B\) 包含 \(a, b\) 两个元素，则那个我们希望构造得到的集合 \(C\) 就会包含诸如
+\[ b,\; f(b, a),\; g(a),\; f(g(a), f(b, b)) \]
+等等；注意，它们未必是相异的，例如有可能 \(b\) 和 \(g(a)\) 是同一个元素
+下面 formal 地定义 \(C\)，有两种方式，一种“自顶而下”（from the top down），一种“自底而上”（from the bottom up）</description>
+    </item>
+    
+  </channel>
+</rss>

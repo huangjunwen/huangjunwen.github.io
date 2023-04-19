@@ -6,14 +6,22 @@
     <description>Recent content on Coder Papa</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sun, 26 Feb 2023 01:28:06 +0000</lastBuildDate><atom:link href="http://127.0.0.1:1313/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 16 Apr 2023 07:34:14 +0000</lastBuildDate><atom:link href="http://127.0.0.1:1313/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Good Links</title>
-      <link>http://127.0.0.1:1313/posts/notes/good-links/</link>
-      <pubDate>Sun, 26 Feb 2023 01:28:06 +0000</pubDate>
+      <title>Chap One. Sentential Logic</title>
+      <link>http://127.0.0.1:1313/posts/notes/a-mathematical-introduction-to-logic/chap-1-sentential-logic/</link>
+      <pubDate>Sun, 16 Apr 2023 07:34:14 +0000</pubDate>
       
-      <guid>http://127.0.0.1:1313/posts/notes/good-links/</guid>
-      <description>Logic Matters -&amp;gt; Teach Yourself logic: https://www.logicmatters.net/tyl/</description>
+      <guid>http://127.0.0.1:1313/posts/notes/a-mathematical-introduction-to-logic/chap-1-sentential-logic/</guid>
+      <description>1.4 Induction and Recursion Induction 归纳（Induction） 是数学中非常常见的一种构造：由属于集合 \(U\) 的一些初始元素（initial elements）开始，不断应用一些特定操作，而最终获得的一个 \(U\) 的子集
+我们感兴趣的是包含这些初始元素并闭合于（closed under）这些特定操作的最小集合
+一个直接的例子：\(U\) 是所有表达式的集合，初始元素是所有命题符号（sentence symbol），操作是 \(\varepsilon_{\neg}, \varepsilon_{\wedge}\) 等， 最终构造出的子集则是所有合式公式（well formed formulas, wffs）的集合
+为了易于讨论（也基本不失一般性），考虑初始元素集合 \(B \subseteq U\)，一组函数 \(F\)，仅包含两个函数
+\[ \begin{gather} f: U \times U \rightarrow U \\ g: U \rightarrow U \end{gather} \]
+如果 \(B\) 包含 \(a, b\) 两个元素，则那个我们希望构造得到的集合 \(C\) 就会包含诸如
+\[ b,\; f(b, a),\; g(a),\; f(g(a), f(b, b)) \]
+等等；注意，它们未必是相异的，例如有可能 \(b\) 和 \(g(a)\) 是同一个元素
+下面 formal 地定义 \(C\)，有两种方式，一种“自顶而下”（from the top down），一种“自底而上”（from the bottom up）</description>
     </item>
     
     <item>
@@ -293,6 +301,15 @@ https://www.digitalocean.com/community/tutorials/how-to-configure-port-knocking-
 不过我用的时候发现个问题，就是 tcp 包在发送的时候，好像一次过会发送多个包，这样敲门的序列就会变成类似：
 7421 7421 3411 9088 9088 9088 ... 所以我把 rules 改成接纳每个端口可以连续 N 次，只要下一个不一样的是正确的就可以接受：
 #!/bin/bash PORT1=xxxx PORT2=xxxx PORT3=xxxx # reset firewall iptables -F iptables -X iptables -P INPUT ACCEPT iptables -P FORWARD ACCEPT iptables -P OUTPUT ACCEPT # create new chains used by port knocking iptables -N KNOCKING iptables -N GATE1 iptables -N GATE2 iptables -N GATE3 iptables -N PASSED # accept current connections (keep current SSH connections) iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT # accept local machine&amp;#39;s connection iptables -A INPUT -i lo -j ACCEPT # accept http/https or other exported services iptables -A INPUT -p tcp --dport 80 -j ACCEPT iptables -A INPUT -p tcp --dport 443 -j ACCEPT # now pass all other to the KNOCKING chain iptables -A INPUT -j KNOCKING # KNOCKING dispatch iptables -A KNOCKING -m recent --reap --rcheck --seconds 3600 --name AUTH3 -j PASSED iptables -A KNOCKING -m recent --reap --rcheck --seconds 10 --name AUTH2 -j GATE3 iptables -A KNOCKING -m recent --reap --rcheck --seconds 10 --name AUTH1 -j GATE2 iptables -A KNOCKING -j GATE1 iptables -A GATE1 -p tcp --dport $PORT1 -m recent --name AUTH1 --set -j DROP iptables -A GATE1 -j DROP iptables -A GATE2 -p tcp --dport $PORT1 -j DROP # allow $PORT1 duplication iptables -A GATE2 -m recent --name AUTH1 --remove iptables -A GATE2 -p tcp --dport $PORT2 -m recent --name AUTH2 --set -j DROP iptables -A GATE2 -j GATE1 iptables -A GATE3 -p tcp --dport $PORT2 -j DROP # allow $PORT2 duplication iptables -A GATE3 -m recent --name AUTH2 --remove iptables -A GATE3 -p tcp --dport $PORT3 -m recent --name AUTH3 --set -j DROP iptables -A GATE3 -j GATE1 iptables -A PASSED -p tcp --dport $PORT3 -j DROP # allow $PORT3 duplication iptables -A PASSED -p tcp --dport 22 -j ACCEPT iptables -A PASSED -j DROP 另外还有些修改，例如 AUTH3 的时候，允许用户有一个小时（3600秒）的时间可以随意连接 22 端口。</description>
+    </item>
+    
+    <item>
+      <title>Good Links</title>
+      <link>http://127.0.0.1:1313/posts/notes/good-links/</link>
+      <pubDate>Sat, 01 Jan 2000 00:00:00 +0000</pubDate>
+      
+      <guid>http://127.0.0.1:1313/posts/notes/good-links/</guid>
+      <description>Logic Matters -&amp;gt; Teach Yourself logic: https://www.logicmatters.net/tyl/</description>
     </item>
     
   </channel>

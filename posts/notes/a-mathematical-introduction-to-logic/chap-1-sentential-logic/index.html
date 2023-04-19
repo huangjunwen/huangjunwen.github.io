@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Chap One. Sentential Logic</title>
+    
+    <link rel="stylesheet" href="/res/libs/fontawesome/css/all.min.css"></link>
+    <link rel="stylesheet" href="/res/libs/chota/css/chota.min.css"></link>
+    <link rel="stylesheet" href="/res/style/site.min.1cfb2065638c6eda7f5ceb0b60110baf5593ae09a1298e64096971386bd084ca.css"></link>
+    <script type="text/javascript" src="/res/script/site.min.6881188133395162222bed24f23dd6cbdd74f0b93a54b35a6b929b5178e10fe9.js"></script>
+    <link id="markdown-body-style" rel="stylesheet" href="/res/style/markdown-body.min.aec7203f81241f1103ab6287b9f06bbf68fbb0619dce126e1de43a384dc64337.css"></link>
+    <script type="text/javascript" src="/res/script/markdown-body.min.a6a10b3328945990fade36e6fee4eab6131402292da617dc8c6d0258507f0c72.js"></script>
+  </head>
+
+  <body>
+    
+    <div id="header">
+      
+      <nav id="navbar" class="row">
+        <div class="is-left col-12 col-3-md row">
+          <a id="navbar-brand" class="brand" href="/">Coder Papa</a>
+          <label id="navbar-toggle-menu" for="navbar-toggle-menu-state" class="hide-md hide-lg">
+            <span></span>
+            <span></span>
+            <span></span>
+          </label>
+        </div>
+        <input id="navbar-toggle-menu-state" type="checkbox" style="display:none"></input>
+        <div id="navbar-menu" class="is-right col-12 col-9-md row hide-xs-noimportant hide-sm-noimportant">
+          
+          <a href="/posts">Posts</a>
+          
+          
+          <a href="/categories">Categories</a>
+          
+          <a href="/tags">Tags</a>
+          
+          
+          <a href="https://github.com/huangjunwen"><i class='fab fa-github'></i></a>
+          
+          <a href="javascript:void(0)" id="navbar-toggle-mode" onclick="return toggleColorMode()"></a>
+        </div>
+      </nav>
+    </div>
+
+    
+    <div id="main" class="row">
+      <div id="main-left" class="hide-xs hide-sm col-2-md col-3-lg">
+        
+      </div>
+      <div id="main-center" class="col-12 col-8-md col-6-lg mdb">
+        <div id="main-title" class="text-center">
+          
+  <h5 class="no-toc"><span class="breadcrumbnav"><span><a href="/posts/">POSTS</a></span><i class="fa fa-fw fa-angle-double-right"></i><span><a href="/posts/notes/">NOTES</a></span><i class="fa fa-fw fa-angle-double-right"></i><span><a href="/posts/notes/a-mathematical-introduction-to-logic/">A MATHEMATICAL INTRODUCTION TO LOGIC 笔记</a></span></span></h5>
+  <h1>Chap One. Sentential Logic</h1>
+  <small>
+    <time class="" datetime="2023-04-16T07:34:14Z">Sun, 2023/04/16</time>
+  </small>
+  <p>
+    
+    
+  </p>
+  
+        </div>
+        <div id="main-body">
+          
+  <article id="content-body">
+    <h2 id="induction-and-recursion">1.4 Induction and Recursion</h2>
+<h3 id="induction">Induction</h3>
+<p><strong>归纳（Induction）</strong>
+是数学中非常常见的一种构造：由属于集合 \(U\) 的一些初始元素（initial
+elements）开始，不断应用一些特定操作，而最终获得的一个 \(U\) 的子集</p>
+<p>我们感兴趣的是包含这些初始元素并闭合于（closed
+under）这些特定操作的最小集合</p>
+<p>一个直接的例子：\(U\)
+是所有表达式的集合，初始元素是所有命题符号（sentence symbol），操作是
+\(\varepsilon_{\neg}, \varepsilon_{\wedge}\) 等，
+最终构造出的子集则是所有合式公式（well formed formulas, wffs）的集合</p>
+<p>为了易于讨论（也基本不失一般性），考虑初始元素集合 \(B \subseteq
+U\)，一组函数 \(F\)，仅包含两个函数</p>
+<p>\[
+\begin{gather}
+f: U \times U \rightarrow U \\
+g: U \rightarrow U
+\end{gather}
+\]</p>
+<p>如果 \(B\) 包含 \(a, b\) 两个元素，则那个我们希望构造得到的集合 \(C\)
+就会包含诸如</p>
+<p>\[
+b,\; f(b, a),\; g(a),\; f(g(a), f(b, b))
+\]</p>
+<p>等等；注意，<strong>它们未必是相异的</strong>，例如有可能 \(b\) 和
+\(g(a)\) 是同一个元素</p>
+<p>下面 formal 地定义 \(C\)，有两种方式，一种“自顶而下”（from the top
+down），一种“自底而上”（from the bottom up）</p>
+<h4 id="from-the-top-down">From the top down</h4>
+<dl>
+<dt>Closed</dt>
+<dd>
+若 \(S\) 是 \(U\) 的一个子集且满足：只要 \(x\) 和 \(y\) 都属于 \(S\)，则
+\(f(x, y)\) 和 \(g(x)\) 也属于 \(S\)； 则称 \(S\) <strong>闭合于（closed
+under）</strong> \(f\) 和 \(g\)
+</dd>
+<dt>Inductive</dt>
+<dd>
+若 \(B \subseteq S\) （即初始元素集合是 \(S\) 的子集）且 \(S\) 闭合于
+\(F\)（即 \(f\) 和 \(g\)）； 则称 \(S\) 是 <strong>inductive</strong> 的
+</dd>
+</dl>
+<p>令 \(C^{ * }\) 是所有 inductive 集的<strong>交集</strong>，亦即如果
+\(x \in C^{ * }\) 当且仅当 \(x\) 属于所有 inductive 集</p>
+<p>容易看出 <strong>\(C^{ * }\) 本身也是 inductive
+的</strong>，因为：</p>
+<ul>
+<li>\(B \subseteq C^{ * }\)，因为 \(B\) 是所有 inductive
+集的子集，故也是 \(C^{ * }\) 的子集了</li>
+<li>如果 \(x, y\) 属于 \(C^{ * }\)，则 \(x, y\) 也属于所有 inductive
+集， 由闭合特性，\(f(x, y), g(x)\) 也属于所有 inductive 集，则 \(f(x,
+y), g(x)\) 也属于 \(C^{ * }\)</li>
+</ul>
+<p>所以 \(C^{ * }\) 是所有 inductive 集中最小的那个，被所有其他
+inductive 集包含</p>
+<h4 id="from-the-bottom-up">From the bottom up</h4>
+<p>另外一种（等价的）定义方式是对初始元素集 \(B\)
+中的元素应用有限次操作而得到的</p>
+<dl>
+<dt>Construction Sequence</dt>
+<dd>
+<p><strong>构造序列（construction sequence）</strong> 是指一个有限的序列
+\(\langle x_1, ..., x_n \rangle\)， 且对于任意 \(i \le n\)，\(x_i\)
+<strong>至少</strong>满足以下其一（如上所述，应用了 \(f,g\)
+后的结果未必相异，故有可能同时满足多个）：</p>
+<ul>
+<li>\(x_i \in B\)</li>
+<li>\(x_i = f(x_j, x_k)\) 其中 \(j &lt; i, k &lt; i\)</li>
+<li>\(x_i = g(x_j)\) 其中 \(j &lt; i\)</li>
+</ul>
+</dd>
+</dl>
+<p>换句话说，构造序列里的每一项要么属于 \(B\)，要么是由早先的项应用
+\(f\) 或者 \(g\) 获得</p>
+<p>若 \(x\) 是一个长度为 \(n\) 构造序列的最后一项，如 \(\langle x_1,
+..., x_{n-1}, x_n = x \rangle\)，则称 \(x\) 有一个长度为 \(n\)
+的构造序列 （\(x\) 的构造序列里是可以包含有“垃圾”，即跟 \(x\)
+完全无关的其他项）</p>
+<p>令 \(C_n\) 为所有有长度为 \(n\) 的构造序列的元素，易知 \(C_1 =
+B\)，且</p>
+<p>\[
+C_1 \subseteq C_2 \subseteq C_3 \subseteq ...
+\]</p>
+<p>令 \(C_{ * } = \bigcup_n C_n\) 即所有 \(C_n\)
+的<strong>并集</strong></p>
+<h4 id="equivalent-of-the-above-two-definitions">Equivalent of the above
+two definitions</h4>
+<p>要证明 \(C^{ * } \subseteq C_{ * }\) 只需要证明 \(C_{ * }\) 是
+inductive 集即可，因为 \(C^{ * }\) 被所有 inductive 集包含</p>
+<ul>
+<li>如果 \(x, y \in C_{ * }\)，即 \(x, y\)
+均有构造序列，将这两个构造序列串联起来，再添加上 \(f(x, y)\)，
+则这个新的序列就是 \(f(x, y)\) 的构造序列，故它也包含在 \(C_{ * }\)
+中，同理 \(g(x)\)，故 \(C_{ * }\) 闭合于 \(F\)； 又已知 \(B \subseteq
+C_{ * }\)，所以 \(C_{ * }\) 是 inductive 集</li>
+</ul>
+<p>要证明 \(C_{ * } \subseteq C^{ * }\)，考虑任意 \(x \in C_{ *
+}\)，并有构造序列 \(\langle x_1, ..., x_{n-1}, x_n = x \rangle\)， 对
+\(n\) 进行归纳可证明 \(x \in C^{ * }\)</p>
+<ul>
+<li>显然 \(x_1 \in B \subseteq C^{ * }\)；若 \(i &lt; j\) 都有 \(x_i \in
+C^{ * }\)，则 \(x_j \in C^{ * }\) 因为要么 \(x_j \in B\) 要么 \(x_j\)
+由前面的项应用 \(F\) 而得，而 \(C^{ * }\) 是闭合于 \(F\) 的</li>
+</ul>
+<p>所以两者其实是等价的</p>
+<p>\[
+\bigcup_n C_n = C_{ * } = C^{ * } = \bigcap \{ S\; |\; S\; inductive \}
+\]</p>
+<p>因此可以直接统一称为：<strong>由初始集 \(B\) 应用 \(F\) 生成的集合
+\(C\)（set generated from \(B\) by functions in \(F\)）</strong></p>
+<h4 id="induction-principle">Induction Principle</h4>
+<blockquote>
+<p>令 \(C\) 是由初始集 \(B\) 应用 \(F\) 生成的集合，如果集合 \(S\) 是
+\(C\) 的子集，且 \(S\) 包含 \(B\)，以及 \(S\) 闭合于 \(F\)， 则 \(S =
+C\)</p>
+</blockquote>
+<div class="proof">
+<div class="proof-label">
+Proof
+</div>
+<div class="proof-content">
+<p>所以 \(S\) 是 inductive 集，故 \(C = C^{ * } \subseteq
+S\)；又假设里已经有 \(S \subseteq C\)；所以 \(S = C\)</p>
+</div>
+</div>
+
+  </article>
+
+        </div>
+      </div>
+      <div id="main-right" class="hide-xs hide-sm col-2-md col-3-lg">
+        
+  
+  <div id="content-toc" class="toc hide-md"></div>
+  
+
+      </div>
+    </div>
+
+    
+    <div id="footer" class="text-center">
+      <p>
+        Powered By <a href="https://gohugo.io/">Hugo</a>/<a href="https://jenil.github.io/chota">Chota</a>,
+        Generated Using <a href="https://github.com/huangjunwen/mdtool">MDTool</a>
+      </p>
+      <p>&copy; 2023. All rights reserved</p>
+    </div>
+
+    
+  
+    <link rel="stylesheet" href="/res/libs/tocbot/css/tocbot.css"></link>
+    <style>
+    #content-toc {
+      position: -webkit-sticky;
+      position: sticky;
+      top: 7rem;
+      padding-left: 2rem;
+      padding-right: 1rem;
+    }
+
+    #content-toc a.toc-link {
+      color: var(--font-color);
+    }
+
+    #content-toc a.toc-link.is-active-link {
+      color: var(--color-darkGrey);
+    }
+
+    #content-toc a.toc-link::before {
+      background-color: var(--bg-color);
+    }
+
+    #content-toc a.toc-link.is-active-link::before {
+      background-color: var(--color-primary);
+    }
+    </style>
+    <script src="/res/libs/tocbot/js/tocbot.min.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', (ev) => {
+      tocbot.init({
+        tocSelector: '#content-toc',
+        contentSelector: '#main-center',
+        ignoreSelector: '.no-toc',
+        headingSelector: 'h1, h2, h3, h4, h5, h6',
+        hasInnerContainers: false,
+        headingsOffset: 80,
+        scrollSmoothOffset: -80
+      });
+    });
+    </script>
+  
+  
+    <script type="text/javascript" src="/res/libs/anchorjs/js/anchor.min.js"></script>
+    <script>anchors.add('#main-body h1, #main-body h2, #main-body h3, #main-body h4, #main-body h5, #main-body h6, #main-body dt');</script>
+  
+
+  </body>
+</html>
