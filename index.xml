@@ -8,12 +8,12 @@
     <language>zh-cn</language>
     <lastBuildDate>Sun, 16 Apr 2023 07:34:14 +0000</lastBuildDate><atom:link href="http://127.0.0.1:1313/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Chap One. Sentential Logic</title>
-      <link>http://127.0.0.1:1313/posts/notes/a-mathematical-introduction-to-logic/chap-1-sentential-logic/</link>
+      <title>Ch1. Sentential Logic :: 1.4 Induction and Recursion</title>
+      <link>http://127.0.0.1:1313/posts/notes/a-mathematical-introduction-to-logic/chap-1-4/</link>
       <pubDate>Sun, 16 Apr 2023 07:34:14 +0000</pubDate>
       
-      <guid>http://127.0.0.1:1313/posts/notes/a-mathematical-introduction-to-logic/chap-1-sentential-logic/</guid>
-      <description>1.4 Induction and Recursion Induction 归纳（Induction） 是数学中非常常见的一种构造：由属于集合 \(U\) 的一些初始元素（initial elements）开始，不断应用一些特定操作，而最终获得的一个 \(U\) 的子集
+      <guid>http://127.0.0.1:1313/posts/notes/a-mathematical-introduction-to-logic/chap-1-4/</guid>
+      <description>Induction 归纳（Induction） 是数学中非常常见的一种构造：由属于集合 \(U\) 的一些初始元素（initial elements）开始，不断应用一些特定操作，而最终获得的一个 \(U\) 的子集
 我们感兴趣的是包含这些初始元素并闭合于（closed under）这些特定操作的最小集合
 一个直接的例子：\(U\) 是所有表达式的集合，初始元素是所有命题符号（sentence symbol），操作是 \(\varepsilon_{\neg}, \varepsilon_{\wedge}\) 等， 最终构造出的子集则是所有合式公式（well formed formulas, wffs）的集合
 为了易于讨论（也基本不失一般性），考虑初始元素集合 \(B \subseteq U\)，一组函数 \(F\)，仅包含两个函数
