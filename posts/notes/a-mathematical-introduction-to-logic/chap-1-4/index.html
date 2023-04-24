@@ -138,8 +138,6 @@ inductive 集包含</p>
 </ul>
 </dd>
 </dl>
-<p>换句话说，构造序列里的每一项要么属于 \(B\)，要么是由早先的项应用
-\(f\) 或者 \(g\) 获得</p>
 <p>若 \(x\) 是一个长度为 \(n\) 构造序列的最后一项，如 \(\langle x_1,
 ..., x_{n-1}, x_n = x \rangle\)，则称 \(x\) 有一个长度为 \(n\)
 的构造序列 （\(x\) 的构造序列里是可以包含有“垃圾”，即跟 \(x\)
@@ -176,6 +174,17 @@ C^{ * }\)，则 \(x_j \in C^{ * }\) 因为要么 \(x_j \in B\) 要么 \(x_j\)
 \]</p>
 <p>因此可以直接统一称为：<strong>由初始集 \(B\) 应用 \(F\) 生成的集合
 \(C\)（set generated from \(B\) by functions in \(F\)）</strong></p>
+<blockquote>
+<p>(A parenthetical remark: Suppose our present study is embedded in
+axiomatic set theory, where the natural numbers are usually defined from
+the top down. Then our definition of \(C_{ * }\) (employing finiteness
+and hence natural numbers) is not really different from our definition
+of \(C^{ * }\). But we are not working within axiomatic set theory; we
+are working within informal mathematics. And the notion of natural
+number seems to be a solid, well-understood intuitive concept.) <a
+href="#fn1" class="footnote-ref" id="fnref1"
+role="doc-noteref"><sup>1</sup></a></p>
+</blockquote>
 <h3 id="induction-principle">Induction Principle</h3>
 <blockquote>
 <p>令 \(C\) 是由初始集 \(B\) 应用 \(F\) 生成的集合，如果集合 \(S\) 是
@@ -309,6 +318,161 @@ true 或者 false</li>
 <li>则最终 \(\bar{h}\) 是合式公式的赋值函数，即给定一个合式公式，返回其
 truth value</li>
 </ul>
+<h3 id="proof-of-the-recursion-theorem">Proof of the Recursion
+Theorem</h3>
+<div class="proof">
+<div class="proof-label">
+Proof
+</div>
+<div class="proof-content">
+<p>书里的证明是用许多逼近函数（approximating
+functions）并集（union）而得到 \(\bar{h}\)</p>
+<p>首先，在这个证明中，我们需要一个 “弱化” 版本的条件：</p>
+<dl>
+<dt>Acceptable</dt>
+<dd>
+<p>如果一个函数 \(v\) 的定义域（domain）是 \(C\) 的子集，值域（range）是
+\(V\) 的子集，且满足：</p>
+<ol type="1">
+<li>如果 \(x \in dom(v)\) 且 \(x \in B\)，则 \(v(x) = h(x)\)</li>
+<li>如果 \(f(x, y) \in dom(v)\)，则 \(x, y \in dom(v)\)，且 \(v(f(x, y))
+= F(v(x), v(y))\)</li>
+<li>如果 \(g(x) \in dom(v)\)，则 \(x \in dom(v)\)，且 \(v(g(x)) =
+G(v(x))\)</li>
+</ol>
+<p>则称这个函数 <strong>acceptable</strong></p>
+</dd>
+</dl>
+<p>令 \(\bar{h}\) 为所有 acceptable 函数的并集， 也就是说 \(\langle x, z
+\rangle \in \bar{h}\) 当且仅当 \(\langle x, z \rangle\) 属于某个
+acceptable 的函数 \(v\) （或换句话说存在某个 acceptable 函数 \(v\) 使得
+\(v(x) = z\) ）</p>
+<p>我们的目标是要证明 \(\bar{h}\) 就是那个符合条件的函数，分四步走：</p>
+<ol type="1">
+<li><p><strong>首先需要证明 \(\bar{h}\)
+是一个函数，因为函数的并集有可能不再是一个函数，</strong> 例如如果
+\(\langle x, z \rangle \in v \subseteq \bar{h}\) 和 \(\langle x, z'
+\rangle \in v' \subseteq \bar{h}\) 且 \(z \neq z'\)， 则 \(\bar{h}\)
+就不是一个函数了，因为一个函数必须是单值的</p>
+<p>定义 \[S = \{ x \in C\; |\; for\; at\; most\; one\; z, \langle x, z
+\rangle \in \bar{h}\}\]</p>
+<p><em><strong>注意这里是 “at most one”，所以假如有某个 \(x \in
+C\)，但完全没有或仅有一个 acceptable 的函数 \(v\) 在 \(x\) 处有定义， 则
+\(x\) 也自然属于 \(S\)，故下面只需要考虑有两个或以上在 \(x\) 处有定义
+\(v\) 的情况</strong></em></p>
+<p>以下证明 \(S\) 其实是 inductive 的</p>
+<ol type="1">
+<li><p>首先设某个 \(x \in B\)，若有任意两个 acceptable 函数 \(v1, v2\)
+<strong>在 \(x\) 处有定义</strong>， 则根据 acceptable 定义有 \(v1(x) =
+h(x) = v2(x)\)，即必是单值，故 \(x \in S\)； 由于 \(x\) 是 \(B\)
+中任意选取的，故 \(B \subseteq S\)</p></li>
+<li><p>接下来检验 \(S\) 是否闭合于 \(f\)，假设 \(x, y \in
+S\)；若有任意两个 acceptable 函数 \(v1, v2\) <strong>在 \(f(x, y)\)
+处有定义</strong>， 则根据 acceptable 定义有</p>
+<ul>
+<li>\(v1(f(x, y)) = F(v1(x), v1(y))\)</li>
+<li>\(v2(f(x, y)) = F(v2(x), v2(y))\)</li>
+</ul>
+<p>由假设 \(x, y \in S\) 知 \(v1(x) = v2(x)\) 以及 \(v1(y) = v2(y)\)，故
+\(v1(f(x, y)) = v2(f(x, y))\)，所以 \(f(x, y) \in S\)</p></li>
+<li><p>同理 \(S\) 也闭合于 \(g\)</p></li>
+</ol>
+<p>故 \(S\) 是 inductive 的，由于 \(S \subseteq C\) 得出 \(S = C\)</p>
+<p>因此 \(\bar{h}\) 是单值的，也就是一个函数；由于 \(\bar{h}\)
+包含所有的 acceptable 函数， 故如果当 \(v\) 是一个 acceptable 函数且 \(x
+\in dom(v)\)，有 \[\bar{h}(x) = v(x)\]</p></li>
+<li><p><strong>第二步需要证明 \(\bar{h}\) 本身也是 acceptable
+的，</strong> 首先上一步刚证明 \(\bar{h}\) 是函数，且由其定义马上可得出
+\(dom(\bar{h}) \subseteq C\) 以及 \(ran(\bar{h}) \subseteq V\)，</p>
+<p>下面验证三个条件</p>
+<ol type="1">
+<li>如果 \(x \in dom(\bar{h})\) 且 \(x \in B\)，则必然至少有一个
+acceptable 函数 \(v\) 在 \(x\) 处有定义，因此 \(\bar{h}(x) = v(x) =
+h(x)\)</li>
+<li>如果 \(f(x, y) \in dom(\bar{h})\)，则同样至少有一个 acceptable 函数
+\(v\) 在 \(f(x, y)\) 处有定义， 因此 \(v\) 也在 \(x, y\) 处有定义且满足
+\[v(f(x, y)) = F(v(x), v(y))\] 由于 \[
+\begin{split}
+\bar{h}(f(x, y)) &amp; = v(f(x, y)) \\
+\bar{h}(x) &amp; = v(x) \\
+\bar{h}(y) &amp; = v(y)
+\end{split}
+\] 故 \[\bar{h}(f(x, y)) = F(\bar{h}(x), \bar{h}(y))\]</li>
+<li>\(g(x)\) 也类似</li>
+</ol></li>
+<li><p><strong>第三步需要进一步证明 \(dom(\bar{h}) =
+C\)，即其定义域覆盖整个 \(C\) </strong></p>
+<p><strong><em>注意第一步中我们仅仅证明了 \(\bar{h}\) 在 \(C\)
+上的每一个 \(x\) 最多有一个值（也就是是一个有效的函数）， 但有可能在一些
+\(x\) 上是无定义的：极端情况甚至有可能 \(\bar{h}\) 是空集（例如考虑
+\(B\) 包含一个元素， \(f,g\) 值域也仅包含这个元素，而 \(h,F,G\)
+的值域分别是三个不同的值，此时三个条件是没有办法同时满足的， 故实际一个
+acceptable 函数都没有；所以这一步需要用到 freeness
+这个假设）</em></strong></p>
+<p>要证明目标，只需要证明 \(dom(\bar{h})\) 是 inductive 就可以了</p>
+<ol type="1">
+<li><p>首先考虑某个 \(x \in B\)，容易知道 \(\{ \langle x, h(x) \rangle
+\}\) 是一个 “小” 的 acceptable 函数， 因为 \(C\) 是由 \(B\) 应用 \(f,
+g\) <strong>自由</strong> 生成的，故 \(x \notin ran(f)\) 且 \(x \notin
+ran(g)\) 故能满足 acceptable 的条件； 由于 \(\bar{h}\) 包含该 “小”
+函数，所以 \(x \in dom(\bar{h})\)，也就表明 \(B \subseteq
+dom(\bar{h})\)</p></li>
+<li><p>假设 \(s, t \in dom(\bar{h})\)，若 \(f(s, t) \notin
+dom(\bar{h})\)，令 \[v = \bar{h} \bigcup \{ \langle f(s, t),
+F(\bar{h}(s), \bar{h}(t)) \rangle \}\] 则 \(v\) 也是一个函数，且
+\(\bar{h} \subset v\)</p>
+<p>易知 \(dom(v) \subseteq C\) 以及 \(ran(v) \subseteq V\)，下面论证
+\(v\) 其实是 acceptable 的</p>
+<ol type="1">
+<li><p>若 \(x \in dom(v)\) 且 \(x \in B\)，由 freeness 故 \(x \neq f(s,
+t)\)，故 \(x \in dom(\bar{h})\) 且 \(v(x) = \bar{h}(x) = h(x)\)</p></li>
+<li><p>若 \(f(x, y) \in dom(v)\)</p>
+<p>第一种情况 \(f(x, y) \in dom(\bar{h})\)，则由于 \(\bar{h}\) 是
+acceptable， 有 \(x, y \in dom(\bar{h})\) 且 \[v(f(x, y)) = \bar{h}(f(x,
+y)) = F(\bar{h}(x), \bar{h}(y)) = F(v(x), v(y))\]</p>
+<p>另一种情况 \(f(x, y) = f(s, t)\)，由 freeness （one-to-one）得出 \(x
+= s, y = t\)，另外假设中已知 \(s, t \in dom(\bar{h})\)，有 \[v(f(x, y))
+= v(f(s, t)) = F(\bar{h}(s), \bar{h}(t)) = F(v(s), v(t)) = F(v(x),
+v(y))\]</p></li>
+<li><p>若 \(g(x) \in dom(v)\)，由 freeness 得出 \(g(x) \neq f(s,
+t)\)，故 \(g(x) \in dom(\bar{h})\) 且 \[v(g(x)) = \bar{h}(g(x)) =
+G(\bar{h}(x)) = G(v(x))\]</p></li>
+</ol>
+<p>有上述得出 \(v\) 是 acceptable 的，就有 \(v \subseteq \bar{h}\)，与
+\(\bar{h} \subset v\) 矛盾</p>
+<p>故 \(f(s, t) \in dom(\bar{h})\)</p></li>
+<li><p>可以使用类似的方法证明 \(dom(\bar{h})\) 闭合于 \(g\)</p></li>
+</ol>
+<p>最终由于 \(dom(\bar{h})\) 是 inductive 的，故 \(dom(\bar{h}) =
+C\)（via Induction Principle）</p></li>
+<li><p><strong>最后一步证明 \(\bar{h}\) 是唯一的</strong></p>
+<p>假设有两个 \(\bar{h}_1\) 以及 \(\bar{h}_2\) 满足上述，令 \[S = \{x
+\in C\; |\; \bar{h}_1(x) = \bar{h}_2(x)\; \}\]</p>
+<p>下面论证 \(S\) 是 inductive 的</p>
+<ol type="1">
+<li>若 \(x \in B\)，由于两者都是 acceptable 的，故 \(\bar{h}_1(x) = h(x)
+= \bar{h}_2(x)\)，故 \(B \subseteq S\)</li>
+<li>若 \(x, y \in S\)，即 \(\bar{h}_1(x) = \bar{h}_2(x)\) 以及
+\(\bar{h}_1(y) = \bar{h}_2(y)\)，由 acceptable 故 \[\bar{h}_1(f(x, y)) =
+F(\bar{h}_1(x), \bar{h}_1(y)) = F(\bar{h}_2(x), \bar{h}_2(y)) =
+\bar{h}_2(f(x, y))\] 所以 \(f(x, y) \in S\)</li>
+<li>同理 \(g(x)\) 闭合于 \(S\)</li>
+</ol>
+<p>于是再次根据 Induction Principle \(S = C\)，即 \(\bar{h}_1 =
+\bar{h}_2\)</p></li>
+</ol>
+</div>
+</div>
+<section class="footnotes footnotes-end-of-document"
+role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p>其实这里是不是需要避免使用 induction
+？因为正在定义 induction 本身； 感觉 Top down
+的方法在这里应该是主要的，Bottom up 的方法主要是一种佐证<a
+href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
 
   </article>
 
