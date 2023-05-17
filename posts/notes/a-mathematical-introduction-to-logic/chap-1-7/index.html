@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ch1. Sentential Logic :: 1.7 Compactness and Effectiveness</title>
+    
+    <link rel="stylesheet" href="/res/libs/fontawesome/css/all.min.css"></link>
+    <link rel="stylesheet" href="/res/libs/chota/css/chota.min.css"></link>
+    <link rel="stylesheet" href="/res/style/site.min.1cfb2065638c6eda7f5ceb0b60110baf5593ae09a1298e64096971386bd084ca.css"></link>
+    <script type="text/javascript" src="/res/script/site.min.6881188133395162222bed24f23dd6cbdd74f0b93a54b35a6b929b5178e10fe9.js"></script>
+    <link id="markdown-body-style" rel="stylesheet" href="/res/style/markdown-body.min.aec7203f81241f1103ab6287b9f06bbf68fbb0619dce126e1de43a384dc64337.css"></link>
+    <script type="text/javascript" src="/res/script/markdown-body.min.a6a10b3328945990fade36e6fee4eab6131402292da617dc8c6d0258507f0c72.js"></script>
+  </head>
+
+  <body>
+    
+    <div id="header">
+      
+      <nav id="navbar" class="row">
+        <div class="is-left col-12 col-3-md row">
+          <a id="navbar-brand" class="brand" href="/">Coder Papa</a>
+          <label id="navbar-toggle-menu" for="navbar-toggle-menu-state" class="hide-md hide-lg">
+            <span></span>
+            <span></span>
+            <span></span>
+          </label>
+        </div>
+        <input id="navbar-toggle-menu-state" type="checkbox" style="display:none"></input>
+        <div id="navbar-menu" class="is-right col-12 col-9-md row hide-xs-noimportant hide-sm-noimportant">
+          
+          <a href="/posts">Posts</a>
+          
+          
+          <a href="/categories">Categories</a>
+          
+          <a href="/tags">Tags</a>
+          
+          
+          <a href="https://github.com/huangjunwen"><i class='fab fa-github'></i></a>
+          
+          <a href="javascript:void(0)" id="navbar-toggle-mode" onclick="return toggleColorMode()"></a>
+        </div>
+      </nav>
+    </div>
+
+    
+    <div id="main" class="row">
+      <div id="main-left" class="hide-xs hide-sm col-2-md col-3-lg">
+        
+      </div>
+      <div id="main-center" class="col-12 col-8-md col-6-lg mdb">
+        <div id="main-title" class="text-center">
+          
+  <h5 class="no-toc"><span class="breadcrumbnav"><span><a href="/posts/">POSTS</a></span><i class="fa fa-fw fa-angle-double-right"></i><span><a href="/posts/notes/">NOTES</a></span><i class="fa fa-fw fa-angle-double-right"></i><span><a href="/posts/notes/a-mathematical-introduction-to-logic/">A MATHEMATICAL INTRODUCTION TO LOGIC 笔记</a></span></span></h5>
+  <h1>Ch1. Sentential Logic :: 1.7 Compactness and Effectiveness</h1>
+  <small>
+    <time class="" datetime="2023-05-13T00:39:20Z">Sat, 2023/05/13</time>
+  </small>
+  <p>
+    
+    
+  </p>
+  
+        </div>
+        <div id="main-body">
+          
+  <article id="content-body">
+    <h2 id="compactness">Compactness</h2>
+<dl>
+<dt>satisfiable</dt>
+<dd>
+如果有一赋值（truth assignment）满足一个合式公式集合 \(\Sigma\)
+中的每一个，则称 \(\Sigma\) 是<strong>可满足的（satisfiable）</strong>
+</dd>
+</dl>
+<p>例如 \(\Sigma = \{A_1, A_2 \rightarrow A_1 \}\)，由于赋值 \(v =
+\langle A_1 = T, A_2 = T \rangle\) 可满足 \(\Sigma\) 中的两个式子
+（即在此赋值下两个式子都得值 \(T\)），故 \(\Sigma\) 可满足</p>
+<p>又例如 \(\Sigma = \{A_1, \neg A_1 \}\)，没有一个赋值可以同时满足
+\(\Sigma\) 中的两个式子，故 \(\Sigma\) 不可满足</p>
+<h3 id="compactness-theorem">Compactness Theorem</h3>
+<p>以下是这一节的主要定理</p>
+<blockquote>
+<p>一个合式公式集合是可满足的，当且仅当其每一个<strong>有限</strong>子集都是可满足的</p>
+</blockquote>
+<p>首先这里临时定义：如果一个合式公式集合 \(\Sigma\)
+的每一个<strong>有限</strong>子集都可满足的话，称 \(\Sigma\)
+为<strong>有限可满足（finitely satisfiable）</strong>； 所以 Compactness
+Theorem 表述的就是 <strong>有限可满足</strong> 跟
+<strong>可满足</strong> 其实是等价的</p>
+<p>注意：</p>
+<ol type="1">
+<li><p>如果 \(\Sigma\) 是 <strong>可满足</strong> 的话，则其自动就是
+<strong>有限可满足</strong> 的
+（因为如果有一个赋值能满足集合中的每一个式子，自然也能满足其任意子集中的每一个式子）</p></li>
+<li><p>反过来，如果 \(\Sigma\) 是 <strong>有限可满足</strong>
+的话，分两种情况</p>
+<ol type="1">
+<li><p>如果 \(\Sigma\) 本身就是 <strong>有限集合</strong>
+的话，则它也就是 <strong>可满足</strong>
+的（因为它就是本身的有限子集）</p></li>
+<li><p>剩下需要证明的就是 \(\Sigma\) 是 <strong>无限集合</strong> 且是
+<strong>有限可满足</strong>，则其是 <strong>可满足的</strong>
+的</p></li>
+</ol></li>
+</ol>
+<div class="proof">
+<div class="proof-label">
+Proof
+</div>
+<div class="proof-content">
+<p>证明分两部分</p>
+<hr />
+<p>证明的第一部分扩展 \(\Sigma\) 到最大：</p>
+<p>首先，令 \(\alpha_1, \alpha_2, ...\) 为全体合式公式<a href="#fn1"
+class="footnote-ref" id="fnref1"
+role="doc-noteref"><sup>1</sup></a>，然后递归地定义：</p>
+<p>\[
+\begin{split}
+\Delta_0 &amp; = \Sigma \\
+\Delta_{n+1} &amp; =
+  \begin{cases}
+  \Delta_n ; \alpha_{n+1} ~~~~~~~~~ \text{if this is finitely
+satisfiable} \\
+  \Delta_n ; \neg \alpha_{n+1} ~~~~~~ \text{otherwise} \\
+  \end{cases}
+\end{split}
+\]</p>
+<p><em>（注：\(\Delta ; \alpha\) 是 \(\Delta \cup \{ \alpha \}\)
+的简写）</em></p>
+<p>即假如 \(\Delta_n ; \alpha_{n+1}\) 仍然是 <strong>有限可满足</strong>
+那么令 \(\Delta_{n+1}\) 等于该集合</p>
+<p>否则意味着 <strong>至少</strong> 有一个 <strong>有限子集</strong>
+\(\Gamma_n \subset \Delta_n\) 使得 \(\Gamma_n ; \alpha_{n+1}\) 是
+<strong>无法满足</strong> 的，所以：</p>
+<ol type="1">
+<li>对于任意 <strong>满足</strong> \(\Gamma_n\) 的赋值 \(v\)
+<strong>都无法满足</strong> \(\alpha_{n+1}\)</li>
+<li>对于任意 <strong>满足</strong> \(\Gamma_n\) 的赋值 \(v\)
+<strong>都满足</strong> \(\neg \alpha_{n+1}\)</li>
+<li>考虑 <strong>任意</strong> 有限子集 \(\Delta'_n \subset
+\Delta_n\)，首先存在赋值 \(v\) 满足 \(\Delta'_n \cup
+\Gamma_n\)（有限可满足性）， 即 \(v\) 同时满足 \(\Delta'_n\) 和
+\(\Gamma_n\)，因此根据 2 \(v\) 也满足 \(\neg \alpha_{n+1}\)，所以 \(v\)
+满足 \(\Delta'_n ; \neg \alpha_{n+1}\)</li>
+<li>所以 \(\Delta_n ; \neg \alpha_{n+1}\) 也是有限可满足的<a href="#fn2"
+class="footnote-ref" id="fnref2"
+role="doc-noteref"><sup>2</sup></a></li>
+</ol>
+<p>通过这种方式从初始的有限可满足集合 \(\Sigma\)
+出发，每次添加一个合式公式并保证新集合依然有限可满足；令 \(\Delta =
+\cup_n \Delta_n\)，可知</p>
+<ol type="1">
+<li>\(\Sigma \subseteq \Delta\)</li>
+<li>对任意合式公式 \(\alpha\)，要么 \(\alpha \in \Delta\) 要么 \(\neg
+\alpha \in \Delta\) <a href="#fn3" class="footnote-ref" id="fnref3"
+role="doc-noteref"><sup>3</sup></a></li>
+<li>\(\Delta\) 有限可满足，因为其任意有限子集必定可由某个 \(\Delta_n\)
+所包含，而所有 \(\Delta_n\) 都是有限可满足的</li>
+</ol>
+<hr />
+<p>证明的第二部分给出一个对所有命题符号的赋值 \(v\)：</p>
+<p>\[
+v(A) =
+  \begin{cases}
+  T ~~~~ A \in \Delta \\
+  F ~~~~ A \notin \Delta \\
+  \end{cases}
+\]</p>
+<p>下面证明<strong>任意合式公式被该赋值满足当且仅当该公式属于
+\(\Delta\)</strong></p>
+<p>令 \(\Lambda_u(\psi) =  \begin{cases}  \psi ~~~~ u = T \\  \neg \psi
+~~~~ u = F \\  \end{cases}\)，易知<strong>任意赋值 \(v\) 满足
+\(\Lambda_u(\psi)\) 当且仅当 \(u = \bar{v}(\psi)\)</strong>
+<sup>(+)</sup></p>
+<p>再令 \(S = \{ \psi ~|~ \Lambda_{\bar{v}(\psi)}(\psi) \in \Delta
+\}\)，即在 \(v\) 赋值下，使得 \(\Lambda_{\bar{v}(\psi)}(\psi)\) 属于
+\(\Delta\) 的那些式子 \(\psi\)</p>
+<p>下面证明 \(S\) 即全体合式公式：</p>
+<p>首先所有命题符号 \(A\) 均属于 \(S\)，因为：</p>
+<ul>
+<li>若 \(\bar{v}(A) = v(A) = T\)，由定义知 \(A \in \Delta\)，故
+\(\Lambda_{\bar{v}(A)}(A) = A \in \Delta\)</li>
+<li>若 \(\bar{v}(A) = v(A) = F\)，由定义知 \(A \notin \Delta\)，由 2 得
+\(\neg A \in \Delta\)，故 \(\Lambda_{\bar{v}(A)}(A) = \neg A \in
+\Delta\)</li>
+</ul>
+<p>第二，\(S\) 闭合于 \(\varepsilon_{\neg}\)，假设 \(\psi \in S\)</p>
+<ul>
+<li>由假设得 \(\Lambda_{\bar{v}(\psi)}(\psi) \in \Delta\)</li>
+<li>由 2 得要么 \(\Lambda_{\bar{v}(\neg \psi)}(\neg \psi) \in \Delta\)
+<sup>(1)</sup> 要么 \(\Lambda_{\neg \bar{v}(\neg \psi)}(\neg \psi) =
+\Lambda_{\bar{v}(\psi)}(\neg \psi) \in \Delta\) <sup>(2)</sup></li>
+<li>但如果是 <sup>(2)</sup> 成立的话，跟 \(\Lambda_{\bar{v}(\psi)}(\psi)
+\in \Delta\) 矛盾，故只能 <sup>(1)</sup> 成立，所以 \(\neg \psi \in
+S\)</li>
+</ul>
+<p>第三，\(S\) 闭合于 \(\varepsilon_{\square}\) <a href="#fn4"
+class="footnote-ref" id="fnref4"
+role="doc-noteref"><sup>4</sup></a>，假设 \(\psi_1, \psi_2 \in S\)</p>
+<ul>
+<li>由假设得 \(\Lambda_{\bar{v}(\psi_1)}(\psi_1),
+\Lambda_{\bar{v}(\psi_2)}(\psi_2) \in \Delta\)</li>
+<li>由 2 知 要么 \(\Lambda_{\bar{v}(\psi_1 \square \psi_2)}(\psi_1
+\square \psi_2) \in \Delta\) <sup>(1)</sup>， 要么 \(\Lambda_{\neg
+\bar{v}(\psi_1 \square \psi_2)}(\psi_1 \square \psi_2) \in \Delta\)
+<sup>(2)</sup></li>
+<li>但如果是 <sup>(2)</sup> 成立的话，集合 \(\{
+\Lambda_{\bar{v}(\psi_1)}(\psi_1), \Lambda_{\bar{v}(\psi_2)}(\psi_2),
+\Lambda_{\neg \bar{v}(\psi_1 \square \psi_2)}(\psi_1 \square \psi_2)
+\}\) 就是 \(\Delta\) 的有限子集，故应该存在一个赋值 \(v'\)
+同时满足这三个式子，由 <sup>(+)</sup> 可得
+<ul>
+<li>\(\bar{v}(\psi_1) = \bar{v'}(\psi_1)\)</li>
+<li>\(\bar{v}(\psi_2) = \bar{v'}(\psi_2)\)</li>
+<li>\(\neg \bar{v}(\psi_1 \square \psi_2) = \bar{v'}(\psi_1 \square
+\psi_2)\)</li>
+<li>但 \[
+\begin{split}
+\bar{v}(\psi_1 \square \psi_2) &amp; = \bar{\square}(\bar{v}(\psi_1),
+\bar{v}(\psi_2)) \\
+                               &amp; = \bar{\square}(\bar{v'}(\psi_1),
+\bar{v'}(\psi_2)) \\
+                               &amp; = \bar{v'}(\psi_1 \square \psi_2) =
+\neg \bar{v}(\psi_1 \square \psi_2) \\
+\end{split}
+\] 是矛盾的 <a href="#fn5" class="footnote-ref" id="fnref5"
+role="doc-noteref"><sup>5</sup></a>，故只能 <sup>(1)</sup> 成立，所以
+\(\psi_1 \square \psi_2 \in S\)</li>
+</ul></li>
+</ul>
+<p>故 \(S\) 是 inductive 集合，由 <a
+href="../chap-1-4/#induction-principle">Induction Principle</a> 得出
+\(S\) 是全体合式公式集合</p>
+<p><strong>所以对任意合式公式 \(\psi\)，有
+\(\Lambda_{\bar{v}(\psi)}(\psi) \in \Delta\)</strong>；即如果
+\(\bar{v}(\psi) = T\) 则 \(\psi \in \Delta\)， 如果 \(\bar{v}(\psi) =
+F\) 则 \(\neg \psi \in \Delta\) 由 2 得 \(\psi \notin
+\Delta\)；<strong>所以就是 \(v\) 满足 \(\psi\) 当且仅当 \(\psi \in
+\Delta\)</strong></p>
+<p>由于 \(\Sigma \subseteq \Delta\)，故 \(v\) 满足 \(\Sigma\)
+中的任意式子</p>
+</div>
+</div>
+<section class="footnotes footnotes-end-of-document"
+role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p>因为命题符号（sentence
+symbol）以及链接符组成的集合是可数集（coutably infinite set）： \[
+\begin{split}
+s_1 &amp; = \neg \\
+s_2 &amp; = \wedge \\
+s_3 &amp; = \vee \\
+s_4 &amp; = \rightarrow \\
+s_5 &amp; = \leftrightarrow \\
+s_6 &amp; = A_1 \\
+s_7 &amp; = A_2 \\
+s_8 &amp; = A_3 \\
+&amp; ...
+\end{split}
+\] 则由有限个这些符号组成的合式公式的集合也是可数集；
+简单地说，任意一个合式公式可以表述为一个有限序列 \(\langle s_{i_1},
+s_{i_2}, ..., s_{i_n} \rangle\)， 它可以跟自然数 \(2^{i_1} \cdot 3^{i_2}
+\cdot ... \cdot P_n^{i_n}\) 一一对应（其中 \(P_n\) 是第 \(n\) 个素数）<a
+href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2" role="doc-endnote"><p>另一种证明方法是书中 Exercise 1:
+<strong>假设 \(\Sigma\) 有限可满足， 则要么 \(\Sigma ; \alpha\) 要么
+\(\Sigma ; \neg \alpha\) 也有限可满足</strong>； 反证法，
+假设不是，则存在有限子集 \(\Sigma_1 \subseteq \Sigma\) 以及 \(\Sigma_2
+\subseteq \Sigma\)，使得 \(\Sigma_1 ; \alpha\) <sup>(1)</sup> 以及
+\(\Sigma_2 ; \neg \alpha\) <sup>(2)</sup> 均
+<strong>无法被满足</strong>；现在我们考虑 \(\Sigma_1 \cup
+\Sigma_2\)，由有限可满足性， 知存在赋值 \(v\) 满足该集合（也就是同时满足
+\(\Sigma_1\) 和 \(\Sigma_2\)），\(v\) 如果可满足 \(\alpha\) 则与
+<sup>(1)</sup> 矛盾， \(v\) 如果不满足 \(\alpha\) 则与 <sup>(2)</sup>
+矛盾<a href="#fnref2" class="footnote-back"
+role="doc-backlink">↩︎</a></p></li>
+<li id="fn3" role="doc-endnote"><p>\(\alpha\) 和 \(\neg \alpha\)
+不能同时在 \(\Delta\) 中，因为它们组成的子集无法被满足<a href="#fnref3"
+class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4" role="doc-endnote"><p>这里 \(\square\)
+表示连接符（e.g. \(\wedge, \vee, \rightarrow, \leftrightarrow\)）<a
+href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5" role="doc-endnote"><p>以 \(\wedge\) 为例： \[
+  \begin{array}{c c c c c c}
+  \bar{v}(\psi_1) &amp;
+  \Lambda_{\bar{v}(\psi_1)}(\psi_1) \in \Delta &amp;
+  \bar{v}(\psi_2) &amp;
+  \Lambda_{\bar{v}(\psi_2)}(\psi_2) \in \Delta &amp;
+  \bar{v}(\psi_1 \wedge \psi_2) &amp; \Lambda_{\neg (\bar{v}(\psi_1
+\wedge \psi_2))}(\psi_1 \wedge \psi_2) \in \Delta \\
+  T &amp; \psi_1 \in \Delta &amp; T &amp; \psi_2 \in \Delta &amp; T
+&amp; \neg (\psi_1 \wedge \psi_2) \in \Delta \\
+  T &amp; \psi_1 \in \Delta &amp; F &amp; \neg \psi_2 \in \Delta &amp; F
+&amp; \psi_1 \wedge \psi_2 \in \Delta \\
+  F &amp; \neg \psi_1 \in \Delta &amp; T &amp; \psi_2 \in \Delta &amp; F
+&amp; \psi_1 \wedge \psi_2 \in \Delta \\
+  F &amp; \neg \psi_1 \in \Delta &amp; F &amp; \neg \psi_2 \in \Delta
+&amp; F &amp; \psi_1 \wedge \psi_2 \in \Delta \\
+  \end{array}
+  \] 例如第二行要成立，则 \(\{\psi_1, \neg \psi_2, \psi_1 \wedge \psi_2
+\} \in \Delta\)，但这个子集是不可满足的<a href="#fnref5"
+class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+  </article>
+
+        </div>
+      </div>
+      <div id="main-right" class="hide-xs hide-sm col-2-md col-3-lg">
+        
+  
+  <div id="content-toc" class="toc hide-md"></div>
+  
+
+      </div>
+    </div>
+
+    
+    <div id="footer" class="text-center">
+      <p>
+        Powered By <a href="https://gohugo.io/">Hugo</a>/<a href="https://jenil.github.io/chota">Chota</a>,
+        Generated Using <a href="https://github.com/huangjunwen/mdtool">MDTool</a>
+      </p>
+      <p>&copy; 2023. All rights reserved</p>
+    </div>
+
+    
+  
+    <link rel="stylesheet" href="/res/libs/tocbot/css/tocbot.css"></link>
+    <style>
+    #content-toc {
+      position: -webkit-sticky;
+      position: sticky;
+      top: 7rem;
+      padding-left: 2rem;
+      padding-right: 1rem;
+    }
+
+    #content-toc a.toc-link {
+      color: var(--font-color);
+    }
+
+    #content-toc a.toc-link.is-active-link {
+      color: var(--color-darkGrey);
+    }
+
+    #content-toc a.toc-link::before {
+      background-color: var(--bg-color);
+    }
+
+    #content-toc a.toc-link.is-active-link::before {
+      background-color: var(--color-primary);
+    }
+    </style>
+    <script src="/res/libs/tocbot/js/tocbot.min.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', (ev) => {
+      tocbot.init({
+        tocSelector: '#content-toc',
+        contentSelector: '#main-center',
+        ignoreSelector: '.no-toc',
+        headingSelector: 'h1, h2, h3, h4, h5, h6',
+        hasInnerContainers: false,
+        headingsOffset: 80,
+        scrollSmoothOffset: -80
+      });
+    });
+    </script>
+  
+  
+    <script type="text/javascript" src="/res/libs/anchorjs/js/anchor.min.js"></script>
+    <script>anchors.add('#main-body h1, #main-body h2, #main-body h3, #main-body h4, #main-body h5, #main-body h6, #main-body dt');</script>
+  
+
+  </body>
+</html>
