@@ -244,6 +244,28 @@ F\) 则 \(\neg \psi \in \Delta\) 由 2 得 \(\psi \notin
 中的任意式子</p>
 </div>
 </div>
+<h3 id="corollary-17a">Corollary 17A</h3>
+<blockquote>
+<p>如果 \(\Sigma \vDash \psi\)，则存在有限子集 \(\Sigma_0 \subseteq
+\Sigma\) 使得 \(\Sigma_0 \vDash \psi\)</p>
+</blockquote>
+<div class="proof">
+<div class="proof-label">
+Proof
+</div>
+<div class="proof-content">
+<p>下面要用到这一性质：<strong>\(\Sigma \nvDash \psi\) 当且仅当
+\(\Sigma; \neg \psi\) 可满足</strong> <a href="#fn6"
+class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></p>
+<p>如果不存在这样的有限子集，则对任意有限子集 \(\Sigma' \subseteq
+\Sigma\) 都有 \(\Sigma' \nvDash \psi\)</p>
+<p>故对任意有限子集 \(\Sigma' \subseteq \Sigma\) 都有 \(\Sigma'; \neg
+\psi\) 可满足</p>
+<p>由 Compactness Theorem 可知 \(\Sigma; \neg \psi\) 可满足</p>
+<p>于是 \(\Sigma \nvDash \psi\)
+跟假设矛盾，故这样的有限子集必定是存在的</p>
+</div>
+</div>
 <section class="footnotes footnotes-end-of-document"
 role="doc-endnotes">
 <hr />
@@ -259,7 +281,7 @@ s_5 &amp; = \leftrightarrow \\
 s_6 &amp; = A_1 \\
 s_7 &amp; = A_2 \\
 s_8 &amp; = A_3 \\
-&amp; ...
+    &amp; ...
 \end{split}
 \] 则由有限个这些符号组成的合式公式的集合也是可数集；
 简单地说，任意一个合式公式可以表述为一个有限序列 \(\langle s_{i_1},
@@ -285,24 +307,36 @@ class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 表示连接符（e.g. \(\wedge, \vee, \rightarrow, \leftrightarrow\)）<a
 href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn5" role="doc-endnote"><p>以 \(\wedge\) 为例： \[
-  \begin{array}{c c c c c c}
-  \bar{v}(\psi_1) &amp;
-  \Lambda_{\bar{v}(\psi_1)}(\psi_1) \in \Delta &amp;
-  \bar{v}(\psi_2) &amp;
-  \Lambda_{\bar{v}(\psi_2)}(\psi_2) \in \Delta &amp;
-  \bar{v}(\psi_1 \wedge \psi_2) &amp; \Lambda_{\neg (\bar{v}(\psi_1
-\wedge \psi_2))}(\psi_1 \wedge \psi_2) \in \Delta \\
-  T &amp; \psi_1 \in \Delta &amp; T &amp; \psi_2 \in \Delta &amp; T
-&amp; \neg (\psi_1 \wedge \psi_2) \in \Delta \\
-  T &amp; \psi_1 \in \Delta &amp; F &amp; \neg \psi_2 \in \Delta &amp; F
+\begin{array}{c c c c c c}
+\bar{v}(\psi_1) &amp;
+\Lambda_{\bar{v}(\psi_1)}(\psi_1) \in \Delta &amp;
+\bar{v}(\psi_2) &amp;
+\Lambda_{\bar{v}(\psi_2)}(\psi_2) \in \Delta &amp;
+\bar{v}(\psi_1 \wedge \psi_2) &amp; \Lambda_{\neg (\bar{v}(\psi_1 \wedge
+\psi_2))}(\psi_1 \wedge \psi_2) \in \Delta \\
+T &amp; \psi_1 \in \Delta &amp; T &amp; \psi_2 \in \Delta &amp; T &amp;
+\neg (\psi_1 \wedge \psi_2) \in \Delta \\
+T &amp; \psi_1 \in \Delta &amp; F &amp; \neg \psi_2 \in \Delta &amp; F
 &amp; \psi_1 \wedge \psi_2 \in \Delta \\
-  F &amp; \neg \psi_1 \in \Delta &amp; T &amp; \psi_2 \in \Delta &amp; F
+F &amp; \neg \psi_1 \in \Delta &amp; T &amp; \psi_2 \in \Delta &amp; F
 &amp; \psi_1 \wedge \psi_2 \in \Delta \\
-  F &amp; \neg \psi_1 \in \Delta &amp; F &amp; \neg \psi_2 \in \Delta
+F &amp; \neg \psi_1 \in \Delta &amp; F &amp; \neg \psi_2 \in \Delta
 &amp; F &amp; \psi_1 \wedge \psi_2 \in \Delta \\
-  \end{array}
-  \] 例如第二行要成立，则 \(\{\psi_1, \neg \psi_2, \psi_1 \wedge \psi_2
-\} \in \Delta\)，但这个子集是不可满足的<a href="#fnref5"
+\end{array}
+\] 例如第二行要成立，则 \(\{\psi_1, \neg \psi_2, \psi_1 \wedge \psi_2 \}
+\in \Delta\)，但这个子集是不可满足的<a href="#fnref5"
+class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6" role="doc-endnote"><p><strong>\(\Sigma \vDash \psi\)
+当且仅当 \(\Sigma; \neg \psi\)
+是不可满足的</strong>，这个命题其实直观如下面两图</p>
+<p><img src="entail.png" /> 首先任意赋值 \(v\) 要么满足 \(\psi\)
+要么满足 \(\neg \psi\)，泾渭分明</p>
+<p>\(\Sigma \vDash \psi\)，即能满足 \(\Sigma\) 的赋值集是能满足 \(\psi\)
+的赋值集的子集， 当且仅当能满足 \(\Sigma\) 的赋值集跟能满足 \(\neg
+\psi\) 的赋值集完全没交集，即 \(\Sigma; \neg \psi\) 不可满足</p>
+<p><img src="not-entail.png" /></p>
+<p>\(\Sigma \nvDash \psi\)，即存在能满足 \(\Sigma\) 但不能满足 \(\psi\)
+的赋值（红点部分），即 \(\Sigma; \neg \psi\) 可满足<a href="#fnref6"
 class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
