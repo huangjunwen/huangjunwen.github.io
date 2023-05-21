@@ -266,6 +266,24 @@ class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></p>
 跟假设矛盾，故这样的有限子集必定是存在的</p>
 </div>
 </div>
+<p><strong>实际上，该 Corollary 和 Compactness Theorem
+是等价的</strong>，下面证明由该 Corollary 可证明 Compactness Theorem</p>
+<div class="proof">
+<div class="proof-label">
+Proof
+</div>
+<div class="proof-content">
+<p>首先假设 \(\Sigma\) 是有限可满足却不可满足的</p>
+<p>设 \(\Sigma = \Sigma'; \psi\)，即任取一个 \(\Sigma\) 中的元素
+\(\psi\)，剩下的元素组成 \(\Sigma'\)</p>
+<p>该集合不可满足当且仅当 \(\Sigma' \vDash \neg \psi\)</p>
+<p>由 Corollary 17A 得出存在有限集合 \(\Sigma_0' \subseteq
+\Sigma'\)，使得 \(\Sigma_0' \vDash \neg \psi\)</p>
+<p>上面式子当且仅当 \(\Sigma_0'; \psi\) 不可满足，但注意到 \(\Sigma_0';
+\psi\) 实际上是 \(\Sigma\) 的有限子集， 跟有限可满足性矛盾，故
+\(\Sigma\) 必定是可满足的</p>
+</div>
+</div>
 <section class="footnotes footnotes-end-of-document"
 role="doc-endnotes">
 <hr />
@@ -326,11 +344,10 @@ F &amp; \neg \psi_1 \in \Delta &amp; F &amp; \neg \psi_2 \in \Delta
 \] 例如第二行要成立，则 \(\{\psi_1, \neg \psi_2, \psi_1 \wedge \psi_2 \}
 \in \Delta\)，但这个子集是不可满足的<a href="#fnref5"
 class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn6" role="doc-endnote"><p><strong>\(\Sigma \vDash \psi\)
-当且仅当 \(\Sigma; \neg \psi\)
-是不可满足的</strong>，这个命题其实直观如下面两图</p>
-<p><img src="entail.png" /> 首先任意赋值 \(v\) 要么满足 \(\psi\)
-要么满足 \(\neg \psi\)，泾渭分明</p>
+<li id="fn6" role="doc-endnote"><p>对于一个式子 \(\psi\)，全体赋值 \(v\)
+可以划分为两部分：要么满足 \(\psi\) 要么满足 \(\neg \psi\)，泾渭分明；
+它跟一个合式公式集合 \(\Sigma\) 的关系可用下面两图直观表达</p>
+<p><img src="entail.png" /></p>
 <p>\(\Sigma \vDash \psi\)，即能满足 \(\Sigma\) 的赋值集是能满足 \(\psi\)
 的赋值集的子集， 当且仅当能满足 \(\Sigma\) 的赋值集跟能满足 \(\neg
 \psi\) 的赋值集完全没交集，即 \(\Sigma; \neg \psi\) 不可满足</p>
