@@ -170,7 +170,7 @@ v(A) =
   \end{cases}
 \]</p>
 <p>下面证明<strong>任意合式公式被该赋值满足当且仅当该公式属于
-\(\Delta\)</strong></p>
+\(\Delta\)</strong>（Exercise 2）</p>
 <p>令 \(\Lambda_u(\psi) =  \begin{cases}  \psi ~~~~ u = T \\  \neg \psi
 ~~~~ u = F \\  \end{cases}\)，易知<strong>任意赋值 \(v\) 满足
 \(\Lambda_u(\psi)\) 当且仅当 \(u = \bar{v}(\psi)\)</strong>
@@ -187,9 +187,9 @@ v(A) =
 \(\neg A \in \Delta\)，故 \(\Lambda_{\bar{v}(A)}(A) = \neg A \in
 \Delta\)</li>
 </ul>
-<p>第二，\(S\) 闭合于 \(\varepsilon_{\neg}\)，假设 \(\psi \in S\)</p>
+<p>第二，\(S\) 闭合于 \(\varepsilon_{\neg}\)，假设 \(\psi \in S\)，即
+\(\Lambda_{\bar{v}(\psi)}(\psi) \in \Delta\)</p>
 <ul>
-<li>由假设得 \(\Lambda_{\bar{v}(\psi)}(\psi) \in \Delta\)</li>
 <li>由 2 得要么 \(\Lambda_{\bar{v}(\neg \psi)}(\neg \psi) \in \Delta\)
 <sup>(1)</sup> 要么 \(\Lambda_{\neg \bar{v}(\neg \psi)}(\neg \psi) =
 \Lambda_{\bar{v}(\psi)}(\neg \psi) \in \Delta\) <sup>(2)</sup></li>
@@ -199,11 +199,11 @@ S\)</li>
 </ul>
 <p>第三，\(S\) 闭合于 \(\varepsilon_{\square}\) <a href="#fn4"
 class="footnote-ref" id="fnref4"
-role="doc-noteref"><sup>4</sup></a>，假设 \(\psi_1, \psi_2 \in S\)</p>
+role="doc-noteref"><sup>4</sup></a>，假设 \(\psi_1, \psi_2 \in S\)， 即
+\(\Lambda_{\bar{v}(\psi_1)}(\psi_1), \Lambda_{\bar{v}(\psi_2)}(\psi_2)
+\in \Delta\)</p>
 <ul>
-<li>由假设得 \(\Lambda_{\bar{v}(\psi_1)}(\psi_1),
-\Lambda_{\bar{v}(\psi_2)}(\psi_2) \in \Delta\)</li>
-<li>由 2 知 要么 \(\Lambda_{\bar{v}(\psi_1 \square \psi_2)}(\psi_1
+<li>由 2 得要么 \(\Lambda_{\bar{v}(\psi_1 \square \psi_2)}(\psi_1
 \square \psi_2) \in \Delta\) <sup>(1)</sup>， 要么 \(\Lambda_{\neg
 \bar{v}(\psi_1 \square \psi_2)}(\psi_1 \square \psi_2) \in \Delta\)
 <sup>(2)</sup></li>
@@ -217,7 +217,8 @@ role="doc-noteref"><sup>4</sup></a>，假设 \(\psi_1, \psi_2 \in S\)</p>
 <li>\(\bar{v}(\psi_2) = \bar{v'}(\psi_2)\)</li>
 <li>\(\neg \bar{v}(\psi_1 \square \psi_2) = \bar{v'}(\psi_1 \square
 \psi_2)\)</li>
-<li>但 \[
+<li>但这是矛盾的<a href="#fn5" class="footnote-ref" id="fnref5"
+role="doc-noteref"><sup>5</sup></a>，因为 \[
 \begin{split}
 \bar{v}(\psi_1 \square \psi_2) &amp; = \bar{\square}(\bar{v}(\psi_1),
 \bar{v}(\psi_2)) \\
@@ -226,9 +227,7 @@ role="doc-noteref"><sup>4</sup></a>，假设 \(\psi_1, \psi_2 \in S\)</p>
                                &amp; = \bar{v'}(\psi_1 \square \psi_2) =
 \neg \bar{v}(\psi_1 \square \psi_2) \\
 \end{split}
-\] 是矛盾的 <a href="#fn5" class="footnote-ref" id="fnref5"
-role="doc-noteref"><sup>5</sup></a>，故只能 <sup>(1)</sup> 成立，所以
-\(\psi_1 \square \psi_2 \in S\)</li>
+\] 故只能 <sup>(1)</sup> 成立，所以 \(\psi_1 \square \psi_2 \in S\)</li>
 </ul></li>
 </ul>
 <p>故 \(S\) 是 inductive 集合，由 <a
@@ -267,7 +266,8 @@ class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></p>
 </div>
 </div>
 <p><strong>实际上，该 Corollary 和 Compactness Theorem
-是等价的</strong>，下面证明由该 Corollary 可证明 Compactness Theorem</p>
+是等价的</strong>，下面由该 Corollary 可轻易证明 Compactness
+Theorem（Exercise 3）</p>
 <div class="proof">
 <div class="proof-label">
 Proof
@@ -275,13 +275,13 @@ Proof
 <div class="proof-content">
 <p>首先假设 \(\Sigma\) 是有限可满足却不可满足的</p>
 <p>设 \(\Sigma = \Sigma'; \psi\)，即任取一个 \(\Sigma\) 中的元素
-\(\psi\)，剩下的元素组成 \(\Sigma'\)</p>
-<p>该集合不可满足当且仅当 \(\Sigma' \vDash \neg \psi\)</p>
+\(\psi\)，剩下的元素组成 \(\Sigma'\)； 该集合不可满足当且仅当 \(\Sigma'
+\vDash \neg \psi\)</p>
 <p>由 Corollary 17A 得出存在有限集合 \(\Sigma_0' \subseteq
-\Sigma'\)，使得 \(\Sigma_0' \vDash \neg \psi\)</p>
-<p>上面式子当且仅当 \(\Sigma_0'; \psi\) 不可满足，但注意到 \(\Sigma_0';
-\psi\) 实际上是 \(\Sigma\) 的有限子集， 跟有限可满足性矛盾，故
-\(\Sigma\) 必定是可满足的</p>
+\Sigma'\)，使得 \(\Sigma_0' \vDash \neg \psi\)， 故 \(\Sigma_0'; \psi\)
+不可满足</p>
+<p>但注意到 \(\Sigma_0'; \psi\) 实际上是 \(\Sigma\)
+的有限子集，跟有限可满足性矛盾，故 \(\Sigma\) 必定是可满足的</p>
 </div>
 </div>
 <section class="footnotes footnotes-end-of-document"
