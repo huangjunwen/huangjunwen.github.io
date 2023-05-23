@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>2022 on Coder Papa</title>
-    <link>http://127.0.0.1:1313/posts/2022/</link>
+    <link>https://huangjunwen.github.io/posts/2022/</link>
     <description>Recent content in 2022 on Coder Papa</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sat, 01 Jan 2022 00:00:00 +0800</lastBuildDate><atom:link href="http://127.0.0.1:1313/posts/2022/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 01 Jan 2022 00:00:00 +0800</lastBuildDate><atom:link href="https://huangjunwen.github.io/posts/2022/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Jupyterlite</title>
-      <link>http://127.0.0.1:1313/posts/2022/jupyterlite/</link>
+      <link>https://huangjunwen.github.io/posts/2022/jupyterlite/</link>
       <pubDate>Sat, 27 Aug 2022 10:14:17 +0000</pubDate>
       
-      <guid>http://127.0.0.1:1313/posts/2022/jupyterlite/</guid>
+      <guid>https://huangjunwen.github.io/posts/2022/jupyterlite/</guid>
       <description>最近总是接触各种 Jupyter…（JupyterLab/JupyterHub），发现居然还有可以完全跑在浏览器上的 Jupyterlite，那是不是可以直接放一个到这儿呢？
 大致的概念 原来的 Jupyter 是传统的 CS 模式，各种语言（e.g. python）的 kernel 是跑在服务端的
 但现在也有了 python（和一些常用的库）的 WebAssembly 移植版（e.g. pyodide）， 这样一来 kernel 也可以在浏览器上实现了 （e.g. pyolite）， 因此可以创建一个全静态的 site，UI 和 kernel 都在浏览器中运行， 中间用 mock-socket 假装通讯， 完整地把 notebook 那一套 CS 模式移植过来
@@ -26,10 +26,10 @@
     
     <item>
       <title>Intuitionistic Logic</title>
-      <link>http://127.0.0.1:1313/posts/2022/intuitionistic-logic/</link>
+      <link>https://huangjunwen.github.io/posts/2022/intuitionistic-logic/</link>
       <pubDate>Thu, 05 May 2022 08:08:04 +0000</pubDate>
       
-      <guid>http://127.0.0.1:1313/posts/2022/intuitionistic-logic/</guid>
+      <guid>https://huangjunwen.github.io/posts/2022/intuitionistic-logic/</guid>
       <description>Intuitionism 直觉主义（Intuitionism）1是主要由 L. E. J. Brouwer 以及其学生 Heyting 奠基的一派数学哲学2， 其主要观点是数学是人心智的构造物：自然数/实数/证明/定理… 都是心智的构造物， 这些数学对象是被创造出来的而不是从客观世界中被发现的，唯有当存在其有效的构造方法时才能证明其存在 （即构造性证明，而经典方法允许以否定其不存在的方式证明其存在）；另外对无穷的看法也有所不同， Brouwer 拒绝实无穷（Actual Infinity）的概念而仅接受潜无穷（Potential Infinity）， 因为诸如包含全体自然数的集合其实是没有办法有效的被构造出来，而只有永续的但有限的集合能被构造出来3
 注 1：其实我觉得有效构造究竟是什么挺模糊的，实无穷，反证法也是心智的构造吧？
 注 2：时间似乎也是重要的参与者，一些难题在现在没有构造的方法，但未来也许有，无穷也需要时间的参与
@@ -39,10 +39,10 @@
     
     <item>
       <title>新博客</title>
-      <link>http://127.0.0.1:1313/posts/2022/new-blog/</link>
+      <link>https://huangjunwen.github.io/posts/2022/new-blog/</link>
       <pubDate>Sat, 19 Feb 2022 09:24:49 +0000</pubDate>
       
-      <guid>http://127.0.0.1:1313/posts/2022/new-blog/</guid>
+      <guid>https://huangjunwen.github.io/posts/2022/new-blog/</guid>
       <description>花了相当相当多时间重新建设自己的内容管理系统，总算大致完成（https://github.com/huangjunwen/mdtool），记录一下
 需求 大致如下
 内容应该可以很容易跨平台发布，例如除了本身作为博客的网站外，也能发布到微信公众号或其他内容平台， 甚至可以单独输出成文档 写作时要有实时反馈 内容使用的格式不能过于依赖专有或特定软件 仅使用开源工具  格式 Markdown 熟悉，简单，广泛应用

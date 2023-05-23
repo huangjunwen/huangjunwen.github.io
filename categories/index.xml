@@ -2,26 +2,26 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on Coder Papa</title>
-    <link>http://127.0.0.1:1313/categories/</link>
+    <link>https://huangjunwen.github.io/categories/</link>
     <description>Recent content in Categories on Coder Papa</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Thu, 05 May 2022 08:08:04 +0000</lastBuildDate><atom:link href="http://127.0.0.1:1313/categories/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 05 May 2022 08:08:04 +0000</lastBuildDate><atom:link href="https://huangjunwen.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>type-theory</title>
-      <link>http://127.0.0.1:1313/categories/type-theory/</link>
+      <link>https://huangjunwen.github.io/categories/type-theory/</link>
       <pubDate>Thu, 05 May 2022 08:08:04 +0000</pubDate>
       
-      <guid>http://127.0.0.1:1313/categories/type-theory/</guid>
+      <guid>https://huangjunwen.github.io/categories/type-theory/</guid>
       <description></description>
     </item>
     
     <item>
       <title>简易原理</title>
-      <link>http://127.0.0.1:1313/categories/%E7%AE%80%E6%98%93%E5%8E%9F%E7%90%86/</link>
+      <link>https://huangjunwen.github.io/categories/%E7%AE%80%E6%98%93%E5%8E%9F%E7%90%86/</link>
       <pubDate>Sat, 12 Sep 2020 12:23:00 +0800</pubDate>
       
-      <guid>http://127.0.0.1:1313/categories/%E7%AE%80%E6%98%93%E5%8E%9F%E7%90%86/</guid>
+      <guid>https://huangjunwen.github.io/categories/%E7%AE%80%E6%98%93%E5%8E%9F%E7%90%86/</guid>
       <description></description>
     </item>
     

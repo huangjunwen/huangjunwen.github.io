@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>python on Coder Papa</title>
-    <link>http://127.0.0.1:1313/tags/python/</link>
+    <link>https://huangjunwen.github.io/tags/python/</link>
     <description>Recent content in python on Coder Papa</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sat, 27 Aug 2022 10:14:17 +0000</lastBuildDate><atom:link href="http://127.0.0.1:1313/tags/python/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 27 Aug 2022 10:14:17 +0000</lastBuildDate><atom:link href="https://huangjunwen.github.io/tags/python/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Jupyterlite</title>
-      <link>http://127.0.0.1:1313/posts/2022/jupyterlite/</link>
+      <link>https://huangjunwen.github.io/posts/2022/jupyterlite/</link>
       <pubDate>Sat, 27 Aug 2022 10:14:17 +0000</pubDate>
       
-      <guid>http://127.0.0.1:1313/posts/2022/jupyterlite/</guid>
+      <guid>https://huangjunwen.github.io/posts/2022/jupyterlite/</guid>
       <description>最近总是接触各种 Jupyter…（JupyterLab/JupyterHub），发现居然还有可以完全跑在浏览器上的 Jupyterlite，那是不是可以直接放一个到这儿呢？
 大致的概念 原来的 Jupyter 是传统的 CS 模式，各种语言（e.g. python）的 kernel 是跑在服务端的
 但现在也有了 python（和一些常用的库）的 WebAssembly 移植版（e.g. pyodide）， 这样一来 kernel 也可以在浏览器上实现了 （e.g. pyolite）， 因此可以创建一个全静态的 site，UI 和 kernel 都在浏览器中运行， 中间用 mock-socket 假装通讯， 完整地把 notebook 那一套 CS 模式移植过来
@@ -26,10 +26,10 @@
     
     <item>
       <title>Greenlet 原理</title>
-      <link>http://127.0.0.1:1313/posts/2018/greenlet/</link>
+      <link>https://huangjunwen.github.io/posts/2018/greenlet/</link>
       <pubDate>Thu, 15 Mar 2018 09:05:51 +0800</pubDate>
       
-      <guid>http://127.0.0.1:1313/posts/2018/greenlet/</guid>
+      <guid>https://huangjunwen.github.io/posts/2018/greenlet/</guid>
       <description>原理 我们知道，操作系统会给每一个线程分配一个独立的堆栈，它们各自独立运作，记录着该线程的各类运行状态：如函数本地变量，函数返回地址，寄存器状态等等各种上下文；从这个角度看，堆栈几乎就等价于线程
 那么假如想要在用户态实现轻量级的类线程，就同样需要给它们分配独立堆栈，并提供方法在它们之间切换
 Greenlet 就是 cpython 上的一种轻量级线程（协程）的实现，因为 cpython 是用 c 实现的，所以这就要求 Greenlet 的实现要跟 c 那一套保持一致，要让协程里运行的代码感觉自己跑在一个真正的 c 堆栈上

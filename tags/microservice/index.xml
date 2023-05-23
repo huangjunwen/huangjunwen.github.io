@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>microservice on Coder Papa</title>
-    <link>http://127.0.0.1:1313/tags/microservice/</link>
+    <link>https://huangjunwen.github.io/tags/microservice/</link>
     <description>Recent content in microservice on Coder Papa</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sun, 14 May 2017 19:14:51 +0800</lastBuildDate><atom:link href="http://127.0.0.1:1313/tags/microservice/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 14 May 2017 19:14:51 +0800</lastBuildDate><atom:link href="https://huangjunwen.github.io/tags/microservice/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>微服务中的认证 (authentication) 问题</title>
-      <link>http://127.0.0.1:1313/posts/2017/authentication_in_microservice/</link>
+      <link>https://huangjunwen.github.io/posts/2017/authentication_in_microservice/</link>
       <pubDate>Sun, 14 May 2017 19:14:51 +0800</pubDate>
       
-      <guid>http://127.0.0.1:1313/posts/2017/authentication_in_microservice/</guid>
+      <guid>https://huangjunwen.github.io/posts/2017/authentication_in_microservice/</guid>
       <description>这帖子有意思 JSON Web token vs. Session
 “单纯”的 JWT，其实跟 client side session 没啥区别，它的优缺点都一样：
 Pros：

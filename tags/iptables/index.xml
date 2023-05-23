@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>iptables on Coder Papa</title>
-    <link>http://127.0.0.1:1313/tags/iptables/</link>
+    <link>https://huangjunwen.github.io/tags/iptables/</link>
     <description>Recent content in iptables on Coder Papa</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Tue, 20 Dec 2016 10:20:54 +0800</lastBuildDate><atom:link href="http://127.0.0.1:1313/tags/iptables/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 20 Dec 2016 10:20:54 +0800</lastBuildDate><atom:link href="https://huangjunwen.github.io/tags/iptables/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>用 iptables 来配置 port knocking</title>
-      <link>http://127.0.0.1:1313/posts/2016/port-knocking-using-iptables/</link>
+      <link>https://huangjunwen.github.io/posts/2016/port-knocking-using-iptables/</link>
       <pubDate>Tue, 20 Dec 2016 10:20:54 +0800</pubDate>
       
-      <guid>http://127.0.0.1:1313/posts/2016/port-knocking-using-iptables/</guid>
+      <guid>https://huangjunwen.github.io/posts/2016/port-knocking-using-iptables/</guid>
       <description>对于正式环境的服务器来说，每当查看到 auth.log 里头那些撞大运的 ssh 登录尝试，心里总是有点惴惴不安的。虽然 public key authentication 号称安全，但是谁说得准呢？而且不知道配置里会不会有错误，要是有多一层的防护总是好的。
 以前听说过 Port knocking 这种技术了，大致的思路就是设定一系列随机端口（例如：7421，3411，9088等等）作为暗号，用户在访问服务器之前，要依次“敲”一下这几个端口（即相继发送网络包到这几个端口上），这些端口当然是关闭状态啦，但服务器上可以侦察得到这些敲门，如果暗号对了，就给访问者 ip 开放服务端口（例如22）。
 还有一些更高级的，例如在网络包里存放加密信息等，不过这就复杂了，暂且不表。

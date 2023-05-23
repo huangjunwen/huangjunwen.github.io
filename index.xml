@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Coder Papa</title>
-    <link>http://127.0.0.1:1313/</link>
+    <link>https://huangjunwen.github.io/</link>
     <description>Recent content on Coder Papa</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sat, 13 May 2023 00:39:20 +0000</lastBuildDate><atom:link href="http://127.0.0.1:1313/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 13 May 2023 00:39:20 +0000</lastBuildDate><atom:link href="https://huangjunwen.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Ch1. Sentential Logic :: 1.7 Compactness and Effectiveness</title>
-      <link>http://127.0.0.1:1313/posts/notes/a-mathematical-introduction-to-logic/chap-1-7/</link>
+      <link>https://huangjunwen.github.io/posts/notes/a-mathematical-introduction-to-logic/chap-1-7/</link>
       <pubDate>Sat, 13 May 2023 00:39:20 +0000</pubDate>
       
-      <guid>http://127.0.0.1:1313/posts/notes/a-mathematical-introduction-to-logic/chap-1-7/</guid>
+      <guid>https://huangjunwen.github.io/posts/notes/a-mathematical-introduction-to-logic/chap-1-7/</guid>
       <description>Compactness  satisfiable  如果有一赋值（truth assignment）满足一个合式公式集合 \(\Sigma\) 中的每一个，则称 \(\Sigma\) 是可满足的（satisfiable）   例如 \(\Sigma = \{A_1, A_2 \rightarrow A_1 \}\)，由于赋值 \(v = \langle A_1 = T, A_2 = T \rangle\) 可满足 \(\Sigma\) 中的两个式子 （即在此赋值下两个式子都得值 \(T\)），故 \(\Sigma\) 可满足
 又例如 \(\Sigma = \{A_1, \neg A_1 \}\)，没有一个赋值可以同时满足 \(\Sigma\) 中的两个式子，故 \(\Sigma\) 不可满足
 Compactness Theorem 以下是这一节的主要定理
@@ -24,10 +24,10 @@ Compactness Theorem 以下是这一节的主要定理
     
     <item>
       <title>Ch1. Sentential Logic :: 1.4 Induction and Recursion</title>
-      <link>http://127.0.0.1:1313/posts/notes/a-mathematical-introduction-to-logic/chap-1-4/</link>
+      <link>https://huangjunwen.github.io/posts/notes/a-mathematical-introduction-to-logic/chap-1-4/</link>
       <pubDate>Sun, 16 Apr 2023 07:34:14 +0000</pubDate>
       
-      <guid>http://127.0.0.1:1313/posts/notes/a-mathematical-introduction-to-logic/chap-1-4/</guid>
+      <guid>https://huangjunwen.github.io/posts/notes/a-mathematical-introduction-to-logic/chap-1-4/</guid>
       <description>Induction 归纳（Induction） 是数学中非常常见的一种构造：由属于集合 \(U\) 的一些初始元素（initial elements）开始，不断应用一些特定操作，而最终获得的一个 \(U\) 的子集
 我们感兴趣的是包含这些初始元素并闭合于（closed under）这些特定操作的最小集合
 一个直接的例子：\(U\) 是所有表达式的集合，初始元素是所有命题符号（sentence symbol），操作是 \(\varepsilon_{\neg}, \varepsilon_{\wedge}\) 等， 最终构造出的子集则是所有合式公式（well formed formulas, wffs）的集合
@@ -41,10 +41,10 @@ Compactness Theorem 以下是这一节的主要定理
     
     <item>
       <title>Jupyterlite</title>
-      <link>http://127.0.0.1:1313/posts/2022/jupyterlite/</link>
+      <link>https://huangjunwen.github.io/posts/2022/jupyterlite/</link>
       <pubDate>Sat, 27 Aug 2022 10:14:17 +0000</pubDate>
       
-      <guid>http://127.0.0.1:1313/posts/2022/jupyterlite/</guid>
+      <guid>https://huangjunwen.github.io/posts/2022/jupyterlite/</guid>
       <description>最近总是接触各种 Jupyter…（JupyterLab/JupyterHub），发现居然还有可以完全跑在浏览器上的 Jupyterlite，那是不是可以直接放一个到这儿呢？
 大致的概念 原来的 Jupyter 是传统的 CS 模式，各种语言（e.g. python）的 kernel 是跑在服务端的
 但现在也有了 python（和一些常用的库）的 WebAssembly 移植版（e.g. pyodide）， 这样一来 kernel 也可以在浏览器上实现了 （e.g. pyolite）， 因此可以创建一个全静态的 site，UI 和 kernel 都在浏览器中运行， 中间用 mock-socket 假装通讯， 完整地把 notebook 那一套 CS 模式移植过来
@@ -58,10 +58,10 @@ Compactness Theorem 以下是这一节的主要定理
     
     <item>
       <title>Intuitionistic Logic</title>
-      <link>http://127.0.0.1:1313/posts/2022/intuitionistic-logic/</link>
+      <link>https://huangjunwen.github.io/posts/2022/intuitionistic-logic/</link>
       <pubDate>Thu, 05 May 2022 08:08:04 +0000</pubDate>
       
-      <guid>http://127.0.0.1:1313/posts/2022/intuitionistic-logic/</guid>
+      <guid>https://huangjunwen.github.io/posts/2022/intuitionistic-logic/</guid>
       <description>Intuitionism 直觉主义（Intuitionism）1是主要由 L. E. J. Brouwer 以及其学生 Heyting 奠基的一派数学哲学2， 其主要观点是数学是人心智的构造物：自然数/实数/证明/定理… 都是心智的构造物， 这些数学对象是被创造出来的而不是从客观世界中被发现的，唯有当存在其有效的构造方法时才能证明其存在 （即构造性证明，而经典方法允许以否定其不存在的方式证明其存在）；另外对无穷的看法也有所不同， Brouwer 拒绝实无穷（Actual Infinity）的概念而仅接受潜无穷（Potential Infinity）， 因为诸如包含全体自然数的集合其实是没有办法有效的被构造出来，而只有永续的但有限的集合能被构造出来3
 注 1：其实我觉得有效构造究竟是什么挺模糊的，实无穷，反证法也是心智的构造吧？
 注 2：时间似乎也是重要的参与者，一些难题在现在没有构造的方法，但未来也许有，无穷也需要时间的参与
@@ -71,10 +71,10 @@ Compactness Theorem 以下是这一节的主要定理
     
     <item>
       <title>PLFA 准备篇</title>
-      <link>http://127.0.0.1:1313/posts/notes/plfa/plfa-prepare/</link>
+      <link>https://huangjunwen.github.io/posts/notes/plfa/plfa-prepare/</link>
       <pubDate>Sat, 16 Apr 2022 03:24:27 +0000</pubDate>
       
-      <guid>http://127.0.0.1:1313/posts/notes/plfa/plfa-prepare/</guid>
+      <guid>https://huangjunwen.github.io/posts/notes/plfa/plfa-prepare/</guid>
       <description>准备开始看 Programming Language Foundations in Agda (plfa)，需要准备环境
 安装 haskell Agda 是用 haskell 写的，故首先需要按照 haskell，ubuntu 20 上最简单的方式就是
 $ sudo apt install haskell-platform 安装 Agda 我用 haskell cabal 安装 agda
@@ -84,10 +84,10 @@ $ cabal v2-update $ cabal v2-install Agda-2.6.1.3 $ cabal v2-install --lib ieee7
     
     <item>
       <title>Chapter 2: First-Order Logic and Model Theory (2.3~2.4)</title>
-      <link>http://127.0.0.1:1313/posts/notes/introduction-to-mathematical-logic/chap-2-3-to-2-4/</link>
+      <link>https://huangjunwen.github.io/posts/notes/introduction-to-mathematical-logic/chap-2-3-to-2-4/</link>
       <pubDate>Mon, 28 Feb 2022 09:09:45 +0000</pubDate>
       
-      <guid>http://127.0.0.1:1313/posts/notes/introduction-to-mathematical-logic/chap-2-3-to-2-4/</guid>
+      <guid>https://huangjunwen.github.io/posts/notes/introduction-to-mathematical-logic/chap-2-3-to-2-4/</guid>
       <description>2.3 First-Order Theories 一阶理论：一个一阶理论 \(\mathcal{K}\) 使用一个一阶语言的符号及其公式，以及如下这些公理（公理分两种： 逻辑公理和非逻辑公理）以及演绎规则
 2.3.1 Logical Axioms  逻辑公理  如果 \(B\)，\(C\)，\(D\) 都是合式公式，则如下是 \(\mathcal{K}\) 的逻辑公理
  A1: \(B \Rightarrow (C \Rightarrow B)\) A2: \((B \Rightarrow (C \Rightarrow D)) \Rightarrow ((B \Rightarrow C) \Rightarrow (B \Rightarrow D))\) A3: \((\neg C \Rightarrow \neg B) \Rightarrow ((\neg C \Rightarrow B) \Rightarrow C)\) A4: 如果 \(B(x_i)\) 是一个合式公式，且项 \(t\) 可以自由替换 \(x_i\) 则 \((\forall x_i)B(x_i) \Rightarrow B(t)\) （特别地，\(t\) 可以是 \(x_i\)，于是总有 \((\forall x_i)B \Rightarrow B\)） A5: 如果 \(B\) 不包含 \(x_i\) 的自由变量，则 \((\forall x_i)(B \Rightarrow C) \Rightarrow (B \Rightarrow (\forall x_i)C)\)    2.</description>
@@ -95,10 +95,10 @@ $ cabal v2-update $ cabal v2-install Agda-2.6.1.3 $ cabal v2-install --lib ieee7
     
     <item>
       <title>新博客</title>
-      <link>http://127.0.0.1:1313/posts/2022/new-blog/</link>
+      <link>https://huangjunwen.github.io/posts/2022/new-blog/</link>
       <pubDate>Sat, 19 Feb 2022 09:24:49 +0000</pubDate>
       
-      <guid>http://127.0.0.1:1313/posts/2022/new-blog/</guid>
+      <guid>https://huangjunwen.github.io/posts/2022/new-blog/</guid>
       <description>花了相当相当多时间重新建设自己的内容管理系统，总算大致完成（https://github.com/huangjunwen/mdtool），记录一下
 需求 大致如下
 内容应该可以很容易跨平台发布，例如除了本身作为博客的网站外，也能发布到微信公众号或其他内容平台， 甚至可以单独输出成文档 写作时要有实时反馈 内容使用的格式不能过于依赖专有或特定软件 仅使用开源工具  格式 Markdown 熟悉，简单，广泛应用
@@ -112,10 +112,10 @@ Pandoc pandoc 也是可以作为 hugo 的 markdown 渲染引擎的 2，用它有
     
     <item>
       <title>Chapter 2: First-Order Logic and Model Theory (2.1~2.2)</title>
-      <link>http://127.0.0.1:1313/posts/notes/introduction-to-mathematical-logic/chap-2-1-to-2-2/</link>
+      <link>https://huangjunwen.github.io/posts/notes/introduction-to-mathematical-logic/chap-2-1-to-2-2/</link>
       <pubDate>Thu, 13 Jan 2022 00:59:37 +0000</pubDate>
       
-      <guid>http://127.0.0.1:1313/posts/notes/introduction-to-mathematical-logic/chap-2-1-to-2-2/</guid>
+      <guid>https://huangjunwen.github.io/posts/notes/introduction-to-mathematical-logic/chap-2-1-to-2-2/</guid>
       <description>一阶（谓词）逻辑
 2.1 Quantifiers  symbols  一阶符号包括以下这些
  变量（Individual variables）: \(x_1, x_2, ..., x_n, ...\) 常量（Individual constants）: \(a_1, a_2, ..., a_n, ...\) 谓词/断言符号（Predicate letters）: \(A_1^m, A_2^m, ..., A_n^m, ...\) 函数符号（Function letters）: \(f_1^m, f_2^m, ..., f_n^m, ...\) \(() \neg \Rightarrow , \forall\) 联结词符号，这里基本跟命题逻辑是一样的，只是增加了 \(,\) 和 \(\forall\)    注：其中谓词符号和函数符号的上标表示其参数的数目，例如两个参数的二元谓词符号/二元函数符号
@@ -125,10 +125,10 @@ Pandoc pandoc 也是可以作为 hugo 的 markdown 渲染引擎的 2，用它有
     
     <item>
       <title>Chapter 1: The Propositional Calculus (1.5~1.6)</title>
-      <link>http://127.0.0.1:1313/posts/notes/introduction-to-mathematical-logic/chap-1-5-to-1-6/</link>
+      <link>https://huangjunwen.github.io/posts/notes/introduction-to-mathematical-logic/chap-1-5-to-1-6/</link>
       <pubDate>Wed, 29 Dec 2021 08:53:00 +0000</pubDate>
       
-      <guid>http://127.0.0.1:1313/posts/notes/introduction-to-mathematical-logic/chap-1-5-to-1-6/</guid>
+      <guid>https://huangjunwen.github.io/posts/notes/introduction-to-mathematical-logic/chap-1-5-to-1-6/</guid>
       <description>1.5 Independence: Many-Valued Logics  Independent  一个理论中的公理子集 \(Y\) 被称为独立的 （independent），如果：该子集中某个（还是任意？）式子都不可以由 \(Y\) 以外的公理推导出来   Proposition 1.17  公理 A1~A3 是独立的，即任意一个都不可由其他两个推导出来
  Proof  A1 独立的证明 考虑下面这个多值逻辑表
 \[ \begin{array} {c c c} A &amp;amp; \neg A &amp;amp; row \\ 0 &amp;amp; 1 &amp;amp; (a)\\ 1 &amp;amp; 1 &amp;amp; (b) \\ 2 &amp;amp; 0 &amp;amp; (c) \\ \end{array} \hspace{8em} \begin{array} {c c c c} A &amp;amp; B &amp;amp; A \Rightarrow B &amp;amp; row \\ 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; (1) \\ 1 &amp;amp; 0 &amp;amp; 2 &amp;amp; (2) \\ 2 &amp;amp; 0 &amp;amp; 0 &amp;amp; (3) \\ 0 &amp;amp; 1 &amp;amp; 2 &amp;amp; (4) \\ 1 &amp;amp; 1 &amp;amp; 2 &amp;amp; (5) \\ 2 &amp;amp; 1 &amp;amp; 0 &amp;amp; (6) \\ 0 &amp;amp; 2 &amp;amp; 2 &amp;amp; (7) \\ 1 &amp;amp; 2 &amp;amp; 0 &amp;amp; (8) \\ 2 &amp;amp; 2 &amp;amp; 0 &amp;amp; (9) \\ \end{array} \]</description>
@@ -136,10 +136,10 @@ Pandoc pandoc 也是可以作为 hugo 的 markdown 渲染引擎的 2，用它有
     
     <item>
       <title>Chapter 1: The Propositional Calculus (1.4)</title>
-      <link>http://127.0.0.1:1313/posts/notes/introduction-to-mathematical-logic/chap-1-4/</link>
+      <link>https://huangjunwen.github.io/posts/notes/introduction-to-mathematical-logic/chap-1-4/</link>
       <pubDate>Wed, 22 Dec 2021 01:53:45 +0000</pubDate>
       
-      <guid>http://127.0.0.1:1313/posts/notes/introduction-to-mathematical-logic/chap-1-4/</guid>
+      <guid>https://huangjunwen.github.io/posts/notes/introduction-to-mathematical-logic/chap-1-4/</guid>
       <description>1.4 An Axiom System for the Propositional Calculus 真值表方法能为我们解答很多问题，但接下来的更复杂的部分是无法使用真值表来解答的； 因此要引入新的方法：formal axiomatic theories 形式化公理理论
  Formal theory  一个形式化1理论（formal theory） \(\mathcal{S}\) 包含如下这些：
 拥有一个可数（也即可以 coutable infinite）的符号（symbol）集合， 一段有限长度的符号序列形成表达式（expression） 表达式集合中有一个子集称之为合式公式集（set of well formed formulas，wff）， 并且有有效方法检验一条表达式是否是合式公式 合式公式集中有一个子集称之为公理集（set of axioms)， 并且有有效方法检验一条合式公式是否是公理，这时可以称 \(\mathcal{S}\) 为公理理论 合式公式之间有有限条演绎规则（rules of inference） \(R_1, R_2, ..., R_n\)； 对于任意一个 \(R_i\)，有一个唯一的正整数 \(j\)，只要给出任意一个有 \(j\) 条合式公式的集合以及一条合式公式 \(B\)， 有有效方法能判断该集合以及 \(B\) 是否是 \(R_i\) 关系；如果是的话， 则称 \(B\) 是该集合通过 \(R_i\) 得出的直接结果（direct consequence）     Proof  一个证明（proof）是一系列的合式公式 \(B_1, B_2, .</description>
@@ -147,10 +147,10 @@ Pandoc pandoc 也是可以作为 hugo 的 markdown 渲染引擎的 2，用它有
     
     <item>
       <title>Chapter 1: The Propositional Calculus (1.1~1.3)</title>
-      <link>http://127.0.0.1:1313/posts/notes/introduction-to-mathematical-logic/chap-1-1-to-1-3/</link>
+      <link>https://huangjunwen.github.io/posts/notes/introduction-to-mathematical-logic/chap-1-1-to-1-3/</link>
       <pubDate>Mon, 20 Dec 2021 06:30:39 +0000</pubDate>
       
-      <guid>http://127.0.0.1:1313/posts/notes/introduction-to-mathematical-logic/chap-1-1-to-1-3/</guid>
+      <guid>https://huangjunwen.github.io/posts/notes/introduction-to-mathematical-logic/chap-1-1-to-1-3/</guid>
       <description>命题演算（又名：Propositional Logic 命题逻辑，有的时候也称为 Zeroth-Order Logic 零阶逻辑）
 1.1 Propositional Connectives: Truth Tables 命题联接词可以由真值表表达
 \[ \begin{array} {c c c c c c c} &amp;amp; &amp;amp; Negation &amp;amp; Conjunction &amp;amp; Disjunction &amp;amp; Conditional &amp;amp; Biconditional \\ A &amp;amp; B &amp;amp; \neg A &amp;amp; A \wedge B &amp;amp; A \vee B &amp;amp; A \Rightarrow B &amp;amp; A \Leftrightarrow B \\ T &amp;amp; T &amp;amp; F &amp;amp; T &amp;amp; T &amp;amp; T &amp;amp; T \\ F &amp;amp; T &amp;amp; T &amp;amp; F &amp;amp; T &amp;amp; T &amp;amp; F \\ T &amp;amp; F &amp;amp; F &amp;amp; F &amp;amp; T &amp;amp; F &amp;amp; F \\ F &amp;amp; F &amp;amp; T &amp;amp; F &amp;amp; F &amp;amp; T &amp;amp; T \\ \end{array} \]</description>
@@ -158,10 +158,10 @@ Pandoc pandoc 也是可以作为 hugo 的 markdown 渲染引擎的 2，用它有
     
     <item>
       <title>Introduction</title>
-      <link>http://127.0.0.1:1313/posts/notes/introduction-to-mathematical-logic/chap-0/</link>
+      <link>https://huangjunwen.github.io/posts/notes/introduction-to-mathematical-logic/chap-0/</link>
       <pubDate>Mon, 20 Dec 2021 05:47:00 +0000</pubDate>
       
-      <guid>http://127.0.0.1:1313/posts/notes/introduction-to-mathematical-logic/chap-0/</guid>
+      <guid>https://huangjunwen.github.io/posts/notes/introduction-to-mathematical-logic/chap-0/</guid>
       <description>虽然逻辑是所有学科的基础，但因为其过于基本以及(看似)不证自明的特性阻碍了人们更深入地探索， 直到 19 世纪末 20 世纪初出现了各种悖论
  Russell’s paradox (1902) 罗素悖论
 不妨称包含自身的集合为自指集合（\(X \in X\)，即集合 \(X\) 也是自身的元素）。
@@ -174,10 +174,10 @@ Pandoc pandoc 也是可以作为 hugo 的 markdown 渲染引擎的 2，用它有
     
     <item>
       <title>Kademlia 简介</title>
-      <link>http://127.0.0.1:1313/posts/2020/kademlia/</link>
+      <link>https://huangjunwen.github.io/posts/2020/kademlia/</link>
       <pubDate>Sat, 12 Sep 2020 12:23:00 +0800</pubDate>
       
-      <guid>http://127.0.0.1:1313/posts/2020/kademlia/</guid>
+      <guid>https://huangjunwen.github.io/posts/2020/kademlia/</guid>
       <description>Kademlia 是一种 p2p 网络的分布式哈希表 (DHT: distributed hash table). 有别于单机版的 hash table, p2p DHT 需要将 key-value 键值对存放在大量的 (但不稳定的) p2p 节点上的, 并提供远程的 (RPC) 存取方法.
 键空间 (Key Space) Kademlia 的 key 是 n-bit 的 unsigned int, 故取值范围为 \([0, 2^n-1]\). 例如原论文中使用 160 bits, 又如 ipfs 使用的是 256 bits.
 在键空间上定义 “距离” 为两个 key 之间的 异或 (结果仍然为 n-bit unsigned int):
@@ -188,10 +188,10 @@ NOTE: 使用异或作为距离有一些数学属性, 见下面详述, 这里先�
     
     <item>
       <title>写了一个 MySQL 数据表和查询的 go 代码生成器</title>
-      <link>http://127.0.0.1:1313/posts/2018/sqlw-mysql/</link>
+      <link>https://huangjunwen.github.io/posts/2018/sqlw-mysql/</link>
       <pubDate>Mon, 10 Sep 2018 20:51:26 +0800</pubDate>
       
-      <guid>http://127.0.0.1:1313/posts/2018/sqlw-mysql/</guid>
+      <guid>https://huangjunwen.github.io/posts/2018/sqlw-mysql/</guid>
       <description>项目地址 https://github.com/huangjunwen/sqlw-mysql
 动机 最近这段时间开始用 go 写网站，遇到各种新老问题。其中一个老问题是如何访问 MySQL 数据库。
 使用 ORM (Object Relationship Mapping) 大致浏览了一些热门的实现，感觉不是很合眼缘，跟动态语言的实现（例如 SQLAlchemy ）差不少。
@@ -204,10 +204,10 @@ ORM 的特点在于使用程序员熟悉的对象概念抽象数据库关系，�
     
     <item>
       <title>Greenlet 原理</title>
-      <link>http://127.0.0.1:1313/posts/2018/greenlet/</link>
+      <link>https://huangjunwen.github.io/posts/2018/greenlet/</link>
       <pubDate>Thu, 15 Mar 2018 09:05:51 +0800</pubDate>
       
-      <guid>http://127.0.0.1:1313/posts/2018/greenlet/</guid>
+      <guid>https://huangjunwen.github.io/posts/2018/greenlet/</guid>
       <description>原理 我们知道，操作系统会给每一个线程分配一个独立的堆栈，它们各自独立运作，记录着该线程的各类运行状态：如函数本地变量，函数返回地址，寄存器状态等等各种上下文；从这个角度看，堆栈几乎就等价于线程
 那么假如想要在用户态实现轻量级的类线程，就同样需要给它们分配独立堆栈，并提供方法在它们之间切换
 Greenlet 就是 cpython 上的一种轻量级线程（协程）的实现，因为 cpython 是用 c 实现的，所以这就要求 Greenlet 的实现要跟 c 那一套保持一致，要让协程里运行的代码感觉自己跑在一个真正的 c 堆栈上
@@ -219,20 +219,20 @@ Greenlet 的做法是这样的：当一个 greenlet 运行时，它的堆栈区�
     
     <item>
       <title>Vault Database Secret Backend</title>
-      <link>http://127.0.0.1:1313/posts/2017/vault-database-secret-backend/</link>
+      <link>https://huangjunwen.github.io/posts/2017/vault-database-secret-backend/</link>
       <pubDate>Sat, 10 Jun 2017 16:46:36 +0800</pubDate>
       
-      <guid>http://127.0.0.1:1313/posts/2017/vault-database-secret-backend/</guid>
+      <guid>https://huangjunwen.github.io/posts/2017/vault-database-secret-backend/</guid>
       <description>在当前版本（v0.7.2）这个 backend 还处于 beta 状态；这个 backend 应该是用来统一之前版本中各种数据库的 secret backend 的；使用前需要挂载 vault mount database，这里用 MySQL 来演示它的主要工作流程：
  写入数据库配置，路径在 database/config/$db_name ，主要参数有：  db_name 这个配置的名字 plugin_name 指定用何种数据库 driver plugin（mysql/postgres 等） connection_url 指定连接参数（注：这个连接参数是用来连数据库以创建用户的，需要有对应的权限） allowed_roles 指定的是允许哪些角色使用此配置（角色是啥下一步就会说明） 安全考虑：这个路径即使读权限也需要严格限制，因为它包含了相当高权限的数据库用户信息 例子：   $ export db_name=&amp;quot;test&amp;quot; $ export role_name=&amp;quot;test_reader&amp;quot; $ export plugin_name=&amp;quot;mysql-legacy-database-plugin&amp;quot; # mysql 有多个 plugin，它们的区别这是创建的数据库用户名最大长度不一样，因为不同版本用户名长度有变化 $ export connection_url=&amp;quot;root:password@tcp(127.0.0.1:3306)/&amp;quot; # 不要忘了最后的 / $ vault write database/config/$db_name \ &amp;gt; plugin_name=$plugin_name \ &amp;gt; connection_url=$connection_url \ &amp;gt; allowed_roles=&amp;quot;$role_name&amp;quot; ... The following warnings were returned from the Vault server: * Read access to this endpoint should be controlled via ACLs as it will return the connection details as is, including passwords, if any.</description>
     </item>
     
     <item>
       <title>Vault 介绍</title>
-      <link>http://127.0.0.1:1313/posts/2017/vault/</link>
+      <link>https://huangjunwen.github.io/posts/2017/vault/</link>
       <pubDate>Wed, 07 Jun 2017 08:14:18 +0800</pubDate>
       
-      <guid>http://127.0.0.1:1313/posts/2017/vault/</guid>
+      <guid>https://huangjunwen.github.io/posts/2017/vault/</guid>
       <description>之前一篇文章介绍了 Hashicorp Vault 的解封/密封算法。这篇打算记录一下这个软件的其它方面。当前最新版本为 v0.7.2 。
 Vault 是一个相当复杂的系统，总括而言，它是一个集中管理各类敏感信息（如密码/Key/证书等等）的软件（服务）。Vault 采用类似 Unix “一切皆文件” 的方式组织及暴露各类信息：所有操作都是对某个路径的 read/write （实际上是对某个 HTTP 路径 POST/GET/LIST/DELETE 等） ，例如：
  /sys 目录下是各种配置路径，此目录不可被卸载，其下路径各有用途，如 /sys/seal 和 /sys/unseal 这两个路径是用来密封/解封 vault 的。 /secret 目录下挂载的是 Generic Secret Backend，用于存放一般用途的敏感信息，其下路径组织结构由用户自行决定，我们平时实际使用访问最多的应该也是这个。 … 更多目录路径说明可参看 API 文档  读取/写入的数据一般都是 JSON 格式。
@@ -245,10 +245,10 @@ Auth(entication) Backend Auth Backend 完成的是认证工作：访问者是谁
     
     <item>
       <title>微服务中的认证 (authentication) 问题</title>
-      <link>http://127.0.0.1:1313/posts/2017/authentication_in_microservice/</link>
+      <link>https://huangjunwen.github.io/posts/2017/authentication_in_microservice/</link>
       <pubDate>Sun, 14 May 2017 19:14:51 +0800</pubDate>
       
-      <guid>http://127.0.0.1:1313/posts/2017/authentication_in_microservice/</guid>
+      <guid>https://huangjunwen.github.io/posts/2017/authentication_in_microservice/</guid>
       <description>这帖子有意思 JSON Web token vs. Session
 “单纯”的 JWT，其实跟 client side session 没啥区别，它的优缺点都一样：
 Pros：
@@ -259,10 +259,10 @@ Pros：
     
     <item>
       <title>Shamir Secret Sharding</title>
-      <link>http://127.0.0.1:1313/posts/2017/shamir-secret-sharding/</link>
+      <link>https://huangjunwen.github.io/posts/2017/shamir-secret-sharding/</link>
       <pubDate>Sun, 23 Apr 2017 09:27:43 +0800</pubDate>
       
-      <guid>http://127.0.0.1:1313/posts/2017/shamir-secret-sharding/</guid>
+      <guid>https://huangjunwen.github.io/posts/2017/shamir-secret-sharding/</guid>
       <description>Hashicorp 这家公司的产品都很有意思，其中 Vault 是一个用来集中管理敏感信息（密码，各种 token，证书，key 等等）的工具。
 Vault server 运行起来之后有两种状态：seal/unseal (密封/解封) ，这是因为：
 Vault 的数据是加密储存在磁盘上的：由 encryption key 加密，这个 encryption key 是由 master key 加密储存在磁盘上，而 master key 是不存放在磁盘上。所以当 Vault server 刚启动时，由于 master key 未知，故 encryption key 以及实际数据都是无法被解密访问的，这种状态就称之为seal (密封) ，unseal(解封) 就是重建 master key 的过程。
@@ -272,10 +272,10 @@ Vault 的数据是加密储存在磁盘上的：由 encryption key 加密，这�
     
     <item>
       <title>ASN.1</title>
-      <link>http://127.0.0.1:1313/posts/2017/asn.1/</link>
+      <link>https://huangjunwen.github.io/posts/2017/asn.1/</link>
       <pubDate>Wed, 01 Feb 2017 09:19:40 +0800</pubDate>
       
-      <guid>http://127.0.0.1:1313/posts/2017/asn.1/</guid>
+      <guid>https://huangjunwen.github.io/posts/2017/asn.1/</guid>
       <description>记法和编码 ASN.1（Abstract syntax notation one） 是一个对数据（类型/值）的记法和编码的祖父级标准；制定几十年而依然健在且广泛使用。
 对比一下 JSON（Javascript Object Notation），JSON 中的记法和编码是等价的，即它的记法就是编码。
 而 ASN.1 中记法和编码是不一样的，记法主要是为人类服务，用于描述，是抽象且实现无关的，例如 （摘自这里）：
@@ -285,10 +285,10 @@ AirlineFlight ::= SEQUENCE { airline IA5String, flight NumericString, seats SEQU
     
     <item>
       <title>RSA 简介</title>
-      <link>http://127.0.0.1:1313/posts/2017/rsa/</link>
+      <link>https://huangjunwen.github.io/posts/2017/rsa/</link>
       <pubDate>Tue, 24 Jan 2017 11:52:55 +0800</pubDate>
       
-      <guid>http://127.0.0.1:1313/posts/2017/rsa/</guid>
+      <guid>https://huangjunwen.github.io/posts/2017/rsa/</guid>
       <description>主要算法简介 RSA 的原理是在于能够找到三个很大的正整数 \(e,d,n\) 使得对于任何 \(0 \le m \lt n\)：
 \[ (m^e)^d \equiv m \pmod{n} \]
 其中公钥为 \((n,e)\)，可以发送给任何人；私钥为 \((n,d)\)，只能由所有者掌握。RSA 支持 4 种操作：加密/解密，签名/验证签名。
@@ -303,10 +303,10 @@ AirlineFlight ::= SEQUENCE { airline IA5String, flight NumericString, seats SEQU
     
     <item>
       <title>用 iptables 来配置 port knocking</title>
-      <link>http://127.0.0.1:1313/posts/2016/port-knocking-using-iptables/</link>
+      <link>https://huangjunwen.github.io/posts/2016/port-knocking-using-iptables/</link>
       <pubDate>Tue, 20 Dec 2016 10:20:54 +0800</pubDate>
       
-      <guid>http://127.0.0.1:1313/posts/2016/port-knocking-using-iptables/</guid>
+      <guid>https://huangjunwen.github.io/posts/2016/port-knocking-using-iptables/</guid>
       <description>对于正式环境的服务器来说，每当查看到 auth.log 里头那些撞大运的 ssh 登录尝试，心里总是有点惴惴不安的。虽然 public key authentication 号称安全，但是谁说得准呢？而且不知道配置里会不会有错误，要是有多一层的防护总是好的。
 以前听说过 Port knocking 这种技术了，大致的思路就是设定一系列随机端口（例如：7421，3411，9088等等）作为暗号，用户在访问服务器之前，要依次“敲”一下这几个端口（即相继发送网络包到这几个端口上），这些端口当然是关闭状态啦，但服务器上可以侦察得到这些敲门，如果暗号对了，就给访问者 ip 开放服务端口（例如22）。
 还有一些更高级的，例如在网络包里存放加密信息等，不过这就复杂了，暂且不表。
@@ -320,10 +320,10 @@ https://www.digitalocean.com/community/tutorials/how-to-configure-port-knocking-
     
     <item>
       <title>Good Links</title>
-      <link>http://127.0.0.1:1313/posts/notes/good-links/</link>
+      <link>https://huangjunwen.github.io/posts/notes/good-links/</link>
       <pubDate>Sat, 01 Jan 2000 00:00:00 +0000</pubDate>
       
-      <guid>http://127.0.0.1:1313/posts/notes/good-links/</guid>
+      <guid>https://huangjunwen.github.io/posts/notes/good-links/</guid>
       <description>Logic Matters -&amp;gt; Teach Yourself logic: https://www.logicmatters.net/tyl/</description>
     </item>
     

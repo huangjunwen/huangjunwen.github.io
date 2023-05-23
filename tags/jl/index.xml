@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>jl on Coder Papa</title>
-    <link>http://127.0.0.1:1313/tags/jl/</link>
+    <link>https://huangjunwen.github.io/tags/jl/</link>
     <description>Recent content in jl on Coder Papa</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sat, 27 Aug 2022 10:14:17 +0000</lastBuildDate><atom:link href="http://127.0.0.1:1313/tags/jl/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 27 Aug 2022 10:14:17 +0000</lastBuildDate><atom:link href="https://huangjunwen.github.io/tags/jl/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Jupyterlite</title>
-      <link>http://127.0.0.1:1313/posts/2022/jupyterlite/</link>
+      <link>https://huangjunwen.github.io/posts/2022/jupyterlite/</link>
       <pubDate>Sat, 27 Aug 2022 10:14:17 +0000</pubDate>
       
-      <guid>http://127.0.0.1:1313/posts/2022/jupyterlite/</guid>
+      <guid>https://huangjunwen.github.io/posts/2022/jupyterlite/</guid>
       <description>最近总是接触各种 Jupyter…（JupyterLab/JupyterHub），发现居然还有可以完全跑在浏览器上的 Jupyterlite，那是不是可以直接放一个到这儿呢？
 大致的概念 原来的 Jupyter 是传统的 CS 模式，各种语言（e.g. python）的 kernel 是跑在服务端的
 但现在也有了 python（和一些常用的库）的 WebAssembly 移植版（e.g. pyodide）， 这样一来 kernel 也可以在浏览器上实现了 （e.g. pyolite）， 因此可以创建一个全静态的 site，UI 和 kernel 都在浏览器中运行， 中间用 mock-socket 假装通讯， 完整地把 notebook 那一套 CS 模式移植过来
@@ -26,10 +26,10 @@
     
     <item>
       <title>RSA 简介</title>
-      <link>http://127.0.0.1:1313/posts/2017/rsa/</link>
+      <link>https://huangjunwen.github.io/posts/2017/rsa/</link>
       <pubDate>Tue, 24 Jan 2017 11:52:55 +0800</pubDate>
       
-      <guid>http://127.0.0.1:1313/posts/2017/rsa/</guid>
+      <guid>https://huangjunwen.github.io/posts/2017/rsa/</guid>
       <description>主要算法简介 RSA 的原理是在于能够找到三个很大的正整数 \(e,d,n\) 使得对于任何 \(0 \le m \lt n\)：
 \[ (m^e)^d \equiv m \pmod{n} \]
 其中公钥为 \((n,e)\)，可以发送给任何人；私钥为 \((n,d)\)，只能由所有者掌握。RSA 支持 4 种操作：加密/解密，签名/验证签名。
