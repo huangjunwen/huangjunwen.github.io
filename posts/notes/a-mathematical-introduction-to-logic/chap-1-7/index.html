@@ -284,6 +284,77 @@ Proof
 的有限子集，跟有限可满足性矛盾，故 \(\Sigma\) 必定是可满足的</p>
 </div>
 </div>
+<h2 id="effectiveness-and-computability">Effectiveness and
+Computability</h2>
+<p>当我们说：对于一个合式公式集合 \(\Sigma\) 以及一个公式 \(\psi\)
+是否有一个<strong>有效的过程</strong>（effective procedure）判断
+\(\Sigma \vDash \psi\)</p>
+<p>那么何为有效的过程呢？这里指的是满足如下的过程：它应该包含精确的指令序列（e.g. 即程序）来描述如何执行该过程，
+<strong>该程序只能有有限长度</strong>，否则任何机器和人都无法执行；再有，对于像上述那种判定过程，<strong>该程序应该在有限步之后给出结果</strong>；
+最后，该程序不能要求任何需要洞察/创意等的介入，必须可以被机械地执行</p>
+<p>总而言之，就是一个<strong>时间空间上均有限的机械步骤</strong>，但这里我们并不限制<strong>有限</strong>的大小</p>
+<p>另外，上述的定义其实是 informal 的：</p>
+<blockquote>
+<p>Of course the foregoing description can hardly be considered a
+precise definition of the word “effective”. And, in fact, that word will
+be used only in an <strong>informal intuitive way</strong> throughout
+this book. (In Chapter 3 we will meet a precise counterpart,
+“recursive.”) But as long as we restrict ourselves to <strong>positive
+assertions that there does exist an effective procedure of a certain
+sort, the informal approach suffices</strong>. We simply display the
+procedure, show that it works, and people will agree that it is
+effective. (But this relies on the empirical fact that procedures which
+appear effective to one mathematician also appear so to others.) If we
+wanted a negative result, <strong>that there did not exist an effective
+procedure of a certain sort, then this informal viewpoint would be
+inadequate</strong>. (In Chapter 3 we do want to obtain just such
+negative results.) Because the notion of effectiveness is informal,
+definitions and theorems involving it will be <strong>marked with a
+star</strong></p>
+</blockquote>
+<h3 id="theorem-17b">⚹ Theorem 17B</h3>
+<blockquote>
+<p>存在有效过程判定任意一个表达式是否是合式公式</p>
+</blockquote>
+<p>1.3 节里的那个 parser algorithm 就是这么个算法</p>
+<dl>
+<dt>⚹ Decidable</dt>
+<dd>
+一个公式集合 \(\Sigma\)
+是<strong>可判定（decidable）</strong>的，当且仅当存在一个有效过程，对于给定的任意公式
+\(\alpha\)， 可判定是否 \(\alpha \in \Sigma\) <a href="#fn7"
+class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a>
+</dd>
+</dl>
+<blockquote>
+<p>所有的有限集合都可判定</p>
+</blockquote>
+<p>因为可以将所有有限个成员全部列出来，然后程序可以逐一检查对比输入</p>
+<blockquote>
+<p><strong>不是所有无限集合都可判定</strong></p>
+</blockquote>
+<p>假如都可判定，则每一个集合都至少有一个有效过程可对其进行判定（注意判定一个集合
+\(\Sigma\)
+的有效过程只能判定该集合而不能判定其他不同的集合），所以这些式子集合的数量应该要不多于有效过程的数量；
+但这些式子集合的数量是不可数的（\(2^{\aleph_0}\)，因为是全体式子的 power
+set），而全体有效过程的数量却是可数的
+（\(\aleph_0\)，因为有效过程由其<strong>有限长度的指令</strong>定义，故可以与某个自然数对应）</p>
+<h3 id="theorem-17c">⚹ Theorem 17C</h3>
+<blockquote>
+<p>对于一个<strong>有限</strong>式子集合 \(\Sigma;
+\psi\)，存在有效过程判定是否 \(\Sigma \vDash \psi\)</p>
+</blockquote>
+<p>1.2 节里的真值表方法满足要求</p>
+<h3 id="corollary-17d">⚹ Corollary 17D</h3>
+<blockquote>
+<p>对于一个<strong>有限</strong>式子集合
+\(\Sigma\)，其<strong>重言式推论集合（set of tautological
+consequences）</strong>是可判定的； 特别地，<strong>重言式集合（set of
+tautologies）</strong>是可判定的（因为重言式集合就是空集的重言式推论集）</p>
+</blockquote>
+<p>直接用 Theorem 17C
+中的有效过程（真值表方法），输入任意式子即可判定是否是 \(\Sigma\) 的
+tautological consequence 了</p>
 <section class="footnotes footnotes-end-of-document"
 role="doc-endnotes">
 <hr />
@@ -355,6 +426,9 @@ class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <p>\(\Sigma \nvDash \psi\)，即存在能满足 \(\Sigma\) 但不能满足 \(\psi\)
 的赋值（红点部分），即 \(\Sigma; \neg \psi\) 可满足<a href="#fnref6"
 class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"
+role="doc-endnote"><p>注意这个有效过程只需要对给定的输入进行判定即可，不需要列出集合中的式子或其他更多要求<a
+href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
