@@ -312,22 +312,18 @@ negative results.) Because the notion of effectiveness is informal,
 definitions and theorems involving it will be <strong>marked with a
 star</strong></p>
 </blockquote>
-<h3 id="theorem-17b">⚹ Theorem 17B</h3>
-<blockquote>
-<p>存在有效过程判定任意一个表达式是否是合式公式</p>
-</blockquote>
-<p>1.3 节里的那个 parser algorithm 就是这么个算法</p>
+<h3 id="可判定性">⚹ 可判定性</h3>
 <dl>
 <dt>⚹ Decidable</dt>
 <dd>
-一个公式集合 \(\Sigma\)
-是<strong>可判定（decidable）</strong>的，当且仅当存在一个有效过程，对于给定的任意公式
-\(\alpha\)， 可判定是否 \(\alpha \in \Sigma\) <a href="#fn7"
-class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a>
+一个表达式集合 \(\Sigma\)
+是<strong>可判定（decidable）</strong>的，当且仅当存在一个有效过程，对于给定的任意表达式
+\(\alpha\)， 可判定<strong>是否</strong> \(\alpha \in \Sigma\)
 </dd>
 </dl>
+<p>例如：</p>
 <blockquote>
-<p>所有的有限集合都可判定</p>
+<p><strong>所有的有限集合都可判定</strong></p>
 </blockquote>
 <p>因为可以将所有有限个成员全部列出来，然后程序可以逐一检查对比输入</p>
 <blockquote>
@@ -335,10 +331,16 @@ class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a>
 </blockquote>
 <p>假如都可判定，则每一个集合都至少有一个有效过程可对其进行判定（注意判定一个集合
 \(\Sigma\)
-的有效过程只能判定该集合而不能判定其他不同的集合），所以这些式子集合的数量应该要不多于有效过程的数量；
-但这些式子集合的数量是不可数的（\(2^{\aleph_0}\)，因为是全体式子的 power
+的有效过程只能判定该集合而不能判定其他不同的集合），所以这些表达式集合的数量必须不多于有效过程的数量；
+但表达式集合的数量是不可数的（\(2^{\aleph_0}\)，因为是全体表达式的 power
 set），而全体有效过程的数量却是可数的
 （\(\aleph_0\)，因为有效过程由其<strong>有限长度的指令</strong>定义，故可以与某个自然数对应）</p>
+<h3 id="theorem-17b">⚹ Theorem 17B</h3>
+<blockquote>
+<p>存在有效过程判定任意一个表达式是否是合式公式</p>
+</blockquote>
+<p>1.3 节里的那个 parser algorithm
+就是这么个算法；另一种意思就是：<strong>所有合式公式组成的集合是可判定的</strong></p>
 <h3 id="theorem-17c">⚹ Theorem 17C</h3>
 <blockquote>
 <p>对于一个<strong>有限</strong>式子集合 \(\Sigma;
@@ -426,9 +428,6 @@ class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <p>\(\Sigma \nvDash \psi\)，即存在能满足 \(\Sigma\) 但不能满足 \(\psi\)
 的赋值（红点部分），即 \(\Sigma; \neg \psi\) 可满足<a href="#fnref6"
 class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn7"
-role="doc-endnote"><p>注意这个有效过程只需要对给定的输入进行判定即可，不需要列出集合中的式子或其他更多要求<a
-href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
