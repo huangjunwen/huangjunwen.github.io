@@ -318,7 +318,8 @@ star</strong></p>
 <dd>
 一个表达式集合 \(\Sigma\)
 是<strong>可判定（decidable）</strong>的意思是：存在一个有效过程，对于给定的任意表达式
-\(\alpha\)， 可判定<strong>是否</strong> \(\alpha \in \Sigma\)
+\(\alpha\)， 可判定<strong>是否</strong> \(\alpha \in \Sigma\)（即当
+\(\alpha \in \Sigma\) 返回 yes, 当 \(\alpha \notin \Sigma\) 返回 no）
 </dd>
 </dl>
 <p>例如：</p>
@@ -343,7 +344,7 @@ set），而全体有效过程的数量却是可数的
 就是这么个算法；另一种意思就是：<strong>所有合式公式组成的集合是可判定的</strong></p>
 <h3 id="theorem-17c">⚹ Theorem 17C</h3>
 <blockquote>
-<p>对于一个<strong>有限</strong>式子集合 \(\Sigma;
+<p>对于一个<strong>有限</strong>合式公式集合 \(\Sigma;
 \psi\)，存在有效过程判定是否 \(\Sigma \vDash \psi\)</p>
 </blockquote>
 <p>1.2 节里的真值表方法满足要求</p>
@@ -366,7 +367,76 @@ tautological consequence 了</p>
 \(\alpha\)， 当且仅当 \(\alpha \in \Sigma\) 的时候可获得判定（即如果
 \(\alpha \notin \Sigma\)，则该过程不一定能给出答案）
 </dd>
+<dt>⚹ Effectively Enumerable</dt>
+<dd>
+一个表达式集合 \(\Sigma\) 是<strong>有效可枚举（effectively
+enumerable）</strong>的意思是：存在一个有效过程， 能按某种顺序将
+\(\Sigma\) 中的所有成员枚举出来（注意，如果 \(\Sigma\)
+是无限集合，则这个枚举过程永远不会结束，
+但对于其中任意一个成员，都在某个有限时间内能被枚举出来）
+</dd>
 </dl>
+<h3 id="theorem-17e">⚹ Theorem 17E</h3>
+<blockquote>
+<p>一个表达式集合是<strong>有效可枚举的</strong>当且仅当它是<strong>半可判定的</strong></p>
+</blockquote>
+<div class="proof">
+<div class="proof-label">
+Proof
+</div>
+<div class="proof-content">
+<p>如果集合 \(\Sigma\)
+是有效可枚举的，则有一个有效过程可以不断地输出该集合中的成员，对于任意一个表达式
+\(\psi\)， 如果 \(\psi \in
+\Sigma\)，则经过一段（可能相当长的）有限的时间后必定会出现，此时可输出
+yes；如果 \(\psi \notin \Sigma\) 则永远不会有输出；故是半可判定的</p>
+<p>反过来，如果该集合是半可判定的，而我们希望能枚举它的全部成员：首先是可以枚举所有的表达式
+\(\psi_1, \psi_2, \psi_3, ...\) 的，
+<strong>但不可以直接逐一地都执行那个半可判定的有效过程，因为如果某个
+\(\psi_i \notin \Sigma\)，该过程有可能会一直不停机</strong>，
+故需要调整一下方法，例如：</p>
+<ol type="1">
+<li>对 \(\psi_1\) 执行该过程 1 分钟进行判定</li>
+<li>对 \(\psi_1\) 执行该过程 2 分钟进行判定，对 \(\psi_2\) 执行该过程 2
+分钟进行判定</li>
+<li>对 \(\psi_1\) 执行该过程 3 分钟进行判定，对 \(\psi_2\) 执行该过程 3
+分钟进行判定，对 \(\psi_3\) 执行该过程 3 分钟进行判定</li>
+<li>…</li>
+</ol>
+<p>对任意一个成员来说，总会有一个足够大的步数 \(n\)
+包含它并且有足够长的时间足以判定它的 membership 并输出出来</p>
+</div>
+</div>
+<blockquote>
+<p>显然可判定集合也是半可判定集合，故也是有效可枚举的</p>
+</blockquote>
+<h3 id="theorem-17f">⚹ Theorem 17F</h3>
+<blockquote>
+<p>一个表达式集合是可判定的，当且仅当该集合以及其补集（complement，相对于全体表达式集合而言）都是有效可枚举的</p>
+</blockquote>
+<p>这个 Theorem 又称为 “Kleene’s theorem”</p>
+<div class="proof">
+<div class="proof-label">
+Proof
+</div>
+<div class="proof-content">
+<p>如果 \(\Sigma\) 可判定，则对所有表达式 \(\psi_1, \psi_2, \psi_3,
+...\) 逐一执行其判定过程，过滤只返回 yes
+的就可以获得该集合有效可枚举的过程；过滤只返回 no
+的就可以获得该集合补集的有效可枚举的过程</p>
+<p>反过来，如果存在 \(\Sigma\) 的有效可枚举过程 \(P\) 以及 \(\Sigma\)
+补集的有效可枚举过程 \(P'\)，对任意输入 \(\alpha\)，执行：</p>
+<ol type="1">
+<li>执行 \(P\) 1 分钟看 \(\alpha\) 是否在其输出中，执行 \(P'\) 1 分钟看
+\(\alpha\) 是否在其输出中</li>
+<li>类似上面，不过各执行 2 分钟</li>
+<li>类似上面，不过各执行 3 分钟</li>
+<li>…</li>
+</ol>
+<p>总会有一个足够大的步数 \(n\) 使得要么 \(P\) 要么 \(P'\) 会输出
+\(\alpha\)，则相应返回 yes/no 即可</p>
+</div>
+</div>
 <section class="footnotes footnotes-end-of-document"
 role="doc-endnotes">
 <hr />
