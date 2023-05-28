@@ -149,8 +149,7 @@ C_1 \subseteq C_2 \subseteq C_3 \subseteq ...
 \]</p>
 <p>令 \(C_{ * } = \bigcup_n C_n\) 即所有 \(C_n\)
 的<strong>并集</strong></p>
-<h3 id="equivalent-of-the-above-two-definitions">Equivalent of the above
-two definitions</h3>
+<h3 id="两种定义的等价性">两种定义的等价性</h3>
 <p>要证明 \(C^{ * } \subseteq C_{ * }\) 只需要证明 \(C_{ * }\) 是
 inductive 集即可，因为 \(C^{ * }\) 被所有 inductive 集包含</p>
 <ul>
@@ -189,7 +188,8 @@ role="doc-noteref"><sup>1</sup></a></p>
 <blockquote>
 <p>令 \(C\) 是由初始集 \(B\) 应用 \(F\) 生成的集合，如果集合 \(S\) 是
 \(C\) 的子集，且 \(S\) 包含 \(B\)，以及 \(S\) 闭合于 \(F\)， 则 \(S =
-C\)</p>
+C\) <a href="#fn2" class="footnote-ref" id="fnref2"
+role="doc-noteref"><sup>2</sup></a></p>
 </blockquote>
 <div class="proof">
 <div class="proof-label">
@@ -471,6 +471,14 @@ role="doc-endnotes">
 ？因为正在定义 induction 本身； 感觉 Top down
 的方法在这里应该是主要的，Bottom up 的方法主要是一种佐证<a
 href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2" role="doc-endnote"><p>我们熟知的自然数的 induction
+principle 表述是这样的：若 \(P(0)\) 成立，且当 \(P(i)\) 成立时
+\(P(i+1)\) 也成立，则 \(\forall n P(n)\) 成立</p>
+<p>上述其实可以由这里的 induction principle 给出：令 \(I = \{i ~|~ P(i),
+i \in Nat \}\)，首先 \(0 \in I\) 因为 \(P(0)\) 成立， 若 \(i \in I\) 则
+\(P(i)\) 故 \(P(i+1)\) 所以 \(i + 1 \in I\)，所以 \(I =
+Nat\)，这表明对任意的自然数 \(n\) 都有 \(P(n)\)<a href="#fnref2"
+class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
