@@ -414,7 +414,7 @@ yes；如果 \(\psi \notin \Sigma\) 则永远不会有输出；故是半可判�
 <blockquote>
 <p>一个表达式集合是可判定的，当且仅当该集合以及其补集（complement，相对于全体表达式集合而言）都是有效可枚举的</p>
 </blockquote>
-<p>这个 Theorem 又称为 “Kleene’s theorem”</p>
+<p>这个 Theorem 又称为 “Kleene’s theorem” (Exercise 8)</p>
 <div class="proof">
 <div class="proof-label">
 Proof
@@ -425,7 +425,7 @@ Proof
 的就可以获得该集合有效可枚举的过程；过滤只返回 no
 的就可以获得该集合补集的有效可枚举的过程</p>
 <p>反过来，如果存在 \(\Sigma\) 的有效可枚举过程 \(P\) 以及 \(\Sigma\)
-补集的有效可枚举过程 \(P'\)，对任意输入 \(\alpha\)，执行：</p>
+补集的有效可枚举过程 \(P'\)，对任意输入 \(\alpha\)：</p>
 <ol type="1">
 <li>执行 \(P\) 1 分钟看 \(\alpha\) 是否在其输出中，执行 \(P'\) 1 分钟看
 \(\alpha\) 是否在其输出中</li>
@@ -435,6 +435,37 @@ Proof
 </ol>
 <p>总会有一个足够大的步数 \(n\) 使得要么 \(P\) 要么 \(P'\) 会输出
 \(\alpha\)，则相应返回 yes/no 即可</p>
+</div>
+</div>
+<h3 id="theorem-17g">⚹ Theorem 17G</h3>
+<blockquote>
+<p>如果 \(\Sigma\)
+是一个<strong>可判定</strong>的合式公式集合，那么它的<strong>重言式推论集合（set
+of tautological consequences）</strong>
+是<strong>有效可枚举（半可判定）</strong>的</p>
+</blockquote>
+<div class="proof">
+<div class="proof-label">
+Proof
+</div>
+<div class="proof-content">
+<p>实际上 \(\Sigma\) 只需要有效可枚举的即可，例如枚举出 \(\psi_1,
+\psi_2, \psi_3, ...\)，那么对于任意一个合式公式 \(\tau\)，
+可逐一测试</p>
+<p>\[
+\begin{split}
+\emptyset \vDash \tau \\
+\{\psi_1\} \vDash \tau \\
+\{\psi_1, \psi_2\} \vDash \tau \\
+\{\psi_1, \psi_2, \psi_3\} \vDash \tau \\
+...
+\end{split}
+\]</p>
+<p>如果在某一步成立，则返回 yes，否则一直测试下去</p>
+<p>这里有一个问题，就是假如 \(\Sigma \vDash
+\tau\)，此一过程是否会一直执行下去不停机呢？答案是不会，因为 <a
+href="#corollary-17a">Compactness Corollary</a>，存在有限子集 \(\Sigma_0
+\subseteq \Sigma\) 使得 \(\Sigma_0 \vDash \tau\)</p>
 </div>
 </div>
 <section class="footnotes footnotes-end-of-document"
