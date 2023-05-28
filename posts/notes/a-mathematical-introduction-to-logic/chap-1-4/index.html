@@ -185,6 +185,7 @@ href="#fn1" class="footnote-ref" id="fnref1"
 role="doc-noteref"><sup>1</sup></a></p>
 </blockquote>
 <h3 id="induction-principle">Induction Principle</h3>
+<p>归纳原理</p>
 <blockquote>
 <p>令 \(C\) 是由初始集 \(B\) 应用 \(F\) 生成的集合，如果集合 \(S\) 是
 \(C\) 的子集，且 \(S\) 包含 \(B\)，以及 \(S\) 闭合于 \(F\)， 则 \(S =
@@ -471,14 +472,32 @@ role="doc-endnotes">
 ？因为正在定义 induction 本身； 感觉 Top down
 的方法在这里应该是主要的，Bottom up 的方法主要是一种佐证<a
 href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2" role="doc-endnote"><p>我们熟知的自然数的 induction
-principle 表述是这样的：若 \(P(0)\) 成立，且当 \(P(i)\) 成立时
-\(P(i+1)\) 也成立，则 \(\forall n P(n)\) 成立</p>
-<p>上述其实可以由这里的 induction principle 给出：令 \(I = \{i ~|~ P(i),
-i \in Nat \}\)，首先 \(0 \in I\) 因为 \(P(0)\) 成立， 若 \(i \in I\) 则
-\(P(i)\) 故 \(P(i+1)\) 所以 \(i + 1 \in I\)，所以 \(I =
-Nat\)，这表明对任意的自然数 \(n\) 都有 \(P(n)\)<a href="#fnref2"
-class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"
+role="doc-endnote"><p>我们熟知的自然数归纳原理的表述是这样的：若
+\(P(0)\) 成立，且当 \(P(n)\) 成立时 \(P(suc(n))\) 也成立，则 \(\forall n
+P(n)\) 成立</p>
+<p>其实跟这里的是等价的：</p>
+<ul>
+<li>假设 \(P\) 是 \(Nat\) 上的 predicate，\(P(0)\) 成立，且当 \(P(n)\)
+成立时 \(P(suc(n))\) 也成立； 令 \(N = \{n ~|~ P(n), n \in Nat \}\)
+<ul>
+<li>由假设得 \(0 \in N\)</li>
+<li>若 \(n \in N\) 即 \(P(n)\) 由假设得 \(P(suc(n))\)，所以 \(suc(n) \in
+N\)，故 \(N\) 闭合于 \(suc\)</li>
+<li>由归纳原理得出 \(N = Nat\)，这表明对任意的自然数 \(n\) 都有
+\(P(n)\)</li>
+</ul></li>
+<li>假设 \(N \subseteq Nat\) 且 \(0 \in N\) 以及 \(N\) 闭合于
+\(suc\)；令 \(P(n) = n \in N\)
+<ul>
+<li>由假设得 \(P(0)\)</li>
+<li>若 \(P(n)\) 则 \(n \in N\)，由于 \(N\) 闭合于 \(suc\)，故 \(suc(n)
+\in N\) 即 \(P(suc(n))\)</li>
+<li>由自然数归纳原理得出 \(\forall n P(n)\)，这表明所有自然数都属于
+\(N\)，于是 \(N = Nat\)</li>
+</ul></li>
+</ul>
+<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></li>
 </ol>
 </section>
 
