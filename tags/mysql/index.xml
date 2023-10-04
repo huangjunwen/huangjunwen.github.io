@@ -17,7 +17,7 @@
 动机 最近这段时间开始用 go 写网站，遇到各种新老问题。其中一个老问题是如何访问 MySQL 数据库。
 使用 ORM (Object Relationship Mapping) 大致浏览了一些热门的实现，感觉不是很合眼缘，跟动态语言的实现（例如 SQLAlchemy ）差不少。
 ORM 的特点在于使用程序员熟悉的对象概念抽象数据库关系，使之成为可编程的对象，提供使用上的便利：
- 构造查询的便利，用户一般只需要指定需要查询的对象（一般对应数据库表），或者关系（一般对应 JOIN），还可以按需要增添查询条件，ORM 即可推导出需要执行的语句：  sess.query(User) # SELECT user.id, ... FROM user sess.query(Employee.User) # SELECT employee.id, ... FROM employee JOIN user ON ... sess.query(User).filter(User.name==xxx) # SELECT user.id, ... FROM user WHERE name=xxx sess.query(User).options(joinedload(Employee)).order_by(...) # ...  查询后的便利，结果集会被重新组装成对象，后续仍只需继续在这些对象上操作即可。  这样理想状态下涉及数据库的操作就被完全封装到一个闭环里头。然而数据库关系其实并不简单，建立一个表达力十足的映射模型即是使用 python 这种表达力很强的动态语言都很复杂（看看这个函数），何况 go 这种既缺乏元编程能力也缺乏语法糖的语言呢。
+构造查询的便利，用户一般只需要指定需要查询的对象（一般对应数据库表），或者关系（一般对应 JOIN），还可以按需要增添查询条件，ORM 即可推导出需要执行的语句： sess.query(User) # SELECT user.id, ... FROM user sess.query(Employee.User) # SELECT employee.id, ... FROM employee JOIN user ON ... sess.query(User).filter(User.name==xxx) # SELECT user.id, ... FROM user WHERE name=xxx sess.query(User).options(joinedload(Employee)).order_by(...) # ... 查询后的便利，结果集会被重新组装成对象，后续仍只需继续在这些对象上操作即可。 这样理想状态下涉及数据库的操作就被完全封装到一个闭环里头。然而数据库关系其实并不简单，建立一个表达力十足的映射模型即是使用 python 这种表达力很强的动态语言都很复杂（看看这个函数），何况 go 这种既缺乏元编程能力也缺乏语法糖的语言呢。
 因此我所见的实现往往只能退而求其次，只实现一些基本常用的功能。
 直接使用 SQL 除了使用 ORM 另外一种方法是直接面对关系数据库/SQL 本身，例如有很多人（声称）直接使用 sqlx，但我感觉全部手写会不会也挺麻烦重复的呢？
 所以有一些工具能帮忙生成代码，例如 xo，连接上数据库直接导出 schema 就能生成基本的 CRUD 访问代码，同时也可以根据它的 SQL DSL 生成 SQL 的 wrapper code。整个过程一目了然，没有层层封装的不透明感，生成代码的效率也高，虽然需要手写 SQL，但代码生成过程是经过实际数据库验证的，这就相当可靠了。</description>

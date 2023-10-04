@@ -20,8 +20,8 @@
 目前 jupyterlite 已经发布 0.1.0 版本，部署到 gthub page 已十分简单，基本上就是 clone 一个 template repo 即可，见这里
 内容 在 repo 里有一个 content 目录，把内容（例如 ipynb 文件）放入该目录即可
 另外发现 https://github.com/jupyterlab-contrib/jupyterlab-open-url-parameter 安装了该 extension 后允许在 url 参数中直接指定内容的地址， 例如访问
- https://your-name.github.io/jupyterlite/lab/?fromURL=/path/to/your.ipynb
- 则打开的 jupyterlite 会自动打开该 notebook</description>
+https://your-name.github.io/jupyterlite/lab/?fromURL=/path/to/your.ipynb
+则打开的 jupyterlite 会自动打开该 notebook</description>
     </item>
     
     <item>
@@ -39,7 +39,7 @@
 解密 由私钥所有者计算
 \[ \begin{align} c^d \pmod{n} &amp;amp;= (m^e \pmod{n})^d \pmod{n} \\ &amp;amp;= (m^e)^d \pmod{n} \\ &amp;amp;= m \pmod{n} \end{align} \]
 就能还原原来的信息了（乘积与其余数乘积同余，见同余命题 a）
-签名 首先对要签名的信息作一个 message digest，常用的如 MD5 和 SHA 系列； 然后把这个 digest 转换成整数 \(m\) 使得 \(1 \le m \lt n\)； 最后用私钥 \((n,d)\) 计算 \(s = m^d \pmod{n}\)  验签 用公钥 \((n,e)\) 计算 \(v = s^e \pmod{n}\) 把 \(v\) 转换回 digest 独立对要签名的信息再作一次 digest 对比这两个 digest，如果相同的话，那这个签名就是有效的  Note 可以看到加解密和签名验签刚好是两个方向：前者是公钥加密发送给所有者解密，后者是用私钥签名发送给其他人用公钥验签；所以这就是为何一般不建议使用相同的 key 同时用作加密和签名：</description>
+签名 首先对要签名的信息作一个 message digest，常用的如 MD5 和 SHA 系列； 然后把这个 digest 转换成整数 \(m\) 使得 \(1 \le m \lt n\)； 最后用私钥 \((n,d)\) 计算 \(s = m^d \pmod{n}\) 验签 用公钥 \((n,e)\) 计算 \(v = s^e \pmod{n}\) 把 \(v\) 转换回 digest 独立对要签名的信息再作一次 digest 对比这两个 digest，如果相同的话，那这个签名就是有效的 Note 可以看到加解密和签名验签刚好是两个方向：前者是公钥加密发送给所有者解密，后者是用私钥签名发送给其他人用公钥验签；所以这就是为何一般不建议使用相同的 key 同时用作加密和签名：</description>
     </item>
     
   </channel>

@@ -9,10 +9,10 @@
     <link rel="stylesheet" href="/res/libs/fontawesome/css/all.min.css"></link>
     <link rel="stylesheet" href="/res/libs/chota/css/chota.min.css"></link>
 
-    <link rel="stylesheet" href="/res/style/site-gruvbox-soft.min.a69db7f7950fa2a698891fccb16b7a9e6351774c9914ea9f97cff7d7dfc13f90.css"></link>
+    <link rel="stylesheet" href="/res/style/site-gruvbox-soft.min.37b77c57810deb7939641a4f43faae01cac538b7162f44570e912835c9f6b11c.css"></link>
     <script type="text/javascript" src="/res/script/site.min.a65b2836eec5187e9e88be5dae41f6f388a8c97455a87c31ff2e118d8b3bcd81.js"></script>
 
-    <link id="markdown-body-style" rel="stylesheet" href="/res/style/markdown-body-gruvbox-soft.min.9e60b1b898fdbd462bd36ce7d16c6ff301f66ec653f0b24c613a95f9709987a4.css"></link>
+    <link id="markdown-body-style" rel="stylesheet" href="/res/style/markdown-body-gruvbox-soft.min.5a7178d1ccb635392ad5eb7f18d9e2157d6af5697efa4e718d5ece464a91e571.css"></link>
     <script type="text/javascript" src="/res/script/markdown-body.min.35e011193a484812039d96b17af075e907d451e72d29301c94e49f045c43c19d.js"></script>
 
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -235,11 +235,11 @@ class="footnote-ref" id="fnref8"
 role="doc-noteref"><sup>8</sup></a>）</p>
 <h2 id="todo">TODO</h2>
 <p>…</p>
-<section class="footnotes footnotes-end-of-document"
+<aside id="footnotes" class="footnotes footnotes-end-of-document"
 role="doc-endnotes">
 <hr />
 <ol>
-<li id="fn1" role="doc-endnote"><ul>
+<li id="fn1"><ul>
 <li><a href="https://plato.stanford.edu/entries/intuitionism/"
 class="uri">https://plato.stanford.edu/entries/intuitionism/</a></li>
 <li><a
@@ -249,10 +249,10 @@ class="uri">https://plato.stanford.edu/entries/philosophy-mathematics/#Int</a></
 class="uri">https://en.wikipedia.org/wiki/Intuitionism</a></li>
 </ul>
 <a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></li>
-<li id="fn2" role="doc-endnote"><p>其他主流学派包括 David Hilbert
+<li id="fn2"><p>其他主流学派包括 David Hilbert
 的形式主义（Formalism）以及 Frege 的逻辑主义（Logicism）等<a
 href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3" role="doc-endnote"><blockquote>
+<li id="fn3"><blockquote>
 <p>摘自 <a href="https://en.wikipedia.org/wiki/Intuitionism#Infinity"
 class="uri">https://en.wikipedia.org/wiki/Intuitionism#Infinity</a></p>
 <p>Brouwer made it clear, as I think beyond any doubt, that there is no
@@ -266,16 +266,16 @@ source of our difficulties, including the antinomies – a source of more
 fundamental nature than Russell’s vicious circle principle indicated</p>
 </blockquote>
 <a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></li>
-<li id="fn4" role="doc-endnote"><p><a
+<li id="fn4"><p><a
 href="https://en.wikipedia.org/wiki/Brouwer%E2%80%93Heyting%E2%80%93Kolmogorov_interpretation"
 class="uri">https://en.wikipedia.org/wiki/Brouwer%E2%80%93Heyting%E2%80%93Kolmogorov_interpretation</a><a
 href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn5" role="doc-endnote"><p><a
+<li id="fn5"><p><a
 href="https://plfa.github.io/Negation/#excluded-middle-is-irrefutable"
 class="uri">https://plfa.github.io/Negation/#excluded-middle-is-irrefutable</a><a
 href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn6" role="doc-endnote"><p>实际上 DNE 和 EM 是等价的（即 \(EM
-\Leftrightarrow DNE\)），另外还有几个也是等价的</p>
+<li id="fn6"><p>实际上 DNE 和 EM 是等价的（即 \(EM \Leftrightarrow
+DNE\)），另外还有几个也是等价的</p>
 <ul>
 <li>Peirce’s Law： \(((A \Rightarrow B) \Rightarrow A) \Rightarrow
 A\)</li>
@@ -287,12 +287,11 @@ B\)</li>
 <p><a href="https://plfa.github.io/Negation/#exercise-classical-stretch"
 class="uri">https://plfa.github.io/Negation/#exercise-classical-stretch</a><a
 href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn7" role="doc-endnote"><p><a
+<li id="fn7"><p><a
 href="https://blog.plover.com/math/IL-contradiction.html"
 class="uri">https://blog.plover.com/math/IL-contradiction.html</a><a
 href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn8" role="doc-endnote"><p>反方向可以推导出 EM
-的证明（agda）</p>
+<li id="fn8"><p>反方向可以推导出 EM 的证明（agda）</p>
 <pre class="language-agda"><code>¬∀-implies-∃¬→em : (∀ {X : Set} {P : X → Set} → ¬ (∀ x → P x) → ∃[ x ] (¬ P x))
                  → (∀ {P : Set} → P ⊎ ¬ P)
 ¬∀-implies-∃¬→em f {P} = proj₁ (f {P ⊎ ¬ P} {λ x → ⊥} em-irrefutable)</code></pre>
@@ -301,13 +300,13 @@ href="https://plfa.github.io/Quantifiers/#exercise--implies--recommended"
 class="uri">https://plfa.github.io/Quantifiers/#exercise--implies--recommended</a><a
 href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
-</section>
+</aside>
 
   </article>
 
   <div id="content-comment">
     
-      <script type="text/javascript" src="/res/script/giscus.min.48297e6d9ad98018d4602f441f423964aa55b45d7a29992f53eaf5ece0fa3e89.js"></script>
+      <script type="text/javascript" src="/res/script/giscus.min.9cadd4e022885425c942d9f1ecb984e2e72dd0aedd1e0cf0dfc75773e301dcaa.js"></script>
       <script>
         createGiscus({
           "repo":               "huangjunwen\/huangjunwen.github.io",

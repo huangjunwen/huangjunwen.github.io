@@ -32,7 +32,7 @@ NOTE: 使用异或作为距离有一些数学属性, 见下面详述, 这里先�
 Greenlet 就是 cpython 上的一种轻量级线程（协程）的实现，因为 cpython 是用 c 实现的，所以这就要求 Greenlet 的实现要跟 c 那一套保持一致，要让协程里运行的代码感觉自己跑在一个真正的 c 堆栈上
 Greenlet 的做法是这样的：当一个 greenlet 运行时，它的堆栈区间数据将会完整地恢复放在 c 堆栈上，让它“原生态”地执行；若它被挂起，则有可能其部分或全部堆栈区间的数据会被拷贝到堆上保存；这是因为所有同一个线程的 greenlets 共享同一个 c 堆栈的地址空间，它们的堆栈区间会有可能有交集重叠
 我们主要关注 PyGreenlet 的这几个字段来讨论实现原理：
- stack_stop: 该 greenlet 堆栈区间 底 部地址（旧数据方向） stack_start: 该 greenlet 堆栈区间 顶 部地址（新数据方向） stack_prev: greenlet 链表 指针，见下节说明 stack_copy: 该 greenlet 堆栈区间在堆上的拷贝 stack_saved: 该 greenlet 堆栈区间在堆上的拷贝的长度  greenlet 链表 如前所叙述，只有当前运行的 greenlet 是保证其堆栈区间完整地置于 c 堆栈上，其它挂起的 greenlets 的堆栈区间数据则是有可能部分或全部地拷贝到了堆上保存；
+stack_stop: 该 greenlet 堆栈区间 底 部地址（旧数据方向） stack_start: 该 greenlet 堆栈区间 顶 部地址（新数据方向） stack_prev: greenlet 链表 指针，见下节说明 stack_copy: 该 greenlet 堆栈区间在堆上的拷贝 stack_saved: 该 greenlet 堆栈区间在堆上的拷贝的长度 greenlet 链表 如前所叙述，只有当前运行的 greenlet 是保证其堆栈区间完整地置于 c 堆栈上，其它挂起的 greenlets 的堆栈区间数据则是有可能部分或全部地拷贝到了堆上保存；
 那么任意时刻，c 堆栈就会由多个 greenlets 的部分或全部堆栈区间组成（这些区间有可能是紧贴着的，也可能中间有空隙，但必定不能重叠），Greenlet 库维护一个 greenlet 链表来表达 c 堆栈上这些区间的前后关系，该链表就是由 stack_prev 串联而成的，例如</description>
     </item>
     
@@ -64,7 +64,7 @@ Vault 的数据是加密储存在磁盘上的：由 encryption key 加密，这�
 解密 由私钥所有者计算
 \[ \begin{align} c^d \pmod{n} &amp;amp;= (m^e \pmod{n})^d \pmod{n} \\ &amp;amp;= (m^e)^d \pmod{n} \\ &amp;amp;= m \pmod{n} \end{align} \]
 就能还原原来的信息了（乘积与其余数乘积同余，见同余命题 a）
-签名 首先对要签名的信息作一个 message digest，常用的如 MD5 和 SHA 系列； 然后把这个 digest 转换成整数 \(m\) 使得 \(1 \le m \lt n\)； 最后用私钥 \((n,d)\) 计算 \(s = m^d \pmod{n}\)  验签 用公钥 \((n,e)\) 计算 \(v = s^e \pmod{n}\) 把 \(v\) 转换回 digest 独立对要签名的信息再作一次 digest 对比这两个 digest，如果相同的话，那这个签名就是有效的  Note 可以看到加解密和签名验签刚好是两个方向：前者是公钥加密发送给所有者解密，后者是用私钥签名发送给其他人用公钥验签；所以这就是为何一般不建议使用相同的 key 同时用作加密和签名：</description>
+签名 首先对要签名的信息作一个 message digest，常用的如 MD5 和 SHA 系列； 然后把这个 digest 转换成整数 \(m\) 使得 \(1 \le m \lt n\)； 最后用私钥 \((n,d)\) 计算 \(s = m^d \pmod{n}\) 验签 用公钥 \((n,e)\) 计算 \(v = s^e \pmod{n}\) 把 \(v\) 转换回 digest 独立对要签名的信息再作一次 digest 对比这两个 digest，如果相同的话，那这个签名就是有效的 Note 可以看到加解密和签名验签刚好是两个方向：前者是公钥加密发送给所有者解密，后者是用私钥签名发送给其他人用公钥验签；所以这就是为何一般不建议使用相同的 key 同时用作加密和签名：</description>
     </item>
     
   </channel>

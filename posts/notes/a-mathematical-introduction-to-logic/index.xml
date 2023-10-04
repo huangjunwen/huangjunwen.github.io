@@ -13,11 +13,11 @@
       <pubDate>Sat, 13 May 2023 00:39:20 +0000</pubDate>
       
       <guid>https://huangjunwen.github.io/posts/notes/a-mathematical-introduction-to-logic/chap-1-7/</guid>
-      <description>Compactness  satisfiable  如果有一赋值（truth assignment）满足一个合式公式集合 \(\Sigma\) 中的每一个，则称 \(\Sigma\) 是可满足的（satisfiable）   例如 \(\Sigma = \{A_1, A_2 \rightarrow A_1 \}\)，由于赋值 \(v = \langle A_1 = T, A_2 = T \rangle\) 可满足 \(\Sigma\) 中的两个式子 （即在此赋值下两个式子都得值 \(T\)），故 \(\Sigma\) 可满足
+      <description>Compactness satisfiable 如果有一赋值（truth assignment）满足一个合式公式集合 \(\Sigma\) 中的每一个，则称 \(\Sigma\) 是可满足的（satisfiable） 例如 \(\Sigma = \{A_1, A_2 \rightarrow A_1 \}\)，由于赋值 \(v = \langle A_1 = T, A_2 = T \rangle\) 可满足 \(\Sigma\) 中的两个式子 （即在此赋值下两个式子都得值 \(T\)），故 \(\Sigma\) 可满足
 又例如 \(\Sigma = \{A_1, \neg A_1 \}\)，没有一个赋值可以同时满足 \(\Sigma\) 中的两个式子，故 \(\Sigma\) 不可满足
 Compactness Theorem 以下是这一节的主要定理
- 一个合式公式集合是可满足的，当且仅当其每一个有限子集都是可满足的
- 首先这里临时定义：如果一个合式公式集合 \(\Sigma\) 的每一个有限子集都可满足的话，称 \(\Sigma\) 为有限可满足（finitely satisfiable）； 所以 Compactness Theorem 表述的就是 有限可满足 跟 可满足 其实是等价的
+一个合式公式集合是可满足的，当且仅当其每一个有限子集都是可满足的
+首先这里临时定义：如果一个合式公式集合 \(\Sigma\) 的每一个有限子集都可满足的话，称 \(\Sigma\) 为有限可满足（finitely satisfiable）； 所以 Compactness Theorem 表述的就是 有限可满足 跟 可满足 其实是等价的
 注意：
 如果 \(\Sigma\) 是 可满足 的话，则其自动就是 有限可满足 的 （因为如果有一个赋值能满足集合中的每一个式子，自然也能满足其任意子集中的每一个式子）</description>
     </item>

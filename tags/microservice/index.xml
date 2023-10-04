@@ -16,8 +16,8 @@
       <description>这帖子有意思 JSON Web token vs. Session
 “单纯”的 JWT，其实跟 client side session 没啥区别，它的优缺点都一样：
 Pros：
- 服务端不需要储存 session 数据 stateless 因为不用访问任何储存服务，验证过程超快速 易于 scale up  Cons:
- session 很难被主动清除（除非过期） 所有信息都暴露在外（或者有暴露的危险）  最终我觉得一个比较好的办法是结合这两者：对外使用 session，提供一个 opaque 的 token (reference token) 作为 session id，在网关中做翻译过程，将这个 reference token 转换成真实的 jwt，然后在网关内的服务就都使用 jwt。
+服务端不需要储存 session 数据 stateless 因为不用访问任何储存服务，验证过程超快速 易于 scale up Cons:
+session 很难被主动清除（除非过期） 所有信息都暴露在外（或者有暴露的危险） 最终我觉得一个比较好的办法是结合这两者：对外使用 session，提供一个 opaque 的 token (reference token) 作为 session id，在网关中做翻译过程，将这个 reference token 转换成真实的 jwt，然后在网关内的服务就都使用 jwt。
 见 muCon 2016: Authentication in Microservice Systems By David Borsos</description>
     </item>
     
