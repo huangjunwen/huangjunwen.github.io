@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>product 的 product</title>
+    
+    <link rel="stylesheet" href="/res/libs/fontawesome/css/all.min.css"></link>
+    <link rel="stylesheet" href="/res/libs/chota/css/chota.min.css"></link>
+
+    <link rel="stylesheet" href="/res/style/site-gruvbox-soft.min.37b77c57810deb7939641a4f43faae01cac538b7162f44570e912835c9f6b11c.css"></link>
+    <script type="text/javascript" src="/res/script/site.min.a65b2836eec5187e9e88be5dae41f6f388a8c97455a87c31ff2e118d8b3bcd81.js"></script>
+
+    <link id="markdown-body-style" rel="stylesheet" href="/res/style/markdown-body-gruvbox-soft.min.5a7178d1ccb635392ad5eb7f18d9e2157d6af5697efa4e718d5ece464a91e571.css"></link>
+    <script type="text/javascript" src="/res/script/markdown-body.min.35e011193a484812039d96b17af075e907d451e72d29301c94e49f045c43c19d.js"></script>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+
+
+  </head>
+
+  <body>
+    
+    <div id="header">
+      
+      <nav id="navbar" class="row">
+        <div class="is-left col-12 col-3-md row">
+          <a id="navbar-brand" class="brand" href="/">Coder Papa</a>
+          <label id="navbar-toggle-menu" for="navbar-toggle-menu-state" class="hide-md hide-lg">
+            <span></span>
+            <span></span>
+            <span></span>
+          </label>
+        </div>
+        <input id="navbar-toggle-menu-state" type="checkbox" style="display:none"></input>
+        <div id="navbar-menu" class="is-right col-12 col-9-md row hide-xs-noimportant hide-sm-noimportant">
+          
+          <a href="/posts">Posts</a>
+          
+          
+          <a href="/categories">Categories</a>
+          
+          <a href="/tags">Tags</a>
+          
+          
+          <a href="https://github.com/huangjunwen"><i class='fab fa-github'></i></a>
+          
+          <a href="javascript:void(0)" id="navbar-toggle-mode" onclick="return toggleColorMode()"></a>
+        </div>
+      </nav>
+    </div>
+
+    
+    <div id="main" class="row">
+      <div id="main-left" class="hide-xs hide-sm col-2-md col-3-lg">
+        
+      </div>
+      <div id="main-center" class="col-12 col-8-md col-6-lg mdb">
+        <div id="main-title" class="text-center">
+          
+  <h5 class="no-toc"><span class="breadcrumbnav"><span><a href="/posts/">POSTS</a></span><i class="fa fa-fw fa-angle-double-right"></i><span><a href="/posts/2023/">2023</a></span></span></h5>
+  <h1>product 的 product</h1>
+  <small>
+    <time class="" datetime="2023-12-25T23:23:00Z">Mon, 2023/12/25</time>
+  </small>
+  <p>
+    
+    
+    <a href="/categories/category-theory/"><span class="tag is-small text-primary bd-primary">category-theory</span></a>
+  </p>
+  
+        </div>
+        <div id="main-body">
+          
+  <article id="content-body">
+    <p>看到 product 的定义时想稍稍证明一下 product 的 product
+会有什么样的性质</p>
+<blockquote>
+<p>假设</p>
+<ol type="1">
+<li>\(\langle P_1, \pi_{A_1}, \pi_B \rangle\) 是 \(A\) 和 \(B\) 的
+product</li>
+<li>\(\langle P_2, \pi_{A_2}, \pi_C \rangle\) 是 \(A\) 和 \(C\) 的
+product</li>
+<li>\(\langle P, \pi_1, \pi_2 \rangle\) 是 \(P_1\) 和 \(P_2\) 的
+product（e.g. product 的 product）</li>
+<li>\(\langle Q, \pi_B', \pi_C' \rangle\) 是 \(B\) 和 \(C\) 的 product，
+\(f: P \rightarrow Q\) 是那个唯一使得 \(\pi_B' \cdot f = \pi_B \cdot
+\pi_1\) 以及 \(\pi_C' \cdot f = \pi_C \cdot \pi_2\) 的 mapping</li>
+<li>\(h_1 = \pi_{A_1} \cdot \pi_1\) 以及 \(h_2 = \pi_{A_2} \cdot
+\pi_2\)</li>
+</ol>
+</blockquote>
+<p>如图 <img src="./problem.svg" /></p>
+<blockquote>
+<p>问题：\(\langle P, h_1, f \rangle\) （或者 \(\langle P, h_2, f
+\rangle\)）会是 \(A\) 和 \(Q\) 的 product 吗？</p>
+</blockquote>
+<div class="proof">
+<div class="proof-label">
+Proof
+</div>
+<div class="proof-content">
+<p>假设 \(u_A: X \rightarrow A\) 以及 \(u_Q: X \rightarrow Q\)</p>
+<p>由于 assum 1，存在 <strong>唯一</strong> \(g_1: X \rightarrow P_1\)
+使得 \(\pi_B \cdot g_1 = \pi_B' \cdot u_Q\) 以及 \(\pi_{A_1} \cdot g_1 =
+u_A\) (4)</p>
+<p>由于 assum 2，存在 <strong>唯一</strong> \(g_2: X \rightarrow P_2\)
+使得 \(\pi_C \cdot g_2 = \pi_C' \cdot u_Q\) 以及 \(\pi_{A_2} \cdot g_2 =
+u_A\) (5)</p>
+<p>确立了 \(g_1\) 和 \(g_2\)，由 assum 3，存在 <strong>唯一</strong>
+\(g: X \rightarrow P\) 使得 \(\pi_1 \cdot g = g_1\) 以及 \(\pi_2 \cdot g
+= g_2\) (6)</p>
+<p><img src="./diagram1.svg" /></p>
+<p>于是有</p>
+<p>\[
+\begin{align}
+\pi_B' \cdot (f \cdot g) &amp; = (\pi_B' \cdot f) \cdot g     &amp;
+assoc \\
+                         &amp; = (\pi_B \cdot \pi_1) \cdot g  &amp;
+assum \; 4 \\
+                         &amp; = \pi_B \cdot (\pi_1 \cdot g)  &amp;
+assoc \\
+                         &amp; = \pi_B \cdot g_1              &amp; (6)
+\\
+                         &amp; = \pi_B' \cdot u_Q             &amp; (4)
+\\
+\end{align}
+\]</p>
+<p>类似地</p>
+<p>\[
+\begin{align}
+\pi_C' \cdot (f \cdot g) &amp; = (\pi_C' \cdot f) \cdot g     &amp;
+assoc \\
+                         &amp; = (\pi_C \cdot \pi_2) \cdot g  &amp;
+assum \; 4 \\
+                         &amp; = \pi_C \cdot (\pi_2 \cdot g)  &amp;
+assoc \\
+                         &amp; = \pi_C \cdot g_2              &amp; (6)
+\\
+                         &amp; = \pi_C' \cdot u_Q             &amp; (5)
+\\
+\end{align}
+\]</p>
+<p><img src="./diagram2.svg" /></p>
+<p>简化关系得上图，注意到由 product 特性，存在 <strong>唯一</strong>
+\(v: X \rightarrow Q\) 使得 \(\pi_B' \cdot v = \pi_B' \cdot u_Q\) 以及
+\(\pi_C' \cdot v = \pi_C' \cdot u_Q\)， 而 \(f \cdot g\) 和 \(u_Q\)
+都满足，故</p>
+<p>\[f \cdot g = u_Q\]</p>
+<p>另一方面则很简单</p>
+<p>\[
+\begin{align}
+h_1 \cdot g &amp; = (\pi_{A_1} \cdot \pi_1) \cdot g     &amp; assum \; 5
+\\
+            &amp; = \pi_{A_1} \cdot (\pi_1 \cdot g)     &amp; assoc \\
+            &amp; = \pi_{A_1} \cdot g_1                 &amp; (6) \\
+            &amp; = u_A                                 &amp; (4) \\
+\end{align}
+\]</p>
+<p>而 \(g\) 是在确定了 \(u_A\) 和 \(u_Q\) 之后就唯一确定的，故 \(\langle
+P, h_1, f \rangle\) 是 \(A\) 和 \(Q\) 的 product</p>
+</div>
+</div>
+<p><strong>这跟直觉是一致的，如果 \(P\) 是 \((A \times B) \times (A
+\times C)\)，那自然也“包含”了 \(A, B, C\) 的信息， 自然也是 \(A \times
+(B \times C)\)</strong></p>
+<hr />
+<p>不过，其实我最初是想证明下面这个的</p>
+<p><img src="./problemx.svg" /></p>
+<p>即</p>
+<blockquote>
+<p>\(P\) 同时是 \(P_1\) 和 \(P_2\)</p>
+</blockquote>
+<p>而非</p>
+<blockquote>
+<p>\(P\) 是 \(P_1\) 和 \(P_2\) 的 product</p>
+</blockquote>
+<p>但似乎还是缺一些箭头</p>
+
+  </article>
+
+  <div id="content-comment">
+    
+      <script type="text/javascript" src="/res/script/giscus.min.9cadd4e022885425c942d9f1ecb984e2e72dd0aedd1e0cf0dfc75773e301dcaa.js"></script>
+      <script>
+        createGiscus({
+          "repo":               "huangjunwen\/huangjunwen.github.io",
+          "repoId":             "MDEwOlJlcG9zaXRvcnk3Njg1MDM5OQ==",
+          "category":           "Announcements",
+          "categoryId":         "DIC_kwDOBJSk384CXDLR",
+          "mapping":            "pathname",
+          "strict":             "0",
+          "reactionsEnabled":   "1",
+          "inputPosition":      "top",
+          "lightTheme":         "https:\/\/huangjunwen.github.io\/res\/style\/giscus-light-gruvbox-soft.min.f7a2061b6bd090f275d7d33c31f03a76acd5cb69ad2bf6ad0b1089fc80e2cb4e.css",
+          "darkTheme":          "https:\/\/huangjunwen.github.io\/res\/style\/giscus-dark-gruvbox-soft.min.ca9fff96b0a35ad373d69275fad63708399bbc5c733891675010df782733e809.css",
+          "containerId":        "content-comment"
+        });
+      </script>
+    
+  </div>
+
+
+        </div>
+      </div>
+      <div id="main-right" class="hide-xs hide-sm col-2-md col-3-lg">
+        
+  
+  <div id="content-toc" class="toc hide-md"></div>
+  
+
+      </div>
+    </div>
+
+    
+    <div id="footer" class="text-center">
+      <p>
+        Powered By <a href="https://gohugo.io/">Hugo</a>/<a href="https://jenil.github.io/chota">Chota</a>,
+        Generated Using <a href="https://github.com/huangjunwen/mdtool">MDTool</a>
+      </p>
+      <p>&copy; 2023. All rights reserved</p>
+    </div>
+
+    
+  
+    <link rel="stylesheet" href="/res/libs/tocbot/css/tocbot.css"></link>
+    <style>
+    #content-toc {
+      position: -webkit-sticky;
+      position: sticky;
+      top: 7rem;
+      padding-left: 2rem;
+      padding-right: 1rem;
+    }
+
+    #content-toc a.toc-link {
+      color: var(--font-color);
+    }
+
+    #content-toc a.toc-link.is-active-link {
+      color: var(--color-darkGrey);
+    }
+
+    #content-toc a.toc-link::before {
+      background-color: var(--bg-color);
+    }
+
+    #content-toc a.toc-link.is-active-link::before {
+      background-color: var(--color-primary);
+    }
+    </style>
+    <script src="/res/libs/tocbot/js/tocbot.min.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', (ev) => {
+      tocbot.init({
+        tocSelector: '#content-toc',
+        contentSelector: '#main-center',
+        ignoreSelector: '.no-toc',
+        headingSelector: 'h1, h2, h3, h4, h5, h6',
+        hasInnerContainers: false,
+        headingsOffset: 80,
+        scrollSmoothOffset: -80
+      });
+    });
+    </script>
+  
+  
+    <script type="text/javascript" src="/res/libs/anchorjs/js/anchor.min.js"></script>
+    <script>anchors.add('#main-body h1, #main-body h2, #main-body h3, #main-body h4, #main-body h5, #main-body h6, #main-body dt');</script>
+  
+
+  </body>
+</html>

@@ -6,7 +6,19 @@
     <description>Recent content in type-theory on Coder Papa</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Thu, 05 May 2022 08:08:04 +0000</lastBuildDate><atom:link href="https://huangjunwen.github.io/categories/type-theory/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 29 Oct 2023 11:54:06 +0000</lastBuildDate><atom:link href="https://huangjunwen.github.io/categories/type-theory/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Introduction to Type Theory 笔记</title>
+      <link>https://huangjunwen.github.io/posts/notes/intro-tt/</link>
+      <pubDate>Sun, 29 Oct 2023 11:54:06 +0000</pubDate>
+      
+      <guid>https://huangjunwen.github.io/posts/notes/intro-tt/</guid>
+      <description>标题： Introduction to Type Theory
+作者：Herman Geuvers
+Radboud University Nijmegen &amp;amp; Technical University Eindhoven, The Netherlands
+July 8, 2008</description>
+    </item>
+    
     <item>
       <title>Intuitionistic Logic</title>
       <link>https://huangjunwen.github.io/posts/2022/intuitionistic-logic/</link>

@@ -6,11 +6,20 @@
     <description>Recent content in Categories on Coder Papa</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Thu, 05 May 2022 08:08:04 +0000</lastBuildDate><atom:link href="https://huangjunwen.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 25 Dec 2023 23:23:00 +0000</lastBuildDate><atom:link href="https://huangjunwen.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>category-theory</title>
+      <link>https://huangjunwen.github.io/categories/category-theory/</link>
+      <pubDate>Mon, 25 Dec 2023 23:23:00 +0000</pubDate>
+      
+      <guid>https://huangjunwen.github.io/categories/category-theory/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>type-theory</title>
       <link>https://huangjunwen.github.io/categories/type-theory/</link>
-      <pubDate>Thu, 05 May 2022 08:08:04 +0000</pubDate>
+      <pubDate>Sun, 29 Oct 2023 11:54:06 +0000</pubDate>
       
       <guid>https://huangjunwen.github.io/categories/type-theory/</guid>
       <description></description>
