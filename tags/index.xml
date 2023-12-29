@@ -6,7 +6,25 @@
     <description>Recent content in Tags on Coder Papa</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sun, 16 Apr 2023 01:40:48 +0000</lastBuildDate><atom:link href="https://huangjunwen.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 25 Dec 2023 23:23:00 +0000</lastBuildDate><atom:link href="https://huangjunwen.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>category-theory</title>
+      <link>https://huangjunwen.github.io/tags/category-theory/</link>
+      <pubDate>Mon, 25 Dec 2023 23:23:00 +0000</pubDate>
+      
+      <guid>https://huangjunwen.github.io/tags/category-theory/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>type-theory</title>
+      <link>https://huangjunwen.github.io/tags/type-theory/</link>
+      <pubDate>Sun, 29 Oct 2023 11:54:06 +0000</pubDate>
+      
+      <guid>https://huangjunwen.github.io/tags/type-theory/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>logic</title>
       <link>https://huangjunwen.github.io/tags/logic/</link>
@@ -17,20 +35,20 @@
     </item>
     
     <item>
-      <title>jl</title>
-      <link>https://huangjunwen.github.io/tags/jl/</link>
-      <pubDate>Sat, 27 Aug 2022 10:14:17 +0000</pubDate>
-      
-      <guid>https://huangjunwen.github.io/tags/jl/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>jupyter</title>
       <link>https://huangjunwen.github.io/tags/jupyter/</link>
       <pubDate>Sat, 27 Aug 2022 10:14:17 +0000</pubDate>
       
       <guid>https://huangjunwen.github.io/tags/jupyter/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>jupyterlite</title>
+      <link>https://huangjunwen.github.io/tags/jupyterlite/</link>
+      <pubDate>Sat, 27 Aug 2022 10:14:17 +0000</pubDate>
+      
+      <guid>https://huangjunwen.github.io/tags/jupyterlite/</guid>
       <description></description>
     </item>
     

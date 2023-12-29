@@ -2,11 +2,11 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>type-theory on Coder Papa</title>
-    <link>https://huangjunwen.github.io/categories/type-theory/</link>
+    <link>https://huangjunwen.github.io/tags/type-theory/</link>
     <description>Recent content in type-theory on Coder Papa</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sun, 29 Oct 2023 11:54:06 +0000</lastBuildDate><atom:link href="https://huangjunwen.github.io/categories/type-theory/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 29 Oct 2023 11:54:06 +0000</lastBuildDate><atom:link href="https://huangjunwen.github.io/tags/type-theory/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Introduction to Type Theory 笔记</title>
       <link>https://huangjunwen.github.io/posts/notes/intro-tt/</link>
