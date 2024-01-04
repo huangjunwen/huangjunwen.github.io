@@ -341,5 +341,15 @@ https://www.digitalocean.com/community/tutorials/how-to-configure-port-knocking-
 #!/bin/bash PORT1=xxxx PORT2=xxxx PORT3=xxxx # reset firewall iptables -F iptables -X iptables -P INPUT ACCEPT iptables -P FORWARD ACCEPT iptables -P OUTPUT ACCEPT # create new chains used by port knocking iptables -N KNOCKING iptables -N GATE1 iptables -N GATE2 iptables -N GATE3 iptables -N PASSED # accept current connections (keep current SSH connections) iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT # accept local machine&amp;#39;s connection iptables -A INPUT -i lo -j ACCEPT # accept http/https or other exported services iptables -A INPUT -p tcp --dport 80 -j ACCEPT iptables -A INPUT -p tcp --dport 443 -j ACCEPT # now pass all other to the KNOCKING chain iptables -A INPUT -j KNOCKING # KNOCKING dispatch iptables -A KNOCKING -m recent --reap --rcheck --seconds 3600 --name AUTH3 -j PASSED iptables -A KNOCKING -m recent --reap --rcheck --seconds 10 --name AUTH2 -j GATE3 iptables -A KNOCKING -m recent --reap --rcheck --seconds 10 --name AUTH1 -j GATE2 iptables -A KNOCKING -j GATE1 iptables -A GATE1 -p tcp --dport $PORT1 -m recent --name AUTH1 --set -j DROP iptables -A GATE1 -j DROP iptables -A GATE2 -p tcp --dport $PORT1 -j DROP # allow $PORT1 duplication iptables -A GATE2 -m recent --name AUTH1 --remove iptables -A GATE2 -p tcp --dport $PORT2 -m recent --name AUTH2 --set -j DROP iptables -A GATE2 -j GATE1 iptables -A GATE3 -p tcp --dport $PORT2 -j DROP # allow $PORT2 duplication iptables -A GATE3 -m recent --name AUTH2 --remove iptables -A GATE3 -p tcp --dport $PORT3 -m recent --name AUTH3 --set -j DROP iptables -A GATE3 -j GATE1 iptables -A PASSED -p tcp --dport $PORT3 -j DROP # allow $PORT3 duplication iptables -A PASSED -p tcp --dport 22 -j ACCEPT iptables -A PASSED -j DROP 另外还有些修改，例如 AUTH3 的时候，允许用户有一个小时（3600秒）的时间可以随意连接 22 端口。</description>
     </item>
     
+    <item>
+      <title>Good Read</title>
+      <link>https://huangjunwen.github.io/posts/notes/good-read/</link>
+      <pubDate>Sat, 01 Jan 2000 00:00:00 +0000</pubDate>
+      
+      <guid>https://huangjunwen.github.io/posts/notes/good-read/</guid>
+      <description>一些好博客/书签
+Logic Matters: https://www.logicmatters.net/ Teach Yourself logic: https://www.logicmatters.net/tyl/ Book notes: https://www.logicmatters.net/tyl/booknotes/ Logical snippets: https://www.logicmatters.net/students/logical-snippets/ Bartosz Milewski’s Programming Cafe: https://bartoszmilewski.com/ https://bartoszmilewski.com/2015/03/13/function-types/ Machine Logic: https://lawrencecpaulson.github.io/ </description>
+    </item>
+    
   </channel>
 </rss>
