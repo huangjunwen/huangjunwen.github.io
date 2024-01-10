@@ -2,28 +2,28 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://huangjunwen.github.io/</loc>
-    <lastmod>2023-12-30T00:58:39+00:00</lastmod>
-  </url><url>
-    <loc>https://huangjunwen.github.io/posts/</loc>
-    <lastmod>2023-12-30T00:58:39+00:00</lastmod>
-  </url><url>
-    <loc>https://huangjunwen.github.io/posts/notes/misc/</loc>
-    <lastmod>2023-12-30T00:58:39+00:00</lastmod>
-  </url><url>
     <loc>https://huangjunwen.github.io/categories/</loc>
-    <lastmod>2023-12-25T23:23:00+00:00</lastmod>
+    <lastmod>2024-01-10T00:13:30+00:00</lastmod>
+  </url><url>
+    <loc>https://huangjunwen.github.io/posts/notes/notes-on-category-theory/</loc>
+    <lastmod>2024-01-10T00:13:30+00:00</lastmod>
   </url><url>
     <loc>https://huangjunwen.github.io/tags/category-theory/</loc>
-    <lastmod>2023-12-25T23:23:00+00:00</lastmod>
+    <lastmod>2024-01-10T00:13:30+00:00</lastmod>
   </url><url>
-    <loc>https://huangjunwen.github.io/posts/notes/misc/product-product/</loc>
-    <lastmod>2023-12-25T23:23:00+00:00</lastmod>
+    <loc>https://huangjunwen.github.io/</loc>
+    <lastmod>2024-01-10T00:13:30+00:00</lastmod>
+  </url><url>
+    <loc>https://huangjunwen.github.io/posts/</loc>
+    <lastmod>2024-01-10T00:13:30+00:00</lastmod>
   </url><url>
     <loc>https://huangjunwen.github.io/tags/</loc>
-    <lastmod>2023-12-25T23:23:00+00:00</lastmod>
+    <lastmod>2024-01-10T00:13:30+00:00</lastmod>
   </url><url>
     <loc>https://huangjunwen.github.io/categories/%E5%AD%A6%E7%82%B9%E7%90%86%E8%AE%BA/</loc>
+    <lastmod>2024-01-10T00:13:30+00:00</lastmod>
+  </url><url>
+    <loc>https://huangjunwen.github.io/posts/notes/notes-on-category-theory/product-product/</loc>
     <lastmod>2023-12-25T23:23:00+00:00</lastmod>
   </url><url>
     <loc>https://huangjunwen.github.io/posts/notes/intro-tt/4/</loc>
