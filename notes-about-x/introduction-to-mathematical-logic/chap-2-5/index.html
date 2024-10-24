@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="dcterms.date" content="2022-04-01" />
+  <title>Chapter 2: First-Order Logic and Model Theory (2.5)</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <link href="/assets/latex.css/style.min.css" rel="stylesheet" />
+  <style>
+  /* fixes for latex.css */
+  .date {
+    text-align: center;
+  }
+
+  div.sourceCode {
+    background: var(--pre-bg-color);
+    border-radius: 10px;
+  }
+
+  dl dd {
+    text-align: left;
+  }
+
+  #footnotes {
+    margin-top: 1em;
+  }
+
+  #footnotes hr:first-child {
+    display: none;
+  }
+  </style>
+  <script src="/assets/mathjax/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<style>
+/* sidebar */
+#sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  max-width: 400px;
+  width: 80%;
+  height: 100%;
+  padding: 2rem;
+  background-color: #eee;
+  box-shadow: 0 10px 20px -4px #000;
+  overflow-x: hidden;
+  overflow-y: auto;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-100%);
+  transition: opacity 0.3s ease, visibility 0.2s ease, transform 0.3s ease;
+}
+#sidebar.show {
+  pointer-events: all;
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+}
+#sidebar_toggler {
+  position: fixed;
+  top: 4vh;
+  right: 3vw;
+  z-index: 1000;
+  width: 2.8rem;
+  height: 2.4rem;
+  padding: 0.5rem;
+  border: solid #999 0.1rem;
+  border-radius: 0.4rem;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+#sidebar_toggler span {
+  background-color: #999;
+  width: 100%;
+  height: 0.2rem;
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+nav span {
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 90%;
+}
+nav li:before {
+  content: '';
+}
+nav .caret {
+  cursor: pointer;
+  user-select: none; /* Prevent text selection */
+}
+nav .caret::before {
+  content: "\25B6";
+  color: black;
+  display: inline-block;
+  margin-right: 6px;
+}
+nav .caret-down::before {
+  transform: rotate(90deg);
+}
+nav .collapse {
+  display: none;
+}
+</style>
+<aside id="sidebar">
+  <div class="sidebar_content sidebar_head">
+    <h1>Content</h1>
+  </div>
+  <div class="sidebar_content sidebar_body">
+    <nav id="side_navlinks" class="side_navlinks">
+      <!--<ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Services</a></li>
+        <li><a href="#">Portfolio</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>-->
+    </nav>
+  </div>
+</aside>
+<div id="sidebar_toggler">
+  <span></span>
+  <span></span>
+  <span></span>
+</div>
+<script>
+/* setup sidebar */
+// https://www.cssscript.com/demo/responsive-sidebar-nav-hamburger/
+const sidebar = document.querySelector('#sidebar')
+const sidebarToggler = document.querySelector('#sidebar_toggler')
+
+sidebarToggler.addEventListener('click', () => {
+  sidebar.classList.toggle('show')
+});
+
+const keywords = document.querySelector('meta[name="keywords"]')
+if (keywords && keywords.content.includes('showSidebar')) {
+  sidebar.classList.add('show')
+}
+
+/*
+window.addEventListener('click', (e) => {
+  if (e.target.id !== 'sidebar' && e.target.id !== 'sidebar_toggler') {
+    sidebar.classList.remove('show');
+  }
+});
+*/
+
+/* load urls */
+// https://www.w3schools.com/howto/howto_js_treeview.asp
+const currentPath = window.location.pathname
+const sideNavLinks = document.querySelector('#side_navlinks');
+function buildSideLink(li, node) {
+  // span contains the text and link (if provided)
+  const span = li.appendChild(document.createElement("span"))
+  if (node.url) {
+    const a = span.appendChild(document.createElement("a"))
+    a.href = node.url
+    a.textContent = node.text
+  } else {
+    span.textContent = node.text
+  }
+  span.setAttribute("title", node.text)
+
+  // if has children, then add caret and append a nested <ul> for children
+  if (node.children.length > 0) {
+    span.classList.add("caret")
+    const ul = li.appendChild(document.createElement("ul"))
+    ul.classList.add("nested")
+    // do not collapse current path
+    if (!currentPath.startsWith(node.path)) {
+      ul.classList.add("collapse")
+    } else {
+      span.classList.add("caret-down")
+    }
+    node.children.forEach((child) => {
+      const l = ul.appendChild(document.createElement("li"))
+      buildSideLink(l, child)
+    })
+  }
+}
+async function loadSideLinks() {
+  const resp = await fetch("/urls.json")
+  const data = await resp.json()
+  // console.log(data)
+  const root = sideNavLinks.appendChild(document.createElement("ul"))
+  data.children.forEach((child) => {
+    buildSideLink(root.appendChild(document.createElement("li")), child)
+  })
+
+  const toggler = root.getElementsByClassName("caret")
+  for (let i=0; i<toggler.length; i++) {
+    toggler[i].addEventListener("click", function () {
+      this.parentElement.querySelector(".nested").classList.toggle("collapse")
+      this.classList.toggle("caret-down")
+      return false
+    })
+  }
+}
+loadSideLinks()
+</script>
+<header id="title-block-header">
+<h1 class="title">Chapter 2: First-Order Logic and Model Theory
+(2.5)</h1>
+<p class="date">2022-04-01</p>
+</header>
+<h2 id="additional-metatheorems-and-derived-rules">2.5 Additional
+Metatheorems and Derived Rules</h2>
+<p>一些额外的能让证明更加顺畅的派生规则<a href="#fn1"
+class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<h3 id="particularization-rule-a4">2.5.1 Particularization Rule A4</h3>
+<blockquote>
+<p>如果 <span class="math inline">\(t\)</span> 能自由替换 <span
+class="math inline">\(B(x)\)</span> 中的 <span
+class="math inline">\(x\)</span>，则 <span
+class="math inline">\((\forall x)B(x) \vdash B(t)\)</span>，
+特别地，<span class="math inline">\((\forall x)B(x) \vdash
+B(x)\)</span></p>
+</blockquote>
+<div class="proof">
+<p>这个规则可以直接从公理 A4 获得</p>
+</div>
+<h3 id="existential-rule-e4">2.5.2 Existential Rule E4</h3>
+<blockquote>
+<p>如果 <span class="math inline">\(t\)</span> 能自由替换 <span
+class="math inline">\(B(x, t)\)</span> 中的 <span
+class="math inline">\(x\)</span>，令 <span class="math inline">\(B(t,
+t)\)</span> 为 <span class="math inline">\(B(x, t)\)</span> 中所有 <span
+class="math inline">\(x\)</span> 的自由所在替换为 <span
+class="math inline">\(t\)</span> 所得 （<span class="math inline">\(B(x,
+t)\)</span> 中有可能有或没有 <span class="math inline">\(t\)</span>
+的存在），则有 <span class="math inline">\(B(t, t) \vdash (\exists
+x)B(x, t)\)</span>， 特别地 <span class="math inline">\(B(t) \vdash
+(\exists x)B(x)\)</span>，以及 <span class="math inline">\(B(x) \vdash
+(\exists x)B(x)\)</span></p>
+</blockquote>
+<div class="proof">
+<ol type="1">
+<li><span class="math inline">\(\vdash (\forall x)\neg B(x, t)
+\Rightarrow \neg B(t, t)\)</span> 由于 <span
+class="math inline">\(t\)</span> 可以自由替换 <span
+class="math inline">\(B(x, t)\)</span> 中的的 <span
+class="math inline">\(x\)</span>，故 A4</li>
+<li><span class="math inline">\(\vdash ((\forall x)\neg B(x, t)
+\Rightarrow \neg B(t, t)) \Rightarrow (\neg \neg B(t, t) \Rightarrow
+\neg (\forall x)\neg B(x, t))\)</span> <a
+href="../chap-1-4/#lemma-1.11-e">Lemma 1.11#e</a></li>
+<li><span class="math inline">\(\neg \neg B(t, t) \Rightarrow \neg
+(\forall x)\neg B(x, t)\)</span> MP 上述两公式</li>
+<li><span class="math inline">\(B(t, t)\)</span> Hyp</li>
+<li><span class="math inline">\(B(t, t) \Rightarrow \neg \neg B(t,
+t)\)</span> <a href="../chap-1-4/#lemma-1.11-b">Lemma 1.11#b</a></li>
+<li><span class="math inline">\(\neg \neg B(t, t)\)</span> MP
+上述两公式</li>
+<li><span class="math inline">\(\neg (\forall x)\neg B(x, t)\)</span> MP
+3 和 6</li>
+</ol>
+</div>
+<h3 id="以下这些派生规则非常有用">以下这些派生规则非常有用</h3>
+<p><em>注：我将 negation 和 conditional
+的放到前面来，因为在这个体系里，其他联结词是由它俩定义的</em></p>
+<h4 id="negation-elimination">Negation elimination</h4>
+<blockquote>
+<p><span class="math inline">\(\neg \neg B \vdash B\)</span></p>
+</blockquote>
+<div class="proof">
+<p>可以由 <a href="../chap-1-4#lemma-1.11-a">Lemma 1.11#a</a> 得到</p>
+</div>
+<h4 id="negation-introduction">Negation introduction</h4>
+<blockquote>
+<p><span class="math inline">\(B \vdash \neg \neg B\)</span></p>
+</blockquote>
+<div class="proof">
+<p>可以由 <a href="../chap-1-4#lemma-1.11-b">Lemma 1.11#b</a> 得到</p>
+</div>
+<h4 id="conditional-elimination">Conditional elimination</h4>
+<blockquote>
+<p><span class="math inline">\(B \Rightarrow C, \neg C \vdash \neg
+B\)</span></p>
+</blockquote>
+<div class="proof">
+<ol type="1">
+<li><span class="math inline">\(B \Rightarrow C\)</span> Hyp</li>
+<li><span class="math inline">\((B \Rightarrow C) \Rightarrow (\neg C
+\Rightarrow \neg B)\)</span> <a href="../chap-1-4#lemma-1.11-e">Lemma
+1.11#e</a></li>
+<li><span class="math inline">\(\neg C \Rightarrow \neg B\)</span> MP
+上述两公式</li>
+<li><span class="math inline">\(\neg C\)</span> Hyp</li>
+<li><span class="math inline">\(\neg B\)</span> MP 上述两公式</li>
+</ol>
+</div>
+<blockquote>
+<p><span class="math inline">\(B \Rightarrow \neg C, C \vdash \neg
+B\)</span></p>
+</blockquote>
+<div class="proof">
+<ol type="1">
+<li><span class="math inline">\(B \Rightarrow \neg C\)</span> Hyp</li>
+<li><span class="math inline">\((B \Rightarrow \neg C) \Rightarrow (C
+\Rightarrow \neg B)\)</span> 重言式</li>
+<li><span class="math inline">\(C \Rightarrow \neg B\)</span> MP
+上述两公式</li>
+<li><span class="math inline">\(C\)</span> Hyp</li>
+<li><span class="math inline">\(\neg B\)</span> MP 上述两公式</li>
+</ol>
+</div>
+<blockquote>
+<p><span class="math inline">\(\neg B \Rightarrow C, \neg C \vdash
+B\)</span></p>
+</blockquote>
+<div class="proof">
+<ol type="1">
+<li><span class="math inline">\(\neg B \Rightarrow C\)</span> Hyp</li>
+<li><span class="math inline">\((\neg B \Rightarrow C) \Rightarrow (\neg
+C \Rightarrow \neg \neg B)\)</span> <a
+href="../chap-1-4#lemma-1.11-e">Lemma 1.11#e</a></li>
+<li><span class="math inline">\(\neg C \Rightarrow \neg \neg B\)</span>
+MP 上述两公式</li>
+<li><span class="math inline">\(\neg C\)</span> Hyp</li>
+<li><span class="math inline">\(B\)</span> MP 上述两公式然后 Negation
+elimination</li>
+</ol>
+</div>
+<blockquote>
+<p><span class="math inline">\(\neg B \Rightarrow \neg C, C \vdash
+B\)</span></p>
+</blockquote>
+<div class="proof">
+<ol type="1">
+<li><span class="math inline">\(\neg B \Rightarrow \neg C\)</span>
+Hyp</li>
+<li><span class="math inline">\((\neg B \Rightarrow \neg C) \Rightarrow
+(C \Rightarrow B)\)</span> <a href="../chap-1-4#lemma-1.11-d">Lemma
+1.11#d</a></li>
+<li><span class="math inline">\(C \Rightarrow B\)</span> MP
+上述两公式</li>
+<li><span class="math inline">\(C\)</span> Hyp</li>
+<li><span class="math inline">\(B\)</span> MP 上述两公式</li>
+</ol>
+</div>
+<blockquote>
+<p><span class="math inline">\(\neg (B \Rightarrow C) \vdash
+B\)</span></p>
+</blockquote>
+<div class="proof">
+<ol type="1">
+<li><span class="math inline">\(\neg B \Rightarrow (B \Rightarrow
+C)\)</span> <a href="../chap-1-4#lemma-1.11-c">Lemma 1.11#c</a></li>
+<li><span class="math inline">\((\neg B \Rightarrow (B \Rightarrow C))
+\Rightarrow (\neg (B \Rightarrow C) \Rightarrow \neg \neg B)\)</span> <a
+href="../chap-1-4#lemma-1.11-e">Lemma 1.11#e</a></li>
+<li><span class="math inline">\(\neg (B \Rightarrow C) \Rightarrow \neg
+\neg B\)</span> MP 上述两公式</li>
+<li><span class="math inline">\(\neg (B \Rightarrow C)\)</span> Hyp</li>
+<li><span class="math inline">\(B\)</span> MP 上述两公式然后 Negation
+elimination</li>
+</ol>
+</div>
+<blockquote>
+<p><span class="math inline">\(\neg (B \Rightarrow C) \vdash \neg
+C\)</span></p>
+</blockquote>
+<div class="proof">
+<ol type="1">
+<li><span class="math inline">\(C \Rightarrow (B \Rightarrow C)\)</span>
+A1</li>
+<li><span class="math inline">\((C \Rightarrow (B \Rightarrow C))
+\Rightarrow (\neg (B \Rightarrow C) \Rightarrow \neg C)\)</span> <a
+href="../chap-1-4#lemma-1.11-e">Lemma 1.11#e</a></li>
+<li><span class="math inline">\(\neg (B \Rightarrow C) \Rightarrow \neg
+C\)</span> MP 上述两公式</li>
+<li><span class="math inline">\(\neg (B \Rightarrow C)\)</span> Hyp</li>
+<li><span class="math inline">\(\neg C\)</span> MP 上述两公式</li>
+</ol>
+</div>
+<h4 id="conditional-introduction">Conditional introduction</h4>
+<blockquote>
+<p><span class="math inline">\(B, \neg C \vdash \neg (B \Rightarrow
+C)\)</span></p>
+</blockquote>
+<div class="proof">
+<p>可以由 <a href="../chap-1-4#lemma-1.11-f">Lemma 1.11#f</a> 得到</p>
+</div>
+<h4 id="conditional-contrapositive">Conditional contrapositive</h4>
+<blockquote>
+<p><span class="math inline">\(B \Rightarrow C \vdash \neg C \Rightarrow
+\neg B\)</span></p>
+</blockquote>
+<div class="proof">
+<p>可以由 <a href="../chap-1-4#lemma-1.11-e">Lemma 1.11#e</a> 得到</p>
+</div>
+<blockquote>
+<p><span class="math inline">\(\neg C \Rightarrow \neg B \vdash B
+\Rightarrow C\)</span></p>
+</blockquote>
+<div class="proof">
+<p>可以由 <a href="../chap-1-4#lemma-1.11-d">Lemma 1.11#d</a> 得到</p>
+</div>
+<h4 id="conjunction-elimination">Conjunction elimination</h4>
+<blockquote>
+<p><span class="math inline">\(B \wedge C \vdash B\)</span></p>
+</blockquote>
+<div class="proof">
+<ol type="1">
+<li><span class="math inline">\(\neg B \Rightarrow (B \Rightarrow \neg
+C)\)</span> <a href="../chap-1-4#lemma-1.11-c">Lemma 1.11#c</a></li>
+<li><span class="math inline">\((\neg B \Rightarrow (B \Rightarrow \neg
+C)) \Rightarrow (\neg (B \Rightarrow \neg C) \Rightarrow \neg \neg
+B)\)</span> <a href="../chap-1-4#lemma-1.11-e">Lemma 1.11#e</a></li>
+<li><span class="math inline">\(\neg (B \Rightarrow \neg C) \Rightarrow
+\neg \neg B\)</span> MP 上述两公式</li>
+<li><span class="math inline">\(\neg (B \Rightarrow \neg C)\)</span>
+Hyp</li>
+<li><span class="math inline">\(B\)</span> MP 上述两公式然后 Negation
+elimination</li>
+</ol>
+</div>
+<blockquote>
+<p><span class="math inline">\(B \wedge C \vdash C\)</span></p>
+</blockquote>
+<div class="proof">
+<ol type="1">
+<li><span class="math inline">\(\neg C \Rightarrow (B \Rightarrow \neg
+C)\)</span> A1</li>
+<li><span class="math inline">\((\neg C \Rightarrow (B \Rightarrow \neg
+C)) \Rightarrow (\neg (B \Rightarrow \neg C) \Rightarrow \neg \neg
+C)\)</span> <a href="../chap-1-4#lemma-1.11-e">Lemma 1.11#e</a></li>
+<li><span class="math inline">\(\neg (B \Rightarrow \neg C) \Rightarrow
+\neg \neg C\)</span> MP 上述两公式</li>
+<li><span class="math inline">\(\neg (B \Rightarrow \neg C)\)</span>
+Hyp</li>
+<li><span class="math inline">\(C\)</span> MP 上述两公式然后 Negation
+elimination</li>
+</ol>
+</div>
+<blockquote>
+<p><span class="math inline">\(\neg (B \wedge C) \vdash \neg B \vee \neg
+C\)</span></p>
+</blockquote>
+<div class="proof">
+<p>先证明 <span class="math inline">\(\neg (B \wedge C), \neg \neg B
+\vdash \neg C\)</span></p>
+<ol type="1">
+<li><span class="math inline">\(\neg \neg (B \Rightarrow \neg
+C)\)</span> Hyp</li>
+<li><span class="math inline">\(B \Rightarrow \neg C\)</span> Negation
+elimination</li>
+<li><span class="math inline">\(B\)</span> Hyp 和 Negation
+elimination</li>
+<li><span class="math inline">\(\neg C\)</span> MP 上述两公式</li>
+<li><span class="math inline">\(\neg (B \wedge C) \vdash \neg \neg B
+\Rightarrow \neg C\)</span> 演绎定理，即 <span
+class="math inline">\(\neg B \vee \neg C\)</span></li>
+</ol>
+</div>
+<h4 id="conjunction-introduction">Conjunction introduction</h4>
+<blockquote>
+<p><span class="math inline">\(B, C \vdash B \wedge C\)</span></p>
+</blockquote>
+<div class="proof">
+<ol type="1">
+<li><span class="math inline">\(B \Rightarrow (\neg \neg C \Rightarrow
+\neg (B \Rightarrow \neg C))\)</span> <a
+href="../chap-1-4#lemma-1.11-f">Lemma 1.11#f</a></li>
+<li><span class="math inline">\(B\)</span> Hyp</li>
+<li><span class="math inline">\(\neg \neg C \Rightarrow \neg (B
+\Rightarrow \neg C)\)</span> MP 上述两公式</li>
+<li><span class="math inline">\(C\)</span> Hyp</li>
+<li><span class="math inline">\(\neg \neg C\)</span> Negation
+introduction</li>
+<li><span class="math inline">\(\neg (B \Rightarrow \neg C)\)</span> MP
+3 和 5</li>
+</ol>
+</div>
+<h4 id="conjunction-commutative额外">Conjunction
+commutative（额外）</h4>
+<blockquote>
+<p><span class="math inline">\(B \wedge C \vdash C \wedge B\)</span></p>
+</blockquote>
+<div class="proof">
+<ol type="1">
+<li><span class="math inline">\(B \wedge C\)</span> Hyp</li>
+<li><span class="math inline">\(B\)</span> Conjunction elimination
+1</li>
+<li><span class="math inline">\(C\)</span> Conjunction elimination
+1</li>
+<li><span class="math inline">\(C \wedge B\)</span> Conjunction
+introduction 3 和 2</li>
+</ol>
+</div>
+<h4 id="disjunction-elimination">Disjunction elimination</h4>
+<blockquote>
+<p><span class="math inline">\(B \vee C, \neg B \vdash C\)</span></p>
+</blockquote>
+<div class="proof">
+<ol type="1">
+<li><span class="math inline">\(\neg B \Rightarrow C\)</span> Hyp</li>
+<li><span class="math inline">\(\neg B\)</span> Hyp</li>
+<li><span class="math inline">\(C\)</span> MP 上述两个</li>
+</ol>
+</div>
+<blockquote>
+<p><span class="math inline">\(B \vee C, \neg C \vdash B\)</span></p>
+</blockquote>
+<div class="proof">
+<ol type="1">
+<li><span class="math inline">\(\neg B \Rightarrow C\)</span> Hyp</li>
+<li><span class="math inline">\((\neg B \Rightarrow C) \Rightarrow (\neg
+C \Rightarrow \neg \neg B)\)</span> <a
+href="../chap-1-4#lemma-1.11-e">Lemma 1.11#e</a></li>
+<li><span class="math inline">\(\neg C \Rightarrow \neg \neg B\)</span>
+MP 上述两公式</li>
+<li><span class="math inline">\(\neg C\)</span> Hyp</li>
+<li><span class="math inline">\(B\)</span> MP 上述两公式然后 Negation
+elimination</li>
+</ol>
+</div>
+<blockquote>
+<p><span class="math inline">\(\neg (B \vee C) \vdash \neg B \wedge \neg
+C\)</span></p>
+</blockquote>
+<div class="proof">
+<ol type="1">
+<li><span class="math inline">\(\neg (\neg B \Rightarrow C)\)</span>
+Hyp</li>
+<li><span class="math inline">\(\neg B\)</span> Conditional elimination
+1</li>
+<li><span class="math inline">\(\neg C\)</span> Conditional elimination
+1</li>
+<li><span class="math inline">\(\neg B \wedge \neg C\)</span>
+Conjunction introduction 上述两公式</li>
+</ol>
+</div>
+<blockquote>
+<p><span class="math inline">\(B \Rightarrow D, C \Rightarrow D, B \vee
+C \vdash D\)</span></p>
+</blockquote>
+<div class="proof">
+<ol type="1">
+<li><span class="math inline">\(\neg B \Rightarrow C\)</span> Hyp</li>
+<li><span class="math inline">\(C \Rightarrow D\)</span> Hyp</li>
+<li><span class="math inline">\(\neg B \Rightarrow D\)</span> <a
+href="../chap-1-4/#corollary-1.10-a">Corollary 1.10#a</a>
+上述两公式</li>
+<li><span class="math inline">\(B \Rightarrow D\)</span> Hyp</li>
+<li><span class="math inline">\((B \Rightarrow D) \Rightarrow ((\neg B
+\Rightarrow D) \Rightarrow D)\)</span> <a
+href="../chap-1-4#lemma-1.11-g">Lemma 1.11#g</a></li>
+<li><span class="math inline">\(D\)</span> MP 两次（3, 4, 5）</li>
+</ol>
+</div>
+<h4 id="disjunction-introduction">Disjunction introduction</h4>
+<blockquote>
+<p><span class="math inline">\(B \vdash B \vee C\)</span></p>
+</blockquote>
+<div class="proof">
+<ol type="1">
+<li><span class="math inline">\(B\)</span> Hyp</li>
+<li><span class="math inline">\(\neg \neg B\)</span> Negation
+introduction</li>
+<li><span class="math inline">\(\neg \neg B \Rightarrow (\neg B
+\Rightarrow C)\)</span> <a href="../chap-1-4#lemma-1.11-c">Lemma
+1.11#c</a></li>
+<li><span class="math inline">\(\neg B \Rightarrow C\)</span> MP
+上述两公式</li>
+</ol>
+</div>
+<blockquote>
+<p><span class="math inline">\(C \vdash B \vee C\)</span></p>
+</blockquote>
+<div class="proof">
+<ol type="1">
+<li><span class="math inline">\(C\)</span> Hyp</li>
+<li><span class="math inline">\(C \Rightarrow (\neg B \Rightarrow
+C)\)</span> A1</li>
+<li><span class="math inline">\(\neg B \Rightarrow C\)</span> MP
+上述两公式</li>
+</ol>
+</div>
+<h4 id="disjunction-commutative额外">Disjunction
+commutative（额外）</h4>
+<blockquote>
+<p><span class="math inline">\(B \vee C \vdash C \vee B\)</span></p>
+</blockquote>
+<div class="proof">
+<ol type="1">
+<li><span class="math inline">\(\neg B \Rightarrow C\)</span> Hyp</li>
+<li><span class="math inline">\((\neg B \Rightarrow C) \Rightarrow (\neg
+C \Rightarrow \neg \neg B)\)</span> <a
+href="../chap-1-4/#lemma-1.11-e">Lemma 1.11#e</a></li>
+<li><span class="math inline">\(\neg C \Rightarrow \neg \neg B\)</span>
+MP 上述两公式</li>
+<li><span class="math inline">\(\neg C \Rightarrow B\)</span> （因为
+<span class="math inline">\(\neg C \Rightarrow \neg \neg B, \neg C
+\vdash B\)</span>）</li>
+</ol>
+</div>
+<h4 id="biconditional-elimination">Biconditional elimination</h4>
+<blockquote>
+<p><span class="math inline">\(B \Leftrightarrow C, B \vdash
+C\)</span></p>
+</blockquote>
+<div class="proof">
+<ol type="1">
+<li><span class="math inline">\((B \Rightarrow C) \wedge (C \Rightarrow
+B)\)</span> Hyp</li>
+<li><span class="math inline">\(B \Rightarrow C\)</span> Conjunction
+elimination 1</li>
+<li><span class="math inline">\(B\)</span> Hyp</li>
+<li><span class="math inline">\(C\)</span> MP 上述两公式</li>
+</ol>
+</div>
+<blockquote>
+<p><span class="math inline">\(B \Leftrightarrow C, \neg B \vdash \neg
+C\)</span></p>
+</blockquote>
+<div class="proof">
+<ol type="1">
+<li><span class="math inline">\((B \Rightarrow C) \wedge (C \Rightarrow
+B)\)</span> Hyp</li>
+<li><span class="math inline">\(C \Rightarrow B\)</span> Conjunction
+elimination 1</li>
+<li><span class="math inline">\(\neg B\)</span> Hyp</li>
+<li><span class="math inline">\(\neg C\)</span> Conditional elimination
+2 3</li>
+</ol>
+</div>
+<blockquote>
+<p><span class="math inline">\(B \Leftrightarrow C, C \vdash
+B\)</span></p>
+</blockquote>
+<div class="proof">
+<ol type="1">
+<li><span class="math inline">\((B \Rightarrow C) \wedge (C \Rightarrow
+B)\)</span> Hyp</li>
+<li><span class="math inline">\(C \Rightarrow B\)</span> Conjunction
+elimination 1</li>
+<li><span class="math inline">\(C\)</span> Hyp</li>
+<li><span class="math inline">\(B\)</span> MP 上述两公式</li>
+</ol>
+</div>
+<blockquote>
+<p><span class="math inline">\(B \Leftrightarrow C, \neg C \vdash \neg
+B\)</span></p>
+</blockquote>
+<div class="proof">
+<ol type="1">
+<li><span class="math inline">\((B \Rightarrow C) \wedge (C \Rightarrow
+B)\)</span> Hyp</li>
+<li><span class="math inline">\(B \Rightarrow C\)</span> Conjunction
+elimination 1</li>
+<li><span class="math inline">\(\neg C\)</span> Hyp</li>
+<li><span class="math inline">\(\neg B\)</span> Conditional elimination
+2 3</li>
+</ol>
+</div>
+<blockquote>
+<p><span class="math inline">\(B \Leftrightarrow C \vdash B \Rightarrow
+C\)</span></p>
+</blockquote>
+<div class="proof">
+<ol type="1">
+<li><span class="math inline">\((B \Rightarrow C) \wedge (C \Rightarrow
+B)\)</span> Hyp</li>
+<li><span class="math inline">\(B \Rightarrow C\)</span> Conjunction
+elimination 1</li>
+</ol>
+</div>
+<blockquote>
+<p><span class="math inline">\(B \Leftrightarrow C \vdash C \Rightarrow
+B\)</span></p>
+</blockquote>
+<div class="proof">
+<ol type="1">
+<li><span class="math inline">\((B \Rightarrow C) \wedge (C \Rightarrow
+B)\)</span> Hyp</li>
+<li><span class="math inline">\(C \Rightarrow B\)</span> Conjunction
+elimination 1</li>
+</ol>
+</div>
+<h4 id="biconditional-introduction">Biconditional introduction</h4>
+<blockquote>
+<p><span class="math inline">\(B \Rightarrow C, C \Rightarrow B \vdash B
+\Leftrightarrow C\)</span></p>
+</blockquote>
+<div class="proof">
+<p>用 Conjunction introduction 即可</p>
+</div>
+<h4 id="biconditional-negation">Biconditional negation</h4>
+<blockquote>
+<p><span class="math inline">\(B \Leftrightarrow C \vdash \neg B
+\Leftrightarrow \neg C\)</span></p>
+</blockquote>
+<div class="proof">
+<ol type="1">
+<li><span class="math inline">\((B \Rightarrow C) \wedge (C \Rightarrow
+B)\)</span> Hyp</li>
+<li><span class="math inline">\(B \Rightarrow C\)</span> Conjunction
+elimination 1</li>
+<li><span class="math inline">\(\neg C \Rightarrow \neg B\)</span>
+Conditional contrapositive 2</li>
+<li><span class="math inline">\(C \Rightarrow B\)</span> Conjunction
+elimination 1</li>
+<li><span class="math inline">\(\neg B \Rightarrow \neg C\)</span>
+Conditional contrapositive 4</li>
+<li><span class="math inline">\(\neg B \Leftrightarrow \neg C\)</span>
+Biconditional introduction 3 5</li>
+</ol>
+</div>
+<blockquote>
+<p><span class="math inline">\(\neg B \Leftrightarrow \neg C \vdash B
+\Leftrightarrow C\)</span></p>
+</blockquote>
+<div class="proof">
+<p>证明类似上面</p>
+</div>
+<h4 id="proof-by-contradiction">Proof by contradiction</h4>
+<blockquote>
+<p>如果证明 <span class="math inline">\(\Gamma, \neg B \vdash C \wedge
+\neg C\)</span> 没有 Gen 用到 <span class="math inline">\(B\)</span>
+的自由变量，则 <span class="math inline">\(\Gamma \vdash B\)</span></p>
+</blockquote>
+<div class="proof">
+<ol type="1">
+<li><span class="math inline">\(\neg C\)</span> Conjunction
+elimination</li>
+<li><span class="math inline">\(C\)</span> Conjunction elimination</li>
+<li><span class="math inline">\(\Gamma \vdash \neg B \Rightarrow \neg
+C\)</span> <a href="../chap-2-3-to-2-4/#corollary-2.6">Corollary 2.6</a>
+应用到 1</li>
+<li><span class="math inline">\(\Gamma \vdash \neg B \Rightarrow
+C\)</span> <a href="../chap-2-3-to-2-4/#corollary-2.6">Corollary 2.6</a>
+应用到 2</li>
+<li><span class="math inline">\(\vdash (\neg B \Rightarrow \neg C)
+\Rightarrow ((\neg B \Rightarrow C) \Rightarrow B)\)</span> A3</li>
+<li><span class="math inline">\(\Gamma \vdash B\)</span> MP 两次 （3, 4,
+5）</li>
+</ol>
+</div>
+<h3 id="exercises">Exercises</h3>
+<h4 id="证明上面的-rules">2.30 证明上面的 Rules</h4>
+<p>上面已经证明了</p>
+<h4 id="证明以下">2.31 证明以下</h4>
+<ul>
+<li><p><code>a.</code> <span class="math inline">\(\vdash (\forall
+x)(\forall y)A_1^2(x, y) \Rightarrow (\forall x)A_1^2(x, x)\)</span></p>
+<div class="proof">
+<ol type="1">
+<li><span class="math inline">\((\forall x)(\forall y)A_1^2(x,
+y)\)</span> Hyp</li>
+<li><span class="math inline">\((\forall y)A_1^2(x, y)\)</span> Rule
+A4</li>
+<li><span class="math inline">\(A_1^2(x, x)\)</span> Rule A4</li>
+<li><span class="math inline">\((\forall x)A_1^2(x, x)\)</span> Gen</li>
+</ol>
+<p>以上证明了 <span class="math inline">\((\forall x)(\forall y)A_1^2(x,
+y) \vdash (\forall x)A_1^2(x, x)\)</span> 且前提是封闭公式故可用 <a
+href="../chap-2-3-to-2-4/#corollary-2.7">DT</a> 证得</p>
+</div></li>
+<li><p><code>b.</code> <span class="math inline">\(\vdash (\forall x)B
+\vee (\forall x)C \Rightarrow (\forall x)(B \vee C)\)</span></p>
+<div class="proof">
+<ol type="1">
+<li><span class="math inline">\(B \Rightarrow (\neg B \Rightarrow
+C)\)</span> <a href="../chap-1-4/#lemma-1.11-c">Lemma 1.11#c</a></li>
+<li><span class="math inline">\((\forall x)(B \Rightarrow (\neg B
+\Rightarrow C))\)</span> Gen 1</li>
+<li><span class="math inline">\((\forall x)B \Rightarrow (\forall
+x)(\neg B \Rightarrow C)\)</span> <a
+href="../chap-2-3-to-2-4#ex-2-27-a">Ex 2.27#a</a> 然后 MP 2</li>
+<li><span class="math inline">\(C \Rightarrow (\neg B \Rightarrow
+C)\)</span> A1</li>
+<li><span class="math inline">\((\forall x)(C \Rightarrow (\neg B
+\Rightarrow C))\)</span> Gen 4</li>
+<li><span class="math inline">\((\forall x)C \Rightarrow (\forall
+x)(\neg B \Rightarrow C)\)</span> <a
+href="../chap-2-3-to-2-4#ex-2-27-a">Ex 2.27#a</a> 然后 MP 5</li>
+<li><span class="math inline">\((\forall x)B \vee (\forall x)C\)</span>
+Hyp</li>
+<li><span class="math inline">\((\forall x)(B \vee C)\)</span> Rule
+Disjunction elimination 7/3/6</li>
+<li><span class="math inline">\((\forall x)B \vee (\forall x)C \vdash
+(\forall x)(B \vee C)\)</span> 1 ~ 8 所证明的</li>
+<li><a href="../chap-2-3-to-2-4/#corollary-2.6">Corollary 2.6</a></li>
+</ol>
+</div></li>
+<li><p><code>c.</code> <span class="math inline">\(\vdash \neg (\exists
+x)B \Rightarrow (\forall x)\neg B\)</span></p>
+<div class="proof">
+<ol type="1">
+<li><span class="math inline">\(\neg (\neg (\forall x)(\neg B))\)</span>
+Hyp</li>
+<li><span class="math inline">\((\forall x)(\neg B)\)</span> Rule
+Negation elimination</li>
+<li>DT</li>
+</ol>
+</div></li>
+<li><p><code>d.</code> <span class="math inline">\(\vdash (\forall x)B
+\Rightarrow (\forall x)(B \vee C)\)</span></p>
+<div class="proof">
+<ol type="1">
+<li><span class="math inline">\((\forall x)B\)</span> Hyp</li>
+<li><span class="math inline">\(B\)</span> Rule A4</li>
+<li><span class="math inline">\(B \vee C\)</span> Rule Disjunction
+introduction</li>
+<li><span class="math inline">\((\forall x)(B \vee C)\)</span> Gen</li>
+<li>上一步 Gen 添加的量词不是 Hyp 中的自由变量，故可用 DT</li>
+</ol>
+</div></li>
+<li><p><code>e.</code> <span class="math inline">\(\vdash (\forall
+x)(\forall y)(A_1^2(x, y) \Rightarrow \neg A_1^2(y, x)) \Rightarrow
+(\forall x)\neg A_1^2(x, x)\)</span></p>
+<div class="proof">
+<ol type="1">
+<li><span class="math inline">\((\forall x)(\forall y)(A_1^2(x, y)
+\Rightarrow \neg A_1^2(y, x))\)</span> Hyp</li>
+<li><span class="math inline">\((\forall y)(A_1^2(x, y) \Rightarrow \neg
+A_1^2(y, x))\)</span> Rule A4</li>
+<li><span class="math inline">\(A_1^2(x, x) \Rightarrow \neg A_1^2(x,
+x)\)</span> Rule A4</li>
+<li><span class="math inline">\(\neg \neg A_1^2(x, x) \Rightarrow \neg
+A_1^2(x, x)\)</span> Conditional contrapositive</li>
+<li><span class="math inline">\(\neg \neg A_1^2(x, x) \Rightarrow \neg
+\neg A_1^2(x, x)\)</span> <a href="../chap-1-4/#lemma-1.8">Lemma
+1.8</a></li>
+<li><span class="math inline">\((\neg \neg A_1^2(x, x) \Rightarrow \neg
+\neg A_1^2(x, x)) \Rightarrow ((\neg \neg A_1^2(x, x) \Rightarrow \neg
+A_1^2(x, x)) \Rightarrow \neg A_1^2(x, x))\)</span> A3</li>
+<li><span class="math inline">\(\neg A_1^2(x, x)\)</span> 对 6 连续 MP 5
+和 4 即可</li>
+<li><span class="math inline">\((\forall x)(\neg A_1^2(x, x))\)</span>
+Gen</li>
+<li>DT</li>
+</ol>
+</div></li>
+<li><p><code>f.</code> <span class="math inline">\(\vdash ((\exists x)B
+\Rightarrow (\forall x)C) \Rightarrow (\forall x)(B \Rightarrow
+C)\)</span></p>
+<div class="proof">
+<ol type="1">
+<li><span class="math inline">\(\neg B \Rightarrow (B \Rightarrow
+C)\)</span> <a href="../chap-1-4/#lemma-1.11-c">Lemma 1.11#c</a></li>
+<li><span class="math inline">\((\forall x)(\neg B \Rightarrow (B
+\Rightarrow C))\)</span> Gen 1</li>
+<li><span class="math inline">\((\forall x)(\neg B) \Rightarrow (\forall
+x)(B \Rightarrow C)\)</span> <a href="../chap-2-3-to-2-4#ex-2-27-a">Ex
+2.27#a</a> 然后 MP 2</li>
+<li><span class="math inline">\(C \Rightarrow (B \Rightarrow C)\)</span>
+A1</li>
+<li><span class="math inline">\((\forall x)(C \Rightarrow (B \Rightarrow
+C))\)</span> Gen 4</li>
+<li><span class="math inline">\((\forall x)C \Rightarrow (\forall x)(B
+\Rightarrow C)\)</span> <a href="../chap-2-3-to-2-4#ex-2-27-a">Ex
+2.27#a</a> 然后 MP 5</li>
+<li><span class="math inline">\((\forall x)(\neg B) \vee (\forall
+x)C\)</span> Hyp</li>
+<li><span class="math inline">\((\forall x)(B \Rightarrow C)\)</span>
+Rule Disjunction elimination 7/3/6</li>
+<li><span class="math inline">\((\exists x)B \Rightarrow (\forall x)C
+\vdash (\forall x)(B \Rightarrow C)\)</span> 1 ~ 8 所证明的</li>
+<li><a href="../chap-2-3-to-2-4/#corollary-2.6">Corollary 2.6</a></li>
+</ol>
+</div></li>
+<li><p><code>g.</code> <span class="math inline">\(\vdash (\forall x)(B
+\vee C) \Rightarrow (\forall x)B \vee (\exists x)C\)</span></p>
+<div class="proof">
+<ol type="1">
+<li><span class="math inline">\((\forall x)(\neg B \Rightarrow
+C)\)</span> Hyp</li>
+<li><span class="math inline">\((\forall x)(\neg B \Rightarrow C)
+\Rightarrow ((\exists x)(\neg B) \Rightarrow (\exists x)C)\)</span> <a
+href="../chap-2-3-to-2-4#ex-2-27-b">Ex 2.27#b</a></li>
+<li><span class="math inline">\((\exists x)(\neg B) \Rightarrow (\exists
+x)C\)</span> MP 上述两公式</li>
+<li><span class="math inline">\(\neg (\forall x)B\)</span> Hyp</li>
+<li><span class="math inline">\(\neg (\forall x)B \Rightarrow (\exists
+x)(\neg B)\)</span> <a href="../chap-2-3-to-2-4#ex-2-27-e">Ex
+2.27#e</a></li>
+<li><span class="math inline">\((\exists x)(\neg B)\)</span> MP
+上述两公式</li>
+<li><span class="math inline">\((\exists x)C\)</span> MP 3 和 6</li>
+<li><span class="math inline">\((\forall x)(B \vee C), \neg (\forall x)B
+\vdash (\exists x)C\)</span> 1 ~ 7 所证明的</li>
+<li>DT 两次</li>
+</ol>
+</div></li>
+<li><p><code>h.</code> <span class="math inline">\(\vdash (\forall
+x)(A_1^2(x, x) \Rightarrow (\exists y)A_1^2(x, y))\)</span></p>
+<div class="proof">
+<ol type="1">
+<li><span class="math inline">\(A_1^2(x, x)\)</span></li>
+<li><span class="math inline">\((\exists y)A_1^2(x, y)\)</span> Rule
+E4</li>
+<li><span class="math inline">\(A_1^2(x, x) \vdash (\exists y)A_1^2(x,
+y)\)</span> 1 ~ 2 所证明的</li>
+<li><span class="math inline">\(\vdash A_1^2(x, x) \Rightarrow (\exists
+y)A_1^2(x, y)\)</span> DT</li>
+<li><span class="math inline">\(\vdash (\forall x)(A_1^2(x, x)
+\Rightarrow (\exists y)A_1^2(x, y))\)</span> Gen</li>
+</ol>
+</div></li>
+<li><p><code>i.</code> <span class="math inline">\(\vdash (\forall x)(B
+\Rightarrow C) \Rightarrow ((\forall x)(\neg C) \Rightarrow (\forall
+x)(\neg B))\)</span></p>
+<div class="proof">
+<ol type="1">
+<li><span class="math inline">\((\forall x)(B \Rightarrow C)\)</span>
+Hyp</li>
+<li><span class="math inline">\(\neg (\forall x)(\neg B) \Rightarrow
+\neg (\forall x)(\neg C)\)</span> <a
+href="../chap-2-3-to-2-4#ex-2-27-b">Ex 2.27#b</a> 以及 MP</li>
+<li><span class="math inline">\((\forall x)(\neg C) \Rightarrow (\forall
+x)(\neg B)\)</span> Rule conditional contrapositive</li>
+<li>DT</li>
+</ol>
+</div></li>
+<li><p><code>j.</code> <span class="math inline">\(\vdash (\exists
+y)(A_1^1(y) \Rightarrow (\forall y)A_1^1(y))\)</span></p>
+<div class="proof">
+<p>TODO</p>
+</div></li>
+<li><p><code>k.</code> <span class="math inline">\(\vdash ((\forall
+x)(\forall y)(B(x, y) \Rightarrow B(y, x)) \wedge (\forall x)(\forall
+y)(\forall z)(B(x, y) \wedge B(y, z) \Rightarrow B(x, z))) \Rightarrow
+(\forall x)(\forall y)(B(x, y) \Rightarrow B(x, x))\)</span></p>
+<p>这个式子看上去很长，实际上表达的是：如果 <span
+class="math inline">\(B(x, y)\)</span> 可交换可传递，则如何如何</p>
+<div class="proof">
+<ol type="1">
+<li><span class="math inline">\((\forall x)(\forall y)(B(x, y)
+\Rightarrow B(y, x)) \wedge (\forall x)(\forall y)(\forall z)(B(x, y)
+\wedge B(y, z) \Rightarrow B(x, z))\)</span> Hyp</li>
+<li><span class="math inline">\((\forall x)(\forall y)(B(x, y)
+\Rightarrow B(y, x))\)</span> conjunction elimination 1</li>
+<li><span class="math inline">\((\forall x)(\forall y)(\forall z)(B(x,
+y) \wedge B(y, z) \Rightarrow B(x, z))\)</span> conjunction elimination
+1</li>
+<li><span class="math inline">\(B(x, y)\)</span> Hyp</li>
+<li><span class="math inline">\(B(x, y) \Rightarrow B(y, x)\)</span>
+Rule A4 2</li>
+<li><span class="math inline">\(B(y, x)\)</span> MP 上述两公式</li>
+<li><span class="math inline">\(B(x, y) \wedge B(y, x) \Rightarrow B(x,
+x)\)</span> Rule A4 3</li>
+<li><span class="math inline">\(B(x, x)\)</span> Rule conjunction
+introduction 以及 MP 4/6/7</li>
+<li><span class="math inline">\((\forall x)(\forall y)(B(x, y)
+\Rightarrow B(y, x)) \wedge (\forall x)(\forall y)(\forall z)(B(x, y)
+\wedge B(y, z) \Rightarrow B(x, z)), B(x, y) \vdash B(x, x)\)</span> 1 ~
+8 所证明的</li>
+<li><span class="math inline">\((\forall x)(\forall y)(B(x, y)
+\Rightarrow B(y, x)) \wedge (\forall x)(\forall y)(\forall z)(B(x, y)
+\wedge B(y, z) \Rightarrow B(x, z)) \vdash B(x, y) \Rightarrow B(x,
+x)\)</span> DT（没有用到 Gen）</li>
+<li><span class="math inline">\((\forall x)(\forall y)(B(x, y)
+\Rightarrow B(y, x)) \wedge (\forall x)(\forall y)(\forall z)(B(x, y)
+\wedge B(y, z) \Rightarrow B(x, z)) \vdash (\forall x)(\forall y)(B(x,
+y) \Rightarrow B(x, x))\)</span> Gen 两次（x 和 y）</li>
+<li><span class="math inline">\(\vdash (\forall x)(\forall y)(B(x, y)
+\Rightarrow B(y, x)) \wedge (\forall x)(\forall y)(\forall z)(B(x, y)
+\wedge B(y, z) \Rightarrow B(x, z)) \Rightarrow (\forall x)(\forall
+y)(B(x, y) \Rightarrow B(x, x))\)</span> DT（Gen 的量词不是 Hyp
+的自由变量）</li>
+</ol>
+</div></li>
+<li><p><code>l.</code> <span class="math inline">\(\vdash (\exists
+x)A_1^2(x, x) \Rightarrow (\exists x)(\exists y)A_1^2(x, y)\)</span></p>
+<div class="proof">
+<ol type="1">
+<li><span class="math inline">\(A_1^2(x, x)\)</span> Hyp</li>
+<li><span class="math inline">\((\exists y)A_1^2(x, y)\)</span> Rule E4
+1</li>
+<li><span class="math inline">\(\vdash A_1^2(x, x) \Rightarrow (\exists
+y)A_1^2(x, y)\)</span> DT</li>
+<li><span class="math inline">\(\vdash (\forall x)(A_1^2(x, x)
+\Rightarrow (\exists y)A_1^2(x, y))\)</span> Gen</li>
+<li><span class="math inline">\(\vdash (\exists x)A_1^2(x, x)
+\Rightarrow (\exists x)(\exists y)A_1^2(x, y)\)</span> <a
+href="../chap-2-3-to-2-4#ex-2-27-b">Ex 2.27#b</a> 以及 MP</li>
+</ol>
+</div></li>
+</ul>
+<h4 id="在以下假设中证明">2.32 在以下假设中证明</h4>
+<blockquote>
+<p>令 <span class="math inline">\(B\)</span> 和 <span
+class="math inline">\(C\)</span> 都是合式公式，且 <span
+class="math inline">\(x\)</span> 不是 <span
+class="math inline">\(B\)</span> 中的自由变量</p>
+</blockquote>
+<ul>
+<li><p><code>a.</code> <span class="math inline">\(\vdash B \Rightarrow
+(\forall x)B\)</span></p>
+<div class="proof">
+<ol type="1">
+<li><span class="math inline">\(B\)</span> Hyp</li>
+<li><span class="math inline">\((\forall x)B\)</span> Gen</li>
+<li><span class="math inline">\(B \vdash (\forall x)B\)</span> 1 ~ 2
+所证明</li>
+<li><span class="math inline">\(\vdash B \Rightarrow (\forall
+x)B\)</span> <a href="../chap-2-3-to-2-4/#corollary-2.6">Corollary
+2.6</a></li>
+</ol>
+</div></li>
+<li><p><code>b.</code> <span class="math inline">\(\vdash (\exists x)B
+\Rightarrow B\)</span></p>
+<div class="proof">
+<ol type="1">
+<li><span class="math inline">\(\neg B\)</span> Hyp</li>
+<li><span class="math inline">\((\forall x)(\neg B)\)</span> Gen</li>
+<li><span class="math inline">\(\neg \neg (\forall x)(\neg B)\)</span>
+Rule Negation introduction</li>
+<li><span class="math inline">\(\neg B \vdash \neg \neg (\forall x)(\neg
+B)\)</span> 1 ~ 3 所证明</li>
+<li><span class="math inline">\(\vdash \neg B \Rightarrow \neg \neg
+(\forall x)(\neg B)\)</span> <a
+href="../chap-2-3-to-2-4/#corollary-2.6">Corollary 2.6</a></li>
+<li><span class="math inline">\(\vdash \neg (\forall x)(\neg B)
+\Rightarrow B\)</span> Rule Conditional contrapositive 5</li>
+</ol>
+</div></li>
+<li><p><code>c.</code> <span class="math inline">\(\vdash (B \Rightarrow
+(\forall x)C) \Leftrightarrow (\forall x)(B \Rightarrow C)\)</span></p>
+<div class="proof">
+<ol type="1">
+<li><span class="math inline">\(B \Rightarrow (\forall x)C\)</span>
+Hyp</li>
+<li><span class="math inline">\(B\)</span> Hyp</li>
+<li><span class="math inline">\((\forall x)C\)</span> MP 1 和 2</li>
+<li><span class="math inline">\(C\)</span> Rule A4 3</li>
+<li><span class="math inline">\(B \Rightarrow (\forall x)C, B \vdash
+C\)</span> 1 ~ 4 所证明</li>
+<li><span class="math inline">\(B \Rightarrow (\forall x)C \vdash B
+\Rightarrow C\)</span> <a
+href="../chap-2-3-to-2-4/#corollary-2.6">Corollary 2.6</a></li>
+<li><span class="math inline">\(B \Rightarrow (\forall x)C \vdash
+(\forall x)(B \Rightarrow C)\)</span> Gen 6</li>
+<li><span class="math inline">\(\vdash (B \Rightarrow (\forall x)C)
+\Rightarrow (\forall x)(B \Rightarrow C)\)</span> <a
+href="../chap-2-3-to-2-4/#corollary-2.6">Corollary 2.6</a></li>
+<li><span class="math inline">\(\vdash (\forall x)(B \Rightarrow C)
+\Rightarrow (B \Rightarrow (\forall x)C)\)</span> A5</li>
+<li><span class="math inline">\(\vdash (B \Rightarrow (\forall x)C)
+\Leftrightarrow (\forall x)(B \Rightarrow C)\)</span> Rule Biconditional
+introduction 8 和 9</li>
+</ol>
+</div></li>
+<li><p><code>d.</code> <span class="math inline">\(\vdash ((\exists x)C
+\Rightarrow B) \Leftrightarrow (\forall x)(C \Rightarrow B)\)</span></p>
+<div class="proof">
+<p>TODO</p>
+</div></li>
+</ul>
+<section id="footnotes" class="footnotes footnotes-end-of-document"
+role="doc-endnotes">
+<hr />
+<ol>
+<li
+id="fn1"><p>派生规则跟演绎规则之间的关系就像是定理跟公理之间的关系，后者是理论自带的原语，
+而前者是推导出来的，例如：</p>
+<ul>
+<li>演绎规则 Gen：如果某一步出现 <span
+class="math inline">\(B\)</span>，则可以推出 <span
+class="math inline">\((\forall x)B\)</span></li>
+<li>派生规则 A4：如果某一步出现 <span class="math inline">\((\forall
+x)B(x)\)</span>，则可以推出 <span
+class="math inline">\(B(t)\)</span>（<span
+class="math inline">\(t\)</span> 必须满足可以自由替换 <span
+class="math inline">\(B(x)\)</span> 中的 <span
+class="math inline">\(x\)</span>）</li>
+</ul>
+<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></li>
+</ol>
+</section>
+<link rel="stylesheet" href="/assets/venobox/dist/venobox.min.css" />
+<script src="/assets/venobox/dist/venobox.min.js"></script>
+<script>
+  document.querySelectorAll('img').forEach((img) => {
+    const a = document.createElement("a")
+    a.href = '#'
+    a.setAttribute('data-href', img.src)
+    a.classList.add('images')
+    img.replaceWith(a)
+    a.appendChild(img)
+  })
+  new VenoBox({
+    selector: '.images',
+    fitView: true,
+  });
+</script>
+</body>
+</html>

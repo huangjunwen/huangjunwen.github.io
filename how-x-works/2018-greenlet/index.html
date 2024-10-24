@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="dcterms.date" content="2018-03-15" />
+  <title>Greenlet 原理</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link href="/assets/latex.css/style.min.css" rel="stylesheet" />
+  <style>
+  /* fixes for latex.css */
+  .date {
+    text-align: center;
+  }
+
+  div.sourceCode {
+    background: var(--pre-bg-color);
+    border-radius: 10px;
+  }
+
+  dl dd {
+    text-align: left;
+  }
+
+  #footnotes {
+    margin-top: 1em;
+  }
+
+  #footnotes hr:first-child {
+    display: none;
+  }
+  </style>
+</head>
+<body>
+<style>
+/* sidebar */
+#sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  max-width: 400px;
+  width: 80%;
+  height: 100%;
+  padding: 2rem;
+  background-color: #eee;
+  box-shadow: 0 10px 20px -4px #000;
+  overflow-x: hidden;
+  overflow-y: auto;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-100%);
+  transition: opacity 0.3s ease, visibility 0.2s ease, transform 0.3s ease;
+}
+#sidebar.show {
+  pointer-events: all;
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+}
+#sidebar_toggler {
+  position: fixed;
+  top: 4vh;
+  right: 3vw;
+  z-index: 1000;
+  width: 2.8rem;
+  height: 2.4rem;
+  padding: 0.5rem;
+  border: solid #999 0.1rem;
+  border-radius: 0.4rem;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+#sidebar_toggler span {
+  background-color: #999;
+  width: 100%;
+  height: 0.2rem;
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+nav span {
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 90%;
+}
+nav li:before {
+  content: '';
+}
+nav .caret {
+  cursor: pointer;
+  user-select: none; /* Prevent text selection */
+}
+nav .caret::before {
+  content: "\25B6";
+  color: black;
+  display: inline-block;
+  margin-right: 6px;
+}
+nav .caret-down::before {
+  transform: rotate(90deg);
+}
+nav .collapse {
+  display: none;
+}
+</style>
+<aside id="sidebar">
+  <div class="sidebar_content sidebar_head">
+    <h1>Content</h1>
+  </div>
+  <div class="sidebar_content sidebar_body">
+    <nav id="side_navlinks" class="side_navlinks">
+      <!--<ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Services</a></li>
+        <li><a href="#">Portfolio</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>-->
+    </nav>
+  </div>
+</aside>
+<div id="sidebar_toggler">
+  <span></span>
+  <span></span>
+  <span></span>
+</div>
+<script>
+/* setup sidebar */
+// https://www.cssscript.com/demo/responsive-sidebar-nav-hamburger/
+const sidebar = document.querySelector('#sidebar')
+const sidebarToggler = document.querySelector('#sidebar_toggler')
+
+sidebarToggler.addEventListener('click', () => {
+  sidebar.classList.toggle('show')
+});
+
+const keywords = document.querySelector('meta[name="keywords"]')
+if (keywords && keywords.content.includes('showSidebar')) {
+  sidebar.classList.add('show')
+}
+
+/*
+window.addEventListener('click', (e) => {
+  if (e.target.id !== 'sidebar' && e.target.id !== 'sidebar_toggler') {
+    sidebar.classList.remove('show');
+  }
+});
+*/
+
+/* load urls */
+// https://www.w3schools.com/howto/howto_js_treeview.asp
+const currentPath = window.location.pathname
+const sideNavLinks = document.querySelector('#side_navlinks');
+function buildSideLink(li, node) {
+  // span contains the text and link (if provided)
+  const span = li.appendChild(document.createElement("span"))
+  if (node.url) {
+    const a = span.appendChild(document.createElement("a"))
+    a.href = node.url
+    a.textContent = node.text
+  } else {
+    span.textContent = node.text
+  }
+  span.setAttribute("title", node.text)
+
+  // if has children, then add caret and append a nested <ul> for children
+  if (node.children.length > 0) {
+    span.classList.add("caret")
+    const ul = li.appendChild(document.createElement("ul"))
+    ul.classList.add("nested")
+    // do not collapse current path
+    if (!currentPath.startsWith(node.path)) {
+      ul.classList.add("collapse")
+    } else {
+      span.classList.add("caret-down")
+    }
+    node.children.forEach((child) => {
+      const l = ul.appendChild(document.createElement("li"))
+      buildSideLink(l, child)
+    })
+  }
+}
+async function loadSideLinks() {
+  const resp = await fetch("/urls.json")
+  const data = await resp.json()
+  // console.log(data)
+  const root = sideNavLinks.appendChild(document.createElement("ul"))
+  data.children.forEach((child) => {
+    buildSideLink(root.appendChild(document.createElement("li")), child)
+  })
+
+  const toggler = root.getElementsByClassName("caret")
+  for (let i=0; i<toggler.length; i++) {
+    toggler[i].addEventListener("click", function () {
+      this.parentElement.querySelector(".nested").classList.toggle("collapse")
+      this.classList.toggle("caret-down")
+      return false
+    })
+  }
+}
+loadSideLinks()
+</script>
+<header id="title-block-header">
+<h1 class="title">Greenlet 原理</h1>
+<p class="date">2018-03-15</p>
+</header>
+<h2 id="原理">原理</h2>
+<p>我们知道，操作系统会给每一个线程分配一个独立的堆栈，它们各自独立运作，记录着该线程的各类运行状态：如函数本地变量，函数返回地址，寄存器状态等等各种上下文；从这个角度看，堆栈几乎就等价于线程</p>
+<p>那么假如想要在用户态实现轻量级的类线程，就同样需要给它们分配独立堆栈，并提供方法在它们之间切换</p>
+<p>Greenlet 就是 cpython 上的一种轻量级线程（协程）的实现，因为 cpython
+是用 c 实现的，所以这就要求 Greenlet 的实现要跟 c
+那一套保持一致，要让协程里运行的代码感觉自己跑在一个真正的 c 堆栈上</p>
+<p>Greenlet 的做法是这样的：当一个 greenlet
+运行时，它的堆栈区间数据将会完整地恢复放在 c
+堆栈上，让它“原生态”地执行；若它被挂起，则有可能其部分或全部堆栈区间的数据会被拷贝到堆上保存；<strong>这是因为所有同一个线程的
+greenlets 共享同一个 c
+堆栈的地址空间，它们的堆栈区间会有可能有交集重叠</strong></p>
+<p>我们主要关注 <code>PyGreenlet</code> 的这几个字段来讨论实现原理：</p>
+<ul>
+<li><code>stack_stop</code>: 该 greenlet 堆栈区间 <strong>底</strong>
+部地址（旧数据方向）</li>
+<li><code>stack_start</code>: 该 greenlet 堆栈区间 <strong>顶</strong>
+部地址（新数据方向）</li>
+<li><code>stack_prev</code>: <strong>greenlet 链表</strong>
+指针，见下节说明</li>
+<li><code>stack_copy</code>: 该 greenlet 堆栈区间在堆上的拷贝</li>
+<li><code>stack_saved</code>: 该 greenlet
+堆栈区间在堆上的拷贝的长度</li>
+</ul>
+<h2 id="greenlet-链表">greenlet 链表</h2>
+<p>如前所叙述，只有当前运行的 greenlet 是保证其堆栈区间完整地置于 c
+堆栈上，其它挂起的 greenlets
+的堆栈区间数据则是有可能部分或全部地拷贝到了堆上保存；</p>
+<p>那么任意时刻，c 堆栈就会由多个 greenlets
+的部分或全部堆栈区间组成（这些区间有可能是紧贴着的，也可能中间有空隙，但必定不能重叠），Greenlet
+库维护一个 greenlet 链表来表达 c 堆栈上这些区间的前后关系，该链表就是由
+<code>stack_prev</code> 串联而成的，例如</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">/*</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">current.stack_prev -&gt; ... -&gt; main.stack_prev -&gt; null</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">*/</span></span></code></pre></div>
+<p>链表头一定是当前运行的 greenlet，链表尾一定是 main/initial
+greenlet；这个链表只包含那些在 c 堆栈上有部分/全部堆栈区间的
+greenlets，已经完全拷贝到堆上的那些 greenlets 不包含在这个链表中</p>
+<h2 id="greenlet-堆栈区间">greenlet 堆栈区间</h2>
+<p>说了那么久堆栈区间，一个 greenlet
+是如何确定它的堆栈区间<code>[stack_stop, stack_start]</code>的呢？</p>
+<ul>
+<li><p><code>stack_stop</code> 是在一个 greenlet
+首次开始执行时确定的（main greenlet
+除外）：它取一个外层函数的本地变量地址，为什么可以这样呢？因为外层函数的本地变量处于
+c 堆栈上且一定比内层函数（该 greenlet 的入口函数）更靠近 c
+堆栈底部，由它作为 <code>stack_stop</code> 肯定能包含该 greenlet
+整个有效的堆栈地址区间；<strong>这个地址在该 greenlet
+的整个生命周期都不会改变</strong></p></li>
+<li><p><code>stack_start</code> 是在一个 greenlet <strong>每次</strong>
+将要交出控制权的时候确定的，因为该 greenlet 正在运行，所以
+<code>stack_start</code> 就是当前 c 堆栈顶地址</p></li>
+</ul>
+<h2 id="大致切换过程">大致切换过程</h2>
+<p>假设当前运行 greenlet 为 <code>current</code> , 准备切换到
+<code>target</code> ，那么切换过程包括保存 greenlet
+链表上各元素的堆栈区间以及恢复 <code>target</code> 堆栈区间</p>
+<ul>
+<li><p>保存：无论 <code>target</code>
+是第一次执行还是恢复执行，都是可以知道 <code>target.stack_stop</code>
+的（如前所叙述），也就知道 c 堆栈需要空出位置到哪里给它恢复了：遍历
+greenlet 链表，将 <code>target.stack_stop</code> 将要覆盖到的 greenlets
+的堆栈区间分别保存到各自 greenlet 的 <code>stack_copy/stack_saved</code>
+中去</p></li>
+<li><p>恢复：第一次执行不需要恢复，直接执行即可；恢复执行的话，则把拷贝到堆上的数据恢复到
+c 堆栈上，然后把 <code>target</code> 放入 greenlet 链表表头，设置
+<code>target.stack_prev</code> 维护 greenlet 链表</p></li>
+</ul>
+<h2 id="例子">例子</h2>
+<p>来两张图例</p>
+<p>切换前：</p>
+<p><img src="greenlet_before_switch.png" /></p>
+<p>切换后：</p>
+<p><img src="greenlet_after_switch.png" /></p>
+<h2 id="注释">注释</h2>
+<p>最后还是贴一下代码里的注释，这个是最权威的说明了</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">/*</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">A PyGreenlet is a range of C stack addresses that must be</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">saved and restored in such a way that the full range of the</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">stack contains valid data when we switch to it.</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">Stack layout for a greenlet:</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">               |     ^^^       |</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">               |  older data   |</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">               |               |</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co">  stack_stop . |_______________|</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">        .      |               |</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">        .      | greenlet data |</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co">        .      |   in stack    |</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co">        .    * |_______________| . .  _____________  stack_copy + stack_saved</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co">        .      |               |     |             |</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co">        .      |     data      |     |greenlet data|</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co">        .      |   unrelated   |     |    saved    |</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co">        .      |      to       |     |   in heap   |</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co"> stack_start . |     this      | . . |_____________| stack_copy</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co">               |   greenlet    |</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="co">               |               |</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="co">               |  newer data   |</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="co">               |     vvv       |</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="co">Note that a greenlet&#39;s stack data is typically partly at its correct</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="co">place in the stack, and partly saved away in the heap, but always in</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="co">the above configuration: two blocks, the more recent one in the heap</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="co">and the older one still in the stack (either block may be empty).</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="co">Greenlets are chained: each points to the previous greenlet, which is</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="co">the one that owns the data currently in the C stack above my</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="co">stack_stop.  The currently running greenlet is the first element of</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="co">this chain.  The main (initial) greenlet is the last one.  Greenlets</span></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="co">whose stack is entirely in the heap can be skipped from the chain.</span></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a><span class="co">The chain is not related to execution order, but only to the order</span></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a><span class="co">in which bits of C stack happen to belong to greenlets at a particular</span></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a><span class="co">point in time.</span></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a><span class="co">The main greenlet doesn&#39;t have a stack_stop: it is responsible for the</span></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a><span class="co">complete rest of the C stack, and we don&#39;t know where it begins.  We</span></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a><span class="co">use (char*) -1, the largest possible address.</span></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a><span class="co">States:</span></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a><span class="co">  stack_stop == NULL &amp;&amp; stack_start == NULL:  did not start yet</span></span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a><span class="co">  stack_stop != NULL &amp;&amp; stack_start == NULL:  already finished</span></span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a><span class="co">  stack_stop != NULL &amp;&amp; stack_start != NULL:  active</span></span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a><span class="co">The running greenlet&#39;s stack_start is undefined but not NULL.</span></span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a><span class="co">*/</span></span></code></pre></div>
+<link rel="stylesheet" href="/assets/venobox/dist/venobox.min.css" />
+<script src="/assets/venobox/dist/venobox.min.js"></script>
+<script>
+  document.querySelectorAll('img').forEach((img) => {
+    const a = document.createElement("a")
+    a.href = '#'
+    a.setAttribute('data-href', img.src)
+    a.classList.add('images')
+    img.replaceWith(a)
+    a.appendChild(img)
+  })
+  new VenoBox({
+    selector: '.images',
+    fitView: true,
+  });
+</script>
+</body>
+</html>

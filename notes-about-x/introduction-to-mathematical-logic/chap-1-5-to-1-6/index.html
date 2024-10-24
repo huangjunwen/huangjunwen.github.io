@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="dcterms.date" content="2021-12-29" />
+  <title>Chapter 1: The Propositional Calculus (1.5~1.6)</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <link href="/assets/latex.css/style.min.css" rel="stylesheet" />
+  <style>
+  /* fixes for latex.css */
+  .date {
+    text-align: center;
+  }
+
+  div.sourceCode {
+    background: var(--pre-bg-color);
+    border-radius: 10px;
+  }
+
+  dl dd {
+    text-align: left;
+  }
+
+  #footnotes {
+    margin-top: 1em;
+  }
+
+  #footnotes hr:first-child {
+    display: none;
+  }
+  </style>
+  <script src="/assets/mathjax/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<style>
+/* sidebar */
+#sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  max-width: 400px;
+  width: 80%;
+  height: 100%;
+  padding: 2rem;
+  background-color: #eee;
+  box-shadow: 0 10px 20px -4px #000;
+  overflow-x: hidden;
+  overflow-y: auto;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-100%);
+  transition: opacity 0.3s ease, visibility 0.2s ease, transform 0.3s ease;
+}
+#sidebar.show {
+  pointer-events: all;
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+}
+#sidebar_toggler {
+  position: fixed;
+  top: 4vh;
+  right: 3vw;
+  z-index: 1000;
+  width: 2.8rem;
+  height: 2.4rem;
+  padding: 0.5rem;
+  border: solid #999 0.1rem;
+  border-radius: 0.4rem;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+#sidebar_toggler span {
+  background-color: #999;
+  width: 100%;
+  height: 0.2rem;
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+nav span {
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 90%;
+}
+nav li:before {
+  content: '';
+}
+nav .caret {
+  cursor: pointer;
+  user-select: none; /* Prevent text selection */
+}
+nav .caret::before {
+  content: "\25B6";
+  color: black;
+  display: inline-block;
+  margin-right: 6px;
+}
+nav .caret-down::before {
+  transform: rotate(90deg);
+}
+nav .collapse {
+  display: none;
+}
+</style>
+<aside id="sidebar">
+  <div class="sidebar_content sidebar_head">
+    <h1>Content</h1>
+  </div>
+  <div class="sidebar_content sidebar_body">
+    <nav id="side_navlinks" class="side_navlinks">
+      <!--<ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Services</a></li>
+        <li><a href="#">Portfolio</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>-->
+    </nav>
+  </div>
+</aside>
+<div id="sidebar_toggler">
+  <span></span>
+  <span></span>
+  <span></span>
+</div>
+<script>
+/* setup sidebar */
+// https://www.cssscript.com/demo/responsive-sidebar-nav-hamburger/
+const sidebar = document.querySelector('#sidebar')
+const sidebarToggler = document.querySelector('#sidebar_toggler')
+
+sidebarToggler.addEventListener('click', () => {
+  sidebar.classList.toggle('show')
+});
+
+const keywords = document.querySelector('meta[name="keywords"]')
+if (keywords && keywords.content.includes('showSidebar')) {
+  sidebar.classList.add('show')
+}
+
+/*
+window.addEventListener('click', (e) => {
+  if (e.target.id !== 'sidebar' && e.target.id !== 'sidebar_toggler') {
+    sidebar.classList.remove('show');
+  }
+});
+*/
+
+/* load urls */
+// https://www.w3schools.com/howto/howto_js_treeview.asp
+const currentPath = window.location.pathname
+const sideNavLinks = document.querySelector('#side_navlinks');
+function buildSideLink(li, node) {
+  // span contains the text and link (if provided)
+  const span = li.appendChild(document.createElement("span"))
+  if (node.url) {
+    const a = span.appendChild(document.createElement("a"))
+    a.href = node.url
+    a.textContent = node.text
+  } else {
+    span.textContent = node.text
+  }
+  span.setAttribute("title", node.text)
+
+  // if has children, then add caret and append a nested <ul> for children
+  if (node.children.length > 0) {
+    span.classList.add("caret")
+    const ul = li.appendChild(document.createElement("ul"))
+    ul.classList.add("nested")
+    // do not collapse current path
+    if (!currentPath.startsWith(node.path)) {
+      ul.classList.add("collapse")
+    } else {
+      span.classList.add("caret-down")
+    }
+    node.children.forEach((child) => {
+      const l = ul.appendChild(document.createElement("li"))
+      buildSideLink(l, child)
+    })
+  }
+}
+async function loadSideLinks() {
+  const resp = await fetch("/urls.json")
+  const data = await resp.json()
+  // console.log(data)
+  const root = sideNavLinks.appendChild(document.createElement("ul"))
+  data.children.forEach((child) => {
+    buildSideLink(root.appendChild(document.createElement("li")), child)
+  })
+
+  const toggler = root.getElementsByClassName("caret")
+  for (let i=0; i<toggler.length; i++) {
+    toggler[i].addEventListener("click", function () {
+      this.parentElement.querySelector(".nested").classList.toggle("collapse")
+      this.classList.toggle("caret-down")
+      return false
+    })
+  }
+}
+loadSideLinks()
+</script>
+<header id="title-block-header">
+<h1 class="title">Chapter 1: The Propositional Calculus (1.5~1.6)</h1>
+<p class="date">2021-12-29</p>
+</header>
+<h2 id="independence-many-valued-logics">1.5 Independence: Many-Valued
+Logics</h2>
+<dl>
+<dt>Independent</dt>
+<dd>
+一个理论中的公理子集 <span class="math inline">\(Y\)</span> 被称为独立的
+（independent），如果：该子集中某个（还是任意？）式子都不可以由 <span
+class="math inline">\(Y\)</span> 以外的公理推导出来
+</dd>
+</dl>
+<h3 id="proposition-1.17">Proposition 1.17</h3>
+<blockquote>
+<p>公理 A1~A3 是独立的，即任意一个都不可由其他两个推导出来</p>
+</blockquote>
+<div class="proof">
+<h4 id="a1-独立的证明">A1 独立的证明</h4>
+<p>考虑下面这个多值逻辑表</p>
+<p><span class="math display">\[
+\begin{array}
+  {c c c}
+  A &amp; \neg A &amp; row \\
+  0 &amp; 1 &amp; (a)\\
+  1 &amp; 1 &amp; (b) \\
+  2 &amp; 0 &amp; (c) \\
+\end{array}
+\hspace{8em}
+\begin{array}
+  {c c c c}
+  A &amp; B &amp; A \Rightarrow B &amp; row \\
+  0 &amp; 0 &amp; 0 &amp; (1) \\
+  1 &amp; 0 &amp; 2 &amp; (2) \\
+  2 &amp; 0 &amp; 0 &amp; (3) \\
+  0 &amp; 1 &amp; 2 &amp; (4) \\
+  1 &amp; 1 &amp; 2 &amp; (5) \\
+  2 &amp; 1 &amp; 0 &amp; (6) \\
+  0 &amp; 2 &amp; 2 &amp; (7) \\
+  1 &amp; 2 &amp; 0 &amp; (8) \\
+  2 &amp; 2 &amp; 0 &amp; (9) \\
+\end{array}
+\]</span></p>
+<p>一个合式公式 <span class="math inline">\(A\)</span> ，如果其
+statement letters 无论取何种取值组合，最终其值（按上述表）都取值
+0，则称之为 <em>select</em> （类似重言式）</p>
+<p>首先 <strong>MP 是保持 <em>selectness</em> 的</strong>，这是因为如果
+<span class="math inline">\(A\)</span> 和 <span class="math inline">\(A
+\Rightarrow B\)</span> 都是 <em>select</em> 的话，则 <span
+class="math inline">\(B\)</span> 也必然是 <em>select</em>
+的（见上表，假设某种取值组合下 <span class="math inline">\(B\)</span>
+是非 0，由于 <span class="math inline">\(A\)</span> 是 <em>select</em>
+的因此总是取 0，寻找 <span class="math inline">\(A\)</span> 是 0 而
+<span class="math inline">\(B\)</span> 非 0 的行只有 (4)/(7)
+两行，而其结果均非 0，这与 <span class="math inline">\(A \Rightarrow
+B\)</span> 是 <em>select</em> 矛盾，故 <span
+class="math inline">\(B\)</span> 只能为 0，也就是也是 <em>select</em>
+的）</p>
+<p><strong>接下来 A2/A3 均是 <em>select</em> 的</strong>：</p>
+<p>注意到 <span class="math inline">\(\Rightarrow\)</span>
+链接符的结果只有 0/2 两种可能值，要想 A2 非 0，则只有第 (7) 行这种可能，
+即 <span class="math inline">\(B \Rightarrow (C \Rightarrow D)\)</span>
+为 0，<span class="math inline">\((B \Rightarrow C) \Rightarrow (B
+\Rightarrow D)\)</span> 为 2，同理后者推出 <span class="math inline">\(B
+\Rightarrow C\)</span> 为 0, <span class="math inline">\(B \Rightarrow
+D\)</span> 为 2，根据上表，<span class="math inline">\(B \Rightarrow
+D\)</span> 为 2 有如下可能：</p>
+<ul>
+<li>row (2) <span class="math inline">\(B = 1, D = 0\)</span>，要 <span
+class="math inline">\(B \Rightarrow C\)</span> 为 0，则 <span
+class="math inline">\(C = 2\)</span>，得出 <span class="math inline">\(B
+\Rightarrow (C \Rightarrow D) = 2\)</span> 矛盾</li>
+<li>row (4) <span class="math inline">\(B = 0, D = 1\)</span>，要 <span
+class="math inline">\(B \Rightarrow C\)</span> 为 0，则 <span
+class="math inline">\(C = 0\)</span>，得出 <span class="math inline">\(B
+\Rightarrow (C \Rightarrow D) = 2\)</span> 矛盾</li>
+<li>row (5) <span class="math inline">\(B = 1, D = 1\)</span>，要 <span
+class="math inline">\(B \Rightarrow C\)</span> 为 0，则 <span
+class="math inline">\(C = 2\)</span>，得出 <span class="math inline">\(B
+\Rightarrow (C \Rightarrow D) = 2\)</span> 矛盾</li>
+<li>row (7) <span class="math inline">\(B = 0, D = 2\)</span>，要 <span
+class="math inline">\(B \Rightarrow C\)</span> 为 0，则 <span
+class="math inline">\(C = 0\)</span>，得出 <span class="math inline">\(B
+\Rightarrow (C \Rightarrow D) = 2\)</span> 矛盾</li>
+</ul>
+<p>同样地，要想 A3 非 0，则 <span class="math inline">\(\neg C
+\Rightarrow \neg B\)</span> 为 0，<span class="math inline">\((\neg C
+\Rightarrow B) \Rightarrow C\)</span> 为 2，后者推出 <span
+class="math inline">\(\neg C \Rightarrow B\)</span> 为 0，<span
+class="math inline">\(C\)</span> 为 2，因此 <span
+class="math inline">\(\neg C\)</span> 为 0，导致 <span
+class="math inline">\(B\)</span> 和 <span class="math inline">\(\neg
+B\)</span> 均为 0，与上表矛盾</p>
+<p>又 A1 是不 <em>select</em> 的：<span class="math inline">\(1
+\Rightarrow (2 \Rightarrow 1) = 2\)</span>，故 <span
+class="math inline">\(A2, A3 \nvdash A1\)</span>，因为如果可以则 A1 也是
+<em>select</em> 才对</p>
+<h4 id="a2-独立的证明">A2 独立的证明</h4>
+<p>考虑下面这个多值逻辑表</p>
+<p><span class="math display">\[
+\begin{array}
+  {c c c}
+  A &amp; \neg A &amp; row \\
+  0 &amp; 1 &amp; (a)\\
+  1 &amp; 0 &amp; (b) \\
+  2 &amp; 1 &amp; (c) \\
+\end{array}
+\hspace{8em}
+\begin{array}
+  {c c c c}
+  A &amp; B &amp; A \Rightarrow B &amp; row \\
+  0 &amp; 0 &amp; 0 &amp; (1) \\
+  1 &amp; 0 &amp; 0 &amp; (2) \\
+  2 &amp; 0 &amp; 0 &amp; (3) \\
+  0 &amp; 1 &amp; 2 &amp; (4) \\
+  1 &amp; 1 &amp; 2 &amp; (5) \\
+  2 &amp; 1 &amp; 0 &amp; (6) \\
+  0 &amp; 2 &amp; 1 &amp; (7) \\
+  1 &amp; 2 &amp; 0 &amp; (8) \\
+  2 &amp; 2 &amp; 0 &amp; (9) \\
+\end{array}
+\]</span></p>
+<p>类似于上面， 一个合式公式 <span class="math inline">\(A\)</span>
+，如果其 statement letters
+无论取何种取值组合，最终其值（按上述表）都取值 0，则称之为
+<em>grotesque</em> 的</p>
+<p>首先 <strong>MP 是保持 <em>grotesqueness</em> 的</strong>，又
+<strong>A1/A3 也是 <em>grotesque</em></strong>
+的（不再详细验证了），最后 <span class="math inline">\((0 \Rightarrow (0
+\Rightarrow 1)) \Rightarrow ((0 \Rightarrow 0) \Rightarrow (0
+\Rightarrow 1)) = 2\)</span> 所以 <strong>A2 不是 <em>grotesque</em>
+的</strong></p>
+<p>故 <span class="math inline">\(A1, A3 \nvdash A2\)</span></p>
+<h4 id="a3-独立的证明">A3 独立的证明</h4>
+<p>令 <span class="math inline">\(h(B)\)</span> 为将合式公式 <span
+class="math inline">\(B\)</span> 中所有 <span
+class="math inline">\(\neg\)</span> 擦除之后的式子，如果 <span
+class="math inline">\(h(B)\)</span> 是重言式，称 <span
+class="math inline">\(B\)</span> 是 <em>super</em> 的；<strong>显然
+A1/A2 都是 <em>super</em> 的</strong> （因为都没有 <span
+class="math inline">\(\neg\)</span> 符号）；再有 <strong>MP 是保持
+<em>superness</em> 的</strong>，因为如果 <span class="math inline">\(h(B
+\Rightarrow C)\)</span> 和 <span class="math inline">\(h(B)\)</span>
+是重言式，则 <span class="math inline">\(h(C)\)</span> 也是 （因为 <span
+class="math inline">\(h(B \Rightarrow C) = h(B) \Rightarrow
+h(C)\)</span>，根据 Proposition 1.2 <span
+class="math inline">\(h(C)\)</span> 也是重言式），但 <span
+class="math inline">\(h(A3) = (C \Rightarrow B) \Rightarrow ((C
+\Rightarrow B) \Rightarrow C)\)</span> 并不是重言式（令 <span
+class="math inline">\(C = F\)</span> 以及 <span class="math inline">\(B
+= F\)</span> 可知），</p>
+<p>故 <span class="math inline">\(A1, A2 \nvdash A3\)</span></p>
+<h5
+id="我想用多值逻辑其实也可以证明-a3-的独立性">我想用多值逻辑其实也可以证明
+A3 的独立性</h5>
+<p>其实就是 Exercises
+1.51（不过书中的答案更简洁），方法同上面：构造一个多值逻辑的真值表，
+使得 A1/A2 总是取值 0，MP 也保持这种特性，而 A3 不总是取值 0 即可</p>
+<p>首先如果合式公式 <span class="math inline">\(A \Rightarrow B\)</span>
+和 <span class="math inline">\(A\)</span> 总是 0，要使得 <span
+class="math inline">\(B\)</span> 也总是 0 的话，则表必须满足下面的要求
+<span class="math display">\[
+\begin{array}
+  {c c c c}
+  A &amp; B &amp; A \Rightarrow B &amp; row \\
+  0 &amp; 0 &amp; 0 &amp; (1) \\
+  1 &amp; 0 &amp;   &amp; (2) \\
+  2 &amp; 0 &amp;   &amp; (3) \\
+  0 &amp; 1 &amp; \neq 0  &amp; (4) \\
+  1 &amp; 1 &amp;   &amp; (5) \\
+  2 &amp; 1 &amp;   &amp; (6) \\
+  0 &amp; 2 &amp; \neq 0  &amp; (7) \\
+  1 &amp; 2 &amp;   &amp; (8) \\
+  2 &amp; 2 &amp;   &amp; (9) \\
+\end{array}
+\]</span></p>
+<p>例如为使得尽量容易出现 0，其他位置都填上 0</p>
+<p><span class="math display">\[
+\begin{array}
+  {c c c c}
+  A &amp; B &amp; A \Rightarrow B &amp; row \\
+  0 &amp; 0 &amp; 0 &amp; (1) \\
+  1 &amp; 0 &amp; 0 &amp; (2) \\
+  2 &amp; 0 &amp; 0 &amp; (3) \\
+  0 &amp; 1 &amp; 1 &amp; (4) \\
+  1 &amp; 1 &amp; 0 &amp; (5) \\
+  2 &amp; 1 &amp; 0 &amp; (6) \\
+  0 &amp; 2 &amp; 2 &amp; (7) \\
+  1 &amp; 2 &amp; 0 &amp; (8) \\
+  2 &amp; 2 &amp; 0 &amp; (9) \\
+\end{array}
+\]</span></p>
+<p>容易验证上表对于 A1/A2 来说总是 0 的</p>
+<p>最后我们构造一个 <span class="math inline">\(\neg\)</span> 表使得 A3
+不总是 0，例如</p>
+<p><span class="math display">\[
+\begin{array}
+  {c c}
+  A &amp; \neg A \\
+  0 &amp; 1 \\
+  1 &amp; 0 \\
+  2 &amp; 1 \\
+\end{array}
+\]</span></p>
+<p>若 <span class="math inline">\(B = 1, C = 2\)</span> 则 <span
+class="math inline">\((\neg 2 \Rightarrow \neg 1) \Rightarrow ((\neg 2
+\Rightarrow 1) \Rightarrow 2) = 0 \Rightarrow (0 \Rightarrow 2) =
+2\)</span></p>
+</div>
+<h2 id="other-axiomatizations">1.6 Other Axiomatizations</h2>
+<p>TODO</p>
+<link rel="stylesheet" href="/assets/venobox/dist/venobox.min.css" />
+<script src="/assets/venobox/dist/venobox.min.js"></script>
+<script>
+  document.querySelectorAll('img').forEach((img) => {
+    const a = document.createElement("a")
+    a.href = '#'
+    a.setAttribute('data-href', img.src)
+    a.classList.add('images')
+    img.replaceWith(a)
+    a.appendChild(img)
+  })
+  new VenoBox({
+    selector: '.images',
+    fitView: true,
+  });
+</script>
+</body>
+</html>

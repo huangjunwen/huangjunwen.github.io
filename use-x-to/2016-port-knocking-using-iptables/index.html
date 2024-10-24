@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="dcterms.date" content="2016-12-20" />
+  <title>用 iptables 来配置 port knocking</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link href="/assets/latex.css/style.min.css" rel="stylesheet" />
+  <style>
+  /* fixes for latex.css */
+  .date {
+    text-align: center;
+  }
+
+  div.sourceCode {
+    background: var(--pre-bg-color);
+    border-radius: 10px;
+  }
+
+  dl dd {
+    text-align: left;
+  }
+
+  #footnotes {
+    margin-top: 1em;
+  }
+
+  #footnotes hr:first-child {
+    display: none;
+  }
+  </style>
+</head>
+<body>
+<style>
+/* sidebar */
+#sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  max-width: 400px;
+  width: 80%;
+  height: 100%;
+  padding: 2rem;
+  background-color: #eee;
+  box-shadow: 0 10px 20px -4px #000;
+  overflow-x: hidden;
+  overflow-y: auto;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-100%);
+  transition: opacity 0.3s ease, visibility 0.2s ease, transform 0.3s ease;
+}
+#sidebar.show {
+  pointer-events: all;
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+}
+#sidebar_toggler {
+  position: fixed;
+  top: 4vh;
+  right: 3vw;
+  z-index: 1000;
+  width: 2.8rem;
+  height: 2.4rem;
+  padding: 0.5rem;
+  border: solid #999 0.1rem;
+  border-radius: 0.4rem;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+#sidebar_toggler span {
+  background-color: #999;
+  width: 100%;
+  height: 0.2rem;
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+nav span {
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 90%;
+}
+nav li:before {
+  content: '';
+}
+nav .caret {
+  cursor: pointer;
+  user-select: none; /* Prevent text selection */
+}
+nav .caret::before {
+  content: "\25B6";
+  color: black;
+  display: inline-block;
+  margin-right: 6px;
+}
+nav .caret-down::before {
+  transform: rotate(90deg);
+}
+nav .collapse {
+  display: none;
+}
+</style>
+<aside id="sidebar">
+  <div class="sidebar_content sidebar_head">
+    <h1>Content</h1>
+  </div>
+  <div class="sidebar_content sidebar_body">
+    <nav id="side_navlinks" class="side_navlinks">
+      <!--<ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Services</a></li>
+        <li><a href="#">Portfolio</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>-->
+    </nav>
+  </div>
+</aside>
+<div id="sidebar_toggler">
+  <span></span>
+  <span></span>
+  <span></span>
+</div>
+<script>
+/* setup sidebar */
+// https://www.cssscript.com/demo/responsive-sidebar-nav-hamburger/
+const sidebar = document.querySelector('#sidebar')
+const sidebarToggler = document.querySelector('#sidebar_toggler')
+
+sidebarToggler.addEventListener('click', () => {
+  sidebar.classList.toggle('show')
+});
+
+const keywords = document.querySelector('meta[name="keywords"]')
+if (keywords && keywords.content.includes('showSidebar')) {
+  sidebar.classList.add('show')
+}
+
+/*
+window.addEventListener('click', (e) => {
+  if (e.target.id !== 'sidebar' && e.target.id !== 'sidebar_toggler') {
+    sidebar.classList.remove('show');
+  }
+});
+*/
+
+/* load urls */
+// https://www.w3schools.com/howto/howto_js_treeview.asp
+const currentPath = window.location.pathname
+const sideNavLinks = document.querySelector('#side_navlinks');
+function buildSideLink(li, node) {
+  // span contains the text and link (if provided)
+  const span = li.appendChild(document.createElement("span"))
+  if (node.url) {
+    const a = span.appendChild(document.createElement("a"))
+    a.href = node.url
+    a.textContent = node.text
+  } else {
+    span.textContent = node.text
+  }
+  span.setAttribute("title", node.text)
+
+  // if has children, then add caret and append a nested <ul> for children
+  if (node.children.length > 0) {
+    span.classList.add("caret")
+    const ul = li.appendChild(document.createElement("ul"))
+    ul.classList.add("nested")
+    // do not collapse current path
+    if (!currentPath.startsWith(node.path)) {
+      ul.classList.add("collapse")
+    } else {
+      span.classList.add("caret-down")
+    }
+    node.children.forEach((child) => {
+      const l = ul.appendChild(document.createElement("li"))
+      buildSideLink(l, child)
+    })
+  }
+}
+async function loadSideLinks() {
+  const resp = await fetch("/urls.json")
+  const data = await resp.json()
+  // console.log(data)
+  const root = sideNavLinks.appendChild(document.createElement("ul"))
+  data.children.forEach((child) => {
+    buildSideLink(root.appendChild(document.createElement("li")), child)
+  })
+
+  const toggler = root.getElementsByClassName("caret")
+  for (let i=0; i<toggler.length; i++) {
+    toggler[i].addEventListener("click", function () {
+      this.parentElement.querySelector(".nested").classList.toggle("collapse")
+      this.classList.toggle("caret-down")
+      return false
+    })
+  }
+}
+loadSideLinks()
+</script>
+<header id="title-block-header">
+<h1 class="title">用 iptables 来配置 port knocking</h1>
+<p class="date">2016-12-20</p>
+</header>
+<p>对于正式环境的服务器来说，每当查看到 auth.log 里头那些撞大运的 ssh
+登录尝试，心里总是有点惴惴不安的。虽然 public key authentication
+号称安全，但是谁说得准呢？而且不知道配置里会不会有错误，要是有多一层的防护总是好的。</p>
+<p>以前听说过 <a href="https://en.wikipedia.org/wiki/Port_knocking">Port
+knocking</a>
+这种技术了，大致的思路就是设定一系列随机端口（例如：7421，3411，9088等等）作为暗号，用户在访问服务器之前，要依次“敲”一下这几个端口（即相继发送网络包到这几个端口上），这些端口当然是关闭状态啦，但服务器上可以侦察得到这些敲门，如果暗号对了，就给访问者
+ip 开放服务端口（例如22）。</p>
+<p>还有一些更高级的，例如在网络包里存放加密信息等，不过这就复杂了，暂且不表。</p>
+<p>一般要实现这样的功能，需要有独立的 deamon
+程序跑在后台检查日志，但有个问题，如果这个 deamon
+不够健壮挂了的话，就再也没人上得去了。</p>
+<p>前段时间看到 <a href="https://www.digitalocean.com/">DigitalOcean</a>
+上一篇单纯使用 iptables 就能实现 Port knocking 的教程，不需要单独开发
+deamon，只要配置 iptables 的 rules
+就能实现这样的功能，觉得很实用，分享在此：</p>
+<p><a
+href="https://www.digitalocean.com/community/tutorials/how-to-configure-port-knocking-using-only-iptables-on-an-ubuntu-vps"
+class="uri">https://www.digitalocean.com/community/tutorials/how-to-configure-port-knocking-using-only-iptables-on-an-ubuntu-vps</a></p>
+<p>不过我用的时候发现个问题，就是 tcp
+包在发送的时候，好像一次过会发送多个包，这样敲门的序列就会变成类似：</p>
+<pre><code>7421
+7421
+3411
+9088
+9088
+9088
+...</code></pre>
+<p>所以我把 rules 改成接纳每个端口可以连续 N
+次，只要下一个不一样的是正确的就可以接受：</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="va">PORT1</span><span class="op">=</span>xxxx</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="va">PORT2</span><span class="op">=</span>xxxx</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="va">PORT3</span><span class="op">=</span>xxxx</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># reset firewall</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="ex">iptables</span> <span class="at">-F</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="ex">iptables</span> <span class="at">-X</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="ex">iptables</span> <span class="at">-P</span> INPUT ACCEPT</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="ex">iptables</span> <span class="at">-P</span> FORWARD ACCEPT</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="ex">iptables</span> <span class="at">-P</span> OUTPUT ACCEPT</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co"># create new chains used by port knocking</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="ex">iptables</span> <span class="at">-N</span> KNOCKING</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="ex">iptables</span> <span class="at">-N</span> GATE1</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="ex">iptables</span> <span class="at">-N</span> GATE2</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="ex">iptables</span> <span class="at">-N</span> GATE3</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="ex">iptables</span> <span class="at">-N</span> PASSED</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co"># accept current connections (keep current SSH connections)</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="ex">iptables</span> <span class="at">-A</span> INPUT <span class="at">-m</span> conntrack <span class="at">--ctstate</span> ESTABLISHED,RELATED <span class="at">-j</span> ACCEPT</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="co"># accept local machine&#39;s connection</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="ex">iptables</span> <span class="at">-A</span> INPUT <span class="at">-i</span> lo <span class="at">-j</span> ACCEPT</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="co"># accept http/https or other exported services</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="ex">iptables</span> <span class="at">-A</span> INPUT <span class="at">-p</span> tcp <span class="at">--dport</span> 80 <span class="at">-j</span> ACCEPT</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="ex">iptables</span> <span class="at">-A</span> INPUT <span class="at">-p</span> tcp <span class="at">--dport</span> 443 <span class="at">-j</span> ACCEPT</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="co"># now pass all other to the KNOCKING chain</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="ex">iptables</span> <span class="at">-A</span> INPUT <span class="at">-j</span> KNOCKING</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="co"># KNOCKING dispatch</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="ex">iptables</span> <span class="at">-A</span> KNOCKING <span class="at">-m</span> recent <span class="at">--reap</span> <span class="at">--rcheck</span> <span class="at">--seconds</span> 3600 <span class="at">--name</span> AUTH3 <span class="at">-j</span> PASSED</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="ex">iptables</span> <span class="at">-A</span> KNOCKING <span class="at">-m</span> recent <span class="at">--reap</span> <span class="at">--rcheck</span> <span class="at">--seconds</span> 10 <span class="at">--name</span> AUTH2 <span class="at">-j</span> GATE3</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="ex">iptables</span> <span class="at">-A</span> KNOCKING <span class="at">-m</span> recent <span class="at">--reap</span> <span class="at">--rcheck</span> <span class="at">--seconds</span> 10 <span class="at">--name</span> AUTH1 <span class="at">-j</span> GATE2</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a><span class="ex">iptables</span> <span class="at">-A</span> KNOCKING <span class="at">-j</span> GATE1</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a><span class="ex">iptables</span> <span class="at">-A</span> GATE1 <span class="at">-p</span> tcp <span class="at">--dport</span> <span class="va">$PORT1</span> <span class="at">-m</span> recent <span class="at">--name</span> AUTH1 <span class="at">--set</span> <span class="at">-j</span> DROP</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a><span class="ex">iptables</span> <span class="at">-A</span> GATE1 <span class="at">-j</span> DROP</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a><span class="ex">iptables</span> <span class="at">-A</span> GATE2 <span class="at">-p</span> tcp <span class="at">--dport</span> <span class="va">$PORT1</span> <span class="at">-j</span> DROP         <span class="co"># allow $PORT1 duplication</span></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a><span class="ex">iptables</span> <span class="at">-A</span> GATE2 <span class="at">-m</span> recent <span class="at">--name</span> AUTH1 <span class="at">--remove</span></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a><span class="ex">iptables</span> <span class="at">-A</span> GATE2 <span class="at">-p</span> tcp <span class="at">--dport</span> <span class="va">$PORT2</span> <span class="at">-m</span> recent <span class="at">--name</span> AUTH2 <span class="at">--set</span> <span class="at">-j</span> DROP</span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a><span class="ex">iptables</span> <span class="at">-A</span> GATE2 <span class="at">-j</span> GATE1</span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a><span class="ex">iptables</span> <span class="at">-A</span> GATE3 <span class="at">-p</span> tcp <span class="at">--dport</span> <span class="va">$PORT2</span> <span class="at">-j</span> DROP         <span class="co"># allow $PORT2 duplication</span></span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a><span class="ex">iptables</span> <span class="at">-A</span> GATE3 <span class="at">-m</span> recent <span class="at">--name</span> AUTH2 <span class="at">--remove</span></span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a><span class="ex">iptables</span> <span class="at">-A</span> GATE3 <span class="at">-p</span> tcp <span class="at">--dport</span> <span class="va">$PORT3</span> <span class="at">-m</span> recent <span class="at">--name</span> AUTH3 <span class="at">--set</span> <span class="at">-j</span> DROP</span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a><span class="ex">iptables</span> <span class="at">-A</span> GATE3 <span class="at">-j</span> GATE1</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a><span class="ex">iptables</span> <span class="at">-A</span> PASSED <span class="at">-p</span> tcp <span class="at">--dport</span> <span class="va">$PORT3</span> <span class="at">-j</span> DROP        <span class="co"># allow $PORT3 duplication</span></span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a><span class="ex">iptables</span> <span class="at">-A</span> PASSED <span class="at">-p</span> tcp <span class="at">--dport</span> 22 <span class="at">-j</span> ACCEPT</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a><span class="ex">iptables</span> <span class="at">-A</span> PASSED <span class="at">-j</span> DROP</span></code></pre></div>
+<p>另外还有些修改，例如 AUTH3
+的时候，允许用户有一个小时（3600秒）的时间可以随意连接 22 端口。</p>
+<link rel="stylesheet" href="/assets/venobox/dist/venobox.min.css" />
+<script src="/assets/venobox/dist/venobox.min.js"></script>
+<script>
+  document.querySelectorAll('img').forEach((img) => {
+    const a = document.createElement("a")
+    a.href = '#'
+    a.setAttribute('data-href', img.src)
+    a.classList.add('images')
+    img.replaceWith(a)
+    a.appendChild(img)
+  })
+  new VenoBox({
+    selector: '.images',
+    fitView: true,
+  });
+</script>
+</body>
+</html>

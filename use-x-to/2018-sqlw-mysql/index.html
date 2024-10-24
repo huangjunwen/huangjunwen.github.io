@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="dcterms.date" content="2018-09-10" />
+  <title>写了一个 MySQL 数据表和查询的 go 代码生成器</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link href="/assets/latex.css/style.min.css" rel="stylesheet" />
+  <style>
+  /* fixes for latex.css */
+  .date {
+    text-align: center;
+  }
+
+  div.sourceCode {
+    background: var(--pre-bg-color);
+    border-radius: 10px;
+  }
+
+  dl dd {
+    text-align: left;
+  }
+
+  #footnotes {
+    margin-top: 1em;
+  }
+
+  #footnotes hr:first-child {
+    display: none;
+  }
+  </style>
+</head>
+<body>
+<style>
+/* sidebar */
+#sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  max-width: 400px;
+  width: 80%;
+  height: 100%;
+  padding: 2rem;
+  background-color: #eee;
+  box-shadow: 0 10px 20px -4px #000;
+  overflow-x: hidden;
+  overflow-y: auto;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-100%);
+  transition: opacity 0.3s ease, visibility 0.2s ease, transform 0.3s ease;
+}
+#sidebar.show {
+  pointer-events: all;
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+}
+#sidebar_toggler {
+  position: fixed;
+  top: 4vh;
+  right: 3vw;
+  z-index: 1000;
+  width: 2.8rem;
+  height: 2.4rem;
+  padding: 0.5rem;
+  border: solid #999 0.1rem;
+  border-radius: 0.4rem;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+#sidebar_toggler span {
+  background-color: #999;
+  width: 100%;
+  height: 0.2rem;
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+nav span {
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 90%;
+}
+nav li:before {
+  content: '';
+}
+nav .caret {
+  cursor: pointer;
+  user-select: none; /* Prevent text selection */
+}
+nav .caret::before {
+  content: "\25B6";
+  color: black;
+  display: inline-block;
+  margin-right: 6px;
+}
+nav .caret-down::before {
+  transform: rotate(90deg);
+}
+nav .collapse {
+  display: none;
+}
+</style>
+<aside id="sidebar">
+  <div class="sidebar_content sidebar_head">
+    <h1>Content</h1>
+  </div>
+  <div class="sidebar_content sidebar_body">
+    <nav id="side_navlinks" class="side_navlinks">
+      <!--<ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Services</a></li>
+        <li><a href="#">Portfolio</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>-->
+    </nav>
+  </div>
+</aside>
+<div id="sidebar_toggler">
+  <span></span>
+  <span></span>
+  <span></span>
+</div>
+<script>
+/* setup sidebar */
+// https://www.cssscript.com/demo/responsive-sidebar-nav-hamburger/
+const sidebar = document.querySelector('#sidebar')
+const sidebarToggler = document.querySelector('#sidebar_toggler')
+
+sidebarToggler.addEventListener('click', () => {
+  sidebar.classList.toggle('show')
+});
+
+const keywords = document.querySelector('meta[name="keywords"]')
+if (keywords && keywords.content.includes('showSidebar')) {
+  sidebar.classList.add('show')
+}
+
+/*
+window.addEventListener('click', (e) => {
+  if (e.target.id !== 'sidebar' && e.target.id !== 'sidebar_toggler') {
+    sidebar.classList.remove('show');
+  }
+});
+*/
+
+/* load urls */
+// https://www.w3schools.com/howto/howto_js_treeview.asp
+const currentPath = window.location.pathname
+const sideNavLinks = document.querySelector('#side_navlinks');
+function buildSideLink(li, node) {
+  // span contains the text and link (if provided)
+  const span = li.appendChild(document.createElement("span"))
+  if (node.url) {
+    const a = span.appendChild(document.createElement("a"))
+    a.href = node.url
+    a.textContent = node.text
+  } else {
+    span.textContent = node.text
+  }
+  span.setAttribute("title", node.text)
+
+  // if has children, then add caret and append a nested <ul> for children
+  if (node.children.length > 0) {
+    span.classList.add("caret")
+    const ul = li.appendChild(document.createElement("ul"))
+    ul.classList.add("nested")
+    // do not collapse current path
+    if (!currentPath.startsWith(node.path)) {
+      ul.classList.add("collapse")
+    } else {
+      span.classList.add("caret-down")
+    }
+    node.children.forEach((child) => {
+      const l = ul.appendChild(document.createElement("li"))
+      buildSideLink(l, child)
+    })
+  }
+}
+async function loadSideLinks() {
+  const resp = await fetch("/urls.json")
+  const data = await resp.json()
+  // console.log(data)
+  const root = sideNavLinks.appendChild(document.createElement("ul"))
+  data.children.forEach((child) => {
+    buildSideLink(root.appendChild(document.createElement("li")), child)
+  })
+
+  const toggler = root.getElementsByClassName("caret")
+  for (let i=0; i<toggler.length; i++) {
+    toggler[i].addEventListener("click", function () {
+      this.parentElement.querySelector(".nested").classList.toggle("collapse")
+      this.classList.toggle("caret-down")
+      return false
+    })
+  }
+}
+loadSideLinks()
+</script>
+<header id="title-block-header">
+<h1 class="title">写了一个 MySQL 数据表和查询的 go 代码生成器</h1>
+<p class="date">2018-09-10</p>
+</header>
+<p><em>项目地址 <a href="https://github.com/huangjunwen/sqlw-mysql"
+class="uri">https://github.com/huangjunwen/sqlw-mysql</a></em></p>
+<h2 id="动机">动机</h2>
+<p>最近这段时间开始用 go
+写网站，遇到各种新老问题。其中一个老问题是如何访问 MySQL 数据库。</p>
+<h3 id="使用-orm-object-relationship-mapping">使用 ORM (Object
+Relationship Mapping)</h3>
+<p>大致浏览了一些热门的实现，感觉不是很合眼缘，跟动态语言的实现（例如 <a
+href="htps://www.sqlalchemy.org"><em>SQLAlchemy</em></a> ）差不少。</p>
+<p>ORM
+的特点在于使用程序员熟悉的对象概念抽象数据库关系，使之成为可编程的对象，提供使用上的便利：</p>
+<ul>
+<li>构造查询的便利，用户一般只需要指定需要查询的对象（一般对应数据库表），或者关系（一般对应
+<code>JOIN</code>），还可以按需要增添查询条件，ORM
+即可推导出需要执行的语句：</li>
+</ul>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>sess.query(User)                        <span class="co"># SELECT user.id, ... FROM user</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>sess.query(Employee.User)               <span class="co"># SELECT employee.id, ... FROM employee JOIN user ON ...</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>sess.query(User).<span class="bu">filter</span>(User.name<span class="op">==</span>xxx) <span class="co"># SELECT user.id, ... FROM user WHERE name=xxx</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>sess.query(User).options(joinedload(Employee)).order_by(...) <span class="co"># ...</span></span></code></pre></div>
+<ul>
+<li>查询后的便利，结果集会被重新组装成对象，后续仍只需继续在这些对象上操作即可。</li>
+</ul>
+<p>这样理想状态下涉及数据库的操作就被完全封装到一个闭环里头。然而数据库关系其实并不简单，建立一个表达力十足的映射模型即是使用
+python 这种表达力很强的动态语言都很复杂（看看这个<a
+href="http://docs.sqlalchemy.org/en/latest/orm/relationship_api.html#sqlalchemy.orm.relationship">函数</a>），何况
+go 这种既缺乏元编程能力也缺乏语法糖的语言呢。</p>
+<p>因此我所见的实现往往只能退而求其次，只实现一些基本常用的功能。</p>
+<h3 id="直接使用-sql">直接使用 SQL</h3>
+<p>除了使用 ORM 另外一种方法是直接面对关系数据库/SQL
+本身，例如有很多人（声称）直接使用 <a
+href="https://github.com/jmoiron/sqlx"><em>sqlx</em></a>，但我感觉全部手写会不会也挺麻烦重复的呢？</p>
+<p>所以有一些工具能帮忙生成代码，例如 <a
+href="https://github.com/xo/xo"><em>xo</em></a>，连接上数据库直接导出
+schema 就能生成基本的 CRUD 访问代码，同时也可以根据它的 SQL DSL 生成 SQL
+的 wrapper
+code。整个过程一目了然，没有层层封装的不透明感，生成代码的效率也高，虽然需要手写
+SQL，但代码生成过程是经过实际数据库验证的，这就相当可靠了。</p>
+<p>因此我认为这种方法在 go
+中是最合适的，不过实际使用了一下这个工具后，还是有一些不满意的地方，主要集中在
+SQL wrapper code 生成这一部分：</p>
+<ul>
+<li><p>有些 SQL 语句需要改写才行，这主要是因为它的实现基于
+<code>CREATE VIEW ...</code> ，但不是所有合法的 <code>SELECT</code>
+语句都可以用来创建 view。例如假设有两个表 <code>user</code> 和
+<code>employee</code> 都有 <code>id</code> 字段（这很常见），则
+<code>SELECT user.*, employee.* FROM user JOIN employee ...</code>
+虽然是合法语句，却因为字段重名而不能用来创建 view；而要添加 alias 改写成
+<code>SELECT user.id AS user_id, ...., employee.id AS employee_id, ...</code>
+这样才行。</p></li>
+<li><p>一些 MySQL 相关的问题，例如：<a
+href="https://github.com/xo/xo/issues/123">#123</a></p></li>
+<li><p>生成的代码虽然省去了手动拼接手动 scan 的麻烦，但仍然不如 ORM
+中操作对象那么方便，例如上边的例子生成的代码大致长这样：</p></li>
+</ul>
+<div class="sourceCode" id="cb2"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">type</span> JoinResult <span class="kw">struct</span> <span class="op">{</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  UserID <span class="dt">int32</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">// ...</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  EmployeeID <span class="dt">int32</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">// ...</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>只是将结果平铺在一个 struct 中，而不是（我）理想中的：</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">type</span> JoinResult <span class="kw">struct</span> <span class="op">{</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  User <span class="op">*</span>User</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  Employee <span class="op">*</span>Employee</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>这样后续我如果需要继续在结果集的 <code>User</code>
+上继续操作的话，我需要重新手动装配一次。</p>
+<h2 id="改良">改良</h2>
+<p>因为上述原因，所以决定基于 xo
+的方法重新造一个轮子看看能不能改善一点。</p>
+<p>首先，直接以 <a
+href="https://golang.org/pkg/database/sql/#ColumnType">sql.ColumnType</a>（<a
+href="https://golang.org/doc/go1.8#database_sql">go1.8</a>
+添加）而不是从 <code>information_schema</code> 里提取 schema 和 query
+的元数据，这样所有合法的查询都能支持。不过这种方法有个缺点，能获得多少元信息取决于这个
+RDBMS 的协议返回什么样的信息，例如，postgres 似乎是<a
+href="https://github.com/lib/pq/pull/647">无法获得</a>
+<code>Nullable</code> 信息的；而 MySQL
+的协议返回的信息相对比较完整，这也是为什么只支持 MySQL 的缘故啦 :-)</p>
+<p>另一方面是增强 SQL DSL，在 sqlw-mysql 中我选择使用 XML
+来描述一个查询，例如（quick start 的例子之一）:</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode xml"><code class="sourceCode xml"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>&lt;<span class="kw">stmt</span><span class="ot"> name=</span><span class="st">&quot;SubordinatesBySuperiors&quot;</span>&gt;</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  &lt;<span class="kw">a</span><span class="ot"> name=</span><span class="st">&quot;id&quot;</span><span class="ot"> type=</span><span class="st">&quot;...int&quot;</span> /&gt;</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  &lt;<span class="kw">v</span><span class="ot"> in_query=</span><span class="st">&quot;1&quot;</span> /&gt;</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  SELECT</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">wc</span><span class="ot"> table=</span><span class="st">&quot;employee&quot;</span><span class="ot"> as=</span><span class="st">&quot;superior&quot;</span> /&gt;,     <span class="co">&lt;!-- 上司 --&gt;</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">wc</span><span class="ot"> table=</span><span class="st">&quot;employee&quot;</span><span class="ot"> as=</span><span class="st">&quot;subordinate&quot;</span> /&gt;   <span class="co">&lt;!-- 下级 --&gt;</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  FROM</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    employee AS superior LEFT JOIN employee AS subordinate </span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    ON subordinate.superior_id=superior.id</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  WHERE</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    superior.id IN (&lt;<span class="kw">r</span><span class="ot"> by=</span><span class="st">&quot;:id&quot;</span>&gt;1&lt;/<span class="kw">r</span>&gt;)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>&lt;/<span class="kw">stmt</span>&gt;</span></code></pre></div>
+<p>之所以使用 XML 是因为需要在 SQL
+语句片段中间插入一些特殊的指令（元素），这些指令有些有特殊的标记作用；有些则会展开成
+SQL 片段来减少一些重复劳动，例子里的
+<code>&lt;wc table="employee" as="superior"&gt;</code>
+（wildcard）指令实际上是会展开成字段列表如</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>superior.<span class="kw">id</span>, superior.employee_sn, superior.user_id, superior.superior_id</span></code></pre></div>
+<p>上述例子演示的是 <code>one2many</code> 的关系（一个上司对应 0+
+个下级），最终生成的代码节选如下：</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">// SubordinatesBySuperiorsResult is the result of `SubordinatesBySuperiors`.</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">type</span> SubordinatesBySuperiorsResult <span class="kw">struct</span> <span class="op">{</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  Superior          <span class="op">*</span>Employee</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  Subordinate       <span class="op">*</span>Employee</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">// ...</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">// SubordinatesBySuperiorsResultSlice is slice of SubordinatesBySuperiorsResult.</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="kw">type</span> SubordinatesBySuperiorsResultSlice <span class="op">[]*</span>SubordinatesBySuperiorsResult</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co">// ...</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> SubordinatesBySuperiors<span class="op">(</span>ctx context<span class="op">.</span>Context<span class="op">,</span> q Queryer<span class="op">,</span> id <span class="op">...</span><span class="dt">int</span><span class="op">)</span> <span class="op">(</span>SubordinatesBySuperiorsResultSlice<span class="op">,</span> <span class="dt">error</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="co">// ...</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="co">// DistinctSuperior returns distinct (by primary value) Superior in the slice.</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="op">(</span>slice <span class="op">*</span>SubordinatesBySuperiorsResultSlice<span class="op">)</span> DistinctSuperior<span class="op">()</span> <span class="op">[]*</span>Employee <span class="op">{</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  <span class="co">// ...</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="co">// GroupBySuperior groups by Superior and returns distinct (by primary value) Superior with</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a><span class="co">// their associated sub group of slices.</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="op">(</span>slice <span class="op">*</span>SubordinatesBySuperiorsResultSlice<span class="op">)</span> GroupBySuperior<span class="op">()</span> <span class="op">([]*</span>Employee<span class="op">,</span> <span class="op">[]</span>SubordinatesBySuperiorsResultSlice<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>  <span class="co">// ...</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a><span class="co">// DistinctSubordinate returns distinct (by primary value) Subordinate in the slice.</span></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="op">(</span>slice <span class="op">*</span>SubordinatesBySuperiorsResultSlice<span class="op">)</span> DistinctSubordinate<span class="op">()</span> <span class="op">[]*</span>Employee <span class="op">{</span></span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>  <span class="co">// ...</span></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a><span class="co">// GroupBySubordinate groups by Subordinate and returns distinct (by primary value) Subordinate with</span></span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a><span class="co">// their associated sub group of slices.</span></span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a><span class="kw">func</span> <span class="op">(</span>slice <span class="op">*</span>SubordinatesBySuperiorsResultSlice<span class="op">)</span> GroupBySubordinate<span class="op">()</span> <span class="op">([]*</span>Employee<span class="op">,</span> <span class="op">[]</span>SubordinatesBySuperiorsResultSlice<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>  <span class="co">// ...</span></span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>可以看到，除了生成出基本的 wrapper function
+（<code>SubordinatesBySuperiors</code>）外，结果集也附带一些辅佐函数
+<code>GroupByXXX/DistinctXXX</code> 以便操作，例如可以这样使用：</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 查询 id 为 1~7 号员工的下级</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>slice<span class="op">,</span> err <span class="op">:=</span> models<span class="op">.</span>SubordinatesBySuperiors<span class="op">(</span>ctx<span class="op">,</span> tx<span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">4</span><span class="op">,</span> <span class="dv">5</span><span class="op">,</span> <span class="dv">6</span><span class="op">,</span> <span class="dv">7</span><span class="op">)</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> err <span class="op">!=</span> <span class="ot">nil</span> <span class="op">{</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  log<span class="op">.</span>Fatal<span class="op">(</span>err<span class="op">)</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">// 结果集按 superior 分组，superiors[i] 对应 groups[i]</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>superiors<span class="op">,</span> groups <span class="op">:=</span> slice<span class="op">.</span>GroupBySuperior<span class="op">()</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">// 迭代每一个上司</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i<span class="op">,</span> superior <span class="op">:=</span> <span class="kw">range</span> superiors <span class="op">{</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  <span class="co">// 获得与之对应的组别里全部下级</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  subordinates <span class="op">:=</span> groups<span class="op">[</span>i<span class="op">].</span>DistinctSubordinate<span class="op">()</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  <span class="co">// 打印</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="bu">len</span><span class="op">(</span>subordinates<span class="op">)</span> <span class="op">==</span> <span class="dv">0</span> <span class="op">{</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    log<span class="op">.</span>Printf<span class="op">(</span><span class="st">&quot;Employee %+q has no subordinate.</span><span class="ch">\n</span><span class="st">&quot;</span><span class="op">,</span> superior<span class="op">.</span>EmployeeSn<span class="op">)</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    log<span class="op">.</span>Printf<span class="op">(</span><span class="st">&quot;Employee %+q has the following subordinates:</span><span class="ch">\n</span><span class="st">&quot;</span><span class="op">,</span> superior<span class="op">.</span>EmployeeSn<span class="op">)</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _<span class="op">,</span> subordinate <span class="op">:=</span> <span class="kw">range</span> subordinates <span class="op">{</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>      log<span class="op">.</span>Printf<span class="op">(</span><span class="st">&quot;</span><span class="ch">\t</span><span class="st">%+q</span><span class="ch">\n</span><span class="st">&quot;</span><span class="op">,</span> subordinate<span class="op">.</span>EmployeeSn<span class="op">)</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>是不是也还挺方便的呢？</p>
+<p>注：关于 <code>&lt;wc&gt;</code> 指令如何确定 <code>Superior</code> /
+<code>Subordinate</code> 字段的正确位置<a
+href="https://github.com/huangjunwen/sqlw-mysql#how-wildcard-directive-works">文档</a>里有一些说明。</p>
+<p>总的而言个人觉得这些改进比较符合我的预期，不过这个方法也有一个比较大的缺点，<strong>那就是要起很多名字…</strong></p>
+<link rel="stylesheet" href="/assets/venobox/dist/venobox.min.css" />
+<script src="/assets/venobox/dist/venobox.min.js"></script>
+<script>
+  document.querySelectorAll('img').forEach((img) => {
+    const a = document.createElement("a")
+    a.href = '#'
+    a.setAttribute('data-href', img.src)
+    a.classList.add('images')
+    img.replaceWith(a)
+    a.appendChild(img)
+  })
+  new VenoBox({
+    selector: '.images',
+    fitView: true,
+  });
+</script>
+</body>
+</html>

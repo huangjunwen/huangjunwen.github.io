@@ -4,8 +4,8 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <meta name="keywords" content="showSidebar" />
-  <title>CoderPapa’s X site</title>
+  <meta name="dcterms.date" content="2017-04-23" />
+  <title>Shamir Secret Sharding</title>
   <style>
     html {
       color: #1a1a1a;
@@ -191,6 +191,8 @@
     display: none;
   }
   </style>
+  <script src="/assets/mathjax/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
 </head>
 <body>
 <style>
@@ -370,9 +372,58 @@ async function loadSideLinks() {
 loadSideLinks()
 </script>
 <header id="title-block-header">
-<h1 class="title">CoderPapa’s X site</h1>
+<h1 class="title">Shamir Secret Sharding</h1>
+<p class="date">2017-04-23</p>
 </header>
-
+<p><a href="https://www.hashicorp.com">Hashicorp</a>
+这家公司的产品都很有意思，其中 <a
+href="https://www.vaultproject.io/">Vault</a>
+是一个用来集中管理敏感信息（密码，各种 token，证书，key
+等等）的工具。</p>
+<p>Vault server 运行起来之后有两种状态：<strong>seal/unseal
+(密封/解封)</strong> ，这是因为：</p>
+<p>Vault 的数据是加密储存在磁盘上的：由 <strong>encryption key</strong>
+加密，这个 encryption key 是由 <strong>master key</strong>
+加密储存在磁盘上，而 master key 是不存放在磁盘上。所以当 Vault server
+刚启动时，由于 master key 未知，故 encryption key
+以及实际数据都是无法被解密访问的，这种状态就称之为<strong>seal
+(密封)</strong> ，<strong>unseal(解封)</strong> 就是重建 master key
+的过程。</p>
+<p>由于 master key 太重要了，Vault 使用所谓的 <a
+href="https://en.wikipedia.org/wiki/Shamir%27s_Secret_Sharing">Shamir’s
+Secret Sharing</a> 算法把这个 master key 切分并分发给 n 个人，只有当这 n
+个人里的最少 k 个人授权提供他们持有的部分，vault 才能重构出这个 master
+key，这个算法挺有趣，所以记录下来：</p>
+<h3 id="目标">目标</h3>
+<p>密码 <span class="math inline">\(S\)</span> 需要切分成 <span
+class="math inline">\(n\)</span> 份： <span class="math inline">\(S_1,
+S_2, ... S_n\)</span>，且满足以下：</p>
+<p>大于等于 <span class="math inline">\(k\)</span> 个任意 <span
+class="math inline">\(S_i\)</span> 就能算出 <span
+class="math inline">\(S\)</span></p>
+<p>少于等于 <span class="math inline">\(k-1\)</span> 个任意 <span
+class="math inline">\(S_i\)</span> 无法算出 <span
+class="math inline">\(S\)</span></p>
+<h3 id="思路">思路</h3>
+<p>这个算法的思路是这样的：在平面几何中，2 个点就能唯一决定一条直线，3
+个点就能唯一决定一条抛物线，4 个点能唯一决定一条三次曲线。。。反之，1
+个点决定不了唯一一条直线，2 个点或更少决定不了唯一一条抛物线。。。</p>
+<p>对于一条 <span class="math inline">\(k-1\)</span> 次曲线</p>
+<p><span class="math display">\[f(x) = a_0 + a_{1}x + a_{2}x^{2} + ... +
+a_{k-1}x^{k-1}\]</span></p>
+<p>只要 <span class="math inline">\(k\)</span> 个点就能唯一决定，而少于
+<span class="math inline">\(k\)</span> 个点，则有无限条 <span
+class="math inline">\(k-1\)</span> 次曲线穿过这些点。</p>
+<p>所以算法思路是这样的：令 <span class="math inline">\(a_0 =
+S\)</span>，再随机选取 <span class="math inline">\(a_{1}, a_{2}, ... ,
+a_{k-1}\)</span>，这样就构造出一条 <span
+class="math inline">\(k-1\)</span> 次曲线，在曲线上随机选取 <span
+class="math inline">\(n\)</span>
+个点，这些点（的坐标值）就是分发给各人的密码 <span
+class="math inline">\(S_i\)</span> 了。 只要超过 <span
+class="math inline">\(k\)</span>
+个人提供他们的密码（点），就能重构曲线，也就能获得 <span
+class="math inline">\(S = a_0 = f(0)\)</span> 了。</p>
 <link rel="stylesheet" href="/assets/venobox/dist/venobox.min.css" />
 <script src="/assets/venobox/dist/venobox.min.js"></script>
 <script>

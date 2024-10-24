@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="dcterms.date" content="2022-05-05" />
+  <title>Intuitionistic Logic</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link href="/assets/latex.css/style.min.css" rel="stylesheet" />
+  <style>
+  /* fixes for latex.css */
+  .date {
+    text-align: center;
+  }
+
+  div.sourceCode {
+    background: var(--pre-bg-color);
+    border-radius: 10px;
+  }
+
+  dl dd {
+    text-align: left;
+  }
+
+  #footnotes {
+    margin-top: 1em;
+  }
+
+  #footnotes hr:first-child {
+    display: none;
+  }
+  </style>
+  <script src="/assets/mathjax/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<style>
+/* sidebar */
+#sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  max-width: 400px;
+  width: 80%;
+  height: 100%;
+  padding: 2rem;
+  background-color: #eee;
+  box-shadow: 0 10px 20px -4px #000;
+  overflow-x: hidden;
+  overflow-y: auto;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-100%);
+  transition: opacity 0.3s ease, visibility 0.2s ease, transform 0.3s ease;
+}
+#sidebar.show {
+  pointer-events: all;
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+}
+#sidebar_toggler {
+  position: fixed;
+  top: 4vh;
+  right: 3vw;
+  z-index: 1000;
+  width: 2.8rem;
+  height: 2.4rem;
+  padding: 0.5rem;
+  border: solid #999 0.1rem;
+  border-radius: 0.4rem;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+#sidebar_toggler span {
+  background-color: #999;
+  width: 100%;
+  height: 0.2rem;
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+nav span {
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 90%;
+}
+nav li:before {
+  content: '';
+}
+nav .caret {
+  cursor: pointer;
+  user-select: none; /* Prevent text selection */
+}
+nav .caret::before {
+  content: "\25B6";
+  color: black;
+  display: inline-block;
+  margin-right: 6px;
+}
+nav .caret-down::before {
+  transform: rotate(90deg);
+}
+nav .collapse {
+  display: none;
+}
+</style>
+<aside id="sidebar">
+  <div class="sidebar_content sidebar_head">
+    <h1>Content</h1>
+  </div>
+  <div class="sidebar_content sidebar_body">
+    <nav id="side_navlinks" class="side_navlinks">
+      <!--<ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Services</a></li>
+        <li><a href="#">Portfolio</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>-->
+    </nav>
+  </div>
+</aside>
+<div id="sidebar_toggler">
+  <span></span>
+  <span></span>
+  <span></span>
+</div>
+<script>
+/* setup sidebar */
+// https://www.cssscript.com/demo/responsive-sidebar-nav-hamburger/
+const sidebar = document.querySelector('#sidebar')
+const sidebarToggler = document.querySelector('#sidebar_toggler')
+
+sidebarToggler.addEventListener('click', () => {
+  sidebar.classList.toggle('show')
+});
+
+const keywords = document.querySelector('meta[name="keywords"]')
+if (keywords && keywords.content.includes('showSidebar')) {
+  sidebar.classList.add('show')
+}
+
+/*
+window.addEventListener('click', (e) => {
+  if (e.target.id !== 'sidebar' && e.target.id !== 'sidebar_toggler') {
+    sidebar.classList.remove('show');
+  }
+});
+*/
+
+/* load urls */
+// https://www.w3schools.com/howto/howto_js_treeview.asp
+const currentPath = window.location.pathname
+const sideNavLinks = document.querySelector('#side_navlinks');
+function buildSideLink(li, node) {
+  // span contains the text and link (if provided)
+  const span = li.appendChild(document.createElement("span"))
+  if (node.url) {
+    const a = span.appendChild(document.createElement("a"))
+    a.href = node.url
+    a.textContent = node.text
+  } else {
+    span.textContent = node.text
+  }
+  span.setAttribute("title", node.text)
+
+  // if has children, then add caret and append a nested <ul> for children
+  if (node.children.length > 0) {
+    span.classList.add("caret")
+    const ul = li.appendChild(document.createElement("ul"))
+    ul.classList.add("nested")
+    // do not collapse current path
+    if (!currentPath.startsWith(node.path)) {
+      ul.classList.add("collapse")
+    } else {
+      span.classList.add("caret-down")
+    }
+    node.children.forEach((child) => {
+      const l = ul.appendChild(document.createElement("li"))
+      buildSideLink(l, child)
+    })
+  }
+}
+async function loadSideLinks() {
+  const resp = await fetch("/urls.json")
+  const data = await resp.json()
+  // console.log(data)
+  const root = sideNavLinks.appendChild(document.createElement("ul"))
+  data.children.forEach((child) => {
+    buildSideLink(root.appendChild(document.createElement("li")), child)
+  })
+
+  const toggler = root.getElementsByClassName("caret")
+  for (let i=0; i<toggler.length; i++) {
+    toggler[i].addEventListener("click", function () {
+      this.parentElement.querySelector(".nested").classList.toggle("collapse")
+      this.classList.toggle("caret-down")
+      return false
+    })
+  }
+}
+loadSideLinks()
+</script>
+<header id="title-block-header">
+<h1 class="title">Intuitionistic Logic</h1>
+<p class="date">2022-05-05</p>
+</header>
+<h2 id="intuitionism">Intuitionism</h2>
+<p>直觉主义（Intuitionism）<a href="#fn1" class="footnote-ref"
+id="fnref1" role="doc-noteref"><sup>1</sup></a> 是主要由 L. E. J.
+Brouwer 以及其学生 Heyting
+奠基的一派数学哲学，其主要观点是数学是人心智的<strong>构造物</strong>：自然数/实数/证明/定理…
+都是心智的构造物，这些数学对象是被创造出来的而不是从客观世界中被发现的，<strong>唯有当存在其有效的构造方法时才能证明其存在</strong>（即构造性证明，而经典方法允许以<strong>否定其不存在</strong>的方式证明其存在）；另外对无穷的看法也有所不同，Brouwer
+拒绝实无穷（Actual Infinity）的概念而仅接受潜无穷（Potential
+Infinity），因为诸如包含全体自然数的集合其实是没有办法有效的被构造出来，而只有永续的但有限的集合能被构造出来<a
+href="#fn2" class="footnote-ref" id="fnref2"
+role="doc-noteref"><sup>2</sup></a></p>
+<p><em>NOTE: 个人感觉有效构造究竟是什么其实挺模糊的</em></p>
+<h2 id="example-of-constructivenon-constructive-proof">Example of
+Constructive/Non-constructive proof</h2>
+<p>下面是一个常见的构造性/非构造性证明的例子</p>
+<blockquote>
+<p>若 <span class="math inline">\(a\)</span> 和 <span
+class="math inline">\(b\)</span> 均是无理数，则 <span
+class="math inline">\(a^b\)</span> 可能是有理数</p>
+</blockquote>
+<h3 id="non-constructive-proof">Non-constructive proof</h3>
+<p><span class="math inline">\(\sqrt 2 ^ {\sqrt 2}\)</span>
+要么是有理数，要么是无理数</p>
+<ul>
+<li>如果是有理数，则已经得证，因为 <span class="math inline">\(a=\sqrt
+2\)</span> 以及 <span class="math inline">\(b=\sqrt 2\)</span>
+均是无理数</li>
+<li>如果是无理数，则令 <span class="math inline">\(a=\sqrt 2 ^ {\sqrt
+2}\)</span>，<span class="math inline">\(b=\sqrt 2\)</span>，易知 <span
+class="math display">\[
+a^b = (\sqrt 2 ^ {\sqrt 2}) ^ {\sqrt 2} = \sqrt 2 ^ {\sqrt 2 \cdot \sqrt
+2} = \sqrt 2 ^ 2 = 2
+\]</span></li>
+</ul>
+<p>该证明是非构造性证明，因为：它依赖于排中律（e.g. 有理数或无理数）来给出两种可能性，而究竟是哪一个成立甚至都无关紧要</p>
+<h3 id="constructive-proof">Constructive proof</h3>
+<p>令 <span class="math inline">\(a = \sqrt 2\)</span> 以及 <span
+class="math inline">\(b = log_{2} 9\)</span> 则 <span
+class="math inline">\(2^b = (a \cdot a)^b = a^b \cdot a^b = 9\)</span>
+故 <span class="math inline">\(a^b = 3\)</span></p>
+<h2 id="bhk-interpretation">BHK interpretation</h2>
+<p>BHK 释义<a href="#fn3" class="footnote-ref" id="fnref3"
+role="doc-noteref"><sup>3</sup></a>（Brouwer–Heyting–Kolmogorov
+interpretation）是直觉主义逻辑的标准解释，如下：</p>
+<ul>
+<li><span class="math inline">\(P \wedge Q\)</span> 的证明是 <span
+class="math inline">\(\langle p, q \rangle\)</span>，其中 <span
+class="math inline">\(p\)</span> 和 <span
+class="math inline">\(q\)</span> 分别是 <span
+class="math inline">\(P\)</span> 和 <span
+class="math inline">\(Q\)</span> 的证明</li>
+<li><span class="math inline">\(P \vee Q\)</span> 的证明是 <span
+class="math inline">\(\langle 0, p \rangle\)</span> 或者 <span
+class="math inline">\(\langle 1, q \rangle\)</span>，其中 <span
+class="math inline">\(p\)</span> 和 <span
+class="math inline">\(q\)</span> 分别是 <span
+class="math inline">\(P\)</span> 和 <span
+class="math inline">\(Q\)</span> 的证明</li>
+<li><span class="math inline">\(P \rightarrow Q\)</span>
+的证明是一个函数 <span class="math inline">\(f\)</span>，能将 <span
+class="math inline">\(P\)</span> 的证明转换为 <span
+class="math inline">\(Q\)</span> 的证明</li>
+<li><span class="math inline">\((\exists x \in S)P(x)\)</span> 的证明是
+<span class="math inline">\(\langle s, p \rangle\)</span>，其中 <span
+class="math inline">\(s \in S\)</span>，<span
+class="math inline">\(p\)</span> 是 <span
+class="math inline">\(P(s)\)</span> 的证明</li>
+<li><span class="math inline">\((\forall x \in S)P(x)\)</span>
+的证明是一个函数 <span class="math inline">\(f\)</span>，能将 <span
+class="math inline">\(s \in S\)</span> 转换为 <span
+class="math inline">\(P(s)\)</span> 的证明</li>
+<li><span class="math inline">\(\bot\)</span>
+荒谬（absurdity）没有证明</li>
+<li><span class="math inline">\(\neg P\)</span> 是 <span
+class="math inline">\(P \rightarrow \bot\)</span> 的缩写，即一个能将
+<span class="math inline">\(P\)</span> 的证明转换为荒谬的证明的函数</li>
+<li>原子命题（<span class="math inline">\(P\)</span>
+等）本身的构造性证明应当在其特定上下文中获得</li>
+</ul>
+<p>对比经典逻辑，可以看出有很大的不同：
+在经典逻辑中，命题是基于二值的组合的；而在直觉主义逻辑中，命题是基于证明的组合的，有证明则成立，<strong>支持每一个命题成立的证明各不相同</strong>（注意：一个命题可能会有多种证明，但只需要举出一个即可支持其成立）</p>
+<p><em>NOTE:
+个人感觉这里的“证明”/“函数”并不是固定严格的定义，更多的是表述概念（e.g. 函数表达一种转换/映射的概念），例如下面的例子中用
+lambda calculus 作为函数，但这却不一定是唯一的一种方式</em></p>
+<h2 id="law-of-excluded-middle">Law of Excluded Middle</h2>
+<p>要证明 <span class="math inline">\(P \vee Q\)</span>
+则需要有确定的其中之一的证明，对于<strong>排中律</strong>（Law of
+Excluded Middle，缩写为 EM）</p>
+<p><span class="math display">\[
+P \vee \neg P
+\]</span></p>
+<p>来说，如果 <span class="math inline">\(P\)</span>
+是未解的命题，当下既没有证明也没有证伪的方法（未来也许会有），
+故不能认为是<strong>对所有命题都普遍成立</strong>的公理（注意对<strong>特定命题</strong>是可以成立的）</p>
+<p>但另一方面，排中律的双重否动在直觉主义下却是普遍成立的（EM-irrefutable）<a
+href="#fn4" class="footnote-ref" id="fnref4"
+role="doc-noteref"><sup>4</sup></a></p>
+<p><span class="math display">\[
+\neg \neg (P \vee \neg P)
+\]</span></p>
+<p>也即</p>
+<p><span class="math display">\[
+((P \vee (P \rightarrow \bot)) \rightarrow \bot) \rightarrow \bot
+\]</span></p>
+<p>因为它是有证明的：</p>
+<p><span class="math display">\[
+\lambda k . k(\langle 1, \lambda p . k(\langle 0, p \rangle) \rangle)
+\]</span></p>
+<p>说明如下：</p>
+<ol type="1">
+<li>为证明该命题，需要构造一个函数，其参数 <span
+class="math inline">\(k\)</span> 是 <span class="math inline">\((P \vee
+(P \rightarrow \bot)) \rightarrow \bot\)</span> 的证明
+（含义是：排中律可以证伪），然后需要从这个证明构造一个 <span
+class="math inline">\(\bot\)</span> 的证明（即它会导致矛盾）</li>
+<li>若能构造一个 <span class="math inline">\(P \vee (P \rightarrow
+\bot)\)</span> 的证明，则对它应用 <span class="math inline">\(k\)</span>
+就可以获得 <span class="math inline">\(\bot\)</span> 了</li>
+<li>要构造 <span class="math inline">\(P \vee (P \rightarrow
+\bot)\)</span> 的证明，可以用 <span class="math inline">\(P\)</span>
+或者 <span class="math inline">\(P \rightarrow \bot\)</span>
+的证明进行构造， 但现在上下文中并没有 <span
+class="math inline">\(P\)</span> 的证明，但可以尝试构造一个 <span
+class="math inline">\(P \rightarrow \bot\)</span>
+的证明（一个函数）</li>
+<li>开始构造该函数，其参数 <span class="math inline">\(p\)</span> 是
+<span class="math inline">\(P\)</span> 的证明，需要构造一个 <span
+class="math inline">\(\bot\)</span> 的证明</li>
+<li>跟 2 一样需要一个 <span class="math inline">\(P \vee (P \rightarrow
+\bot)\)</span> 的证明</li>
+<li>跟 3 不一样的是，现在上下文中有 <span
+class="math inline">\(P\)</span> 的证明 <span
+class="math inline">\(p\)</span> 了，可以直接构造出 <span
+class="math inline">\(P \vee (P \rightarrow \bot)\)</span> 的证明</li>
+</ol>
+<p><img src="./em-irrefutable.png" /></p>
+<p>排除掉排中律还会导致下面的结果</p>
+<h2 id="double-negation-elimination">Double Negation Elimination</h2>
+<p><strong>双重否定消除</strong>（Double Negation Elimination，缩写为
+DNE）</p>
+<p><span class="math display">\[
+\neg \neg P \rightarrow P
+\]</span></p>
+<p>在直觉主义下也不成立，否则作用在 EM-irrefutable
+上就能使得排中律也成立了<a href="#fn5" class="footnote-ref" id="fnref5"
+role="doc-noteref"><sup>5</sup></a></p>
+<p>不过双重否定引入（Double Negation Introduction）却是成立的</p>
+<p><span class="math display">\[
+P \rightarrow \neg \neg P
+\]</span></p>
+<p>即</p>
+<p><span class="math display">\[
+P \rightarrow ((P \rightarrow \bot) \rightarrow \bot)
+\]</span></p>
+<p>它可以由如下证明</p>
+<p><span class="math display">\[
+\lambda p . (\lambda q . q(p))
+\]</span></p>
+<h2 id="proof-by-contradiction">Proof by Contradiction</h2>
+<p>这种不对称性也反映在常用的<strong>反证法</strong>（Proof by
+Contradiction）和 <strong>Proof of
+Negation</strong>（不知道怎么翻译）上<a href="#fn6" class="footnote-ref"
+id="fnref6" role="doc-noteref"><sup>6</sup></a>：</p>
+<p><span class="math display">\[
+(P \rightarrow \bot) \rightarrow \neg P
+\]</span></p>
+<p>以上是 Proof of Negation，即如果顺着 <span
+class="math inline">\(P\)</span> 能证明荒谬，那么 <span
+class="math inline">\(P\)</span> 能证伪；它由一个 identity
+函数证明，因为 BHK 解释下 <span class="math inline">\(\neg P\)</span>
+就是用 <span class="math inline">\(P \rightarrow \bot\)</span>
+定义的</p>
+<p>但以下看上去类似的反证法是不被直觉主义接受的</p>
+<p><span class="math display">\[
+(\neg P \rightarrow \bot) \rightarrow P
+\]</span></p>
+<p>因为它其实就是双重否定消除</p>
+<h2 id="universalexistential-quantification">Universal/Existential
+quantification</h2>
+<p>对谓词逻辑也有影响，例如下面</p>
+<p><span class="math display">\[
+(\exists x)(\neg P(x)) \rightarrow \neg (\forall x)P(x)
+\]</span></p>
+<p>这在经典逻辑和直觉主义逻辑下都是成立的<a href="#fn7"
+class="footnote-ref" id="fnref7"
+role="doc-noteref"><sup>7</sup></a>，即若存在一个 <span
+class="math inline">\(P(x)\)</span> 不成立的实例，全体 <span
+class="math inline">\(P(x)\)</span> 都成立这个命题就不成立</p>
+<p>但反过来</p>
+<p><span class="math display">\[
+\neg (\forall x)P(x) \rightarrow (\exists x)(\neg P(x))
+\]</span></p>
+<p>在直觉主义中却不普遍成立，因为需要有实际构造出的 <span
+class="math inline">\(x\)</span> 以及 <span
+class="math inline">\(P(x)\)</span> 才能得证，而从 <span
+class="math inline">\(\neg (\forall x)P(x)\)</span>
+出发没法找到一个普遍的转换方式得出具体的 <span
+class="math inline">\(x\)</span>
+（实际上，如果该命题成立的话，是可以推导出 EM 的：</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode agda"><code class="sourceCode agda"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>¬∀-implies-∃¬→em <span class="ot">:</span> <span class="ot">(∀</span> <span class="ot">{</span>X <span class="ot">:</span> <span class="dt">Set</span><span class="ot">}</span> <span class="ot">{</span>P <span class="ot">:</span> X <span class="ot">→</span> <span class="dt">Set</span><span class="ot">}</span> <span class="ot">→</span> ¬ <span class="ot">(∀</span> x <span class="ot">→</span> P x<span class="ot">)</span> <span class="ot">→</span> ∃[ x ] <span class="ot">(</span>¬ P x<span class="ot">))</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>                 <span class="co">--------------------------</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>                 <span class="ot">→</span> <span class="ot">(∀</span> <span class="ot">{</span>P <span class="ot">:</span> <span class="dt">Set</span><span class="ot">}</span> <span class="ot">→</span> P ⊎ ¬ P<span class="ot">)</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>¬∀-implies-∃¬→em f <span class="ot">{</span>P<span class="ot">}</span> <span class="ot">=</span> proj₁ <span class="ot">(</span>f <span class="ot">{</span>P ⊎ ¬ P<span class="ot">}</span> <span class="ot">{λ</span> x <span class="ot">→</span> ⊥<span class="ot">}</span> em-irrefutable<span class="ot">)</span></span></code></pre></div>
+<h2 id="todo">TODO</h2>
+<p>…</p>
+<section id="footnotes" class="footnotes footnotes-end-of-document"
+role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1"><p>链接</p>
+<ul>
+<li><a href="https://plato.stanford.edu/entries/intuitionism/"
+class="uri">https://plato.stanford.edu/entries/intuitionism/</a></li>
+<li><a
+href="https://plato.stanford.edu/entries/philosophy-mathematics/#Int"
+class="uri">https://plato.stanford.edu/entries/philosophy-mathematics/#Int</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Intuitionism"
+class="uri">https://en.wikipedia.org/wiki/Intuitionism</a></li>
+</ul>
+<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></li>
+<li id="fn2"><p>摘自 <a
+href="https://en.wikipedia.org/wiki/Intuitionism#Infinity"
+class="uri">https://en.wikipedia.org/wiki/Intuitionism#Infinity</a></p>
+<blockquote>
+<p>Brouwer made it clear, as I think beyond any doubt, that there is no
+evidence supporting the belief in the existential character of the
+totality of all natural numbers … the sequence of numbers which grows
+beyond any stage already reached by passing to the next number, is a
+manifold of possibilities open towards infinity; it remains forever in
+the status of creation, but is not a closed realm of things existing in
+themselves. That we blindly converted one into the other is the true
+source of our difficulties, including the antinomies – a source of more
+fundamental nature than Russell’s vicious circle principle indicated</p>
+</blockquote>
+<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></li>
+<li id="fn3"><p><a
+href="https://en.wikipedia.org/wiki/Brouwer%E2%80%93Heyting%E2%80%93Kolmogorov_interpretation"
+class="uri">https://en.wikipedia.org/wiki/Brouwer%E2%80%93Heyting%E2%80%93Kolmogorov_interpretation</a><a
+href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p><a
+href="https://plfa.github.io/Negation/#excluded-middle-is-irrefutable"
+class="uri">https://plfa.github.io/Negation/#excluded-middle-is-irrefutable</a><a
+href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>实际上 DNE 和 EM 是等价的（即 <span
+class="math inline">\(EM \leftrightarrow
+DNE\)</span>），另外同下面几个也是等价的，见<a
+href="https://plfa.github.io/Negation/#exercise-classical-stretch">这里</a></p>
+<ul>
+<li>Peirce’s Law： <span class="math inline">\(((A \rightarrow B)
+\rightarrow A) \rightarrow A\)</span></li>
+<li>Implication as disjunction： <span class="math inline">\((A
+\rightarrow B) \rightarrow \neg A \vee B\)</span></li>
+<li>De Morgan： <span class="math inline">\(\neg (\neg A \wedge \neg B)
+\rightarrow A \vee B\)</span></li>
+</ul>
+<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></li>
+<li id="fn6"><p><a
+href="https://blog.plover.com/math/IL-contradiction.html"
+class="uri">https://blog.plover.com/math/IL-contradiction.html</a><a
+href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p><a
+href="https://plfa.github.io/Quantifiers/#exercise--implies--recommended"
+class="uri">https://plfa.github.io/Quantifiers/#exercise--implies--recommended</a><a
+href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+<link rel="stylesheet" href="/assets/venobox/dist/venobox.min.css" />
+<script src="/assets/venobox/dist/venobox.min.js"></script>
+<script>
+  document.querySelectorAll('img').forEach((img) => {
+    const a = document.createElement("a")
+    a.href = '#'
+    a.setAttribute('data-href', img.src)
+    a.classList.add('images')
+    img.replaceWith(a)
+    a.appendChild(img)
+  })
+  new VenoBox({
+    selector: '.images',
+    fitView: true,
+  });
+</script>
+</body>
+</html>

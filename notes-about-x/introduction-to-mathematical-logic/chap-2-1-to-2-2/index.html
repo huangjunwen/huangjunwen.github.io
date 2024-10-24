@@ -1,0 +1,1228 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="dcterms.date" content="2022-01-13" />
+  <title>Chapter 2: First-Order Logic and Model Theory (2.1~2.2)</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <link href="/assets/latex.css/style.min.css" rel="stylesheet" />
+  <style>
+  /* fixes for latex.css */
+  .date {
+    text-align: center;
+  }
+
+  div.sourceCode {
+    background: var(--pre-bg-color);
+    border-radius: 10px;
+  }
+
+  dl dd {
+    text-align: left;
+  }
+
+  #footnotes {
+    margin-top: 1em;
+  }
+
+  #footnotes hr:first-child {
+    display: none;
+  }
+  </style>
+  <script src="/assets/mathjax/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<style>
+/* sidebar */
+#sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  max-width: 400px;
+  width: 80%;
+  height: 100%;
+  padding: 2rem;
+  background-color: #eee;
+  box-shadow: 0 10px 20px -4px #000;
+  overflow-x: hidden;
+  overflow-y: auto;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-100%);
+  transition: opacity 0.3s ease, visibility 0.2s ease, transform 0.3s ease;
+}
+#sidebar.show {
+  pointer-events: all;
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+}
+#sidebar_toggler {
+  position: fixed;
+  top: 4vh;
+  right: 3vw;
+  z-index: 1000;
+  width: 2.8rem;
+  height: 2.4rem;
+  padding: 0.5rem;
+  border: solid #999 0.1rem;
+  border-radius: 0.4rem;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+#sidebar_toggler span {
+  background-color: #999;
+  width: 100%;
+  height: 0.2rem;
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+nav span {
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 90%;
+}
+nav li:before {
+  content: '';
+}
+nav .caret {
+  cursor: pointer;
+  user-select: none; /* Prevent text selection */
+}
+nav .caret::before {
+  content: "\25B6";
+  color: black;
+  display: inline-block;
+  margin-right: 6px;
+}
+nav .caret-down::before {
+  transform: rotate(90deg);
+}
+nav .collapse {
+  display: none;
+}
+</style>
+<aside id="sidebar">
+  <div class="sidebar_content sidebar_head">
+    <h1>Content</h1>
+  </div>
+  <div class="sidebar_content sidebar_body">
+    <nav id="side_navlinks" class="side_navlinks">
+      <!--<ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Services</a></li>
+        <li><a href="#">Portfolio</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>-->
+    </nav>
+  </div>
+</aside>
+<div id="sidebar_toggler">
+  <span></span>
+  <span></span>
+  <span></span>
+</div>
+<script>
+/* setup sidebar */
+// https://www.cssscript.com/demo/responsive-sidebar-nav-hamburger/
+const sidebar = document.querySelector('#sidebar')
+const sidebarToggler = document.querySelector('#sidebar_toggler')
+
+sidebarToggler.addEventListener('click', () => {
+  sidebar.classList.toggle('show')
+});
+
+const keywords = document.querySelector('meta[name="keywords"]')
+if (keywords && keywords.content.includes('showSidebar')) {
+  sidebar.classList.add('show')
+}
+
+/*
+window.addEventListener('click', (e) => {
+  if (e.target.id !== 'sidebar' && e.target.id !== 'sidebar_toggler') {
+    sidebar.classList.remove('show');
+  }
+});
+*/
+
+/* load urls */
+// https://www.w3schools.com/howto/howto_js_treeview.asp
+const currentPath = window.location.pathname
+const sideNavLinks = document.querySelector('#side_navlinks');
+function buildSideLink(li, node) {
+  // span contains the text and link (if provided)
+  const span = li.appendChild(document.createElement("span"))
+  if (node.url) {
+    const a = span.appendChild(document.createElement("a"))
+    a.href = node.url
+    a.textContent = node.text
+  } else {
+    span.textContent = node.text
+  }
+  span.setAttribute("title", node.text)
+
+  // if has children, then add caret and append a nested <ul> for children
+  if (node.children.length > 0) {
+    span.classList.add("caret")
+    const ul = li.appendChild(document.createElement("ul"))
+    ul.classList.add("nested")
+    // do not collapse current path
+    if (!currentPath.startsWith(node.path)) {
+      ul.classList.add("collapse")
+    } else {
+      span.classList.add("caret-down")
+    }
+    node.children.forEach((child) => {
+      const l = ul.appendChild(document.createElement("li"))
+      buildSideLink(l, child)
+    })
+  }
+}
+async function loadSideLinks() {
+  const resp = await fetch("/urls.json")
+  const data = await resp.json()
+  // console.log(data)
+  const root = sideNavLinks.appendChild(document.createElement("ul"))
+  data.children.forEach((child) => {
+    buildSideLink(root.appendChild(document.createElement("li")), child)
+  })
+
+  const toggler = root.getElementsByClassName("caret")
+  for (let i=0; i<toggler.length; i++) {
+    toggler[i].addEventListener("click", function () {
+      this.parentElement.querySelector(".nested").classList.toggle("collapse")
+      this.classList.toggle("caret-down")
+      return false
+    })
+  }
+}
+loadSideLinks()
+</script>
+<header id="title-block-header">
+<h1 class="title">Chapter 2: First-Order Logic and Model Theory
+(2.1~2.2)</h1>
+<p class="date">2022-01-13</p>
+</header>
+<p>一阶（谓词）逻辑</p>
+<h2 id="quantifiers">2.1 Quantifiers</h2>
+<dl>
+<dt>symbols</dt>
+<dd>
+<p>一阶符号包括以下这些</p>
+<ul>
+<li>变量（Individual variables）: <span class="math inline">\(x_1, x_2,
+..., x_n, ...\)</span></li>
+<li>常量（Individual constants）: <span class="math inline">\(a_1, a_2,
+..., a_n, ...\)</span></li>
+<li>谓词/断言符号（Predicate letters）: <span
+class="math inline">\(A_1^m, A_2^m, ..., A_n^m, ...\)</span></li>
+<li>函数符号（Function letters）: <span class="math inline">\(f_1^m,
+f_2^m, ..., f_n^m, ...\)</span></li>
+<li><span class="math inline">\(() \neg \Rightarrow , \forall\)</span>
+联结词符号，这里基本跟命题逻辑是一样的，只是增加了 <span
+class="math inline">\(,\)</span> 和 <span
+class="math inline">\(\forall\)</span></li>
+</ul>
+</dd>
+</dl>
+<p><em>注：其中谓词符号和函数符号的上标表示其参数的数目，例如两个参数的二元谓词符号/二元函数符号</em></p>
+<dl>
+<dt>Term</dt>
+<dd>
+<p>项（Term）定义为</p>
+<ol type="1">
+<li>常量变量都是项</li>
+<li>如果 <span class="math inline">\(f_n^m\)</span> 是一个函数符号，而
+<span class="math inline">\(t_1, t_2, ..., t_m\)</span> 是项，则 <span
+class="math inline">\(f_n^m(t_1, t_2, ..., t_m)\)</span> 也是项</li>
+<li>当且仅当一个表达式是由 1 或 2 构造出来时才是项</li>
+</ol>
+</dd>
+</dl>
+<p>项类似于一般语言里的<strong>名词</strong></p>
+<dl>
+<dt>Atomic formulas</dt>
+<dd>
+如果 <span class="math inline">\(A_n^m\)</span> 是一个谓词符号，且 <span
+class="math inline">\(t_1, t_2, ..., t_m\)</span> 是项，则 <span
+class="math inline">\(A_n^m(t_1, t_2, ..., t_m)\)</span>
+是<strong>原子式</strong>
+</dd>
+<dt>wffs</dt>
+<dd>
+<p>合式公式定义为</p>
+<ol type="1">
+<li>所有原子式都是合式公式</li>
+<li>如果 <span class="math inline">\(B\)</span> 和 <span
+class="math inline">\(C\)</span> 是合式公式，<span
+class="math inline">\(y\)</span> 是变量，则 <span
+class="math inline">\((\neg B)\)</span>，<span class="math inline">\((B
+\Rightarrow C)\)</span> 以及 <span class="math inline">\(((\forall
+y)B)\)</span> 均是合式公式</li>
+<li>当且仅当一个表达式是由 1 或 2 构造出来时才是合式公式</li>
+</ol>
+</dd>
+</dl>
+<p><em>注：在 <span class="math inline">\(((\forall y)B)\)</span> 中
+<span class="math inline">\(B\)</span> 是量词 <span
+class="math inline">\((\forall y)\)</span> 的范围（scope），另外 <span
+class="math inline">\(B\)</span> 不一定要包含 <span
+class="math inline">\(y\)</span>， 在这种情况下，<span
+class="math inline">\(((\forall y)B)\)</span> 等价于 <span
+class="math inline">\(B\)</span></em></p>
+<p>其他联结词诸如 <span class="math inline">\((B \wedge C)\)</span>,
+<span class="math inline">\((B \vee C)\)</span> 以及 <span
+class="math inline">\((B \Leftrightarrow C)\)</span> 定义同<a
+href="../chap-1-4/#connective-alias">上一章</a>，<span
+class="math inline">\(((\exists x) B)\)</span> 定义为 <span
+class="math inline">\((\neg ((\forall x)(\neg B)))\)</span></p>
+<p>如果一个合式公式 <span class="math inline">\(B\)</span> 中的变量
+<span class="math inline">\(x\)</span> 的所在（occurrence）出现在量词
+<span class="math inline">\((\forall x)\)</span>
+中，或处于该量词范围中，则称该所在为有约束的（bound），
+否则称该所在是自由的（free）；注意如在 <span
+class="math inline">\(A_1^2(x_1, x_2) \Rightarrow (\forall x_1)
+A_1^1(x_1)\)</span> 中的 <span class="math inline">\(x_1\)</span>
+那样，一个变量在一个合式公式 里可以同时有自由和约束的所在</p>
+<p>如果一个变量在一个合式公式里有自由（约束）所在，则称该变量是自由（约束）的；故一个变量在一个合式公式里可以同时是自由和约束的</p>
+<p>如果 <span class="math inline">\(B\)</span> 是一个合式公式，<span
+class="math inline">\(t\)</span> 是一个项，假如 <span
+class="math inline">\(B\)</span> 中的一个变量 <span
+class="math inline">\(x_i\)</span> 没有任意一个自由所在处于任何 <span
+class="math inline">\((\forall x_j)\)</span> 的范围中 （其中 <span
+class="math inline">\(x_j\)</span> 是 <span
+class="math inline">\(t\)</span> 中的一个变量），则称 <span
+class="math inline">\(t\)</span> <strong>可以自由替换掉</strong> <span
+class="math inline">\(x_i\)</span> （<em><span
+class="math inline">\(t\)</span> is said to be free for <span
+class="math inline">\(x_i\)</span></em>）； 这里的意思是，<strong>如果将
+<span class="math inline">\(t\)</span> 替换到 <span
+class="math inline">\(B(x_i)\)</span> 中所有 <span
+class="math inline">\(x_i\)</span> 的自由所在成为 <span
+class="math inline">\(B(t)\)</span>，<span
+class="math inline">\(t\)</span>
+中不会有变量因为如此而变得被约束了</strong></p>
+<p><img src="free.png" /></p>
+<p>以下这些很明显：</p>
+<ol type="1">
+<li>一个不包含任何变量的项可以自由替换掉任意合式公式中的任意变量</li>
+<li>一个包含变量的项可以自由替换掉一个合式公式中的任意变量，如果该项中的变量都没有在该公式中被约束的话</li>
+<li><span class="math inline">\(x_i\)</span>
+可以自由替换任意合式公式中的 <span
+class="math inline">\(x_i\)</span></li>
+<li>任何项都可以自由替换一个合式公式中的 <span
+class="math inline">\(x_i\)</span>，如果该公式中根本没有 <span
+class="math inline">\(x_i\)</span> 的自由所在</li>
+</ol>
+<h2
+id="first-order-languages-and-their-interpretations-satisfiability-and-truth-models">2.2 First-Order
+Languages and Their Interpretations: Satisfiability and Truth:
+Models</h2>
+<p>一阶逻辑还需要给非逻辑符号赋予含义才能构成完整的一阶语言（First-Order
+Language）</p>
+<dl>
+<dt>First order language</dt>
+<dd>
+<p>一个一阶语言 <span class="math inline">\(\mathcal{L}\)</span>
+包含以下语法符号</p>
+<ol type="1">
+<li>命题联接符 <span class="math inline">\(\neg\)</span> 和 <span
+class="math inline">\(\Rightarrow\)</span> 以及全称量词 <span
+class="math inline">\(\forall\)</span></li>
+<li>一些标点符号：左右括弧 <span class="math inline">\(()\)</span>
+以及逗号 <span class="math inline">\(,\)</span></li>
+<li>可数多的变量：<span class="math inline">\(x_1, x_2,
+...\)</span></li>
+<li>有限（甚至 0 个）或可数多的函数符号：<span
+class="math inline">\(f_1^n, f_2^n, ...\)</span></li>
+<li>有限（甚至 0 个）或可数多的常量符号：<span
+class="math inline">\(a_1, a_2, ...\)</span></li>
+<li>一个非空谓词符号集合（因为如果没有谓词的话也就没有任何的合式公式了）：<span
+class="math inline">\(A_1^n, A_2^n, ...\)</span></li>
+</ol>
+</dd>
+</dl>
+<p>注：其中常量/函数符号/谓词符号称为 <span
+class="math inline">\(\mathcal{L}\)</span> 中的非逻辑常量（nonlogical
+constant），</p>
+<p>不同语言所使用符号所代表的可能完全不同的含义，例如一个算术语言中可能会使用
+“+” “×” 作为函数符号，“=” 作为谓词符号；
+而一个几何类的语言则可能会使用诸如 “平行” “相交” 等谓词</p>
+<dl>
+<dt>Interpretation</dt>
+<dd>
+<p>一个一阶语言 <span class="math inline">\(\mathcal{L}\)</span>
+的语义解释（interpretation）<a href="#fn1" class="footnote-ref"
+id="fnref1" role="doc-noteref"><sup>1</sup></a> <span
+class="math inline">\(M\)</span>包括如下这些</p>
+<ol type="1">
+<li>一个非空集合 <span
+class="math inline">\(D\)</span>，称为该解释的论域（domain）</li>
+<li>对于每一个谓词符号 <span
+class="math inline">\(A_j^n\)</span>，赋予一个 <span
+class="math inline">\(D\)</span> 中的 <span
+class="math inline">\(n\)</span> 元关系 <span
+class="math inline">\((A_j^n)^M\)</span>，即 <span
+class="math inline">\(D^n\)</span> 的一个子集</li>
+<li>对于每一个函数符号 <span
+class="math inline">\(f_j^n\)</span>，赋予一个 <span
+class="math inline">\(D\)</span> 中的 <span
+class="math inline">\(n\)</span> 元操作 <span
+class="math inline">\((f_j^n)^M\)</span>，即从 <span
+class="math inline">\(D^n\)</span> 到 <span
+class="math inline">\(D\)</span> 的映射</li>
+<li>对于每一个常量 <span class="math inline">\(a_i\)</span>，赋予一个
+<span class="math inline">\(D\)</span> 中一个固定的元素 <span
+class="math inline">\((a_i)^M\)</span></li>
+</ol>
+</dd>
+</dl>
+<p>对于一个解释来说，一个没有自由变量的公式（称为封闭公式或者句子 closed
+wf or sentence）代表了一个真/假命题，
+一个有自由变量的公式则可能在一些取值下为可满足（satisfied），一些取值下不满足</p>
+<p>可满足性以及真/假性可由以下更严密地定义（Tarski
+1936），首先定义可满足性，真/假性由可满足性来进一步定义</p>
+<p>首先对于一个有 <span class="math inline">\(n\)</span>
+个自由变量的公式，为方便统一故，我们不使用 n-tuple <span
+class="math inline">\(\langle s_1, s_2, ..., s_n \rangle\)</span>
+作为讨论对象， 而直接使用一个 denumerable sequence <span
+class="math inline">\(s = (s_1, s_2, ...)\)</span> 作为讨论对象
+（<em>定义域为正整数的函数，该定义在书中 xxii
+页，按我理解即直接拓展为可数无限长的 tuple</em>）<a href="#fn2"
+class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<dl>
+<dt><span class="math inline">\(s^{ * }(t)\)</span></dt>
+<dd>
+<p>若 <span class="math inline">\(s\)</span> 是一个 denumerable
+sequence，即 <span class="math inline">\(s(i): Uint \rightarrow
+D\)</span> <a href="#fn3" class="footnote-ref" id="fnref3"
+role="doc-noteref"><sup>3</sup></a>，定义 <span
+class="math inline">\(s^{ * }(t): Term \rightarrow D\)</span> 为</p>
+<ul>
+<li>若 <span class="math inline">\(t\)</span> 是变量 <span
+class="math inline">\(x_j\)</span>，则 <span class="math inline">\(s^{ *
+}(x_j) = s(j)\)</span></li>
+<li>若 <span class="math inline">\(t\)</span> 是常量 <span
+class="math inline">\(a_j\)</span>，则 <span class="math inline">\(s^{ *
+}(a_j) = (a_j)^M\)</span></li>
+<li>若 <span class="math inline">\(t\)</span> 形如 <span
+class="math inline">\(f_k^n(t_1, t_2, ..., t_n)\)</span>，则 <span
+class="math inline">\(s^{ * }(f_k^n(t_1, t_2, ..., t_n)) = (f_k^n)^M
+(s^{ * }(t_1), s^{ * }(t_2), ..., s^{ * }(t_n))\)</span></li>
+</ul>
+</dd>
+</dl>
+<p>从直观上说，<span class="math inline">\(s^{ * }\)</span> 就是将 <span
+class="math inline">\(t\)</span> 中的所有 <span
+class="math inline">\(x_j\)</span> 替换成 <span
+class="math inline">\(s_j\)</span> 并执行 <span
+class="math inline">\(t\)</span> 中的所有函数操作最终得出一个 <span
+class="math inline">\(D\)</span> 中的元素的操作</p>
+<dl>
+<dt>Satisfiability</dt>
+<dd>
+<p>现在定义可满足性：对于一个合式公式 <span
+class="math inline">\(B\)</span> 和一个 sequence <span
+class="math inline">\(s\)</span> 来说</p>
+<ol type="1">
+<li>如果 <span class="math inline">\(B\)</span> 是一个原子式 <span
+class="math inline">\(A_k^n(t_1, ..., t_n)\)</span>，则当且仅当 <span
+class="math inline">\((A_k^n)^M(s^{ * }(t_1), ..., s^{ *
+}(t_n))\)</span> 时，<span class="math inline">\(s\)</span> 满足 <span
+class="math inline">\(B\)</span> （反之则不满足）</li>
+<li>当且仅当 <span class="math inline">\(s\)</span>
+<strong>不</strong>满足 <span class="math inline">\(B\)</span> 时，<span
+class="math inline">\(s\)</span> 满足 <span class="math inline">\(\neg
+B\)</span></li>
+<li>当且仅当 <span class="math inline">\(s\)</span>
+<strong>不</strong>满足 <span class="math inline">\(B\)</span> 或者
+<span class="math inline">\(s\)</span> 满足 <span
+class="math inline">\(C\)</span> 时，<span
+class="math inline">\(s\)</span> 满足 <span class="math inline">\(B
+\Rightarrow C\)</span> （这里可以看出用 denumerable seq 的好处了：<span
+class="math inline">\(B\)</span> 和 <span
+class="math inline">\(C\)</span> 里的变量是可能不一样的）</li>
+<li>当且仅当 <span class="math inline">\(s\)</span> 替换掉其第 <span
+class="math inline">\(i\)</span> 项为任意值都仍然满足 <span
+class="math inline">\(B\)</span> 时，<span
+class="math inline">\(s\)</span> 满足 <span
+class="math inline">\((\forall x_i)B\)</span> <a href="#fn4"
+class="footnote-ref" id="fnref4"
+role="doc-noteref"><sup>4</sup></a></li>
+</ol>
+</dd>
+</dl>
+<dl>
+<dt>Truth/Falsity</dt>
+<dd>
+<p>现在定义真/假性：在一个解释 <span class="math inline">\(M\)</span>
+下，令 <span class="math inline">\(\Sigma\)</span> 为所有 <span
+class="math inline">\(s\)</span> 的集合</p>
+<ol type="1">
+<li>当且仅当 <span class="math inline">\(\Sigma\)</span> 中任意一个
+<span class="math inline">\(s\)</span> 都满足 <span
+class="math inline">\(B\)</span>，则称 <span
+class="math inline">\(B\)</span> 在 <span
+class="math inline">\(M\)</span> 中为真，记作 <span
+class="math inline">\(\vDash_{M} B\)</span><a href="#fn5"
+class="footnote-ref" id="fnref5"
+role="doc-noteref"><sup>5</sup></a></li>
+<li>当且仅当 <span class="math inline">\(\Sigma\)</span> 中没有一个
+<span class="math inline">\(s\)</span> 满足 <span
+class="math inline">\(B\)</span>，则称 <span
+class="math inline">\(B\)</span> 在 <span
+class="math inline">\(M\)</span> 中为假</li>
+<li>对于一个合式公式集合 <span
+class="math inline">\(\Gamma\)</span>，当且仅当其中任意一个公式 <span
+class="math inline">\(B\)</span> 在 <span
+class="math inline">\(M\)</span> 中都是真时，称 <span
+class="math inline">\(M\)</span> 是 <span
+class="math inline">\(\Gamma\)</span> 的一个模型（model）</li>
+</ol>
+</dd>
+</dl>
+<p>以下这些特性在此定义下皆能成立</p>
+<ol type="1">
+<li><blockquote>
+<p><span id="property-1">当且仅当 <span class="math inline">\(\neg
+B\)</span> 是真时，<span class="math inline">\(B\)</span>
+是假的；当且仅当 <span class="math inline">\(\neg B\)</span>
+是假时，<span class="math inline">\(B\)</span> 是真的</span></p>
+</blockquote>
+<div class="proof">
+<ul>
+<li><span class="math inline">\(\neg B\)</span> 为真等价于所有 <span
+class="math inline">\(s\)</span> 满足 <span class="math inline">\(\neg
+B\)</span> 当且仅当所有 <span class="math inline">\(s\)</span> 不满足
+<span class="math inline">\(B\)</span> 等价于 <span
+class="math inline">\(B\)</span> 为假</li>
+<li><span class="math inline">\(\neg B\)</span> 为假等价于所有 <span
+class="math inline">\(s\)</span> 不满足 <span class="math inline">\(\neg
+B\)</span> 当且仅当所有 <span class="math inline">\(s\)</span> 满足
+<span class="math inline">\(\neg\neg B\)</span> 等价于 <span
+class="math inline">\(B\)</span> 为真（这里需要有 <span
+class="math inline">\(\neg\neg B = B\)</span>）</li>
+</ul>
+</div></li>
+<li><blockquote>
+<p><span id="property-2"><span class="math inline">\(\vDash_M B\)</span>
+和 <span class="math inline">\(\vDash_M \neg B\)</span>
+不能同时为真</span></p>
+</blockquote>
+<div class="proof">
+<p>如果同时为真，对于一个 <span class="math inline">\(s\)</span>
+来说，就既满足 <span class="math inline">\(B\)</span> 又不满足 <span
+class="math inline">\(B\)</span> 了，这是不可能的</p>
+</div></li>
+<li><blockquote>
+<p><span id="property-3">如果 <span class="math inline">\(\vDash_M
+B\)</span> 且 <span class="math inline">\(\vDash_M B \Rightarrow
+C\)</span>，则 <span class="math inline">\(\vDash_M
+C\)</span></span></p>
+</blockquote>
+<div class="proof">
+<p>如果一个 <span class="math inline">\(s\)</span> 同时满足 <span
+class="math inline">\(B\)</span> 和 <span class="math inline">\(B
+\Rightarrow C\)</span>，则 <span class="math inline">\(s\)</span> 也满足
+<span class="math inline">\(C\)</span>，因为 <span
+class="math inline">\(s\)</span> 满足 <span class="math inline">\(B
+\Rightarrow C\)</span>， 所以 <span class="math inline">\(s\)</span>
+满足 <span class="math inline">\(C\)</span> 或者 <span
+class="math inline">\(s\)</span> <strong>不</strong> 满足 <span
+class="math inline">\(B\)</span>，但 <span
+class="math inline">\(s\)</span> 满足 <span
+class="math inline">\(B\)</span>，故 <span
+class="math inline">\(s\)</span> 只能满足 <span
+class="math inline">\(C\)</span></p>
+</div></li>
+<li><blockquote>
+<p><span id="property-4">当且仅当 <span class="math inline">\(\vDash_M
+B\)</span> 且 <span class="math inline">\(\vDash_M \neg C\)</span>
+时，<span class="math inline">\(B \Rightarrow C\)</span> 为假</span></p>
+</blockquote>
+<div class="proof">
+<p>任意一个 <span class="math inline">\(s\)</span> 都满足 <span
+class="math inline">\(B\)</span> 且不满足 <span
+class="math inline">\(C\)</span>，故不满足 <span class="math inline">\(B
+\Rightarrow C\)</span></p>
+</div></li>
+<li><p><span id="property-5">其他联结词</span></p>
+<ul>
+<li><blockquote>
+<p>当且仅当 <span class="math inline">\(s\)</span> 满足 <span
+class="math inline">\(B\)</span> 和 <span
+class="math inline">\(C\)</span> 时，满足 <span class="math inline">\(B
+\wedge C\)</span></p>
+</blockquote>
+<div class="proof">
+<p><span class="math inline">\(s\)</span> 满足 <span
+class="math inline">\(\neg (B \Rightarrow \neg C)\)</span>
+当且仅当不满足 <span class="math inline">\(B \Rightarrow \neg
+C\)</span>，当且仅当 <span class="math inline">\(s\)</span> 满足 <span
+class="math inline">\(B\)</span> 且不满足 <span
+class="math inline">\(\neg C\)</span>， 当且仅当 <span
+class="math inline">\(s\)</span> 同时满足 <span
+class="math inline">\(B\)</span> 和 <span
+class="math inline">\(C\)</span></p>
+</div></li>
+<li><blockquote>
+<p>当且仅当 <span class="math inline">\(s\)</span> 满足 <span
+class="math inline">\(B\)</span> 或 <span
+class="math inline">\(C\)</span> 时，满足 <span class="math inline">\(B
+\vee C\)</span></p>
+</blockquote>
+<div class="proof">
+<p><span class="math inline">\(s\)</span> 满足 <span
+class="math inline">\((\neg B) \Rightarrow C\)</span> 当且仅当 <span
+class="math inline">\(s\)</span> 不满足 <span class="math inline">\(\neg
+B\)</span> 或满足 <span class="math inline">\(C\)</span>，当且仅当 <span
+class="math inline">\(s\)</span> 满足 <span
+class="math inline">\(B\)</span> 或 <span
+class="math inline">\(C\)</span></p>
+</div></li>
+<li><blockquote>
+<p>当且仅当 <span class="math inline">\(s\)</span> 同时满足 <span
+class="math inline">\(B\)</span> 和 <span
+class="math inline">\(C\)</span>，或者同时不满足 <span
+class="math inline">\(B\)</span> 和 <span
+class="math inline">\(C\)</span> 时，满足 <span class="math inline">\(B
+\Leftrightarrow C\)</span></p>
+</blockquote>
+<div class="proof">
+<p><span class="math inline">\(s\)</span> 满足 <span
+class="math inline">\(B \Leftrightarrow C\)</span> 当且仅当 <span
+class="math inline">\(s\)</span> 满足 <span class="math inline">\(B
+\Rightarrow C\)</span> 和 <span class="math inline">\(C \Rightarrow
+B\)</span>， 当且仅当 <span class="math inline">\(B\)</span> 和 <span
+class="math inline">\(C\)</span> 同时满足或同时不满足，否则总可以有
+<span class="math inline">\(T \Rightarrow F\)</span></p>
+</div></li>
+<li><blockquote>
+<p>当且仅当存在一个 <span class="math inline">\(c\)</span> 替换掉 <span
+class="math inline">\(s\)</span> 的第 <span
+class="math inline">\(i\)</span> 项后满足 <span
+class="math inline">\(B\)</span> 时，<span
+class="math inline">\(s\)</span> 满足 <span
+class="math inline">\((\exists x_i)B\)</span></p>
+</blockquote>
+<div class="proof">
+<p><span class="math inline">\(s\)</span> 满足 <span
+class="math inline">\(\neg (\forall x_i)\neg B\)</span> 当且仅当 <span
+class="math inline">\(s\)</span> 不满足 <span
+class="math inline">\((\forall x_i)\neg B\)</span>，
+当且仅当至少存在一个 <span class="math inline">\(c\)</span> 替换掉 <span
+class="math inline">\(s_i\)</span> 后不满足 <span
+class="math inline">\(\neg B\)</span>，当且仅当至少存在一个 <span
+class="math inline">\(c\)</span> 替换掉 <span
+class="math inline">\(s_i\)</span> 后满足 <span
+class="math inline">\(B\)</span></p>
+</div></li>
+</ul></li>
+<li><blockquote>
+<p><span id="property-6"><span class="math inline">\(\vDash_M B\)</span>
+当且仅当 <span class="math inline">\(\vDash_M (\forall
+x_i)B\)</span></span></p>
+</blockquote>
+<div class="proof">
+<p><span class="math inline">\(\vDash_M B\)</span> 时任意 <span
+class="math inline">\(s\)</span> 都满足 <span
+class="math inline">\(B\)</span>，自然对任意 <span
+class="math inline">\(s\)</span> 替换其 <span
+class="math inline">\(s_i\)</span> 为任意值仍然满足 <span
+class="math inline">\(B\)</span>， 故 <span
+class="math inline">\(\vDash_M (\forall x_i)B\)</span>；当 <span
+class="math inline">\(\vDash_M (\forall x_i)B\)</span> 时任意 <span
+class="math inline">\(s\)</span> 替换 <span
+class="math inline">\(s_i\)</span> 为任意值仍然满足 <span
+class="math inline">\(B\)</span>，这也意味着任意 <span
+class="math inline">\(s\)</span> 均满足 <span
+class="math inline">\(B\)</span>，即 <span
+class="math inline">\(\vDash_M B\)</span></p>
+</div>
+<p>这个结果可以扩展为 <span class="math inline">\(B\)</span>
+为真当且仅当其闭包（closure，即在 <span class="math inline">\(B\)</span>
+前添加所有自由变量全称量词前缀，例如 <span
+class="math inline">\(A_1^2(x_2, x_5)\)</span> 的闭包为 <span
+class="math inline">\((\forall x_5)(\forall x_2)A_1^2(x_2,
+x_5)\)</span>）为真</p></li>
+<li><blockquote>
+<p><span id="property-7">所有重言式在任何解释下都是真的</span></p>
+</blockquote>
+<div class="proof">
+<p>例如 <a href="../chap-1-4/#A1">A1</a> 的一个实例可以是 <span
+class="math inline">\(A_1^1(x_1) \Rightarrow (A_1^1(x_2) \Rightarrow
+A_1^1(x_1))\)</span>； 对 <span class="math inline">\(L\)</span>
+的三条公理来说，任意 <span class="math inline">\(s\)</span>
+都是满足的，故这几个公理总是真的，又根据性质 3 MP 保真，故所有 <span
+class="math inline">\(L\)</span> 中的定理均真； 又由 <a
+href="../chap-1-4/#proposition-1.14-completeness-theorem">Proposition
+1.14</a> 所有重言式均是定理，故总是真的</p>
+</div></li>
+<li><blockquote>
+<p><span id="property-8">若 <span class="math inline">\(B\)</span>
+有且仅有自由变量 <span class="math inline">\(x_{i_1}, ...,
+x_{i_k}\)</span>，又 <span class="math inline">\(s\)</span> 和 <span
+class="math inline">\(s&#39;\)</span> 的第 <span
+class="math inline">\(i_1, ..., i_k\)</span> 项均相等， 那么 <span
+class="math inline">\(s\)</span> 满足 <span
+class="math inline">\(B\)</span> 当且仅当 <span
+class="math inline">\(s&#39;\)</span> 满足 <span
+class="math inline">\(B\)</span></span></p>
+</blockquote>
+<p>首先证明一个 Lemma： 若项 <span class="math inline">\(t\)</span>
+包含的变量均在一个集合 <span class="math inline">\(\{x_{i_1}, ...,
+x_{i_k}\}\)</span> 中，而 <span class="math inline">\(s\)</span> 和
+<span class="math inline">\(s&#39;\)</span> 的 第 <span
+class="math inline">\(i_1, ..., i_k\)</span> 项均相同，则 <span
+class="math inline">\(s^{ * }(t) = (s&#39;)^{ * }(t)\)</span></p>
+<div class="proof">
+<p>以 <span class="math inline">\(t\)</span>
+中函数符号数目作归纳法：</p>
+<ul>
+<li>函数符号数目为 0 时可能为常量或者变量：
+<ul>
+<li>若 <span class="math inline">\(t\)</span> 是常量 <span
+class="math inline">\(a_j\)</span>，由定义知 <span
+class="math inline">\(s^{ * }(a_j)\)</span> 和 <span
+class="math inline">\((s&#39;)^{ * }(a_j)\)</span> 均是 <span
+class="math inline">\((a_j)^M\)</span>，故 <span
+class="math inline">\(s^{ * }(t) = (s&#39;)^{ * }(t)\)</span></li>
+<li>若 <span class="math inline">\(t\)</span> 是变量 <span
+class="math inline">\(x_{i_j}\)</span> （其中 <span
+class="math inline">\(1 \le j \le k\)</span>），由于 <span
+class="math inline">\(s_{i_j}\)</span> 和 <span
+class="math inline">\(s&#39;_ {i_j}\)</span> 相等，故 <span
+class="math inline">\(s^{ * }(t) = (s&#39;)^{ * }(t)\)</span></li>
+</ul></li>
+<li>若 <span class="math inline">\(t\)</span> 形如 <span
+class="math inline">\(f_m^n(t_1, ..., t_n)\)</span>，显然任意 <span
+class="math inline">\(t_i\)</span> 的函数符号数目比 <span
+class="math inline">\(t\)</span> 的为少，故由归纳假设得 <span
+class="math inline">\(s^{ * }(t_i) = (s&#39;)^{ * }(t_i)\)</span>， 故
+<span class="math inline">\((f_m^n)^M (s^{ * }(t_1), ..., s^{ * }(t_n))
+= (f_m^n)^M ((s&#39;)^{ * }(t_1), ..., (s&#39;)^{ *
+}(t_n))\)</span>，亦即 <span class="math inline">\(s^{ * }(f_m^n(t_1,
+..., t_n)) = (s&#39;)^{ * }(f_m^n(t_1, ..., t_n))\)</span></li>
+</ul>
+<p>现在以 <span class="math inline">\(B\)</span>
+中联接符和量词数目作归纳法证明：</p>
+<ul>
+<li><p>联接符和量词数目为 0 时，即是原子式 <span
+class="math inline">\(A_m^n(t_1, ...,
+t_n)\)</span>，自由变量为各项中的自由变量， 若 <span
+class="math inline">\(s\)</span> 和 <span
+class="math inline">\(s&#39;\)</span> 的这些项均相等，则由上面 Lemma
+得出 <span class="math inline">\(\langle s^{ * }(t_1), ..., s^{ * }(t_n)
+\rangle = \langle (s&#39;)^{ * }(t_1), ..., (s&#39;)^{ * }(t_n)
+\rangle\)</span>， 故 <span class="math inline">\(s\)</span> 和 <span
+class="math inline">\(s&#39;\)</span> 总是同时满足或不满足 <span
+class="math inline">\(B\)</span></p></li>
+<li><p>若 <span class="math inline">\(B\)</span> 形如 <span
+class="math inline">\(\neg C\)</span>，自由变量为 <span
+class="math inline">\(C\)</span> 中的自由变量，若 <span
+class="math inline">\(s\)</span> 和 <span
+class="math inline">\(s&#39;\)</span>
+的这些项均相等，则由归纳假设（<span class="math inline">\(C\)</span>
+的联结词和量词数目比 <span class="math inline">\(B\)</span> 少） 得
+<span class="math inline">\(s\)</span> 和 <span
+class="math inline">\(s&#39;\)</span> 总是同时满足或不满足 <span
+class="math inline">\(C\)</span>，于是也就总是同时不满足或者满足 <span
+class="math inline">\(B\)</span></p></li>
+<li><p>若 <span class="math inline">\(B\)</span> 形如 <span
+class="math inline">\(C \Rightarrow D\)</span>，自由变量为 <span
+class="math inline">\(C\)</span> 和 <span
+class="math inline">\(D\)</span> 中自由变量的并集，若 <span
+class="math inline">\(s\)</span> 和 <span
+class="math inline">\(s&#39;\)</span> 的这些项均相等，
+则由归纳假设（<span class="math inline">\(C\)</span>
+的联结词和量词数目比 <span class="math inline">\(B\)</span> 少）得 <span
+class="math inline">\(s\)</span> 和 <span
+class="math inline">\(s&#39;\)</span> 总是同时满足或同时不满足 <span
+class="math inline">\(C\)</span>， 同理 <span
+class="math inline">\(D\)</span>，故也就同时满足或者不满足 <span
+class="math inline">\(B\)</span></p></li>
+<li><p>若 <span class="math inline">\(B\)</span> 形如 <span
+class="math inline">\((\forall x_j)C\)</span> ，有且仅有自由变量 <span
+class="math inline">\(x_{i_1}, ..., x_{i_k}\)</span>，且 <span
+class="math inline">\(\langle s_{i_1}, ..., s_{i_k} \rangle = \langle
+s&#39;_{i_1}, ..., s&#39;_{i_k} \rangle\)</span>； 易知 <span
+class="math inline">\(C\)</span> 中包含自由变量 <span
+class="math inline">\(x_{i_1}, ..., x_{i_k}\)</span> 以及可能的自由变量
+<span class="math inline">\(x_j\)</span>（且 <span
+class="math inline">\(j\)</span> 不同于任意 <span
+class="math inline">\(i_n\)</span>， 否则 <span
+class="math inline">\(B\)</span> 中该下标的变量就不自由了）；对于任意值
+<span class="math inline">\(a\)</span>，将 <span
+class="math inline">\(s\)</span> 的 <span
+class="math inline">\(s_j\)</span> 替换为 <span
+class="math inline">\(a\)</span> 得到 <span
+class="math inline">\(s^{a}\)</span>， 将 <span
+class="math inline">\(s&#39;\)</span> 的 <span
+class="math inline">\(s&#39;_j\)</span> 替换为 <span
+class="math inline">\(a\)</span> 得到 <span
+class="math inline">\(s^{a&#39;}\)</span>，由归纳假设 （<span
+class="math inline">\(C\)</span> 的联结词和量词数目比 <span
+class="math inline">\(B\)</span> 少且 <span
+class="math inline">\(s^{a}\)</span> 和 <span
+class="math inline">\(s^{a&#39;}\)</span> 在 <span
+class="math inline">\(C\)</span> 中自由变量均相等） 得出 <span
+class="math inline">\(s^{a}\)</span> 和 <span
+class="math inline">\(s^{a&#39;}\)</span> 同时满足或不满足 <span
+class="math inline">\(C\)</span>； 若 <span
+class="math inline">\(s\)</span> 满足 <span
+class="math inline">\(B\)</span>，则任意 <span
+class="math inline">\(s^{a}\)</span> 都满足 <span
+class="math inline">\(C\)</span>，则任意 <span
+class="math inline">\(s^{a&#39;}\)</span> 都满足 <span
+class="math inline">\(C\)</span>，也就是 <span
+class="math inline">\(s&#39;\)</span> 满足 <span
+class="math inline">\(B\)</span> 了； 若 <span
+class="math inline">\(s\)</span> 不满足 <span
+class="math inline">\(B\)</span>，则存在一个 <span
+class="math inline">\(a\)</span> 使得 <span
+class="math inline">\(s^{a}\)</span> 不满足 <span
+class="math inline">\(C\)</span>，也就 <span
+class="math inline">\(s^{a&#39;}\)</span> 不满足 <span
+class="math inline">\(C\)</span>，故 <span
+class="math inline">\(s&#39;\)</span> 不满足 <span
+class="math inline">\(B\)</span></p>
+<p><img src="2.2-8.png" /></p></li>
+</ul>
+</div>
+<p>令 <span class="math inline">\(B(x_{i_1}, ..., x_{i_k})\)</span>
+是一个有且仅有 <span class="math inline">\(x_{i_1}, ...,
+x_{i_k}\)</span> 这些自由变量的合式公式，所有满足之的 k-tuple <span
+class="math inline">\(\langle b_1, ..., b_k \rangle\)</span>
+的集合称之为由 <span class="math inline">\(B\)</span> 定义的关系（或如果
+<span class="math inline">\(k=1\)</span>，亦可称为属性）， 这样的
+k-tuple 记作 <span class="math inline">\(\vDash_M B[b_1, ...,
+b_k]\)</span></p></li>
+<li><blockquote>
+<p><span id="property-9">如果 <span class="math inline">\(B\)</span>
+是封闭式子（没有自由变量），则对于任意解释 <span
+class="math inline">\(M\)</span> 下，要么 <span
+class="math inline">\(\vDash_M B\)</span>，要么 <span
+class="math inline">\(\vDash_M \neg B\)</span></span>：</p>
+</blockquote>
+<div class="proof">
+<p>由 8 得出任意 <span class="math inline">\(s\)</span> 和 <span
+class="math inline">\(s&#39;\)</span> 要么同时满足 <span
+class="math inline">\(B\)</span>，要么同时不满足 <span
+class="math inline">\(B\)</span>，由是要么所有 sequence 都满足 <span
+class="math inline">\(B\)</span> 要么没有 sequence 满足 <span
+class="math inline">\(B\)</span>，即要么是真的要么是假的；</p>
+</div></li>
+<li><blockquote>
+<p><span id="property-10">假如项 <span class="math inline">\(t\)</span>
+可以自由替换 <span class="math inline">\(B(x_i)\)</span> 中的 <span
+class="math inline">\(x_i\)</span>，那么在任意解释下 <span
+class="math inline">\((\forall x_i)B(x_i) \Rightarrow B(t)\)</span>
+为真</span>：</p>
+</blockquote>
+<p>证明基于如下两个 Lemma</p>
+<ul>
+<li><p>Lemma 1：<span class="math inline">\(u\)</span> 是一个项，<span
+class="math inline">\(t\)</span> 也是一个项，<span
+class="math inline">\(t&#39;\)</span> 是将 <span
+class="math inline">\(t\)</span> 中所有 <span
+class="math inline">\(x_i\)</span> 替换为 <span
+class="math inline">\(u\)</span> 所得； <span
+class="math inline">\(s\)</span> 是一个 sequence，<span
+class="math inline">\(s&#39;\)</span> 是将 <span
+class="math inline">\(s\)</span> 的第 <span
+class="math inline">\(i\)</span> 项替换为 <span
+class="math inline">\(s^{*}(u)\)</span> 所得； 那么有 <span
+class="math inline">\(s^{*}(t&#39;) = (s&#39;)^{*}(t)\)</span></p>
+<div class="proof">
+以 <span class="math inline">\(t\)</span> 中函数符号数目归纳：
+<ul>
+<li>当 0 时，有三种情况
+<ul>
+<li><span class="math inline">\(t\)</span> 是单个常量 <span
+class="math inline">\(a_i\)</span>，由于任意 <span
+class="math inline">\(s^{*}(a_i)\)</span> 都是 <span
+class="math inline">\((a_i)^M\)</span> 故相等</li>
+<li><span class="math inline">\(t\)</span> 是单个变量 <span
+class="math inline">\(x_j\)</span> 且 <span class="math inline">\(j \ne
+i\)</span>，则 <span class="math inline">\(t&#39;=t=x_j\)</span>，故
+<span
+class="math inline">\(s^{*}(t&#39;)=s^{*}(x_j)=s_j=s&#39;_j=(s&#39;)^{*}(x_j)=(s&#39;)^{*}(t)\)</span></li>
+<li><span class="math inline">\(t\)</span> <strong>就是</strong> <span
+class="math inline">\(x_i\)</span>，则 <span
+class="math inline">\(t&#39;=u\)</span>，故 <span
+class="math inline">\(s^{*}(t&#39;)=s^{*}(u)=s&#39;_i=(s&#39;)^{*}(x_i)=(s&#39;)^{*}(t)\)</span></li>
+</ul></li>
+<li>非 0 时，即 <span class="math inline">\(t=f^n_m(t_1, ...,
+t_n)\)</span>，<span class="math inline">\(t&#39;=f^n_m(t_1&#39;, ...,
+t_n&#39;)\)</span>，故 <span class="math inline">\(s^{*}(f^n_m(t_1&#39;,
+...))=(f^n_m)^M(s^{*}(t_1&#39;), ...)=(f^n_m)^M((s&#39;)^{*}(t_1),
+...)=(s&#39;)^{*}(f^n_m(t_1, ...))\)</span></li>
+</ul>
+<p><img src="2.2-10-lemma-1.png" /></p>
+</div>
+<p>直观含义就是，<strong>在 <span
+class="math inline">\(s^{*}(t)\)</span> 中，替换 <span
+class="math inline">\(t\)</span> 中的某个变量 <span
+class="math inline">\(x_i\)</span> 成另外一个项，跟替换 <span
+class="math inline">\(s_i\)</span> 为某个值是等价的</strong></p></li>
+<li><p>Lemma 2：若项 <span class="math inline">\(t\)</span> 可以自由替换
+<span class="math inline">\(B(x_i)\)</span> 中的 <span
+class="math inline">\(x_i\)</span>，那么 <span
+class="math inline">\(s\)</span> 满足 <span
+class="math inline">\(B(t)\)</span> 当且仅当 <span
+class="math inline">\(s&#39;\)</span> 满足 <span
+class="math inline">\(B(x_i)\)</span> （其中 <span
+class="math inline">\(s&#39;\)</span> 是将 <span
+class="math inline">\(s\)</span> 的第 <span
+class="math inline">\(i\)</span> 项替换为 <span
+class="math inline">\(s^{*}(t)\)</span> 而得）</p>
+<div class="proof">
+<p>以 <span class="math inline">\(B(x_i)\)</span>
+中联结词和量词数目归纳：</p>
+<ul>
+<li>当 0 时，即 <span class="math inline">\(B(x_i) = A_m^n(t_1,
+...)\)</span>，<span class="math inline">\(s&#39;\)</span> 满足 <span
+class="math inline">\(B(x_i)\)</span> 等价于 <span
+class="math inline">\((A_m^n)^M((s&#39;)^{*}(t_1), ...)\)</span> 等价于
+<span class="math inline">\((A_m^n)^M(s^{*}(t_1&#39;), ...)\)</span>
+（其中 <span class="math inline">\(t_j&#39;\)</span> 是 <span
+class="math inline">\(t_j\)</span> 中将 <span
+class="math inline">\(x_i\)</span> 替换为 <span
+class="math inline">\(t\)</span>，由 Lemma 1 所得），也就是 <span
+class="math inline">\(s\)</span> 满足 <span
+class="math inline">\(B(t)\)</span></li>
+<li>若 <span class="math inline">\(B(x_i) = \neg C(x_i)\)</span>，则若
+<span class="math inline">\(s\)</span> 满足 <span
+class="math inline">\(B(t)\)</span> 当且仅当 <span
+class="math inline">\(s\)</span> 不满足 <span
+class="math inline">\(C(t)\)</span> 当且仅当 <span
+class="math inline">\(s&#39;\)</span> 不满足 <span
+class="math inline">\(C(x_i)\)</span> （归纳假设）当且仅当 <span
+class="math inline">\(s&#39;\)</span> 满足 <span
+class="math inline">\(B(x_i)\)</span></li>
+<li>若 <span class="math inline">\(B(x_i) = C(x_i) \Rightarrow
+D(x_i)\)</span>，证明类似上面</li>
+<li>若 <span class="math inline">\(B(x_i) = (\forall x_j)C(x_i)\)</span>
+<ul>
+<li><p>若 <span class="math inline">\(i = j\)</span>，则 <span
+class="math inline">\(B(x_i) = B(t) = (\forall x_i)C(x_i)\)</span>（因为
+<span class="math inline">\(B\)</span> 中没有 <span
+class="math inline">\(x_i\)</span> 的自由变量），若 <span
+class="math inline">\(s&#39;\)</span> 满足 <span
+class="math inline">\(B(x_i)\)</span>， 则 <span
+class="math inline">\(s\)</span> 也满足 <span
+class="math inline">\(B(x_i)\)</span>（即 <span
+class="math inline">\(B(t)\)</span>），因为 <span
+class="math inline">\(s\)</span> 和 <span
+class="math inline">\(s&#39;\)</span> 仅在第 <span
+class="math inline">\(i\)</span> 项不一样且 <span
+class="math inline">\(x_i\)</span> 不是 <span
+class="math inline">\(B(x_i)\)</span> 的自由变量</p></li>
+<li><p>若 <span class="math inline">\(i \ne j\)</span> 且 <span
+class="math inline">\(s\)</span> 满足 <span class="math inline">\(B(t) =
+(\forall x_j)C(t)\)</span>；则将 <span class="math inline">\(s = (s_1,
+..., s_i, ..., s_j, ...)\)</span> 的 <span
+class="math inline">\(s_j\)</span> 替换为任意值 <span
+class="math inline">\(a\)</span> 而得到的 <span
+class="math inline">\(s^a = (s_1, ..., s_i, ..., a, ...)\)</span> 也满足
+<span class="math inline">\(C(t)\)</span>， 再将 <span
+class="math inline">\(s^a\)</span> 的第 <span
+class="math inline">\(i\)</span> 项替换为 <span
+class="math inline">\((s^a)^{ * }(t)\)</span> 得到 <span
+class="math inline">\(s^{a&#39;} = (s_1, ..., (s^a)^{ * }(t), ..., a,
+...)\)</span>， 由归纳假设得知，<span
+class="math inline">\(s^{a&#39;}\)</span> 是满足 <span
+class="math inline">\(C(x_i)\)</span> 的； 注意到，<strong><span
+class="math inline">\(t\)</span> 不可能包含 <span
+class="math inline">\(x_j\)</span> 变量 （否则它不能自由替换 <span
+class="math inline">\(B(x_i) = (\forall x_j)C(x_i)\)</span> 中的 <span
+class="math inline">\(x_i\)</span>）</strong>，由 8 的 Lemma 得 <span
+class="math inline">\((s^a)^{ * }(t) = s^{ * }(t)\)</span>； 因此 <span
+class="math inline">\(s^{a&#39;}\)</span> 也等于 <span
+class="math inline">\((s_1, ..., (s^{ * })(t), ..., a,
+...)\)</span>，即跟 <span class="math inline">\(s&#39; = (s_1, ..., (s^{
+* })(t), ..., s_j, ...)\)</span> 仅有第 <span
+class="math inline">\(j\)</span> 项不一样，而所有 <span
+class="math inline">\(a\)</span> 下 <span
+class="math inline">\(s^{a&#39;}\)</span> 均满足 <span
+class="math inline">\(C(x_i)\)</span>，故 <span
+class="math inline">\(s&#39;\)</span> 满足 <span
+class="math inline">\(B(x_i) = (\forall x_j)B(x_i)\)</span></p>
+<p>反之如果 <span class="math inline">\(s\)</span> 不满足 <span
+class="math inline">\(B(t)\)</span> 证明过程也类似</p>
+<p><img src="2.2-10-lemma-2.png" /></p></li>
+</ul></li>
+</ul>
+</div></li>
+<li><p>最后，若任意 <span class="math inline">\(s\)</span> 满足 <span
+class="math inline">\((\forall x_i)B(x_i)\)</span>，则特别地，<span
+class="math inline">\(s&#39;\)</span>（将 <span
+class="math inline">\(s\)</span> 第 <span
+class="math inline">\(i\)</span> 项替换为 <span
+class="math inline">\(s^{ * }(t)\)</span> 而得）满足 <span
+class="math inline">\(B(x_i)\)</span>， 则由 Lemma 2 得 <span
+class="math inline">\(s\)</span> 满足 <span
+class="math inline">\(B(t)\)</span>，证毕</p></li>
+</ul></li>
+<li><blockquote>
+<p><span id="property-11">如果 <span class="math inline">\(B\)</span>
+中没有 <span class="math inline">\(x_i\)</span> 的自由变量，
+那么在任意解释下 <span class="math inline">\((\forall x_i)(B \Rightarrow
+C) \Rightarrow (B \Rightarrow (\forall x_i)C)\)</span> 为真</span>：</p>
+</blockquote>
+<div class="proof">
+<p>否则，存在一个 <span class="math inline">\(s\)</span>，满足 <span
+class="math inline">\((\forall x_i)(B \Rightarrow C)\)</span> 和 <span
+class="math inline">\(B\)</span> 且不满足 <span
+class="math inline">\((\forall x_i)C\)</span>，也就存在一个 <span
+class="math inline">\(s&#39;\)</span> （与 <span
+class="math inline">\(s\)</span> 最多在第 <span
+class="math inline">\(i\)</span> 项不一样）不满足 <span
+class="math inline">\(C\)</span>；另一方面，由于 <span
+class="math inline">\((\forall x_i)(B \Rightarrow C)\)</span> 和 <span
+class="math inline">\(B\)</span> 都没有 <span
+class="math inline">\(x_i\)</span> 的自由变量，根据 8 得 <span
+class="math inline">\(s&#39;\)</span> 也满足 <span
+class="math inline">\((\forall x_i)(B \Rightarrow C)\)</span> 和 <span
+class="math inline">\(B\)</span>，特别地 <span
+class="math inline">\(s&#39;\)</span> 也满足 <span
+class="math inline">\(B \Rightarrow C\)</span>， 最终得出 <span
+class="math inline">\(s&#39;\)</span> 满足 <span
+class="math inline">\(C\)</span> 矛盾</p>
+</div></li>
+</ol>
+<section id="footnotes" class="footnotes footnotes-end-of-document"
+role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1"><p>命题逻辑的 statement letter 已经是不可分解的了， 无论是
+“1 + 1 = 2” 或者 “有最小的自然数” 这些命题都是一个个 statement letter，
+无法自然也就没需要给它们赋予含义；而一阶逻辑的原子式却可以有丰富的结构，故能且需要赋予含义<a
+href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li
+id="fn2"><p>虽然一个合式公式里的用到的变量总是有限的，但在定义以及推理过程中往往需要分拆子式，而子式里各有各的变量，使用
+denumerable sequence 更加地统一方便<a href="#fnref2"
+class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p><a href="https://math.stackexchange.com/a/3943259"
+class="uri">https://math.stackexchange.com/a/3943259</a><a
+href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li
+id="fn4"><p>如果没有全称量词，一阶逻辑似乎和命题逻辑没有太大的区别，只是
+statement letter <span class="math inline">\(A_i \in \{T, F\}\)</span>
+一般化成变量 <span class="math inline">\(x_i \in
+D\)</span>（当然变量还必须谓词才能转化为类似 <span
+class="math inline">\(\{T, F\}\)</span>
+的可满足性），一个公式是否真只取决于输入的那个 statement letter
+（或变量）序列的取值；而添加了全称量词后，则取决于一族序列的取值了<a
+href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>What’s the difference between ⊢ and ⊨：<a
+href="https://math.stackexchange.com/a/3334129"
+class="uri">https://math.stackexchange.com/a/3334129</a></p>
+<p>Why should we care about syntactic proofs if we can show semantically
+that statements are true：<a
+href="https://math.stackexchange.com/a/3318545"
+class="uri">https://math.stackexchange.com/a/3318545</a></p>
+<p>实际上，Soundness 就是</p>
+<blockquote>
+<p>如果 <span class="math inline">\(\Gamma \vdash \Delta\)</span> 则
+<span class="math inline">\(\Gamma \vDash \Delta\)</span></p>
+</blockquote>
+<p>Completeness 就是</p>
+<blockquote>
+<p>如果 <span class="math inline">\(\Gamma \vDash \Delta\)</span> 则
+<span class="math inline">\(\Gamma \vdash \Delta\)</span></p>
+</blockquote>
+<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></li>
+</ol>
+</section>
+<link rel="stylesheet" href="/assets/venobox/dist/venobox.min.css" />
+<script src="/assets/venobox/dist/venobox.min.js"></script>
+<script>
+  document.querySelectorAll('img').forEach((img) => {
+    const a = document.createElement("a")
+    a.href = '#'
+    a.setAttribute('data-href', img.src)
+    a.classList.add('images')
+    img.replaceWith(a)
+    a.appendChild(img)
+  })
+  new VenoBox({
+    selector: '.images',
+    fitView: true,
+  });
+</script>
+</body>
+</html>

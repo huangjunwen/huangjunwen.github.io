@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="dcterms.date" content="2021-12-22" />
+  <title>Chapter 1: The Propositional Calculus (1.4)</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <link href="/assets/latex.css/style.min.css" rel="stylesheet" />
+  <style>
+  /* fixes for latex.css */
+  .date {
+    text-align: center;
+  }
+
+  div.sourceCode {
+    background: var(--pre-bg-color);
+    border-radius: 10px;
+  }
+
+  dl dd {
+    text-align: left;
+  }
+
+  #footnotes {
+    margin-top: 1em;
+  }
+
+  #footnotes hr:first-child {
+    display: none;
+  }
+  </style>
+  <script src="/assets/mathjax/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<style>
+/* sidebar */
+#sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  max-width: 400px;
+  width: 80%;
+  height: 100%;
+  padding: 2rem;
+  background-color: #eee;
+  box-shadow: 0 10px 20px -4px #000;
+  overflow-x: hidden;
+  overflow-y: auto;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-100%);
+  transition: opacity 0.3s ease, visibility 0.2s ease, transform 0.3s ease;
+}
+#sidebar.show {
+  pointer-events: all;
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+}
+#sidebar_toggler {
+  position: fixed;
+  top: 4vh;
+  right: 3vw;
+  z-index: 1000;
+  width: 2.8rem;
+  height: 2.4rem;
+  padding: 0.5rem;
+  border: solid #999 0.1rem;
+  border-radius: 0.4rem;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+#sidebar_toggler span {
+  background-color: #999;
+  width: 100%;
+  height: 0.2rem;
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+nav span {
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 90%;
+}
+nav li:before {
+  content: '';
+}
+nav .caret {
+  cursor: pointer;
+  user-select: none; /* Prevent text selection */
+}
+nav .caret::before {
+  content: "\25B6";
+  color: black;
+  display: inline-block;
+  margin-right: 6px;
+}
+nav .caret-down::before {
+  transform: rotate(90deg);
+}
+nav .collapse {
+  display: none;
+}
+</style>
+<aside id="sidebar">
+  <div class="sidebar_content sidebar_head">
+    <h1>Content</h1>
+  </div>
+  <div class="sidebar_content sidebar_body">
+    <nav id="side_navlinks" class="side_navlinks">
+      <!--<ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Services</a></li>
+        <li><a href="#">Portfolio</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>-->
+    </nav>
+  </div>
+</aside>
+<div id="sidebar_toggler">
+  <span></span>
+  <span></span>
+  <span></span>
+</div>
+<script>
+/* setup sidebar */
+// https://www.cssscript.com/demo/responsive-sidebar-nav-hamburger/
+const sidebar = document.querySelector('#sidebar')
+const sidebarToggler = document.querySelector('#sidebar_toggler')
+
+sidebarToggler.addEventListener('click', () => {
+  sidebar.classList.toggle('show')
+});
+
+const keywords = document.querySelector('meta[name="keywords"]')
+if (keywords && keywords.content.includes('showSidebar')) {
+  sidebar.classList.add('show')
+}
+
+/*
+window.addEventListener('click', (e) => {
+  if (e.target.id !== 'sidebar' && e.target.id !== 'sidebar_toggler') {
+    sidebar.classList.remove('show');
+  }
+});
+*/
+
+/* load urls */
+// https://www.w3schools.com/howto/howto_js_treeview.asp
+const currentPath = window.location.pathname
+const sideNavLinks = document.querySelector('#side_navlinks');
+function buildSideLink(li, node) {
+  // span contains the text and link (if provided)
+  const span = li.appendChild(document.createElement("span"))
+  if (node.url) {
+    const a = span.appendChild(document.createElement("a"))
+    a.href = node.url
+    a.textContent = node.text
+  } else {
+    span.textContent = node.text
+  }
+  span.setAttribute("title", node.text)
+
+  // if has children, then add caret and append a nested <ul> for children
+  if (node.children.length > 0) {
+    span.classList.add("caret")
+    const ul = li.appendChild(document.createElement("ul"))
+    ul.classList.add("nested")
+    // do not collapse current path
+    if (!currentPath.startsWith(node.path)) {
+      ul.classList.add("collapse")
+    } else {
+      span.classList.add("caret-down")
+    }
+    node.children.forEach((child) => {
+      const l = ul.appendChild(document.createElement("li"))
+      buildSideLink(l, child)
+    })
+  }
+}
+async function loadSideLinks() {
+  const resp = await fetch("/urls.json")
+  const data = await resp.json()
+  // console.log(data)
+  const root = sideNavLinks.appendChild(document.createElement("ul"))
+  data.children.forEach((child) => {
+    buildSideLink(root.appendChild(document.createElement("li")), child)
+  })
+
+  const toggler = root.getElementsByClassName("caret")
+  for (let i=0; i<toggler.length; i++) {
+    toggler[i].addEventListener("click", function () {
+      this.parentElement.querySelector(".nested").classList.toggle("collapse")
+      this.classList.toggle("caret-down")
+      return false
+    })
+  }
+}
+loadSideLinks()
+</script>
+<header id="title-block-header">
+<h1 class="title">Chapter 1: The Propositional Calculus (1.4)</h1>
+<p class="date">2021-12-22</p>
+</header>
+<h2 id="an-axiom-system-for-the-propositional-calculus">1.4 An Axiom
+System for the Propositional Calculus</h2>
+<p>真值表方法能为我们解答很多问题，但接下来的更复杂的部分是无法使用真值表来解答的；
+因此要引入新的方法：formal axiomatic theories 形式化公理理论</p>
+<dl>
+<dt>Formal theory</dt>
+<dd>
+<p>一个<strong>形式化</strong><a href="#fn1" class="footnote-ref"
+id="fnref1" role="doc-noteref"><sup>1</sup></a>理论（formal theory）
+<span class="math inline">\(\mathcal{S}\)</span> 包含如下这些：</p>
+<ol type="1">
+<li>拥有一个可数（也即可以 coutable infinite）的符号（symbol）集合，
+一段有限长度的符号序列形成<strong>表达式</strong>（expression）</li>
+<li>表达式集合中有一个子集称之为<strong>合式公式集</strong>（set of well
+formed formulas，wff）， 并且有有效方法检验一条表达式是否是合式公式</li>
+<li>合式公式集中有一个子集称之为<strong>公理集</strong>（set of
+axioms)， 并且有有效方法检验一条合式公式是否是公理，这时可以称 <span
+class="math inline">\(\mathcal{S}\)</span> 为公理理论</li>
+<li>合式公式之间有有限条<strong>演绎规则</strong>（rules of inference）
+<span class="math inline">\(R_1, R_2, ..., R_n\)</span>； 对于任意一个
+<span class="math inline">\(R_i\)</span>，有一个唯一的正整数 <span
+class="math inline">\(j\)</span>，只要给出任意一个有 <span
+class="math inline">\(j\)</span> 条合式公式的集合以及一条合式公式 <span
+class="math inline">\(B\)</span>， 有有效方法能判断该集合以及 <span
+class="math inline">\(B\)</span> 是否是 <span
+class="math inline">\(R_i\)</span> 关系；如果是的话， 则称 <span
+class="math inline">\(B\)</span> 是该集合通过 <span
+class="math inline">\(R_i\)</span>
+得出的<strong>直接结果</strong>（direct consequence）</li>
+</ol>
+</dd>
+</dl>
+<dl>
+<dt>Proof</dt>
+<dd>
+一个<strong>证明</strong>（proof）是一系列的合式公式 <span
+class="math inline">\(B_1, B_2, ..., B_k\)</span><a href="#fn2"
+class="footnote-ref" id="fnref2"
+role="doc-noteref"><sup>2</sup></a>，其中对于任意一个 <span
+class="math inline">\(B_i\)</span>，要么它是一个<strong>公理</strong>，
+要么是之前一些合式公式的<strong>直接结果</strong>
+</dd>
+</dl>
+<dl>
+<dt>Thorem</dt>
+<dd>
+<span class="math inline">\(\mathcal{S}\)</span>
+中的一个<strong>定理</strong>（theorem）是一个合式公式，它是一个证明里的最后一个公式，该证明就是这个定理在
+<span class="math inline">\(\mathcal{S}\)</span> 中的证明
+</dd>
+</dl>
+<p>对于一个公理理论，虽然有有效方法检验一条合式公式是否是公理，但一般而言并没有有效方法检验一条定理是否有证明；
+如果有这么个方法，则称该理论 decidable，否则 undecidable</p>
+<dl>
+<dt>Consequence</dt>
+<dd>
+<p>合式公式 <span class="math inline">\(C\)</span>
+被称之为一个合式公式集 <span class="math inline">\(\Gamma\)</span>
+的<strong>结果</strong>（consequence），如果： 存在一系列的合式公式
+<span class="math inline">\(B_1, B_2, ..., B_k\)</span>，其中 <span
+class="math inline">\(B_k\)</span> 是 <span
+class="math inline">\(C\)</span>，且对于任意一个 <span
+class="math inline">\(B_i\)</span>，要么它是一个<strong>公理</strong>，
+<strong>要么它在 <span class="math inline">\(\Gamma\)</span>
+中</strong>，要么是之前一些合式公式的<strong>直接结果</strong></p>
+<ul>
+<li>这个系列称之为从 <span class="math inline">\(\Gamma\)</span> 推出
+<span class="math inline">\(C\)</span> 的证明</li>
+<li>而 <span class="math inline">\(\Gamma\)</span>
+中的公式称之为该证明的假设或前提（hypotheses or premisses）</li>
+<li>用符号 <span class="math inline">\(\Gamma \vdash C\)</span>
+标记之；如果需要区分处理多种理论，则添加理论下标 <span
+class="math inline">\(\Gamma \vdash_{\mathcal{S}} C\)</span></li>
+<li>如果 <span class="math inline">\(\Gamma = \{H_1, ..., H_m\}\)</span>
+是有限集合，则可以写 <span class="math inline">\(\{H_1, ..., H_m\}
+\vdash C\)</span></li>
+<li>如果 <span class="math inline">\(\Gamma\)</span> 是空集，则可以写
+<span class="math inline">\(\varnothing \vdash C\)</span> 或简化成 <span
+class="math inline">\(\vdash C\)</span>，这种情况下 <span
+class="math inline">\(C\)</span> 其实就等价于是一个定理了</li>
+</ul>
+</dd>
+</dl>
+<p>现在我们为为命题逻辑引入这么一个形式化公理理论</p>
+<dl>
+<dt><span class="math inline">\(\mathcal{L}\)</span></dt>
+<dd>
+<p>包含如下</p>
+<ol type="1">
+<li><p><span class="math inline">\(() \neg \Rightarrow\)</span> 以及
+<span class="math inline">\(A_1, A_2, ...\)</span>
+是符号集合，前者称为联结词原语（primitive connectives）， 后者这些 <span
+class="math inline">\(A_i\)</span> 称为 statement letters</p></li>
+<li><p>合式公式由如下定义</p>
+<ul>
+<li>所有的 statement letters 是合式公式</li>
+<li>如果 <span class="math inline">\(B, C\)</span> 是合式公式，则 <span
+class="math inline">\((\neg B), (B \Rightarrow C)\)</span> 也是</li>
+<li>当且仅当一个表达式可以通过上述两种方式构造出来才是合式公式</li>
+</ul></li>
+<li><p>如果 <span class="math inline">\(B, C, D\)</span>
+是合式公式，则下面这些是公理<a href="#fn3" class="footnote-ref"
+id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
+<ul>
+<li><span id="A1">A1:</span> <span class="math inline">\((B \Rightarrow
+(C \Rightarrow B))\)</span></li>
+<li><span id="A2">A2:</span> <span class="math inline">\(((B \Rightarrow
+(C \Rightarrow D)) \Rightarrow ((B \Rightarrow C) \Rightarrow (B
+\Rightarrow D)))\)</span></li>
+<li><span id="A3">A3:</span> <span class="math inline">\((((\neg C)
+\Rightarrow (\neg B)) \Rightarrow (((\neg C) \Rightarrow B) \Rightarrow
+C))\)</span></li>
+</ul>
+<p>注意这里这些公理是有无限多的，因为合式公式的数量是无限多的</p></li>
+<li><p>唯一一条演绎规则是 <em>modus ponens</em> （简称 <span
+id="MP">MP</span>）：<span class="math inline">\(C\)</span> 是 <span
+class="math inline">\(B\)</span> 和 <span class="math inline">\((B
+\Rightarrow C)\)</span> 的直接结果</p></li>
+</ol>
+</dd>
+<dd>
+<p><span id="connective-alias">其他联接符</span>为：</p>
+<ul>
+<li><span class="math inline">\((B \wedge C)\)</span>：<span
+class="math inline">\(\neg (B \Rightarrow \neg C)\)</span></li>
+<li><span class="math inline">\((B \vee C)\)</span>：<span
+class="math inline">\((\neg B) \Rightarrow C\)</span></li>
+<li><span class="math inline">\((B \Leftrightarrow C)\)</span>：<span
+class="math inline">\((B \Rightarrow C) \wedge (C \Rightarrow
+B)\)</span></li>
+</ul>
+</dd>
+</dl>
+<h3 id="lemma-1.8">Lemma 1.8</h3>
+<blockquote>
+<p>对于所有的合式公式 <span class="math inline">\(B\)</span>，有 <span
+class="math inline">\(\vdash_{\mathcal{L}} B \Rightarrow B\)</span></p>
+</blockquote>
+<div class="proof">
+<ol type="1">
+<li><span class="math inline">\(((B \Rightarrow ((B \Rightarrow B)
+\Rightarrow B)) \Rightarrow ((B \Rightarrow (B \Rightarrow B))
+\Rightarrow (B \Rightarrow B)))\)</span> A2 的一个实例</li>
+<li><span class="math inline">\((B \Rightarrow ((B \Rightarrow B)
+\Rightarrow B))\)</span> <a href="#A1">A1</a> 的一个实例</li>
+<li><span class="math inline">\(((B \Rightarrow (B \Rightarrow B))
+\Rightarrow (B \Rightarrow B))\)</span> MP 2 和 1 获得</li>
+<li><span class="math inline">\((B \Rightarrow (B \Rightarrow
+B))\)</span> <a href="#A1">A1</a> 的又一个实例</li>
+<li><span class="math inline">\((B \Rightarrow B)\)</span> MP 4 和 3
+获得，证毕</li>
+</ol>
+</div>
+<h3 id="exercise-1.47">Exercise 1.47</h3>
+<blockquote>
+<p><span class="math inline">\(\vdash_{\mathcal{L}} (\neg B \Rightarrow
+B) \Rightarrow B\)</span></p>
+</blockquote>
+<div class="proof">
+<ol type="1">
+<li><span class="math inline">\((((\neg B) \Rightarrow (\neg B))
+\Rightarrow (((\neg B) \Rightarrow B) \Rightarrow B))\)</span> <a
+href="#A3">A3</a> 实例</li>
+<li><span class="math inline">\((((\neg B) \Rightarrow B) \Rightarrow
+B)\)</span> MP Lemma 1.8 和 1 获得，证毕</li>
+</ol>
+</div>
+<blockquote>
+<p><span class="math inline">\(B \Rightarrow C, C \Rightarrow D
+\vdash_{\mathcal{L}} B \Rightarrow D\)</span></p>
+</blockquote>
+<div class="proof">
+<ol type="1">
+<li><span class="math inline">\(((C \Rightarrow D) \Rightarrow (B
+\Rightarrow (C \Rightarrow D)))\)</span> <a href="#A1">A1</a> 实例</li>
+<li><span class="math inline">\((B \Rightarrow (C \Rightarrow
+D))\)</span> MP 前提 <span class="math inline">\((C \Rightarrow
+D)\)</span> 和 1 获得</li>
+<li><span class="math inline">\(((B \Rightarrow (C \Rightarrow D))
+\Rightarrow ((B \Rightarrow C) \Rightarrow (B \Rightarrow D)))\)</span>
+<a href="#A2">A2</a> 实例</li>
+<li><span class="math inline">\(((B \Rightarrow C) \Rightarrow (B
+\Rightarrow D))\)</span> MP 2 和 3 获得</li>
+<li><span class="math inline">\((B \Rightarrow D)\)</span> MP 前提 <span
+class="math inline">\((B \Rightarrow C)\)</span> 和 4 获得，证毕</li>
+</ol>
+</div>
+<blockquote>
+<p><span class="math inline">\(B \Rightarrow (C \Rightarrow D)
+\vdash_{\mathcal{L}} C \Rightarrow (B \Rightarrow D)\)</span></p>
+</blockquote>
+<div class="proof">
+<ol type="1">
+<li><span class="math inline">\(((B \Rightarrow (C \Rightarrow D))
+\Rightarrow ((B \Rightarrow C) \Rightarrow (B \Rightarrow D)))\)</span>
+<a href="#A2">A2</a> 实例</li>
+<li><span class="math inline">\(((B \Rightarrow C) \Rightarrow (B
+\Rightarrow D))\)</span> MP 前提和 1 获得</li>
+<li><span class="math inline">\((((B \Rightarrow C) \Rightarrow (B
+\Rightarrow D)) \Rightarrow (C \Rightarrow ((B \Rightarrow C)
+\Rightarrow (B \Rightarrow D))))\)</span> <a href="#A1">A1</a> 实例</li>
+<li><span class="math inline">\((C \Rightarrow ((B \Rightarrow C)
+\Rightarrow (B \Rightarrow D)))\)</span> MP 2 和 3 获得</li>
+<li><span class="math inline">\(((C \Rightarrow ((B \Rightarrow C)
+\Rightarrow (B \Rightarrow D))) \Rightarrow ((C \Rightarrow (B
+\Rightarrow C)) \Rightarrow (C \Rightarrow (B \Rightarrow D))))\)</span>
+A2 实例</li>
+<li><span class="math inline">\(((C \Rightarrow (B \Rightarrow C))
+\Rightarrow (C \Rightarrow (B \Rightarrow D)))\)</span> MP 4 和 5
+获得</li>
+<li><span class="math inline">\((C \Rightarrow (B \Rightarrow
+C))\)</span> <a href="#A1">A1</a> 实例</li>
+<li><span class="math inline">\((C \Rightarrow (B \Rightarrow
+D))\)</span> MP 7 和 6 获得，证毕</li>
+</ol>
+</div>
+<blockquote>
+<p><span class="math inline">\(\vdash_{\mathcal{L}} (\neg C \Rightarrow
+\neg B) \Rightarrow (B \Rightarrow C)\)</span></p>
+</blockquote>
+<div class="proof">
+<p>TODO</p>
+</div>
+<h3 id="proposition-1.9-deduction-theorem">Proposition 1.9 (Deduction
+Theorem)</h3>
+<p>演绎定理<a href="#fn4" class="footnote-ref" id="fnref4"
+role="doc-noteref"><sup>4</sup></a></p>
+<blockquote>
+<p>如果 <span class="math inline">\(\Gamma\)</span>
+是一个合式公式集，<span class="math inline">\(B\)</span> 和 <span
+class="math inline">\(C\)</span> 也是合式公式；则如果 <span
+class="math inline">\(\Gamma, B \vdash C\)</span>，则 <span
+class="math inline">\(\Gamma \vdash B \Rightarrow C\)</span>；
+特别地（<span class="math inline">\(\Gamma\)</span> 为空的时候），如果
+<span class="math inline">\(B \vdash C\)</span>，则 <span
+class="math inline">\(\vdash B \Rightarrow C\)</span> <em>（Herbrand,
+1930）</em></p>
+</blockquote>
+<div class="proof">
+<p>令 <span class="math inline">\(C_1, C_2, ..., C_n\)</span> 是从 <span
+class="math inline">\(\Gamma \cup \{B\}\)</span> 推出 <span
+class="math inline">\(C\)</span> 的证明，其中 <span
+class="math inline">\(C\)</span> 即 <span
+class="math inline">\(C_n\)</span>，
+因此如果可以用归纳法（induction）证明 <span class="math inline">\(\Gamma
+\vdash B \Rightarrow C_j, 1 \le j \le n\)</span> 则可得证</p>
+<p>首先 <span class="math inline">\(C_1\)</span> 要么是公理，要么是在
+<span class="math inline">\(\Gamma\)</span> 中，要么就是 <span
+class="math inline">\(B\)</span>，因为它是证明序列中第一项，只能是公理或前提；
+由公理 <a href="#A1">A1</a> 得 <span class="math inline">\(C_1
+\Rightarrow (B \Rightarrow C_1)\)</span>，前两种情况就可根据 MP 推出
+<span class="math inline">\(B \Rightarrow C_1\)</span>；
+第三种情况直接运用 Lemma 1.8：<span class="math inline">\(B \Rightarrow
+B\)</span></p>
+<p>现假设 <span class="math inline">\(\forall k &lt; j, \Gamma \vdash B
+\Rightarrow C_k\)</span>，下面证明 <span class="math inline">\(\Gamma
+\vdash B \Rightarrow C_j\)</span></p>
+<p>同样 <span class="math inline">\(C_j\)</span> 要么是公理，要么是在
+<span class="math inline">\(\Gamma\)</span> 中，要么就是 <span
+class="math inline">\(B\)</span>， <strong>要么是 <span
+class="math inline">\(C_l\)</span> 和 <span
+class="math inline">\(C_m\)</span> 通过 MP 推出的（因此 <span
+class="math inline">\(C_m\)</span> 形如 <span class="math inline">\(C_l
+\Rightarrow C_j\)</span>，且 <span class="math inline">\(l &lt;
+j\)</span> 以及 <span class="math inline">\(m &lt;
+j\)</span>）</strong>； 前三种情况的证明方式同 <span
+class="math inline">\(C_1\)</span>，最后一种情况下，由归纳假设有</p>
+<ul>
+<li><span class="math inline">\(\Gamma \vdash B \Rightarrow C_l\)</span>
+(h1)</li>
+<li><span class="math inline">\(\Gamma \vdash B \Rightarrow (C_l
+\Rightarrow C_j)\)</span> (h2)</li>
+</ul>
+<p>又由公理 <a href="#A2">A2</a> 有 <span class="math inline">\(\vdash
+(B \Rightarrow (C_l \Rightarrow C_j)) \Rightarrow ((B \Rightarrow C_l)
+\Rightarrow (B \Rightarrow C_j))\)</span>， 连续运用 h2 和 h1
+到上述公理实例，即可得出 <span class="math inline">\(\Gamma \vdash B
+\Rightarrow C_j\)</span> <a href="#fn5" class="footnote-ref" id="fnref5"
+role="doc-noteref"><sup>5</sup></a></p>
+<p><img src="deduction-theorem.png" /></p>
+</div>
+<h3 id="corollary-1.10">Corollary 1.10</h3>
+<blockquote>
+<p><span id="corollary-1.10-a"><code>a</code></span> <span
+class="math inline">\(B \Rightarrow C, C \Rightarrow D \vdash B
+\Rightarrow D\)</span></p>
+</blockquote>
+<div class="proof">
+<p>这其实是前面 Exercise 1.47 里的第二题， 只要证明了 <span
+class="math inline">\(B \Rightarrow C, C \Rightarrow D, B \vdash
+D\)</span> 就可以通过 Deduction Theorem 获证（简单多了）</p>
+<ol type="1">
+<li><span class="math inline">\(B \Rightarrow C\)</span></li>
+<li><span class="math inline">\(C \Rightarrow D\)</span></li>
+<li><span class="math inline">\(B\)</span></li>
+<li><span class="math inline">\(C\)</span> MP 3 和 1 获得</li>
+<li><span class="math inline">\(D\)</span> MP 4 和 2 获得</li>
+</ol>
+</div>
+<blockquote>
+<p><span id="corollary-1.10-b"><code>b</code></span> <span
+class="math inline">\(B \Rightarrow (C \Rightarrow D), C \vdash B
+\Rightarrow D\)</span></p>
+</blockquote>
+<div class="proof">
+<p>证明类似上面</p>
+</div>
+<h3 id="lemma-1.11">Lemma 1.11</h3>
+<blockquote>
+<p><span id="lemma-1.11-a"><code>a</code></span> <span
+class="math inline">\(\neg\neg B \Rightarrow B\)</span>
+双重否定消除（Double Negation Elimation，DNE）</p>
+</blockquote>
+<div class="proof">
+<p>只要证明了 <span class="math inline">\(\neg \neg B \vdash B\)</span>
+即可通过 DT 得证</p>
+<ol type="1">
+<li><span class="math inline">\(\neg \neg B\)</span> Hyp</li>
+<li><span class="math inline">\(\neg \neg B \Rightarrow (\neg B
+\Rightarrow \neg \neg B)\)</span> A1</li>
+<li><span class="math inline">\(\neg B \Rightarrow \neg \neg B\)</span>
+MP 1 和 2</li>
+<li><span class="math inline">\(\neg B \Rightarrow \neg B\)</span> <a
+href="#lemma-1.8">Lemma 1.8</a></li>
+<li><span class="math inline">\((\neg B \Rightarrow \neg \neg B)
+\Rightarrow ((\neg B \Rightarrow \neg B) \Rightarrow B)\)</span> A3</li>
+<li><span class="math inline">\(B\)</span> 5 连续 MP 3 和 4 即可</li>
+</ol>
+</div>
+<blockquote>
+<p><span id="lemma-1.11-b"><code>b</code></span> <span
+class="math inline">\(B \Rightarrow \neg\neg B\)</span>
+双重否定引入（Double Negation Introduction，DNI）</p>
+</blockquote>
+<div class="proof">
+<p>只要证明了 <span class="math inline">\(B \vdash \neg \neg B\)</span>
+即可通过 DT 得证</p>
+<ol type="1">
+<li><span class="math inline">\(B\)</span> Hyp</li>
+<li><span class="math inline">\(B \Rightarrow (\neg \neg \neg B
+\Rightarrow B)\)</span> A1</li>
+<li><span class="math inline">\(\neg \neg \neg B \Rightarrow B\)</span>
+MP 1 和 2</li>
+<li><span class="math inline">\(\neg \neg \neg B \Rightarrow \neg
+B\)</span> 双重否定消除</li>
+<li><span class="math inline">\((\neg \neg \neg B \Rightarrow \neg B)
+\Rightarrow ((\neg \neg \neg B \Rightarrow B) \Rightarrow \neg \neg
+B)\)</span> A3</li>
+<li><span class="math inline">\(\neg \neg B\)</span> 对 5 连续 MP 4 和 3
+即可</li>
+</ol>
+</div>
+<blockquote>
+<p><span id="lemma-1.11-c"><code>c</code></span> <span
+class="math inline">\(\neg B \Rightarrow (B \Rightarrow C)\)</span>
+（爆炸原理 Principle of Explosion/Vacuous Truth ?）</p>
+</blockquote>
+<div class="proof">
+<p>只要证明了 <span class="math inline">\(\neg B, B \vdash C\)</span>
+即可通过两次 DT 得证</p>
+<ol type="1">
+<li><span class="math inline">\(\neg B\)</span> Hyp</li>
+<li><span class="math inline">\(\neg B \Rightarrow (\neg C \Rightarrow
+\neg B)\)</span> A1</li>
+<li><span class="math inline">\(\neg C \Rightarrow \neg B\)</span> MP 1
+和 2</li>
+<li><span class="math inline">\(B\)</span> Hyp</li>
+<li><span class="math inline">\(B \Rightarrow (\neg C \Rightarrow
+B)\)</span> A1</li>
+<li><span class="math inline">\(\neg C \Rightarrow B\)</span> MP 4 和
+5</li>
+<li><span class="math inline">\((\neg C \Rightarrow \neg B) \Rightarrow
+((\neg C \Rightarrow B) \Rightarrow C)\)</span> A3</li>
+<li><span class="math inline">\(C\)</span> 对 7 连续 MP 3 和 6 即可</li>
+</ol>
+<p>其实也同时证明了 <span class="math inline">\(B \Rightarrow (\neg B
+\Rightarrow C)\)</span></p>
+</div>
+<blockquote>
+<p><span id="lemma-1.11-d"><code>d</code></span> <span
+class="math inline">\((\neg C \Rightarrow \neg B) \Rightarrow (B
+\Rightarrow C)\)</span> 换质换位律-逆 （Contraposition）</p>
+</blockquote>
+<div class="proof">
+<p>只要证明了 <span class="math inline">\(\neg C \Rightarrow \neg B, B
+\vdash C\)</span> 即可通过两次 DT 得证</p>
+<ol type="1">
+<li><span class="math inline">\(B\)</span> Hyp</li>
+<li><span class="math inline">\(B \Rightarrow (\neg C \Rightarrow
+B)\)</span> A1</li>
+<li><span class="math inline">\(\neg C \Rightarrow B\)</span> MP 1 和
+2</li>
+<li><span class="math inline">\(\neg C \Rightarrow \neg B\)</span>
+Hyp</li>
+<li><span class="math inline">\((\neg C \Rightarrow \neg B) \Rightarrow
+((\neg C \Rightarrow B) \Rightarrow C)\)</span> A3</li>
+<li><span class="math inline">\(C\)</span> 对 5 连续 MP 4 和 3 即可</li>
+</ol>
+</div>
+<blockquote>
+<p><span id="lemma-1.11-e"><code>e</code></span> <span
+class="math inline">\((B \Rightarrow C) \Rightarrow (\neg C \Rightarrow
+\neg B)\)</span> 换质换位律 （Contraposition）</p>
+</blockquote>
+<div class="proof">
+<p>只要证明 <span class="math inline">\(B \Rightarrow C, \neg C \vdash
+\neg B\)</span> 即可通过两次 DT 得证</p>
+<ol type="1">
+<li><span class="math inline">\(\neg C\)</span> Hyp</li>
+<li><span class="math inline">\(\neg C \Rightarrow (\neg \neg B
+\Rightarrow \neg C)\)</span> A1</li>
+<li><span class="math inline">\(\neg \neg B \Rightarrow \neg C\)</span>
+MP 1 和 2</li>
+<li><span class="math inline">\(B \Rightarrow C\)</span> Hyp</li>
+<li><span class="math inline">\(\neg \neg B \Rightarrow C\)</span> 用
+DNE 和 DT 易证 <span class="math inline">\(B \Rightarrow C \vdash \neg
+\neg B \Rightarrow C\)</span></li>
+<li><span class="math inline">\((\neg \neg B \Rightarrow \neg C)
+\Rightarrow ((\neg \neg B \Rightarrow C) \Rightarrow \neg B)\)</span>
+A3</li>
+<li><span class="math inline">\(\neg B\)</span> 对 6 连续 MP 3 和 5
+即可</li>
+</ol>
+</div>
+<blockquote>
+<p><span id="lemma-1.11-f"><code>f</code></span> <span
+class="math inline">\(B \Rightarrow (\neg C \Rightarrow \neg (B
+\Rightarrow C))\)</span></p>
+</blockquote>
+<div class="proof">
+<ol type="1">
+<li><span class="math inline">\(B, B \Rightarrow C \vdash C\)</span>
+易知</li>
+<li><span class="math inline">\(B \vdash (B \Rightarrow C) \Rightarrow
+C\)</span> DT</li>
+<li><span class="math inline">\(B \vdash ((B \Rightarrow C) \Rightarrow
+C) \Rightarrow (\neg C \Rightarrow \neg (B \Rightarrow C))\)</span> <a
+href="#lemma-1.11-e">Lemma 1.11#e</a></li>
+<li><span class="math inline">\(B \vdash \neg C \Rightarrow \neg (B
+\Rightarrow C)\)</span> MP 2 和 3</li>
+<li><span class="math inline">\(\vdash B \Rightarrow (\neg C \Rightarrow
+\neg (B \Rightarrow C))\)</span> DT</li>
+</ol>
+</div>
+<blockquote>
+<p><span id="lemma-1.11-g"><code>g</code></span> <span
+class="math inline">\((B \Rightarrow C) \Rightarrow ((\neg B \Rightarrow
+C) \Rightarrow C)\)</span></p>
+</blockquote>
+<div class="proof">
+<p>只要证明 <span class="math inline">\(B \Rightarrow C, \neg B
+\Rightarrow C \vdash C\)</span> 即可通过两次 DT 得证</p>
+<ol type="1">
+<li><span class="math inline">\(B \Rightarrow C\)</span> Hyp</li>
+<li><span class="math inline">\((B \Rightarrow C) \Rightarrow (\neg C
+\Rightarrow \neg B)\)</span> <a href="#lemma-1.11-e">Lemma
+1.11#e</a></li>
+<li><span class="math inline">\(\neg C \Rightarrow \neg B\)</span> MP 1
+和 2</li>
+<li><span class="math inline">\(\neg B \Rightarrow C\)</span> Hyp</li>
+<li><span class="math inline">\((\neg B \Rightarrow C) \Rightarrow (\neg
+C \Rightarrow \neg \neg B)\)</span> <a href="#lemma-1.11-e">Lemma
+1.11#e</a></li>
+<li><span class="math inline">\(\neg C \Rightarrow \neg \neg B\)</span>
+MP 4 和 5</li>
+<li><span class="math inline">\((\neg C \Rightarrow \neg \neg B)
+\Rightarrow ((\neg C \Rightarrow \neg B) \Rightarrow C)\)</span> A3</li>
+<li><span class="math inline">\(C\)</span> 对 7 连续 MP 6 和 3 即可</li>
+</ol>
+</div>
+<h3 id="proposition-1.12">Proposition 1.12</h3>
+<blockquote>
+<p><span class="math inline">\(\mathcal{L}\)</span>
+中每一个定理都是一个重言式</p>
+</blockquote>
+<div class="proof">
+<p><span class="math inline">\(\mathcal{L}\)</span>
+中的每一条公理都是重言式（用前面介绍的反推法很容易验证，即如果不是重言式，
+则 <span class="math inline">\(X \Rightarrow Y\)</span> 仅当 <span
+class="math inline">\(X=T, Y=F\)</span>
+时成立，一项项地赋值最后推出矛盾证明不可能）， 由 <a
+href="../chap-1-1-to-1-3/#proposition-1.2">Proposition 1.2</a>，若 <span
+class="math inline">\(X\)</span> 和 <span class="math inline">\(X
+\Rightarrow Y\)</span> 这两条是重言式，则 <span
+class="math inline">\(Y\)</span> 也是；由于 <span
+class="math inline">\(\mathcal{L}\)</span>
+中所有定理都是从公理（重言式）MP
+（唯一一条演绎规则）而得，故所有定理仍然是重言式</p>
+</div>
+<h3 id="lemma-1.13">Lemma 1.13</h3>
+<p>本 Lemma 是用来证明所有重言式都是 <span
+class="math inline">\(\mathcal{L}\)</span> 中的定理</p>
+<blockquote>
+<p>令 <span class="math inline">\(B\)</span> 是一个合式公式，并令 <span
+class="math inline">\(X_1, X_2, ..., X_k\)</span> 是 <span
+class="math inline">\(B\)</span> 中出现的 statement letters；对于这些
+statement letters 的任意一种取值组合，如果 <span
+class="math inline">\(X_j\)</span> 为 <span
+class="math inline">\(T\)</span>，令 <span
+class="math inline">\(X^{&#39;}_ j\)</span> 为 <span
+class="math inline">\(X_j\)</span>，否则为 <span
+class="math inline">\(\neg X_j\)</span>； 如果 <span
+class="math inline">\(B\)</span> 为 <span
+class="math inline">\(T\)</span>，令 <span
+class="math inline">\(B^{&#39;}\)</span> 为 <span
+class="math inline">\(B\)</span>，否则为 <span
+class="math inline">\(\neg B\)</span>，</p>
+<p>则有 <span class="math inline">\(X^{&#39;}_ 1, ..., X^{&#39;}_ k
+\vdash B^{&#39;}\)</span></p>
+</blockquote>
+<p>例子</p>
+<p><span class="math display">\[
+\begin{array}
+  {c c c c}
+  X_1 &amp; X_2 &amp; \neg(\neg X_1 \Rightarrow X_2) &amp; \\
+  T &amp; T &amp; F &amp; X_1, X_2 \vdash \neg\neg(\neg X_1 \Rightarrow
+X_2) \\
+  F &amp; T &amp; F &amp; \neg X_1, X_2 \vdash \neg\neg(\neg X_1
+\Rightarrow X_2) \\
+  T &amp; F &amp; F &amp; X_1, \neg X_2 \vdash \neg\neg(\neg X_1
+\Rightarrow X_2) \\
+  F &amp; F &amp; T &amp; \neg X_1, \neg X_2 \vdash \neg(\neg X_1
+\Rightarrow X_2) \\
+\end{array}
+\]</span></p>
+<div class="proof">
+<p>对 <span class="math inline">\(B\)</span> 中出现的 <span
+class="math inline">\(\neg\Rightarrow\)</span> 的数量 <span
+class="math inline">\(n\)</span> 进行归纳法证明，</p>
+<p><span class="math inline">\(n=0\)</span> 的情况下，<span
+class="math inline">\(B\)</span> 就是 <span
+class="math inline">\(X_1\)</span> 一个 statement letter 了，易知 <span
+class="math inline">\(X_1 \vdash X_1, \neg X_1 \vdash \neg
+X_1\)</span></p>
+<p>现假设小于 <span class="math inline">\(n\)</span>
+时均成立（归纳假设）</p>
+<ul>
+<li>若 <span class="math inline">\(B\)</span> 形如 <span
+class="math inline">\(\neg C\)</span>（<span
+class="math inline">\(C\)</span> 中的联结符数量要比 <span
+class="math inline">\(n\)</span> 少），假如在特定的取值组合下
+<ul>
+<li><span class="math inline">\(C\)</span> 取 <span
+class="math inline">\(T\)</span>（则 <span
+class="math inline">\(B\)</span> 取 <span
+class="math inline">\(F\)</span>，<span
+class="math inline">\(B^{&#39;}\)</span> 为 <span
+class="math inline">\(\neg B\)</span>），根据归纳假设有 <span
+class="math inline">\(X^{&#39;}_ 1, ..., X^{&#39;}_ k \vdash
+C\)</span>， 由 <a href="#lemma-1.11-b">Lemma 1.11#b</a> 以及 MP 可得
+<span class="math inline">\(X^{&#39;}_ 1, ..., X^{&#39;}_ k \vdash
+\neg\neg C\)</span>， 而 <span class="math inline">\(\neg\neg C\)</span>
+即 <span class="math inline">\(\neg B\)</span> 即 <span
+class="math inline">\(B^{&#39;}\)</span></li>
+<li><span class="math inline">\(C\)</span> 取 <span
+class="math inline">\(F\)</span>（则 <span
+class="math inline">\(B\)</span> 取 <span
+class="math inline">\(T\)</span>，<span
+class="math inline">\(B^{&#39;}\)</span> 为 <span
+class="math inline">\(B\)</span>），根据归纳假设有 <span
+class="math inline">\(X^{&#39;}_ 1, ..., X^{&#39;}_ k \vdash \neg
+C\)</span>， 而 <span class="math inline">\(\neg C\)</span> 即 <span
+class="math inline">\(B\)</span> 即 <span
+class="math inline">\(B^{&#39;}\)</span></li>
+</ul></li>
+<li>若 <span class="math inline">\(B\)</span> 形如 <span
+class="math inline">\(C \Rightarrow D\)</span>（<span
+class="math inline">\(C\)</span> 和 <span
+class="math inline">\(D\)</span> 中的联接符数量要比 <span
+class="math inline">\(n\)</span> 少），假如在特定的取值组合下
+<ul>
+<li><span class="math inline">\(C\)</span> 取 <span
+class="math inline">\(F\)</span>（则 <span
+class="math inline">\(B\)</span> 取 <span
+class="math inline">\(T\)</span>，<span
+class="math inline">\(B^{&#39;}\)</span> 为 <span
+class="math inline">\(B\)</span>），根据归纳假设有 <span
+class="math inline">\(X^{&#39;}_ 1, ..., X^{&#39;}_ k \vdash \neg
+C\)</span>， 由 <a href="#lemma-1.11-c">Lemma 1.11#c</a> 以及 MP 可得
+<span class="math inline">\(X^{&#39;}_ 1, ..., X^{&#39;}_ k \vdash C
+\Rightarrow D\)</span>， 而 <span class="math inline">\(C \Rightarrow
+D\)</span> 即 <span class="math inline">\(B\)</span> 即 <span
+class="math inline">\(B^{&#39;}\)</span></li>
+<li><span class="math inline">\(D\)</span> 取 <span
+class="math inline">\(T\)</span>（则 <span
+class="math inline">\(B\)</span> 取 <span
+class="math inline">\(T\)</span>，<span
+class="math inline">\(B^{&#39;}\)</span> 为 <span
+class="math inline">\(B\)</span>），根据归纳假设有 <span
+class="math inline">\(X^{&#39;}_ 1, ..., X^{&#39;}_ k \vdash
+D\)</span>， 有 axiom A1 以及 MP 可得 <span
+class="math inline">\(X^{&#39;}_ 1, ..., X^{&#39;}_ k \vdash C
+\Rightarrow D\)</span>， 而 <span class="math inline">\(C \Rightarrow
+D\)</span> 即 <span class="math inline">\(B\)</span> 即 <span
+class="math inline">\(B^{&#39;}\)</span></li>
+<li><span class="math inline">\(C\)</span> 取 <span
+class="math inline">\(T\)</span> 且 <span
+class="math inline">\(D\)</span> 取 <span
+class="math inline">\(F\)</span>（则 <span
+class="math inline">\(B\)</span> 取 <span
+class="math inline">\(F\)</span>，<span
+class="math inline">\(B^{&#39;}\)</span> 为 <span
+class="math inline">\(\neg B\)</span>）， 根据归纳假设有 <span
+class="math inline">\(X^{&#39;}_ 1, ..., X^{&#39;}_ k \vdash C\)</span>
+以及 <span class="math inline">\(X^{&#39;}_ 1, ..., X^{&#39;}_ k \vdash
+\neg D\)</span>， 由 <a href="#lemma-1.11-f">Lemma 1.11#f</a> 以及两次
+MP 可得 <span class="math inline">\(X^{&#39;}_ 1, ..., X^{&#39;}_ k
+\vdash \neg (C \Rightarrow D)\)</span>， 而 <span
+class="math inline">\(\neg (C \Rightarrow D)\)</span> 即 <span
+class="math inline">\(\neg B\)</span> 即 <span
+class="math inline">\(B^{&#39;}\)</span></li>
+</ul></li>
+</ul>
+</div>
+<h3 id="proposition-1.14-completeness-theorem">Proposition 1.14
+(Completeness Theorem)</h3>
+<p>完备性定理<a href="#fn6" class="footnote-ref" id="fnref6"
+role="doc-noteref"><sup>6</sup></a></p>
+<blockquote>
+<p>若 <span class="math inline">\(\mathcal{L}\)</span> 的合式公式 <span
+class="math inline">\(B\)</span> 是一个重言式，则它也是 <span
+class="math inline">\(\mathcal{L}\)</span> 中的一个定理</p>
+</blockquote>
+<div class="proof">
+<p>假如 <span class="math inline">\(B\)</span> 是一个重言式，令 <span
+class="math inline">\(X_1, ..., X_k\)</span> 是其 statement
+letters，对于任意的取值组合，根据 Lemma 1.13， 有 <span
+class="math inline">\(X^{&#39;}_ 1, ..., X^{&#39;}_ k \vdash
+B\)</span>，这是因为 <span class="math inline">\(B\)</span> 总是取值
+<span class="math inline">\(T\)</span>（重言式），故 <span
+class="math inline">\(B^{&#39;}\)</span> 总是 <span
+class="math inline">\(B\)</span></p>
+<p>若 <span class="math inline">\(X_k\)</span> 取值 <span
+class="math inline">\(T\)</span>，有 <span
+class="math inline">\(X^{&#39;}_ 1, ..., X_k \vdash B\)</span>，
+由演绎定理得 <span class="math inline">\(X^{&#39;}_ 1, ..., X^{&#39;}_
+{k-1} \vdash X_k \Rightarrow B\)</span></p>
+<p>若 <span class="math inline">\(X_k\)</span> 取值 <span
+class="math inline">\(F\)</span>，有 <span
+class="math inline">\(X^{&#39;}_ 1, ..., \neg X_k \vdash B\)</span>，
+由演绎定理得 <span class="math inline">\(X^{&#39;}_ 1, ..., X^{&#39;}_
+{k-1} \vdash \neg X_k \Rightarrow B\)</span></p>
+<p>由 <a href="#lemma-1.11-g">Lemma 1.11#g</a> 以及上述两个式子 MP 可得
+<span class="math inline">\(X^{&#39;}_ 1, ..., X^{&#39;}_ {k-1} \vdash
+B\)</span></p>
+<p>反复执行上述不断地消除前提，最终得到 <span
+class="math inline">\(\vdash B\)</span></p>
+</div>
+<h3 id="corollary-1.16">Corollary 1.16</h3>
+<blockquote>
+<p><span class="math inline">\(\mathcal{L}\)</span>
+是一致的，即不存在合式公式 <span class="math inline">\(B\)</span> 使得
+<span class="math inline">\(B\)</span> 和 <span
+class="math inline">\(\neg B\)</span> 都是定理</p>
+</blockquote>
+<div class="proof">
+<p>假如两者都是定理，由 <a href="#proposition-1.12">Proposition 1.12</a>
+两者都是重言式，而 <span class="math inline">\(B\)</span> 和 <span
+class="math inline">\(\neg B\)</span> 不可能都是重言式</p>
+</div>
+<p>特别注意：</p>
+<blockquote>
+<p>当且仅当不是所有合式公式均为定理时，<span
+class="math inline">\(\mathcal{L}\)</span> 是一致的</p>
+</blockquote>
+<div class="proof">
+<p>如果一致，则只要有一条定理，其取反后一定不是定理；另一方面，如果该理论不一致，
+且包含 <a href="#lemma-1.11-c">Lemma 1.11#c</a> ，<span
+class="math inline">\(\vdash_{\mathcal{L}} \neg B \Rightarrow (B
+\Rightarrow C)\)</span> 以及 MP
+演绎规则，则可以推演出所有公式均为定理（因为 <span
+class="math inline">\(\neg B\)</span> 和 <span
+class="math inline">\(B\)</span> 均可证明）</p>
+</div>
+<h3 id="exercise-1.50">Exercise 1.50</h3>
+<blockquote>
+<p>若 <span class="math inline">\(B\)</span> 不是一个重言式，假如将
+<span class="math inline">\(B\)</span> 作为公理加入到 <span
+class="math inline">\(\mathcal{L}\)</span> 中而得到的 <span
+class="math inline">\(\mathcal{L^+}\)</span> 是不一致的</p>
+<p><em>注：即将 <span class="math inline">\(B\)</span> 中的所有
+statement letters 一一对应地替换为任意 statement forms 均为公理，如同
+A1~A3 那样</em></p>
+</blockquote>
+<div class="proof">
+<p>（421页答案）：由于 <span class="math inline">\(B\)</span>
+不是重言式，也就是说存在一个 statement letters 的取值组合，使得其取值为
+<span class="math inline">\(F\)</span>， 在该取值组合下，如果一个
+statement letter 取值为 <span
+class="math inline">\(T\)</span>，则将它替换为 <span
+class="math inline">\(X \vee \neg X\)</span> ，否则替换为 <span
+class="math inline">\(X \wedge \neg X\)</span>， 替换后得出的 statement
+form 为 <span class="math inline">\(C\)</span>，易知 <span
+class="math inline">\(C\)</span> 总是取值 <span
+class="math inline">\(F\)</span>，因此 <span class="math inline">\(\neg
+C\)</span> 为重言式，由 <a
+href="#proposition-1.14-completeness-theorem">Proposition 1.14</a> 得
+<span class="math inline">\(\vdash_{\mathcal{L}} \neg C\)</span>，因此
+<span class="math inline">\(\vdash_{\mathcal{L^+}} \neg
+C\)</span>；另一方面，<span class="math inline">\(C\)</span> 也是 <span
+class="math inline">\(\mathcal{L^+}\)</span> 的公理， 即 <span
+class="math inline">\(\vdash_{\mathcal{L^+}} C\)</span>，得出不一致</p>
+</div>
+<section id="footnotes" class="footnotes footnotes-end-of-document"
+role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1"><p>“形式化”
+的含义应该是指这些符号仅仅应当看作符号而已，例如 <span
+class="math inline">\(\mathcal{L}\)</span> 中的 <span
+class="math inline">\(\neg \Rightarrow\)</span>，
+而不应该联系上意义，只不过构造出来的系统 “恰好”
+跟传统的逻辑符号有一致的表现而已（后面有推论 <span
+class="math inline">\(\mathcal{L}\)</span>
+中的合式公式是一个定理，当且仅当它是重言式的时候）<a href="#fnref1"
+class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li
+id="fn2"><p>证明是一个合式公式序列，应该是不允许无限长的（？），但应该可以是任意长度，例如通过归纳法产生的证明<a
+href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li
+id="fn3"><p>初看这几条公理，觉得实在是有点不明白为啥要将公理定义得那么复杂，不过看了下面演绎定理的证明过程，
+<a href="#A1">A1</a>/<a href="#A2">A2</a>
+似乎就是为了归纳证明该定理而设的，而 <a href="#A3">A3</a>
+实际上是反证法<a href="#fnref3" class="footnote-back"
+role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>粗略查了下 wiki <a
+href="https://en.wikipedia.org/wiki/Deduction_theorem">Deduction
+theorem</a> 所说， 这里给出的应该是 Hilbert-style
+类的体系：倾向于多个公理，而只有少量的演绎规则（例如这里只有一个 MP）；
+与之相反的是所谓的自然演绎体系：倾向于很少公理（甚至于没有），而有许多的演绎规则<a
+href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>另外补充一下 Deduction Theorem 的逆向，见 <a
+href="https://math.stackexchange.com/a/986878"
+class="uri">https://math.stackexchange.com/a/986878</a></p>
+<blockquote>
+<p>如果 <span class="math inline">\(\Gamma \vdash B \Rightarrow
+C\)</span> 则有 <span class="math inline">\(\Gamma, B \vdash
+C\)</span></p>
+</blockquote>
+<div class="proof">
+<ul>
+<li>显而易见 <span class="math inline">\(\Gamma, B \vdash B \Rightarrow
+C\)</span>，因为额外添加 <span class="math inline">\(B\)</span>
+作为前提并不影响证明序列 <span class="math inline">\(X_1, X_2, ...,
+X_n\)</span>， 其中 <span class="math inline">\(X_n = B \Rightarrow
+C\)</span></li>
+<li>令 <span class="math inline">\(X_{n+1} = B\)</span> 前提</li>
+<li>则 <span class="math inline">\(X_{n+2} = C\)</span> MP <span
+class="math inline">\(X_{n+1}\)</span> 和 <span
+class="math inline">\(X_n\)</span> 获得</li>
+<li><span class="math inline">\(X_1, ..., X_{n+2}\)</span> 构成了 <span
+class="math inline">\(\Gamma, B \vdash C\)</span> 的证明</li>
+</ul>
+</div>
+<p>所以总括而言，命题逻辑里前提可以在 <span
+class="math inline">\(\vdash\)</span> 两边左右横跳<a href="#fnref5"
+class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>所谓 Copmleteness
+完备性，即逻辑上成立的式子在该形式化理论中都有证明； 于之相对应的是
+Soundness，即有证明的都必须是逻辑上成立的；感觉 sound
+应该是更基础一点的要求：
+如果一个系统能推导出逻辑上不成立的又有什么用呢？且直觉觉得 soundness
+的证明应该是要简单一点的，
+只需要公理以及演绎规则都能保持逻辑成立的性质即可<a href="#fnref6"
+class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+<link rel="stylesheet" href="/assets/venobox/dist/venobox.min.css" />
+<script src="/assets/venobox/dist/venobox.min.js"></script>
+<script>
+  document.querySelectorAll('img').forEach((img) => {
+    const a = document.createElement("a")
+    a.href = '#'
+    a.setAttribute('data-href', img.src)
+    a.classList.add('images')
+    img.replaceWith(a)
+    a.appendChild(img)
+  })
+  new VenoBox({
+    selector: '.images',
+    fitView: true,
+  });
+</script>
+</body>
+</html>
