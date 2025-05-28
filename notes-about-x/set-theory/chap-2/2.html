@@ -250,12 +250,17 @@
 nav span {
   display: inline-block;
   overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  /* text-overflow: ellipsis; */
+  /* white-space: nowrap; */
+  white-space: pre-wrap;
   width: 90%;
 }
 nav li:before {
   content: '';
+}
+nav span:before {
+  content: "\25CF";
+  margin-right: 8px;
 }
 nav .caret {
   cursor: pointer;
@@ -310,13 +315,17 @@ if (keywords && keywords.content.includes('showSidebar')) {
   sidebar.classList.add('show')
 }
 
-/*
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    sidebar.classList.remove('show')
+  }
+})
+
 window.addEventListener('click', (e) => {
-  if (e.target.id !== 'sidebar' && e.target.id !== 'sidebar_toggler') {
-    sidebar.classList.remove('show');
+  if (!sidebar.contains(e.target) && !sidebarToggler.contains(e.target)) {
+    sidebar.classList.remove('show')
   }
 });
-*/
 
 /* load urls */
 // https://www.w3schools.com/howto/howto_js_treeview.asp
