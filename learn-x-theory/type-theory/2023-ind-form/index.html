@@ -566,9 +566,9 @@ Rule</em></strong></mark>，其形式由 <mark><strong><em>Introduction
 Rules</em></strong></mark> (Constructors) 决定； 其归约行为则由
 <mark><strong><em>Computation Rule</em></strong></mark> 定义</p>
 <p><mark>具体来说，Inductive Type (Family) 的 Introduction Rules
-决定了这个类型的某种内部结构：一个 term 怎么由这个 type (family) 的其他
-term 构建而成；而 Elimination Rule 则将这个 type (family) 映射到另外一个
-type family 上，并且保持同样的结构</mark></p>
+决定了这个类型的某种内部结构：一个元素怎么由这个 type (family)
+的其他元素构建而成；而 Elimination Rule 则将这个 type (family)
+映射到另外一个 type family 上，并且保持同样的结构</mark></p>
 <p>下面用一些例子说明</p>
 <h3 id="natrual-number">Natrual Number</h3>
 <div class="sourceCode" id="cb5"><pre
@@ -591,7 +591,7 @@ class="sourceCode agda"><code class="sourceCode agda"><span id="cb6-1"><a href="
 <p><em>（ <code>P</code> 是 indexed by <code>ℕ</code> 的类型族，属于
 <code>ℕ → Set</code> ）</em></p>
 <p><mark>也就是对于每一个 <code>n : ℕ</code>，我们都需要提供一个类型为
-<code>P n</code> 的 term</mark>；由于 <code>ℕ</code>
+<code>P n</code> 的元素</mark>；由于 <code>ℕ</code>
 有两种已知的构造方法：</p>
 <ul>
 <li><code>Z : ℕ</code></li>
@@ -613,7 +613,7 @@ class="sourceCode agda"><code class="sourceCode agda"><span id="cb6-1"><a href="
 <p>那么 <code>P n</code> 从哪里来呢？<mark>递归</mark>；就是第二条
 <em>Computation Rule</em></p>
 <pre><code>ℕ-ind p pz ps (S n) = ps n (ℕ-ind p pz ps n)</code></pre>
-<p>即计算 <code>P (S n)</code> 时，<code>P n</code> 由
+<p>即计算 <code>P (S n)</code> 元素时，类型为 <code>P n</code> 的参数由
 <code>(ℕ-ind p pz ps n)</code> 递归得出</p>
 <h3 id="fin">Fin</h3>
 <p>Finite set 是带有 index 的 type family</p>
@@ -638,8 +638,8 @@ class="sourceCode agda"><code class="sourceCode agda"><span id="cb11-1"><a href=
 <p><em>（ <code>P</code> 是 indexed by 两个参数的类型族
 <code>(n : ℕ) → Fin n → Set</code> ）</em></p>
 <p><mark>也就是对于每一个
-<code>f : Fin n</code>，我们都需要提供一个类型为 <code>P n f</code> 的
-term</mark>；同样地已知两种构造方法：</p>
+<code>f : Fin n</code>，我们都需要提供一个类型为 <code>P n f</code>
+的元素</mark>；同样地已知两种构造方法：</p>
 <ul>
 <li><code>FZ n : Fin (S n)</code></li>
 <li><code>FS n f : Fin (S n)</code></li>
@@ -684,7 +684,7 @@ class="sourceCode agda"><code class="sourceCode agda"><span id="cb15-1"><a href=
 <p>只有一个构造方法 <code>refl : Id a a</code>，故只需要提供
 <code>P a refl</code></p>
 <h3 id="t">T</h3>
-<p>再来一个依赖于 countably infinite 个其他 term 的</p>
+<p>再来一个依赖于 countably infinite 个其他元素的</p>
 <div class="sourceCode" id="cb16"><pre
 class="sourceCode agda"><code class="sourceCode agda"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> T <span class="ot">:</span> <span class="dt">Set</span> <span class="kw">where</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    T0 <span class="ot">:</span> T</span>
@@ -715,10 +715,10 @@ role="doc-noteref"><sup>6</sup></a></p>
 <p>(updated @ 2024)</p>
 <p>补充一个问题，一个类型里的元素是不是仅仅就是那些由 constructor
 构造出来的呢？按我目前的理解是未必，因为上述只是<mark>形式上</mark>的规则而已，
-存在着满足这些规则的不同的模型，有些模型可能有一些无法直接由 constructor
-构造出来的元素，例如：<a href="#fn7" class="footnote-ref" id="fnref7"
-role="doc-noteref"><sup>7</sup></a> <a href="#fn8" class="footnote-ref"
-id="fnref8" role="doc-noteref"><sup>8</sup></a></p>
+存在着满足这些规则的不同的模型，而有些模型可能有一些无法直接由
+constructor 构造出来的元素，例如： <a href="#fn7" class="footnote-ref"
+id="fnref7" role="doc-noteref"><sup>7</sup></a> <a href="#fn8"
+class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a></p>
 <blockquote>
 <p>just like in order to define a group homomorphism out of the free
 group on one generator you only need to say what happens to the
