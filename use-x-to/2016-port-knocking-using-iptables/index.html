@@ -285,17 +285,7 @@
   <!-- setup layout begin -->
   <style>
   :root {
-    --sidebar-width: 30%;
-  }
-  @media screen and (640px <= width <= 1280px) {
-    :root {
-      --sidebar-width: 40%;
-    }
-  }
-  @media screen and (width < 640px) {
-    :root {
-      --sidebar-width: 100%;
-    }
+    --sidebar-width: 375px;
   }
 
   #sidebar {
@@ -349,10 +339,11 @@
   nav span {
     display: inline-block;
     overflow: hidden;
-    /* text-overflow: ellipsis; */
-    /* white-space: nowrap; */
-    white-space: pre-wrap;
-    width: 90%;
+    font-size: 0.8em;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    /*white-space: pre-wrap;*/
+    width: 95%;
   }
   nav li:before {
     content: '';
