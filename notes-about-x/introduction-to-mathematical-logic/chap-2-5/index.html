@@ -194,95 +194,203 @@
   }
   </style>
   <!-- latex css end -->
+
+  <!-- venobox begin -->
+  <link rel="stylesheet" href="/assets/venobox/dist/venobox.min.css" />
+  <script src="/assets/venobox/dist/venobox.min.js"></script>
+  <script>
+    window.addEventListener("load", (ev) => {
+      document.querySelectorAll('img').forEach((img) => {
+        const a = document.createElement("a")
+        a.href = '#'
+        a.setAttribute('data-href', img.src)
+        a.classList.add('images')
+        img.replaceWith(a)
+        a.appendChild(img)
+      })
+      new VenoBox({
+        selector: '.images',
+        fitView: true,
+      })
+    })
+  </script>
+  <!-- venobox end -->
+
+  <!-- layout begin -->
+  <style>
+  #sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    max-width: 400px;
+    width: 80%;
+    height: 100%;
+    padding: 2rem;
+    background-color: #eee;
+    box-shadow: 0 10px 20px -4px #000;
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #ccc #eee;
+    scrollbar-gutter: stable;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-100%);
+    transition: opacity 0.3s ease, visibility 0.2s ease, transform 0.3s ease;
+  }
+  #sidebar.show {
+    pointer-events: all;
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+  }
+  #sidebar_toggler {
+    position: fixed;
+    top: 4vh;
+    right: 3vw;
+    z-index: 1000;
+    width: 2.8rem;
+    height: 2.4rem;
+    padding: 0.5rem;
+    border: solid #999 0.1rem;
+    border-radius: 0.4rem;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+    overflow: hidden;
+  }
+
+  #sidebar_toggler span {
+    background-color: #999;
+    width: 100%;
+    height: 0.2rem;
+    transition: all 0.3s ease;
+    pointer-events: none;
+  }
+  nav span {
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    /*white-space: pre-wrap;*/
+    width: 90%;
+  }
+  nav li:before {
+    content: '';
+  }
+  nav span:before {
+    content: "\25CF";
+    margin-right: 8px;
+  }
+  nav .caret {
+    cursor: pointer;
+    user-select: none; /* Prevent text selection */
+  }
+  nav .caret::before {
+    content: "\25B6";
+    color: black;
+    display: inline-block;
+    margin-right: 6px;
+  }
+  nav .caret-down::before {
+    transform: rotate(90deg);
+  }
+  nav .collapse {
+    display: none;
+  }
+  </style>
+  <script>
+    window.addEventListener("load", (ev) => {
+      /* setup sidebar */
+      // https://www.cssscript.com/demo/responsive-sidebar-nav-hamburger/
+      const sidebar = document.querySelector('#sidebar')
+      const sidebarToggler = document.querySelector('#sidebar_toggler')
+
+      sidebarToggler.addEventListener('click', () => {
+        sidebar.classList.toggle('show')
+      });
+
+      const keywords = document.querySelector('meta[name="keywords"]')
+      if (keywords && keywords.content.includes('showSidebar')) {
+        sidebar.classList.add('show')
+      }
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          sidebar.classList.remove('show')
+        }
+      })
+
+      window.addEventListener('click', (e) => {
+        if (!sidebar.contains(e.target) && !sidebarToggler.contains(e.target)) {
+          sidebar.classList.remove('show')
+        }
+      });
+
+      /* load urls */
+      // https://www.w3schools.com/howto/howto_js_treeview.asp
+      const currentPath = window.location.pathname
+      const sideNavLinks = document.querySelector('#side_navlinks');
+      function buildSideLink(li, node) {
+        // span contains the text and link (if provided)
+        const span = li.appendChild(document.createElement("span"))
+        if (node.url) {
+          const a = span.appendChild(document.createElement("a"))
+          a.href = node.url
+          a.textContent = node.text
+        } else {
+          span.textContent = node.text
+        }
+        span.setAttribute("title", node.text)
+
+        // if has children, then add caret and append a nested <ul> for children
+        if (node.children.length > 0) {
+          span.classList.add("caret")
+          const ul = li.appendChild(document.createElement("ul"))
+          ul.classList.add("nested")
+          // do not collapse current path
+          if (!currentPath.startsWith(node.path)) {
+            ul.classList.add("collapse")
+          } else {
+            span.classList.add("caret-down")
+          }
+          node.children.forEach((child) => {
+            const l = ul.appendChild(document.createElement("li"))
+            buildSideLink(l, child)
+          })
+        }
+      }
+      async function loadSideLinks() {
+        const resp = await fetch("/urls.json")
+        const data = await resp.json()
+        // console.log(data)
+        const root = sideNavLinks.appendChild(document.createElement("ul"))
+        data.children.forEach((child) => {
+          buildSideLink(root.appendChild(document.createElement("li")), child)
+        })
+
+        const toggler = root.getElementsByClassName("caret")
+        for (let i=0; i<toggler.length; i++) {
+          toggler[i].addEventListener("click", function () {
+            this.parentElement.querySelector(".nested").classList.toggle("collapse")
+            this.classList.toggle("caret-down")
+            return false
+          })
+        }
+      }
+      loadSideLinks()
+    })
+  </script>
+  <!-- layout end -->
   <script src="/assets/mathjax/es5/tex-chtml-full.js"
   type="text/javascript"></script>
 </head>
 <body>
 <!-- sidebar begin -->
-<style>
-/* sidebar */
-#sidebar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 999;
-  max-width: 400px;
-  width: 80%;
-  height: 100%;
-  padding: 2rem;
-  background-color: #eee;
-  box-shadow: 0 10px 20px -4px #000;
-  overflow-x: hidden;
-  overflow-y: auto;
-  pointer-events: none;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateX(-100%);
-  transition: opacity 0.3s ease, visibility 0.2s ease, transform 0.3s ease;
-}
-#sidebar.show {
-  pointer-events: all;
-  opacity: 1;
-  visibility: visible;
-  transform: translateX(0);
-}
-#sidebar_toggler {
-  position: fixed;
-  top: 4vh;
-  right: 3vw;
-  z-index: 1000;
-  width: 2.8rem;
-  height: 2.4rem;
-  padding: 0.5rem;
-  border: solid #999 0.1rem;
-  border-radius: 0.4rem;
-  background-color: #fff;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  cursor: pointer;
-  overflow: hidden;
-}
-
-#sidebar_toggler span {
-  background-color: #999;
-  width: 100%;
-  height: 0.2rem;
-  transition: all 0.3s ease;
-  pointer-events: none;
-}
-nav span {
-  display: inline-block;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  /*white-space: pre-wrap;*/
-  width: 90%;
-}
-nav li:before {
-  content: '';
-}
-nav span:before {
-  content: "\25CF";
-  margin-right: 8px;
-}
-nav .caret {
-  cursor: pointer;
-  user-select: none; /* Prevent text selection */
-}
-nav .caret::before {
-  content: "\25B6";
-  color: black;
-  display: inline-block;
-  margin-right: 6px;
-}
-nav .caret-down::before {
-  transform: rotate(90deg);
-}
-nav .collapse {
-  display: none;
-}
-</style>
 <aside id="sidebar">
   <div class="sidebar_content sidebar_head">
     <h1>Content</h1>
@@ -304,86 +412,6 @@ nav .collapse {
   <span></span>
   <span></span>
 </div>
-<script>
-/* setup sidebar */
-// https://www.cssscript.com/demo/responsive-sidebar-nav-hamburger/
-const sidebar = document.querySelector('#sidebar')
-const sidebarToggler = document.querySelector('#sidebar_toggler')
-
-sidebarToggler.addEventListener('click', () => {
-  sidebar.classList.toggle('show')
-});
-
-const keywords = document.querySelector('meta[name="keywords"]')
-if (keywords && keywords.content.includes('showSidebar')) {
-  sidebar.classList.add('show')
-}
-
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') {
-    sidebar.classList.remove('show')
-  }
-})
-
-window.addEventListener('click', (e) => {
-  if (!sidebar.contains(e.target) && !sidebarToggler.contains(e.target)) {
-    sidebar.classList.remove('show')
-  }
-});
-
-/* load urls */
-// https://www.w3schools.com/howto/howto_js_treeview.asp
-const currentPath = window.location.pathname
-const sideNavLinks = document.querySelector('#side_navlinks');
-function buildSideLink(li, node) {
-  // span contains the text and link (if provided)
-  const span = li.appendChild(document.createElement("span"))
-  if (node.url) {
-    const a = span.appendChild(document.createElement("a"))
-    a.href = node.url
-    a.textContent = node.text
-  } else {
-    span.textContent = node.text
-  }
-  span.setAttribute("title", node.text)
-
-  // if has children, then add caret and append a nested <ul> for children
-  if (node.children.length > 0) {
-    span.classList.add("caret")
-    const ul = li.appendChild(document.createElement("ul"))
-    ul.classList.add("nested")
-    // do not collapse current path
-    if (!currentPath.startsWith(node.path)) {
-      ul.classList.add("collapse")
-    } else {
-      span.classList.add("caret-down")
-    }
-    node.children.forEach((child) => {
-      const l = ul.appendChild(document.createElement("li"))
-      buildSideLink(l, child)
-    })
-  }
-}
-async function loadSideLinks() {
-  const resp = await fetch("/urls.json")
-  const data = await resp.json()
-  // console.log(data)
-  const root = sideNavLinks.appendChild(document.createElement("ul"))
-  data.children.forEach((child) => {
-    buildSideLink(root.appendChild(document.createElement("li")), child)
-  })
-
-  const toggler = root.getElementsByClassName("caret")
-  for (let i=0; i<toggler.length; i++) {
-    toggler[i].addEventListener("click", function () {
-      this.parentElement.querySelector(".nested").classList.toggle("collapse")
-      this.classList.toggle("caret-down")
-      return false
-    })
-  }
-}
-loadSideLinks()
-</script>
 <!-- sidebar end -->
 
 <!--main article begin-->
@@ -1264,24 +1292,5 @@ class="math inline">\(x\)</span>）</li>
 </article>
 <!--main article end-->
 
-
-<!-- include venobox begin -->
-<link rel="stylesheet" href="/assets/venobox/dist/venobox.min.css" />
-<script src="/assets/venobox/dist/venobox.min.js"></script>
-<script>
-  document.querySelectorAll('img').forEach((img) => {
-    const a = document.createElement("a")
-    a.href = '#'
-    a.setAttribute('data-href', img.src)
-    a.classList.add('images')
-    img.replaceWith(a)
-    a.appendChild(img)
-  })
-  new VenoBox({
-    selector: '.images',
-    fitView: true,
-  });
-</script>
-<!-- include venobox end -->
 </body>
 </html>
