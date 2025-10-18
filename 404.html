@@ -341,7 +341,7 @@
         const span = li.appendChild(document.createElement("span"))
         if (node.url) {
           const a = span.appendChild(document.createElement("a"))
-          a.href = node.url
+          a.href = "." + node.url
           a.textContent = node.text
         } else {
           span.textContent = node.text
