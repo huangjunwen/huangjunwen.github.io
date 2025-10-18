@@ -367,6 +367,9 @@
   nav .collapse {
     display: none;
   }
+  nav .bold {
+    font-weight: bold;
+  }
   </style>
   <script>
     window.addEventListener("load", (ev) => {
@@ -397,31 +400,34 @@
       });
 
       /* load urls */
-      // https://www.w3schools.com/howto/howto_js_treeview.asp
-      const currentPath = window.location.pathname
+      const root2PageDir = "/use-x-to/2016-port-knocking-using-iptables"
+      const page2RootDir = "../.."
       const sideNavLinks = document.querySelector('#side_navlinks');
       function buildSideLink(li, node) {
         // span contains the text and link (if provided)
         const span = li.appendChild(document.createElement("span"))
         if (node.url) {
           const a = span.appendChild(document.createElement("a"))
-          a.href = "../.." + node.url
+          a.href = page2RootDir + node.url
           a.textContent = node.text
         } else {
           span.textContent = node.text
         }
         span.setAttribute("title", node.text)
+        if ((root2PageDir + "/").startsWith(node.path + "/")) {
+          span.classList.add("bold")
+        }
 
-        // if has children, then add caret and append a nested <ul> for children
         if (node.children.length > 0) {
+          // if has children, then add caret and append a nested <ul> for children
           span.classList.add("caret")
           const ul = li.appendChild(document.createElement("ul"))
           ul.classList.add("nested")
           // do not collapse current path
-          if (!currentPath.startsWith(node.path)) {
-            ul.classList.add("collapse")
-          } else {
+          if ((root2PageDir + "/").startsWith(node.path + "/")) {
             span.classList.add("caret-down")
+          } else {
+            ul.classList.add("collapse")
           }
           node.children.forEach((child) => {
             const l = ul.appendChild(document.createElement("li"))
