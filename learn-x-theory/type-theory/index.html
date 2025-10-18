@@ -170,7 +170,7 @@
   </style>
   <!-- latex css begin -->
   <!--<link href="/assets/latex.css/style.min.css" rel="stylesheet" />-->
-  <link href="/assets/latex.css/style.css" rel="stylesheet" />
+  <link href="../../assets/latex.css/style.css" rel="stylesheet" />
   <style>
   /* fixes for latex.css */
   .date {
@@ -197,8 +197,8 @@
   <!-- latex css end -->
 
   <!-- venobox begin -->
-  <link rel="stylesheet" href="/assets/venobox/dist/venobox.min.css" />
-  <script src="/assets/venobox/dist/venobox.min.js"></script>
+  <link rel="stylesheet" href="../../assets/venobox/dist/venobox.min.css" />
+  <script src="../../assets/venobox/dist/venobox.min.js"></script>
   <script>
     window.addEventListener("load", (ev) => {
       document.querySelectorAll('img').forEach((img) => {
@@ -366,7 +366,7 @@
         }
       }
       async function loadSideLinks() {
-        const resp = await fetch("/urls.json")
+        const resp = await fetch("../../urls.json")
         const data = await resp.json()
         // console.log(data)
         const root = sideNavLinks.appendChild(document.createElement("ul"))
