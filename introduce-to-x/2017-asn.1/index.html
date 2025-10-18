@@ -304,7 +304,7 @@
     display: none;
   }
   nav .bold {
-    font-weight: bold;
+    font-weight: bolder;
   }
   </style>
   <script>
@@ -339,6 +339,15 @@
       const root2PageDir = "/introduce-to-x/2017-asn.1"
       const page2RootDir = "../.."
       const sideNavLinks = document.querySelector('#side_navlinks');
+
+      function isPrefixPath(pathPrefix, path) {
+        const pp = pathPrefix.split("/").filter((e) => e)
+        const p = path.split("/").filter((e) => e)
+        return pp.every((e, i) => {
+          return i < p.length && p[i] == e
+        })
+      }
+
       function buildSideLink(li, node) {
         // span contains the text and link (if provided)
         const span = li.appendChild(document.createElement("span"))
@@ -350,7 +359,7 @@
           span.textContent = node.text
         }
         span.setAttribute("title", node.text)
-        if ((root2PageDir + "/").startsWith(node.path + "/")) {
+        if (isPrefixPath(node.path, root2PageDir)) {
           span.classList.add("bold")
         }
 
@@ -359,8 +368,8 @@
           span.classList.add("caret")
           const ul = li.appendChild(document.createElement("ul"))
           ul.classList.add("nested")
-          // do not collapse current path
-          if ((root2PageDir + "/").startsWith(node.path + "/")) {
+          // do not collapse containing dir
+          if (isPrefixPath(node.path, root2PageDir)) {
             span.classList.add("caret-down")
           } else {
             ul.classList.add("collapse")
@@ -371,6 +380,7 @@
           })
         }
       }
+
       async function loadSideLinks() {
         const resp = await fetch("../../urls.json")
         const data = await resp.json()
@@ -389,6 +399,7 @@
           })
         }
       }
+
       loadSideLinks()
     })
   </script>
