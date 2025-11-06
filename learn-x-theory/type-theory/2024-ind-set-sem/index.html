@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="HJW" />
+  <meta name="dcterms.date" content="2024-11-12" />
+  <title>Set semantics for Inductive Type (Part I)</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <!-- latex css begin -->
+  <!--<link href="/assets/latex.css/style.min.css" rel="stylesheet" />-->
+  <link href="../../../assets/latex.css/style.css" rel="stylesheet" />
+  <style>
+  /* fixes for latex.css */
+  .date {
+    text-align: center;
+  }
+
+  div.sourceCode {
+    background: var(--pre-bg-color);
+    border-radius: 10px;
+  }
+
+  dl dd {
+    text-align: left;
+  }
+
+  #footnotes {
+    margin-top: 1em;
+  }
+
+  #footnotes hr:first-child {
+    display: none;
+  }
+  </style>
+  <!-- latex css end -->
+
+  <!-- venobox begin -->
+  <link rel="stylesheet" href="../../../assets/venobox/dist/venobox.min.css" />
+  <script src="../../../assets/venobox/dist/venobox.min.js"></script>
+  <script>
+    window.addEventListener("load", (ev) => {
+      document.querySelectorAll('img').forEach((img) => {
+        const a = document.createElement("a")
+        a.href = '#'
+        a.setAttribute('data-href', img.src)
+        a.classList.add('images')
+        img.replaceWith(a)
+        a.appendChild(img)
+      })
+      new VenoBox({
+        selector: '.images',
+        fitView: true,
+      })
+    })
+  </script>
+  <!-- venobox end -->
+
+  <!-- layout begin -->
+  <style>
+  #sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    max-width: 400px;
+    width: 80%;
+    height: 100%;
+    padding: 2rem;
+    background-color: #eee;
+    box-shadow: 0 10px 20px -4px #000;
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #ccc #eee;
+    scrollbar-gutter: stable;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-100%);
+    transition: opacity 0.3s ease, visibility 0.2s ease, transform 0.3s ease;
+  }
+  #sidebar.show {
+    pointer-events: all;
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+  }
+  #sidebar_toggler {
+    position: fixed;
+    top: 4vh;
+    right: 3vw;
+    z-index: 1000;
+    width: 2.8rem;
+    height: 2.4rem;
+    padding: 0.5rem;
+    border: solid #999 0.1rem;
+    border-radius: 0.4rem;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+    overflow: hidden;
+  }
+
+  #sidebar_toggler span {
+    background-color: #999;
+    width: 100%;
+    height: 0.2rem;
+    transition: all 0.3s ease;
+    pointer-events: none;
+  }
+  nav span {
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    /*white-space: pre-wrap;*/
+    width: 90%;
+  }
+  nav li:before {
+    content: '';
+  }
+  nav span:before {
+    content: "\25CF";
+    margin-right: 8px;
+  }
+  nav .caret {
+    cursor: pointer;
+    user-select: none; /* Prevent text selection */
+  }
+  nav .caret::before {
+    content: "\25B6";
+    color: black;
+    display: inline-block;
+    margin-right: 6px;
+  }
+  nav .caret-down::before {
+    transform: rotate(90deg);
+  }
+  nav .collapse {
+    display: none;
+  }
+  nav .bold {
+    font-weight: bolder;
+  }
+  </style>
+  <script>
+    window.addEventListener("load", (ev) => {
+      /* setup sidebar */
+      // https://www.cssscript.com/demo/responsive-sidebar-nav-hamburger/
+      const sidebar = document.querySelector('#sidebar')
+      const sidebarToggler = document.querySelector('#sidebar_toggler')
+
+      sidebarToggler.addEventListener('click', () => {
+        sidebar.classList.toggle('show')
+      });
+
+      const keywords = document.querySelector('meta[name="keywords"]')
+      if (keywords && keywords.content.includes('showSidebar')) {
+        sidebar.classList.add('show')
+      }
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          sidebar.classList.remove('show')
+        }
+      })
+
+      window.addEventListener('click', (e) => {
+        if (!sidebar.contains(e.target) && !sidebarToggler.contains(e.target)) {
+          sidebar.classList.remove('show')
+        }
+      });
+
+      /* load urls */
+      const root2PageDir = "/learn-x-theory/type-theory/2024-ind-set-sem"
+      const page2RootDir = "../../.."
+      const sideNavLinks = document.querySelector('#side_navlinks');
+
+      function isPrefixPath(pathPrefix, path) {
+        const pp = pathPrefix.split("/").filter((e) => e)
+        const p = path.split("/").filter((e) => e)
+        return pp.every((e, i) => {
+          return i < p.length && p[i] == e
+        })
+      }
+
+      function buildSideLink(li, node) {
+        // span contains the text and link (if provided)
+        const span = li.appendChild(document.createElement("span"))
+        if (node.url) {
+          const a = span.appendChild(document.createElement("a"))
+          a.href = page2RootDir + node.url
+          a.textContent = node.text
+        } else {
+          span.textContent = node.text
+        }
+        span.setAttribute("title", node.text)
+        if (isPrefixPath(node.path, root2PageDir)) {
+          span.classList.add("bold")
+        }
+
+        if (node.children.length > 0) {
+          // if has children, then add caret and append a nested <ul> for children
+          span.classList.add("caret")
+          const ul = li.appendChild(document.createElement("ul"))
+          ul.classList.add("nested")
+          // do not collapse containing dir
+          if (isPrefixPath(node.path, root2PageDir)) {
+            span.classList.add("caret-down")
+          } else {
+            ul.classList.add("collapse")
+          }
+          node.children.forEach((child) => {
+            const l = ul.appendChild(document.createElement("li"))
+            buildSideLink(l, child)
+          })
+        }
+      }
+
+      async function loadSideLinks() {
+        const resp = await fetch("../../../urls.json")
+        const data = await resp.json()
+        // console.log(data)
+        const root = sideNavLinks.appendChild(document.createElement("ul"))
+        data.children.forEach((child) => {
+          buildSideLink(root.appendChild(document.createElement("li")), child)
+        })
+
+        const toggler = root.getElementsByClassName("caret")
+        for (let i=0; i<toggler.length; i++) {
+          toggler[i].addEventListener("click", function () {
+            this.parentElement.querySelector(".nested").classList.toggle("collapse")
+            this.classList.toggle("caret-down")
+            return false
+          })
+        }
+      }
+
+      loadSideLinks()
+    })
+  </script>
+  <!-- layout end -->
+  <script
+  src="../../../assets/mathjax/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<!-- sidebar begin -->
+<aside id="sidebar">
+  <div class="sidebar_content sidebar_head">
+    <h1>Content</h1>
+  </div>
+  <div class="sidebar_content sidebar_body">
+    <nav id="side_navlinks" class="side_navlinks">
+      <!--<ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Services</a></li>
+        <li><a href="#">Portfolio</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>-->
+    </nav>
+  </div>
+</aside>
+<div id="sidebar_toggler">
+  <span></span>
+  <span></span>
+  <span></span>
+</div>
+<!-- sidebar end -->
+
+<!--main article begin-->
+<article>
+<header id="title-block-header">
+<h1 class="title">Set semantics for Inductive Type (Part I)</h1>
+<p class="author">HJW</p>
+<p class="date">2024-11-12</p>
+</header>
+<p><em>这篇有点太长了，分开到 <a
+href="/learn-x-theory/type-theory/2024-ind-set-sem-2/">Part
+II</a></em></p>
+<p>Inference rules 仅仅是形式化语言的规则，这些规则为什么设计成这样呢？
+例如归纳类型（Inductive Type）的 Formation/Introduction
+rules，以及衍生出来的 Elimination/Computation rules，
+它们实际表达的是什么呢？
+理解它的一种方法是将表达式映射成另一个理论里的概念，
+在那个理论里进行解释 <a href="#fn1" class="footnote-ref" id="fnref1"
+role="doc-noteref"><sup>1</sup></a>， 集合论是其中一个选择，
+下面是我阅读 <a
+href="https://www.cse.chalmers.se/~peterd/papers/Setsem_Inductive.pdf">Inductive
+sets and families in Martin-L of’s type theory and their set-theoretic
+semantics (Peter Dybjer)</a>
+时的摘要和个人理解（有可能出错），感觉这个解释是比较直观的：</p>
+<ul>
+<li>type (family) 解释为 set (family)</li>
+<li>type 里的元素解释为 set 里的元素</li>
+<li>(dependent) function 解释为 set-theoretic 的 function graph <a
+href="#fn2" class="footnote-ref" id="fnref2"
+role="doc-noteref"><sup>2</sup></a> （按我理解就是 domain 有定义但 range
+没定义，且满足 function 要求的有序对集合，很适合用来表达 dependent
+function 这种映射到 family 的概念）</li>
+<li>context 解释为 assignment 的集合（<mark>assignment 是一个
+function，domain 是表达式里的自由变量，range
+就是对应变量的解释，或指称之物</mark>）</li>
+<li>judgemental equality 解释为（集合的）extensional equality</li>
+<li>inductive type/recursive function 解释为 rule set
+的最小闭包，这是主题</li>
+</ul>
+<p><em>本文只包括我个人觉得比较重要的内容，也有一些符号上的小改动，完整的请参考原文</em></p>
+<hr />
+<p>首先涉及到一些记号：</p>
+<ul>
+<li><span class="math inline">\(a[x]\)</span> 表示可能带有 <span
+class="math inline">\(x\)</span> 的表达式</li>
+<li><span class="math inline">\([\![a]\!]\rho\)</span> 表示表达式 <span
+class="math inline">\(a\)</span> 在 assignment <span
+class="math inline">\(\rho\)</span> 下的指称（denotation）</li>
+<li><span class="math inline">\([\![a]\!]\emptyset\)</span> 可缩略为
+<span class="math inline">\([\![a]\!]\)</span>，即空的 assignment
+下的指称</li>
+<li><span class="math inline">\(\rho_x^{u}\)</span> 表示 <span
+class="math inline">\(\rho \cup \{ \langle x, u \rangle
+\}\)</span>，就是添加自由变量 <span class="math inline">\(x\)</span>
+以及其指称 <span class="math inline">\(u\)</span> 成为一个新的
+assignment</li>
+<li>所谓 telescope，是一种简写，表示复数个 dependent items，亦可视作
+context：
+<ul>
+<li><span class="math inline">\(as::As\)</span> 表示：<span
+class="math inline">\(a_1:A_1, a_2:A_2[a_1], ..., a_n:A_n[a_1, ...,
+a_{n-1}]\)</span>，</li>
+<li><span class="math inline">\(As\)</span> 则表示上述对应的类型 <span
+class="math inline">\(A_1, A_2[x_1](x_1:A_1), ..., A_n[x_1, ...,
+x_{n-1}](x_1:A_1, ..., x_{n-1}:A_{n-1})\)</span></li>
+<li><mark><span class="math inline">\(us \in [\![As]\!]\rho\)</span>
+表示 <span class="math inline">\(us = \langle u_1, ..., u_n
+\rangle\)</span> 且 <span class="math inline">\(u_1 \in [\![A_1]\!]\rho,
+... u_n \in [\![A_n[x_1, ..., x_{n-1}]]\!]\rho_{x_1,...x_{n-1}}^{u_1,
+...u_{n-1}}\)</span></mark></li>
+<li><mark><span class="math inline">\([\![As]\!]\rho = \{ \langle u_1,
+..., u_n \rangle | u_1 \in [\![A_1]\!]\rho, ..., u_n \in [\![A_n[x_1,
+..., x_{n-1}]]\!]\rho_{x_1,...x_{n-1}}^{u_1, ...u_{n-1}}
+\}\)</span></mark></li>
+</ul></li>
+<li><span class="math inline">\((a_k)_k\)</span> 表示 <span
+class="math inline">\(a_1, ..., a_n\)</span>，<span
+class="math inline">\((A_k)_k\)</span> 表示 <span
+class="math inline">\(A_1, ..., A_n\)</span>，<span
+class="math inline">\((a_k : A_k)_k\)</span> 表示 <span
+class="math inline">\(a_1 : A_1, ..., a_n : A_n\)</span></li>
+</ul>
+<p>context 的解释：</p>
+<ul>
+<li><p><span class="math inline">\([\![\epsilon]\!] = \{ \emptyset
+\}\)</span></p>
+<p>空 context，即仅有一个空 assignment 的集合</p></li>
+<li><p><span class="math inline">\([\![\Gamma, x:A]\!] = \{ \rho_x^u \;
+| \; \rho \in [\![\Gamma]\!] \land u \in [\![A]\!]\rho \}\)</span></p>
+<p>非空 context，例子</p>
+<p><img src="ctx.png" /></p></li>
+</ul>
+<p>judgement 的解释：</p>
+<ul>
+<li><p><span class="math inline">\([\![\Gamma \vdash A \;
+type]\!]\)</span></p>
+<p>当且仅当 <strong>任意 <span class="math inline">\(\rho \in
+[\![\Gamma]\!]\)</span> 时 <span
+class="math inline">\([\![A]\!]\rho\)</span> 是一个 set</strong>
+时成立</p></li>
+<li><p><span class="math inline">\([\![\Gamma \vdash A = A&#39; \;
+type]\!]\)</span></p>
+<p>当且仅当 <strong>任意 <span class="math inline">\(\rho \in
+[\![\Gamma]\!]\)</span> 时 <span class="math inline">\([\![A]\!]\rho =
+[\![A&#39;]\!]\rho\)</span> 两个是相同的 set</strong> 时成立</p></li>
+<li><p><span class="math inline">\([\![\Gamma \vdash
+a:A]\!]\)</span></p>
+<p>当且仅当 <strong>任意 <span class="math inline">\(\rho \in
+[\![\Gamma]\!]\)</span> 时 <span class="math inline">\([\![a]\!]\rho \in
+[\![A]\!]\rho\)</span></strong> 时成立</p></li>
+<li><p><span class="math inline">\([\![\Gamma \vdash a =
+a&#39;:A]\!]\)</span></p>
+<p>当且仅当 <strong>任意 <span class="math inline">\(\rho \in
+[\![\Gamma]\!]\)</span> 时 <span class="math inline">\([\![a]\!]\rho \in
+[\![A]\!]\rho\)</span> 且 <span class="math inline">\([\![a&#39;]\!]\rho
+\in [\![A]\!]\rho\)</span> 且 <span class="math inline">\([\![a]\!]\rho
+= [\![a&#39;]\!]\rho\)</span></strong> 时成立</p></li>
+</ul>
+<p>自由变量在<strong>一个</strong> assignment <span
+class="math inline">\(\rho\)</span> 下的指称：</p>
+<p><span class="math display">\[
+[\![x]\!]\rho = \rho(x)
+\]</span></p>
+<p>Dependent function 相关表达式在<strong>一个</strong> assignment <span
+class="math inline">\(\rho\)</span> 下的指称：</p>
+<ul>
+<li><p><span class="math inline">\([\![ \lambda(x:A).b[x] ]\!]\rho = \{
+\langle u, [\![b[x]]\!]\rho_x^u \rangle \; | \; u \in [\![A]\!]\rho
+\}\)</span></p>
+<p>dependent function 解释为 domain 是 <span
+class="math inline">\([\![A]\!]\rho\)</span> 的 function graph</p></li>
+<li><p><span class="math inline">\([\![ \underset{(x:A)}{\Large \Pi}
+B[x] ]\!]\rho = \underset{u \in [\![A]\!]\rho}{\Large \Pi}
+[\![B[x]]\!]\rho_x^u\)</span></p>
+<p>dependent function type 解释为上述 dependent function <span
+class="math inline">\(f\)</span> 的集合，满足： <span
+class="math inline">\(f\)</span> 是 <span
+class="math inline">\([\![A]\!]\rho\)</span> 上的 function graph
+且对所有 <span class="math inline">\(u \in [\![A]\!]\rho\)</span> 都有
+<span class="math inline">\(f(u) \in
+[\![B[x]]\!]\rho_x^u\)</span>，例子：</p>
+<p><img src="dep-func.png" /></p></li>
+<li><p><span class="math inline">\([\![b(a)]\!]\rho =
+([\![b]\!]\rho)([\![a]\!]\rho)\)</span></p>
+<p>function application: 当然 <span
+class="math inline">\([\![b]\!]\rho\)</span> 得是一个 function 并且
+<span class="math inline">\([\![a]\!]\rho\)</span> 在其 domain
+中</p></li>
+</ul>
+<h2 id="soundness-of-inference-rules">Soundness of Inference rules</h2>
+<p><mark>给出了不同表达式的解释后，对于每一个 inference rule，
+需要证明当前提（在此解释中）成立时，结论（在此解释中）也成立；
+这样就能保证由这些 inference rule
+推导出的任何结论（在此解释中）都是成立的</mark></p>
+<p>paper 里举例子是用了 functoin application
+rule，这里尝试另外一个，function introduction rule：</p>
+<p><span class="math display">\[
+\frac{\Gamma,x:A \vdash b[x]:B[x]}{\Gamma \vdash \lambda(x:A).b[x] :
+\underset{(x:A)}{\Large \Pi} B[x]}
+\]</span></p>
+<p>前提表示：对任意 <span class="math inline">\(\rho \in
+[\![\Gamma]\!]\)</span> 以及任意 <span class="math inline">\(u \in
+[\![A]\!]\rho\)</span>，都有 <span
+class="math inline">\([\![b[x]]\!]\rho_x^u \in
+[\![B[x]]\!]\rho_x^u\)</span></p>
+<p>所以：对任意 <span class="math inline">\(\rho \in
+[\![\Gamma]\!]\)</span>，可以配对得到 <span class="math inline">\(f = \{
+\langle u, [\![b[x]]\!]\rho_x^u \rangle \; | \; u \in [\![A]\!]\rho
+\}\)</span> ，这正是 <span class="math inline">\([\![ \lambda(x:A).b[x]
+]\!]\rho\)</span></p>
+<p>且对所有 <span class="math inline">\(u \in [\![A]\!]\rho\)</span> 有
+<span class="math inline">\(f(u) \in [\![B[x]]\!]\rho_x^u\)</span>，故
+<span class="math inline">\(f \in [\![ \underset{(x:A)}{\Large \Pi} B[x]
+]\!]\rho\)</span>，类型也对上了</p>
+<p>对于一般性的 structure rules 和 <span
+class="math inline">\(\Pi\)</span> 类型的
+rules，应该都可以通过类似的方法证明它们的 soundness，对于 inductive type
+相关的 rule，则首先需要有 inductive type 的解释：</p>
+<h2 id="inductive-set">Inductive Set</h2>
+<p>定义：</p>
+<p>在一个基础集合 <span class="math inline">\(U\)</span> 上，一个
+<em>rule</em>（注意不是 inference rule）是一个有序对 <span
+class="math inline">\(\langle u, v \rangle\)</span>，其中 <span
+class="math inline">\(u \subseteq U\)</span> 称为 <em>premisses</em>,
+<span class="math inline">\(v \in U\)</span> 称为
+<em>conclusion</em>，一般写成</p>
+<p><span class="math display">\[
+\frac{u}{v}
+\]</span></p>
+<p>令 <span class="math inline">\(\Phi\)</span> 是一个 <em>rule</em>
+的集合（<em>rule set</em>），一个集合 <span
+class="math inline">\(w\)</span> 如果满足</p>
+<p><span class="math display">\[
+(\frac{u}{v} \in \Phi \land u \subseteq w) \rightarrow v \in w
+\]</span></p>
+<p>则称为 <span class="math inline">\(\Phi-closed\)</span>（<span
+class="math inline">\(\Phi\)</span> 闭包），<mark>也就是 <span
+class="math inline">\(w\)</span> 如果包含一个 <em>rule</em> 的
+<em>premisses</em> 则也包含其 <em>conclusion</em></mark></p>
+<p>存在一个最小的 <span class="math inline">\(\Phi-closed\)</span>
+集合（最小闭包）</p>
+<p><span class="math display">\[
+\mathcal{I}(\Phi) = {\Large \cap} \{ w \; | \; w \; is \; \Phi-closed \}
+\]</span></p>
+<p><mark>这个集合就称为由 <span class="math inline">\(\Phi\)</span>
+定义的 Inductive Set</mark>，这个 <span
+class="math inline">\(\mathcal{I}(\Phi)\)</span> 是存在的，因为：</p>
+<div class="proof">
+<p>首先至少有一个 <span class="math inline">\(\Phi-closed\)</span>
+的集合存在，例如 <span class="math inline">\(\Phi\)</span> 中所有
+<em>conclusion</em> 组成的集合：</p>
+<p><span class="math display">\[
+Concl(\Phi) = \{v \; | \; \frac{u}{v} \in \Phi \}
+\]</span></p>
+<p>其次，多个 <span class="math inline">\(\Phi-closed\)</span>
+的集合的交集 <span class="math inline">\(w = {\Large \cap} \{ w_1, w_2,
+... \}\)</span> 仍然是 <span class="math inline">\(\Phi-closed\)</span>
+的，因为</p>
+<ul>
+<li>若一个 <em>rule</em> 的 <em>premisses</em> <span
+class="math inline">\(u\)</span> 是 <span
+class="math inline">\(w\)</span> 的子集</li>
+<li>则 <span class="math inline">\(u\)</span> 也是任意参与的 <span
+class="math inline">\(w_i\)</span> 的子集</li>
+<li>由闭合性 <em>conclusion</em> <span class="math inline">\(v\)</span>
+也属于任意参与的 <span class="math inline">\(w_i\)</span></li>
+<li>所以最终 <span class="math inline">\(v\)</span> 也属于 <span
+class="math inline">\(w\)</span></li>
+</ul>
+<p><mark>所以所有 <span class="math inline">\(\Phi-closed\)</span>
+的交集 <span class="math inline">\(\mathcal{I}(\Phi)\)</span>
+是一个最小的 <span class="math inline">\(\Phi-closed\)</span> 集合 <a
+href="#fn3" class="footnote-ref" id="fnref3"
+role="doc-noteref"><sup>3</sup></a>，是所有 <span
+class="math inline">\(\Phi-closed\)</span> 集合的子集，例如：<span
+class="math inline">\(\mathcal{I}(\Phi) \subseteq
+Concl(\Phi)\)</span></mark></p>
+</div>
+<p><mark><strong><span class="math inline">\(\Phi\)</span> 上的
+Induction Principle 其实就是指：只要一个 <span
+class="math inline">\(U\)</span> 上的集合它是 <span
+class="math inline">\(\Phi-closed\)</span> 的，则 <span
+class="math inline">\(\mathcal{I}(\Phi)\)</span>
+是它的子集</strong></mark></p>
+<hr />
+<p>一些有用的性质：</p>
+<ol type="1">
+<li><p>假设有两个 rule set <span class="math inline">\(\Phi \subseteq
+\Phi&#39;\)</span>，则 <span class="math inline">\(\mathcal{I}(\Phi)
+\subseteq \mathcal{I}(\Phi&#39;)\)</span>， <mark>即更大的 rule set
+有更大的 inductive
+set，因为更多的规则理应由更多的元素才能“覆盖”</mark></p>
+<div class="proof">
+<p>只需要证明 <span
+class="math inline">\(\mathcal{I}(\Phi&#39;)\)</span> 也是 <span
+class="math inline">\(\Phi-closed\)</span> 即可证明 <span
+class="math inline">\(\mathcal{I}(\Phi) \subseteq
+\mathcal{I}(\Phi&#39;)\)</span>；假设 <span
+class="math inline">\(\frac{u}{v} \in \Phi\)</span> 且 <span
+class="math inline">\(u \subseteq \mathcal{I}(\Phi&#39;)\)</span>：</p>
+<p>于是 <span class="math inline">\(\frac{u}{v} \in \Phi \subseteq
+\Phi&#39;\)</span>，由 <span
+class="math inline">\(\mathcal{I}(\Phi&#39;)\)</span> 的 <span
+class="math inline">\(\Phi&#39;-closed\)</span> 性质得 <span
+class="math inline">\(v \in \mathcal{I}(\Phi&#39;)\)</span>，故 <span
+class="math inline">\(\mathcal{I}(\Phi&#39;)\)</span> 也是 <span
+class="math inline">\(\Phi-closed\)</span> 的</p>
+</div></li>
+<li><p>我还发现 <em>rule set</em>
+是允许有“杂质”的规则的，比如我们可以这样精简 <em>rule set</em>，令：</p>
+<p><span class="math display">\[
+\Theta = \mathcal{R}(\Phi) = \{ \frac{u}{v} \; | \; \frac{u}{v} \in \Phi
+\land u \subseteq \mathcal{I}(\Phi) \}
+\]</span></p>
+<p>有</p>
+<p><span class="math display">\[
+\mathcal{I}(\Theta) = \mathcal{I}(\Phi)
+\]</span></p>
+<p><mark>即只保留那些 <em>premisses</em> 是 <span
+class="math inline">\(\mathcal{I}(\Phi)\)</span> 子集的规则（或删掉
+<em>premisses</em> 不全在 <span class="math inline">\((\Phi)\)</span>
+的规则），两个 <em>rule set</em> 的 Inductive Set 仍是相同的</mark></p>
+<div class="proof">
+<ol type="1">
+<li>由于 <span class="math inline">\(\Theta \subseteq
+\Phi\)</span>，由上面的性质可知 <span
+class="math inline">\(\mathcal{I}(\Theta) \subseteq
+\mathcal{I}(\Phi)\)</span></li>
+<li>只要证明 <span class="math inline">\(\mathcal{I}(\Theta)\)</span> 是
+<span class="math inline">\(\Phi-closed\)</span> 的则 <span
+class="math inline">\(\mathcal{I}(\Phi) \subseteq
+\mathcal{I}(\Theta)\)</span>；假设 <span
+class="math inline">\(\frac{u}{v} \in \Phi\)</span> 且 <span
+class="math inline">\(u \subseteq \mathcal{I}(\Theta)\)</span>：
+<ul>
+<li>由 1 得 <span class="math inline">\(u \subseteq
+\mathcal{I}(\Phi)\)</span>，按 <span
+class="math inline">\(\Theta\)</span> 定义可知 <span
+class="math inline">\(\frac{u}{v} \in \Theta\)</span></li>
+<li>因 <span class="math inline">\(\mathcal{I}(\Theta)\)</span> 的 <span
+class="math inline">\(\Theta\)</span> 封闭性故 <span
+class="math inline">\(v \in \mathcal{I}(\Theta)\)</span></li>
+</ul></li>
+</ol>
+</div>
+<p>如果对 <span class="math inline">\(\Theta\)</span> 再执行 <span
+class="math inline">\(R\)</span> 会怎么样呢？</p>
+<p><span class="math display">\[
+\begin{split}
+\mathcal{R}(\Theta) &amp; = \{ \frac{u}{v} \; | \; \frac{u}{v} \in
+\Theta \land u \subseteq \mathcal{I}(\Theta) \}  \\
+          &amp; = \{ \frac{u}{v} \; | \; \frac{u}{v} \in \Theta \land u
+\subseteq \mathcal{I}(\Phi) \}  \\
+          &amp; = \{ \frac{u}{v} \; | \; \frac{u}{v} \in \Theta \} \\
+          &amp; = \Theta \\
+\end{split}
+\]</span></p>
+<p>已经是最精简的了</p></li>
+<li><p><mark><span class="math inline">\(Concl(\Theta) =
+\mathcal{I}(\Phi)\)</span>，因为 <span
+class="math inline">\(\mathcal{I}(\Theta) \subseteq Concl(\Theta)
+\subseteq \mathcal{I}(\Phi)\)</span></mark>，右侧 <span
+class="math inline">\(\subseteq\)</span> 是因为如果 <span
+class="math inline">\(v \in Concl(\Theta)\)</span> 则有 <span
+class="math inline">\(\frac{u}{v} \in \Phi \land u \subseteq
+\mathcal{I}(\Phi)\)</span>，于是 <span class="math inline">\(v \in
+\mathcal{I}(\Phi)\)</span>； <mark>即 <span class="math inline">\(v \in
+\mathcal{I}(\Phi)\)</span> 当且仅当 <span
+class="math inline">\(\Phi\)</span> 中存在 <em>conclusion</em> 是 <span
+class="math inline">\(v\)</span> 且 <em>premisses</em> 都在 <span
+class="math inline">\(\mathcal{I}(\Phi)\)</span>
+中的规则</mark></p></li>
+</ol>
+<h2 id="inductive-type">Inductive Type</h2>
+<p>Formation rule：</p>
+<p><span class="math display">\[
+\frac{\Gamma \; ctx}{\Gamma \vdash P \; type} \; \tiny{P-form}
+\]</span></p>
+<p>Introduction rule（0+ 条），第 <span class="math inline">\(i\)</span>
+条一般形如：</p>
+<p><span class="math display">\[
+\frac{\Gamma \vdash as::Gs_i \qquad (\Gamma \vdash b_k:Hs_{ik}[as]
+\rightarrow P)_k}{\Gamma \vdash intro_i(as, (b_k)_k) : P} \;
+\tiny{P-intro_i}
+\]</span></p>
+<p><mark>其中 telescope <span class="math inline">\(Gs_i\)</span> <a
+href="#fn4" class="footnote-ref" id="fnref4"
+role="doc-noteref"><sup>4</sup></a> 不依赖于上下文，而 <a
+href="../2023-ind-form/">arity</a> <span
+class="math inline">\(Hs_{ik}[as]\)</span> <a href="#fn5"
+class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>
+则依赖于 <span class="math inline">\(as\)</span></mark>， 也就是对于任意
+<span class="math inline">\(\rho \in [\![\Gamma]\!]\)</span>：</p>
+<ul>
+<li><span class="math inline">\([\![Gs_i]\!]\rho = [\![Gs_i]\!]\)</span>
+即 <span class="math inline">\(\rho\)</span> 的改变并不会改变其所指</li>
+<li><span class="math inline">\([\![Hs_{ik}[as]]\!]\rho =
+[\![Hs_{ik}[as]]\!]_{as}^{[\![as]\!]\rho}\)</span> 即只有 <span
+class="math inline">\(as\)</span> 所指的改变才能改变其所指</li>
+</ul>
+<hr />
+<p>一个例子（假设已经定义了自然数 <span
+class="math inline">\(\mathbb{N}\)</span> 以及 <em>finite set</em> <span
+class="math inline">\(\mathbb{F}\)</span>）：</p>
+<p><span class="math display">\[
+\frac{\Gamma \vdash a : \mathbb{N} \qquad \Gamma \vdash b : \mathbb{F}
+\; a \rightarrow \mathbb{X}}{\Gamma \vdash intro_{\mathbb{X}}(a, b) :
+\mathbb{X}}
+\]</span></p>
+<p>这里 <span class="math inline">\([\![\mathbb{N}]\!]\)</span>
+是一个固定所指，<span class="math inline">\([\![\mathbb{F} \;
+a]\!]_{a}^{[\![a]\!]\rho}\)</span> 所指则随着 <span
+class="math inline">\([\![a]\!]\rho\)</span> 变化而变</p>
+<p>另外这里的 <span class="math inline">\(a\)</span> 和 <span
+class="math inline">\(b\)</span> 是 metavariable，代表的是 object
+language 里的表达式；例如假设有一个具体的 context <span
+class="math inline">\(\Delta := f : \mathbb{N} \rightarrow \mathbb{N},
+\; g : {\Large \Pi}_{(x : \mathbb{N})} \mathbb{F} \; (f \; x)
+\rightarrow \mathbb{X}, \; n : \mathbb{N}\)</span>， 则有</p>
+<ul>
+<li><span class="math inline">\(\Delta \vdash f \; n :
+\mathbb{N}\)</span></li>
+<li><span class="math inline">\(\Delta \vdash g \; n : \mathbb{F} \; (f
+\; n) \rightarrow \mathbb{X}\)</span></li>
+<li>得出 <span class="math inline">\(\Delta \vdash intro_{\mathbb{X}}(f
+\; n, g \; n) : \mathbb{X}\)</span></li>
+</ul>
+<p><span class="math inline">\(a\)</span> 和 <span
+class="math inline">\(b\)</span> 分别代表 <span class="math inline">\(f
+\; n\)</span> 和 <span class="math inline">\(g \; n\)</span></p>
+<hr />
+<p>Introduction rule 还有另一种形式（像 agda 里定义 constructor
+一样）：</p>
+<p><span class="math display">\[
+\frac{\Gamma \; ctx}{\Gamma \vdash Intro_i :
+\underset{(as::Gs_i)}{\Large \Pi} (Hs_{ik}[as] \rightarrow P)_k
+\rightarrow P} \; \tiny{P-intro_i&#39;}
+\]</span></p>
+<p>所不同的是，<span class="math inline">\(as\)</span> 在这里是 object
+language 里的变量，而不是 metavariable 了</p>
+<p>上面两种形式是等价的：</p>
+<p><img src="p-intro.jpg" /></p>
+<h3 id="interpretation-of-inductive-type">Interpretation of Inductive
+Type</h3>
+<p>Inductive Type <span class="math inline">\(P\)</span>
+解释为一个<mark>足够大</mark>的集合 <span
+class="math inline">\(U\)</span> 上的 inductive set</p>
+<p><span class="math display">\[
+[\![P]\!] = \mathcal{I}(\Phi_P)
+\]</span></p>
+<p>其 <em>rule set</em> <span class="math inline">\(\Phi_P\)</span>
+定义为</p>
+<p><span class="math display">\[
+\newcommand{\hlU}{\textcolor{blue}{U}}
+\Phi_P = \underset{i}{\LARGE \cup} \{ \frac{{\Large \cup}_{k} \;
+range(v_k)}{\langle |intro_i|, us, (v_k)_k \rangle} |
+us \in [\![Gs_i]\!], (v_k \in [\![Hs_{ik}[xs]]\!]_{xs}^{us} \rightarrow
+\hlU)_k \}
+\]</span></p>
+<p>注意式子里使用 <span class="math inline">\(U\)</span> 而非 <span
+class="math inline">\([\![P]\!]\)</span>，这是因为它尚未定义，显然这个
+<em>rule set</em> 包含大量 “杂质”，因为 <span
+class="math inline">\(U\)</span> 上的元素都可以作为 <em>premisses</em>；
+不过没关系，根据上面提到的性质，当 <span class="math inline">\([\![P]\!]
+= \mathcal{I}(\Phi_P)\)</span> 确立下来后， 这个 <em>rule set</em>
+实际上可以替换为只保留 <em>premisses</em> 是 <span
+class="math inline">\([\![P]\!]\)</span> 子集的规则的 <em>rule set</em>:
+<a href="#fn6" class="footnote-ref" id="fnref6"
+role="doc-noteref"><sup>6</sup></a></p>
+<p><span class="math display">\[
+\newcommand{\hlP}{\textcolor{blue}{[\![P]\!]}}
+\Theta_P = \underset{i}{\LARGE \cup} \{ \frac{{\Large \cup}_{k} \;
+range(v_k)}{\langle |intro_i|, us, (v_k)_k \rangle} |
+us \in [\![Gs_i]\!], (v_k \in [\![Hs_{ik}[xs]]\!]_{xs}^{us} \rightarrow
+\hlP)_k \}
+\]</span></p>
+<p>两者具有相同的 inductive
+set，后者就比较符合我们平时的直观了：<mark>由 <span
+class="math inline">\(P\)</span> 中的元素构造出也属于 <span
+class="math inline">\(P\)</span> 中的元素</mark></p>
+<p>那么这个 <span class="math inline">\(U\)</span> 怎么选取才能让 <span
+class="math inline">\(\Phi_P\)</span> 是其上的 rule set 呢？由于
+premisses 已经是 <span class="math inline">\(U\)</span>
+的子集了，我们只需要保证 <span class="math inline">\(\langle |intro_i|,
+us, (v_k)_k \rangle \in U\)</span> 即可；文章里令 <span
+class="math inline">\(U = V_\alpha\)</span> <a href="#fn7"
+class="footnote-ref" id="fnref7"
+role="doc-noteref"><sup>7</sup></a>，即第 <span
+class="math inline">\(\alpha\)</span> 层的 <a
+href="https://en.wikipedia.org/wiki/Von_Neumann_universe">Von Neumann
+集合层级</a>，且满足：</p>
+<ol type="1">
+<li><span class="math inline">\(V_\alpha\)</span>
+对（有限）元组封闭：<mark>这要求 <span
+class="math inline">\(\alpha\)</span> 是极限序数（limit
+ordinal）</mark>；因为假如 <span class="math inline">\(a_1, a_2 \in
+V_\alpha\)</span>， 由定义可知存在 <span class="math inline">\(\beta_1,
+\beta_2 &lt; \alpha\)</span> 使得 <span class="math inline">\(a_1 \in
+V_{\beta_1}, a_2 \in V_{\beta_2}\)</span>， 于是 <span
+class="math inline">\(\langle a_1, a_2 \rangle = \{ \{ a_1 \}, \{ a_1,
+a_2 \} \} \in V_{max(\beta_1, \beta_2) + 2} \subseteq
+V_\alpha\)</span>， 这是因为 <span class="math inline">\(\alpha\)</span>
+是极限序数，必然大于 <span class="math inline">\(max(\beta_1,
+\beta_2)\)</span> 的有限后继；反之如果 <span
+class="math inline">\(\alpha\)</span> 仅仅是个后继序数，
+则存在反例证明对元组不封闭</li>
+<li>于是只需要保证 <span class="math inline">\(|intro_i| \in
+V_\alpha\)</span> 且 <span class="math inline">\(us \in
+V_\alpha\)</span> 且 <span class="math inline">\((v_k)_k \in
+V_\alpha\)</span> 即可， 因为 <span class="math inline">\(\langle
+|intro_i|, us, (v_k)_k \rangle \in V_\alpha\)</span>
+就是前者的有限元组而已（<span class="math inline">\(k\)</span>
+是有限的吧？）</li>
+<li>由于 <span class="math inline">\(|intro_i|\)</span> 只是用来区分哪条
+introduction rule，用自然数表示即可，<mark>即 <span
+class="math inline">\(|intro_i| \in \omega\)</span></mark></li>
+<li>要令 <span class="math inline">\(us \in
+V_\alpha\)</span>，<mark>只需 <span class="math inline">\([\![Gs_i]\!]
+\subseteq V_\alpha\)</span> 即可</mark></li>
+<li>要令 <span class="math inline">\(v_k \in
+V_\alpha\)</span>，<mark>首先需要 <span
+class="math inline">\([\![Hs_{ik}[xs]]\!]_{xs}^{us} \subseteq
+V_\alpha\)</span></mark>， 这样对于每一个 <span class="math inline">\(ws
+\in [\![Hs_{ik}[xs]]\!]_{xs}^{us}\)</span> 都有一个序数 <span
+class="math inline">\(\beta_{ws} &lt; \alpha\)</span> 使得 <span
+class="math inline">\(\langle ws, v_k(ws) \rangle \in
+V_{\beta_{ws}}\)</span>（因为此时 <span class="math inline">\(ws,
+v_k(ws) \in V_\alpha\)</span>，而 <span
+class="math inline">\(V_\alpha\)</span> 元组封闭）； 假如 <span
+class="math inline">\(\beta_{ws}\)</span> 的上确界严格小于 <span
+class="math inline">\(\alpha\)</span>，即 <span
+class="math inline">\(\beta = sup_{ws \in
+[\![Hs_{ik}[xs]]\!]_{xs}^{us}}\beta_{ws} &lt; \alpha\)</span>， 则 <span
+class="math inline">\(\langle ws, v_k(ws) \rangle \in V_\beta\)</span>
+于是 <span class="math inline">\(v_k = \{ \langle ws, v_k(ws) \rangle |
+ws \in [\![Hs_{ik}[xs]]\!]_{xs}^{us} \} \subseteq V_\beta\)</span> 于是
+<span class="math inline">\(v_k \in
+V_\alpha\)</span>；那怎么能满足上面的上确界条件呢？文章里是给出的<mark>条件是
+<span class="math inline">\(card \; [\![Hs_{ik}[xs]]\!]_{xs}^{us} &lt;
+card \; \alpha\)</span></mark>，
+但。。我不太明白（我能明白如果基数大于等于 <span
+class="math inline">\(\alpha\)</span> 时是不行的，例如可以对于每一个
+<span class="math inline">\(\alpha\)</span> 的层级都取一个，这样 <span
+class="math inline">\(\beta\)</span> 只能等于 <span
+class="math inline">\(\alpha\)</span>； 但是不是只要小于 <span
+class="math inline">\(\alpha\)</span> 就充分呢？）<strong>TODO
+!!!</strong></li>
+</ol>
+<p>剩下元素的解释很直接：</p>
+<p><span class="math display">\[
+[\![intro_i(as, (b_k)_k)]\!]\rho = \langle |intro_i|, [\![as]\!]\rho,
+([\![b_k]\!]\rho)_k \rangle
+\]</span></p>
+<h3 id="soundness-of-inference-rules-1">Soundness of inference
+rules</h3>
+<p>对于 Formation rule，上面我们已经给出了 <span
+class="math inline">\([\![P]\!]\)</span> 是一个集合的解释</p>
+<p>对于 Introduction rule，前提和结论的 context 都是同一个 <span
+class="math inline">\(\Gamma\)</span>， 其中前提的意思是对于任意 <span
+class="math inline">\(\rho \in [\![\Gamma]\!]\)</span>，有</p>
+<ul>
+<li><span class="math inline">\(us = [\![as]\!]\rho \in [\![Gs_i]\!]\rho
+= [\![Gs_i]\!]\)</span>，</li>
+<li><span class="math inline">\(v_k = [\![b_k]\!]\rho \in
+[\![Hs_{ik}[as] \rightarrow P]\!]\rho = [\![Hs_{ik}[as]]\!]\rho
+\rightarrow [\![P]\!]\rho = [\![Hs_{ik}[as]]\!]_{as}^{us} \rightarrow
+[\![P]\!]\)</span>（对所有 <span class="math inline">\(k\)</span>）</li>
+</ul>
+<p>显然 <span class="math inline">\(\Phi_P\)</span>（或精简过的 <span
+class="math inline">\(\Theta_P\)</span>）中存在对应 <span
+class="math inline">\(us\)</span> 以及 <span
+class="math inline">\((v_k)_k\)</span> 的一条 rule， 而 <span
+class="math inline">\({\Large \cup}_{k} \; range(v_k) \subseteq
+[\![P]\!]\)</span>，由 <span class="math inline">\([\![P]\!]\)</span> 的
+<span class="math inline">\(\Phi_P\)</span> 封闭性，故</p>
+<p><span class="math display">\[
+[\![intro_i(as, (b_k)_k)]\!]\rho = \langle |intro_i|, us, (v_k)_k
+\rangle \in [\![P]\!]
+\]</span></p>
+<h3 id="absurdity">Absurdity</h3>
+<p>Bottom 类型拥有 0 条 introduction rule，所以 <span
+class="math inline">\([\![\bot]\!] = \emptyset\)</span></p>
+<section id="footnotes" class="footnotes footnotes-end-of-document"
+role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1"><p><a
+href="https://plato.stanford.edu/entries/type-theory-intuitionistic/#MathMode"
+class="uri">https://plato.stanford.edu/entries/type-theory-intuitionistic/#MathMode</a><a
+href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p><a
+href="https://en.wikipedia.org/wiki/Graph_of_a_function"
+class="uri">https://en.wikipedia.org/wiki/Graph_of_a_function</a><a
+href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p><span class="math inline">\(\mathcal{I}(\Phi)\)</span>
+有可能是空集<a href="#fnref3" class="footnote-back"
+role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>相当于 <span class="math inline">\(\Gamma \vdash
+a_1:G_{i1} \qquad ... \qquad \Gamma \vdash a_n:G_{in}[a_1, ...,
+a_{n-1}]\)</span><a href="#fnref4" class="footnote-back"
+role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>这里 <span class="math inline">\(Hs_{ik}[as]\)</span>
+感觉应该理解为一个(复合)类型 e.g. <span
+class="math inline">\(\Sigma\)</span><a href="#fnref5"
+class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>因为 <span class="math inline">\(v_k \in
+[\![Hs_{ik}[xs]]\!]_{xs}^{us} \rightarrow U \land range(v_k) \subseteq
+[\![P]\!]\)</span> 当且仅当 <span class="math inline">\(v_k \in
+[\![Hs_{ik}[xs]]\!]_{xs}^{us} \rightarrow [\![P]\!]\)</span><a
+href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>补充一些定义：</p>
+<p>序数 <a
+href="https://plato.stanford.edu/entries/set-theory/basic-set-theory.html#Ord">Ordinal
+Number</a> 可以是</p>
+<ul>
+<li>0，集合论里用 <span class="math inline">\(\emptyset\)</span>
+表示</li>
+<li>后继序数 <a
+href="https://en.wikipedia.org/wiki/Successor_ordinal">successor
+ordinal</a>，集合论里用 <span class="math inline">\(\beta \cup \{ \beta
+\}\)</span> 表示 <span class="math inline">\(\beta\)</span>
+的后继，例子：
+<ul>
+<li><span class="math inline">\(1 = \{ 0 \} = \{ \emptyset
+\}\)</span></li>
+<li><span class="math inline">\(2 = \{ 0, 1 \} = \{ \emptyset, \{
+\emptyset \} \}\)</span></li>
+<li><span class="math inline">\(3 = \{ 0, 1, 2 \} = \{ \emptyset, \{
+\emptyset \}, \{ \emptyset, \{ \emptyset \} \} \}\)</span></li>
+<li>…</li>
+<li><span class="math inline">\(\omega + 1 = \omega \cup \{ \omega \} =
+\mathbb{N} \cup \{ \mathbb{N} \} = \{ 0, 1, 2, ..., \mathbb{N}
+\}\)</span> （<span class="math inline">\(\omega\)</span>
+是最小的极限序数，见下）</li>
+<li>…</li>
+</ul></li>
+<li>极限序数 <a href="https://en.wikipedia.org/wiki/Limit_ordinal">limit
+ordinal</a>，定义是：一个序数 <span
+class="math inline">\(\lambda\)</span>，对于每一个比它小的序数 <span
+class="math inline">\(\beta &lt; \lambda\)</span>，
+总存在一个两者间的序数 <span class="math inline">\(\beta &lt; \gamma
+&lt; \lambda\)</span>；例如最小的极限序数 <span
+class="math inline">\(\omega\)</span> 在集合论里就是用全体自然数集合
+<span class="math inline">\(\mathbb{N}\)</span> 表示， 因为对于任意
+<span class="math inline">\(n &lt; \omega\)</span>，有 <span
+class="math inline">\(n &lt; n+1 &lt; \omega\)</span>，例子
+<ul>
+<li><span class="math inline">\(\omega = \mathbb{N}\)</span></li>
+<li><span class="math inline">\(\omega + \omega\)</span></li>
+<li>…</li>
+</ul></li>
+</ul>
+<p>对应 <a href="https://en.wikipedia.org/wiki/Von_Neumann_universe">von
+Neumann 集合层级</a>：</p>
+<ul>
+<li><span class="math inline">\(V_0 := \emptyset\)</span></li>
+<li>对任何序数 <span class="math inline">\(\beta\)</span>，<span
+class="math inline">\(V_{\beta+1} := P(V_\beta)\)</span>，即 <span
+class="math inline">\(V_\beta\)</span> 的的幂集（所有子集的集合），例子
+<ul>
+<li><span class="math inline">\(V_1 = \{ \emptyset \}\)</span></li>
+<li><span class="math inline">\(V_2 = \{ \emptyset, \{ \emptyset \}
+\}\)</span></li>
+<li><span class="math inline">\(V_3 = \{ \emptyset, \{ \emptyset \},
+\{\{ \emptyset \}\}, \{ \emptyset, \{ \emptyset \} \} \}\)</span></li>
+<li>…</li>
+</ul></li>
+<li>对任何极限序数 <span class="math inline">\(\lambda\)</span>，<span
+class="math inline">\(V_{\lambda} := \underset{\beta &lt;
+\lambda}{\Large \cup}V_\beta\)</span></li>
+</ul>
+<p>注意每一层级也都包含所有低层级集合里的所有元素<a href="#fnref7"
+class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+</article>
+<!--main article end-->
+
+</body>
+</html>

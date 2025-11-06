@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="HJW" />
+  <meta name="dcterms.date" content="2024-11-12" />
+  <title>Set semantics for Inductive Type (Part II)</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <!-- latex css begin -->
+  <!--<link href="/assets/latex.css/style.min.css" rel="stylesheet" />-->
+  <link href="../../../assets/latex.css/style.css" rel="stylesheet" />
+  <style>
+  /* fixes for latex.css */
+  .date {
+    text-align: center;
+  }
+
+  div.sourceCode {
+    background: var(--pre-bg-color);
+    border-radius: 10px;
+  }
+
+  dl dd {
+    text-align: left;
+  }
+
+  #footnotes {
+    margin-top: 1em;
+  }
+
+  #footnotes hr:first-child {
+    display: none;
+  }
+  </style>
+  <!-- latex css end -->
+
+  <!-- venobox begin -->
+  <link rel="stylesheet" href="../../../assets/venobox/dist/venobox.min.css" />
+  <script src="../../../assets/venobox/dist/venobox.min.js"></script>
+  <script>
+    window.addEventListener("load", (ev) => {
+      document.querySelectorAll('img').forEach((img) => {
+        const a = document.createElement("a")
+        a.href = '#'
+        a.setAttribute('data-href', img.src)
+        a.classList.add('images')
+        img.replaceWith(a)
+        a.appendChild(img)
+      })
+      new VenoBox({
+        selector: '.images',
+        fitView: true,
+      })
+    })
+  </script>
+  <!-- venobox end -->
+
+  <!-- layout begin -->
+  <style>
+  #sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    max-width: 400px;
+    width: 80%;
+    height: 100%;
+    padding: 2rem;
+    background-color: #eee;
+    box-shadow: 0 10px 20px -4px #000;
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #ccc #eee;
+    scrollbar-gutter: stable;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-100%);
+    transition: opacity 0.3s ease, visibility 0.2s ease, transform 0.3s ease;
+  }
+  #sidebar.show {
+    pointer-events: all;
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+  }
+  #sidebar_toggler {
+    position: fixed;
+    top: 4vh;
+    right: 3vw;
+    z-index: 1000;
+    width: 2.8rem;
+    height: 2.4rem;
+    padding: 0.5rem;
+    border: solid #999 0.1rem;
+    border-radius: 0.4rem;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+    overflow: hidden;
+  }
+
+  #sidebar_toggler span {
+    background-color: #999;
+    width: 100%;
+    height: 0.2rem;
+    transition: all 0.3s ease;
+    pointer-events: none;
+  }
+  nav span {
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    /*white-space: pre-wrap;*/
+    width: 90%;
+  }
+  nav li:before {
+    content: '';
+  }
+  nav span:before {
+    content: "\25CF";
+    margin-right: 8px;
+  }
+  nav .caret {
+    cursor: pointer;
+    user-select: none; /* Prevent text selection */
+  }
+  nav .caret::before {
+    content: "\25B6";
+    color: black;
+    display: inline-block;
+    margin-right: 6px;
+  }
+  nav .caret-down::before {
+    transform: rotate(90deg);
+  }
+  nav .collapse {
+    display: none;
+  }
+  nav .bold {
+    font-weight: bolder;
+  }
+  </style>
+  <script>
+    window.addEventListener("load", (ev) => {
+      /* setup sidebar */
+      // https://www.cssscript.com/demo/responsive-sidebar-nav-hamburger/
+      const sidebar = document.querySelector('#sidebar')
+      const sidebarToggler = document.querySelector('#sidebar_toggler')
+
+      sidebarToggler.addEventListener('click', () => {
+        sidebar.classList.toggle('show')
+      });
+
+      const keywords = document.querySelector('meta[name="keywords"]')
+      if (keywords && keywords.content.includes('showSidebar')) {
+        sidebar.classList.add('show')
+      }
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          sidebar.classList.remove('show')
+        }
+      })
+
+      window.addEventListener('click', (e) => {
+        if (!sidebar.contains(e.target) && !sidebarToggler.contains(e.target)) {
+          sidebar.classList.remove('show')
+        }
+      });
+
+      /* load urls */
+      const root2PageDir = "/learn-x-theory/type-theory/2024-ind-set-sem-2"
+      const page2RootDir = "../../.."
+      const sideNavLinks = document.querySelector('#side_navlinks');
+
+      function isPrefixPath(pathPrefix, path) {
+        const pp = pathPrefix.split("/").filter((e) => e)
+        const p = path.split("/").filter((e) => e)
+        return pp.every((e, i) => {
+          return i < p.length && p[i] == e
+        })
+      }
+
+      function buildSideLink(li, node) {
+        // span contains the text and link (if provided)
+        const span = li.appendChild(document.createElement("span"))
+        if (node.url) {
+          const a = span.appendChild(document.createElement("a"))
+          a.href = page2RootDir + node.url
+          a.textContent = node.text
+        } else {
+          span.textContent = node.text
+        }
+        span.setAttribute("title", node.text)
+        if (isPrefixPath(node.path, root2PageDir)) {
+          span.classList.add("bold")
+        }
+
+        if (node.children.length > 0) {
+          // if has children, then add caret and append a nested <ul> for children
+          span.classList.add("caret")
+          const ul = li.appendChild(document.createElement("ul"))
+          ul.classList.add("nested")
+          // do not collapse containing dir
+          if (isPrefixPath(node.path, root2PageDir)) {
+            span.classList.add("caret-down")
+          } else {
+            ul.classList.add("collapse")
+          }
+          node.children.forEach((child) => {
+            const l = ul.appendChild(document.createElement("li"))
+            buildSideLink(l, child)
+          })
+        }
+      }
+
+      async function loadSideLinks() {
+        const resp = await fetch("../../../urls.json")
+        const data = await resp.json()
+        // console.log(data)
+        const root = sideNavLinks.appendChild(document.createElement("ul"))
+        data.children.forEach((child) => {
+          buildSideLink(root.appendChild(document.createElement("li")), child)
+        })
+
+        const toggler = root.getElementsByClassName("caret")
+        for (let i=0; i<toggler.length; i++) {
+          toggler[i].addEventListener("click", function () {
+            this.parentElement.querySelector(".nested").classList.toggle("collapse")
+            this.classList.toggle("caret-down")
+            return false
+          })
+        }
+      }
+
+      loadSideLinks()
+    })
+  </script>
+  <!-- layout end -->
+  <script
+  src="../../../assets/mathjax/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<!-- sidebar begin -->
+<aside id="sidebar">
+  <div class="sidebar_content sidebar_head">
+    <h1>Content</h1>
+  </div>
+  <div class="sidebar_content sidebar_body">
+    <nav id="side_navlinks" class="side_navlinks">
+      <!--<ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Services</a></li>
+        <li><a href="#">Portfolio</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>-->
+    </nav>
+  </div>
+</aside>
+<div id="sidebar_toggler">
+  <span></span>
+  <span></span>
+  <span></span>
+</div>
+<!-- sidebar end -->
+
+<!--main article begin-->
+<article>
+<header id="title-block-header">
+<h1 class="title">Set semantics for Inductive Type (Part II)</h1>
+<p class="author">HJW</p>
+<p class="date">2024-11-12</p>
+</header>
+<p><em>接 <a href="/learn-x-theory/type-theory/2024-ind-set-sem/">Part
+I</a></em></p>
+<h2 id="eliminationcomputation-rule">Elimination/Computation Rule</h2>
+<p>Introduction rules 是关于引入 <span class="math inline">\(P\)</span>
+的（作为返回值），而 Elimination rule 则是关于使用 <span
+class="math inline">\(P\)</span> 的（作为参数）：</p>
+<p><span class="math display">\[
+f : \underset{(z : P)}{\Large \Pi} C[z]
+\]</span></p>
+<p>完整的 Elimination rule 大致长这样：</p>
+<p><span class="math display">\[
+\frac{
+  \Gamma, z : P \vdash C[z] \; type
+  \qquad
+  (\Gamma \vdash d_i : D_i)_i
+} {
+  \Gamma \vdash f : \underset{(z : P)}{\Large \Pi} C[z]
+} \; \tiny{P-elim}
+\]</span></p>
+<p>其中 <span class="math inline">\(C[z]\)</span> 是（有可能）依赖于
+<span class="math inline">\(z:P\)</span> 的类型 <a href="#fn1"
+class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>；
+<span class="math inline">\(D_i\)</span> 则是：</p>
+<p><span class="math display">\[
+\newcommand{\xs}{\textcolor{blue}{xs}}
+\newcommand{\yk}{\textcolor{red}{y_k}}
+\newcommand{\ykx}{\textcolor{green}{y&#39;_k}}
+\newcommand{\zs}{\textcolor{orange}{zs}}
+\begin{split}
+     &amp; {\Large \Pi} \xs :: Gs_i . \\
+( \; &amp; {\Large \Pi} \yk  : (Hs_{ik}[\xs] \rightarrow P) . \\
+     &amp; {\Large \Pi} \ykx : (\Pi \zs::Hs_{ik}[\xs] . C[\yk(\zs)]) .
+\; )_k \\
+     &amp; C[intro_i(\xs, (\yk)_k)]
+\end{split}
+\]</span></p>
+<p>回忆上一篇，<mark><span class="math inline">\(y_k: Hs_{ik}[as]
+\rightarrow P\)</span> 是以 <span
+class="math inline">\(Hs_{ik}[as]\)</span> 索引的 premisses 集合，这里
+<span class="math inline">\(y_k&#39;\)</span> 也是以同样类型索引的 <span
+class="math inline">\(C\)</span> 族元素， 且保证 <span
+class="math inline">\(y_k&#39;(zs): C[y_k(zs)]\)</span></mark></p>
+<p>最终得到的 <span class="math inline">\(f\)</span> 满足下面的
+Computation rule：</p>
+<p><span class="math display">\[
+\newcommand{\as}{\textcolor{blue}{as}}
+\newcommand{\bk}{\textcolor{red}{b_k}}
+\newcommand{\cs}{\textcolor{orange}{cs}}
+\frac{
+  \Gamma \vdash \as::Gs_i \qquad (\Gamma \vdash \bk:Hs_{ik}[\as]
+\rightarrow P)_k
+} {
+  \begin{split}
+  \Gamma \vdash \; &amp; f(intro_i(\as, (\bk)_k)) = \\
+                   &amp; d_i(\as, (\; \bk,
+\lambda(\cs::Hs_{ik}[\as]).f(\bk(\cs)) \;)_k) : \\
+                   &amp; C[intro_i(\as, (\bk)_k)]
+  \end{split}
+} \; \tiny{P-comp_i}
+\]</span></p>
+<h3 id="interpretation-of-eliminationcomputation-rule">Interpretation of
+Elimination/Computation Rule</h3>
+<p>在这个解释中，<span class="math inline">\(f\)</span> 同样也解释为一个
+inductive set</p>
+<p><span class="math display">\[
+[\![f]\!] = \mathcal{I}(\Psi_f)
+\]</span></p>
+<p>其 rule set 为：</p>
+<p><span class="math display">\[
+\newcommand{\us}{\textcolor{blue}{us}}
+\newcommand{\xs}{\textcolor{blue}{xs}}
+\newcommand{\vk}{\textcolor{red}{v_k}}
+\newcommand{\yk}{\textcolor{red}{y_k}}
+\newcommand{\vkx}{\textcolor{green}{v&#39;_k}}
+\newcommand{\ws}{\textcolor{orange}{ws}}
+\newcommand{\zs}{\textcolor{orange}{zs}}
+\newcommand{\Hsik}{[\![Hs_{ik}[\xs]]\!]^{\us}_{\xs}}
+\begin{split}
+  \Psi_f = \underset{i}{\bigcup} \{
+    &amp; \frac
+      {\bigcup_k \{ \langle \vk(\ws), \vkx(\ws) \rangle | \ws \in \Hsik
+\} }
+      {\langle \langle |intro_i|, \us, (\vk)_k \rangle, [\![d_i]\!](\us,
+(\vk, \vkx)_k) \rangle} | \\
+    &amp; \us \in [\![Gs_i]\!], \\
+    &amp; (\vk \in \Hsik \rightarrow [\![P]\!], \\
+    &amp; \vkx \in \underset{(\ws \in \Hsik)}{\Large \Pi}
+[\![C[\yk(\zs)]]\!]^{\ws \; \vk}_{\zs \; \yk} )_k \}
+\end{split}
+\]</span></p>
+<p><mark>（如无特殊说明，这里 <span
+class="math inline">\([\![f]\!]\)</span> 和 <span
+class="math inline">\([\![d_i]\!]\)</span> 表示 <span
+class="math inline">\([\![f]\!]\rho\)</span> 和 <span
+class="math inline">\([\![d_i]\!]\rho\)</span>，因为 <span
+class="math inline">\(d_i\)</span> 的指称可能依 <span
+class="math inline">\(\rho\)</span> 而变， 所以 <span
+class="math inline">\(\Psi_f\)</span> 以及 <span
+class="math inline">\([\![f]\!]\)</span> 亦然）</mark></p>
+<p>首先 <span class="math inline">\(\Psi_f\)</span> 是 <span
+class="math inline">\({\Large \Sigma}_{p \in [\![P]\!]}
+[\![C[z]]\!]_z^p\)</span> 上的 <em>rule set</em>：因为 <span
+class="math inline">\(us/v_k\)</span>/<span
+class="math inline">\(v&#39;_k\)</span>/<span
+class="math inline">\(d_i\)</span> 保证了 premisses/conclusion 中的每对
+<span class="math inline">\(\langle p, c \rangle\)</span> 都满足 <span
+class="math inline">\(p \in [\![P]\!]\)</span> 以及 <span
+class="math inline">\(c \in [\![C[z]]\!]_z^p\)</span></p>
+<p><mark>但这还不够，还需要证明 <span
+class="math inline">\([\![f]\!]\)</span> 是一个函数（一个 <span
+class="math inline">\(p\)</span> 对应唯一 <span
+class="math inline">\(c\)</span>）且它的 <em>domain</em> 等于 <span
+class="math inline">\([\![P]\!]\)</span></mark></p>
+<div class="proof">
+<p>考虑 <span class="math inline">\([\![f]\!]\)</span>
+符合函数的部分，令</p>
+<p><span class="math display">\[
+[\![g]\!] = \{ p \; | \; \langle p, c \rangle \in [\![f]\!] \land
+(\langle p, c&#39; \rangle \in [\![f]\!] \rightarrow c = c&#39;) \}
+\]</span></p>
+<p>我们只需要证明 <span class="math inline">\([\![g]\!]\)</span> 是
+<span class="math inline">\(\Theta_P-closed\)</span> 的就可以了，
+<mark>因为若 <span class="math inline">\([\![P]\!] =
+\mathcal{I}(\Theta_P) \subseteq [\![g]\!]\)</span>，则对每一个 <span
+class="math inline">\(p \in [\![P]\!]\)</span>， 都存在唯一 <span
+class="math inline">\(c\)</span> 使得 <span
+class="math inline">\(\langle p, c \rangle \in
+[\![f]\!]\)</span></mark></p>
+<p>现在假设 <span class="math inline">\(\frac{Q}{p} \in
+\Theta_P\)</span>，且 <span class="math inline">\(Q \subseteq
+[\![g]\!]\)</span>：</p>
+<p>由于能生成 <span class="math inline">\(p\)</span> 的规则只有 <span
+class="math inline">\(\frac{Q}{p}\)</span>，或曰 <span
+class="math inline">\(\Theta_P\)</span> 是
+<mark><em>deterministic</em></mark> 的：</p>
+<p><span class="math display">\[
+\frac{Q}{p} \in \Theta_P \land \frac{Q&#39;}{p} \in \Theta_P \rightarrow
+Q = Q&#39;
+\]</span></p>
+<p>只需要考虑 <span class="math inline">\(\Psi_f\)</span> 中下面这组
+<span class="math inline">\(Q/p\)</span>
+固定的规则，因为别的规则不可能生成 <span class="math inline">\(\langle
+\textcolor{blue}{p}, c_p \rangle\)</span>
+（<mark>且这组规则是存在的，因为 <span
+class="math inline">\(\Theta_P\)</span> 和 <span
+class="math inline">\(\Psi_f\)</span> 里的 <span
+class="math inline">\(us/v_k\)</span> 有相同的取值集合</mark>）：</p>
+<p><span class="math display">\[
+\frac{ \{ \langle \textcolor{blue}{q}, c_q \rangle \; | \;
+\textcolor{blue}{q} \in \textcolor{blue}{Q} \} }{\langle
+\textcolor{blue}{p}, c_p \rangle}
+\qquad where \qquad c_? \in [\![C[z]]\!]_z^?
+\]</span></p>
+<p>而这组规则中有且只有唯一一条规则其全部 <em>premisses</em> 都在 <span
+class="math inline">\([\![f]\!]\)</span> 中： 因为根据假设，对于任意
+<span class="math inline">\(q \in Q \subseteq [\![g]\!]\)</span>
+都有唯一 <span class="math inline">\(\langle q, c_q \rangle \in
+[\![f]\!]\)</span>， 且 <em>premisses</em> 确定了后 <em>conclusion</em>
+中的 <span class="math inline">\(c_p\)</span> 也被唯一确定（<span
+class="math inline">\(us\)</span>/<span
+class="math inline">\(v_k\)</span>/<span
+class="math inline">\(v_k&#39;\)</span> 都确定了）； <mark>根据前文性质
+3，<span class="math inline">\(\langle p, c_p \rangle \in
+[\![f]\!]\)</span> 当且仅当它来自 <em>premisses</em> 都在 <span
+class="math inline">\([\![f]\!]\)</span> 里的规则的
+<em>conclusion</em>，于是也就有且只有唯一一个 <span
+class="math inline">\(\langle p, c_p \rangle \in
+[\![f]\!]\)</span></mark></p>
+<p>所以 <span class="math inline">\(p \in
+[\![g]\!]\)</span>，这也就证明了 <span
+class="math inline">\([\![g]\!]\)</span> 是 <span
+class="math inline">\(\Theta_P-closed\)</span> 的了</p>
+</div>
+<h3 id="soundness-of-inference-rules">Soundness of Inference rules</h3>
+<p>根据上面的证明，Elimination rule 是 sound 的，即前提成立时 <span
+class="math inline">\(f\)</span> 的确是函数</p>
+<p>至于 Computation rule，对于任何的 <span class="math inline">\(\langle
+|intro_i|, us, (v_k)_k \rangle \in [\![P]\!]\)</span>，都有唯一条 <span
+class="math inline">\(\Psi_f\)</span> 的规则且其
+<em>premisses</em>/<em>conclusion</em> 都在 <span
+class="math inline">\([\![f]\!]\)</span> 中：</p>
+<p><span class="math display">\[
+\langle \langle |intro_i|, us, (v_k)_k \rangle, [\![d_i]\!](us, (v_k,
+v_k&#39;)_k) \rangle \in [\![f]\!]
+\]</span></p>
+<p><span class="math display">\[
+\langle v_k(ws), v_k&#39;(ws) \rangle \in [\![f]\!] \qquad for \; ws \in
+[\![Hs_{ik}[xs]]\!]_{xs}^{us}
+\]</span></p>
+<p>即</p>
+<p><span class="math display">\[
+[\![f]\!](\langle |intro_i|, us, (v_k)_k \rangle) = [\![d_i]\!](us,
+(v_k, v_k&#39;)_k)
+\]</span></p>
+<p><span class="math display">\[
+v_k&#39; = \lambda ws . [\![f]\!](v_k(ws))
+\]</span></p>
+<p>代入 <span class="math inline">\(v_k&#39;\)</span> 得</p>
+<p><span class="math display">\[
+[\![f]\!](\langle |intro_i|, us, (v_k)_k \rangle) = [\![d_i]\!](us,
+(v_k, \lambda ws . [\![f]\!](v_k(ws))
+)_k)
+\]</span></p>
+<h2 id="inductive-families">Inductive families</h2>
+<p>下面考虑更一般的类型族</p>
+<p>Formation rule：</p>
+<p><span class="math display">\[
+\frac{\Gamma \vdash is::Is}{\Gamma \vdash P(is) \; type} \;
+\tiny{P-form}
+\]</span></p>
+<p>Introduction rule（0+ 条），第 <span class="math inline">\(i\)</span>
+条一般形如：</p>
+<p><span class="math display">\[
+\frac{
+  \Gamma \vdash as::Gs_i \qquad (\Gamma \vdash b_k:\Pi zs ::
+Hs_{ik}[as].P(qs_{ik}[as, zs]))_k
+} {
+  \Gamma \vdash intro_i(as, (b_k)_k) : P(ps_i[as])
+} \; \tiny{P-intro_i}
+\]</span></p>
+<p>其中：</p>
+<ul>
+<li><span class="math inline">\(Is\)</span> 这个类型 telescope
+不能依赖于上下文</li>
+<li><span class="math inline">\(qs_{ik}[as, zs]::Is\)</span> 可以依赖于
+<span class="math inline">\(as::Gs_i\)</span> 和 <span
+class="math inline">\(zs::Hs_{ik}[as]\)</span></li>
+<li><span class="math inline">\(ps_i[as]::Is\)</span> 可以依赖于 <span
+class="math inline">\(as::Gs_i\)</span></li>
+<li><span class="math inline">\(Gs_i\)</span> 和 <span
+class="math inline">\(Hs_{ik}[as]\)</span> 跟 Inductive Type
+里的要求一样</li>
+</ul>
+<h3 id="inductive-families-in-set-theory">Inductive families in set
+theory</h3>
+<p>令 <span class="math inline">\(I\)</span> 和 <span
+class="math inline">\(U\)</span> 都是集合，且 <span
+class="math inline">\(\Phi\)</span> 是 <span class="math inline">\(I
+\times U\)</span> 上的 <em>rule set</em>，</p>
+<p><span class="math display">\[
+\mathcal{IF}(\Phi)(i) = \{ u \in U | \langle i, u \rangle \in
+\mathcal{I}(\Phi)  \} \qquad i \in I
+\]</span></p>
+<p><mark>这定义了 <span class="math inline">\(U\)</span> 上以 <span
+class="math inline">\(I\)</span> 为 <em>index</em> 的一族集合，也就是由
+<span class="math inline">\(\mathcal{I}(\Phi)\)</span>
+定义了整个一族集合里的所有元素（带 <em>index</em> 标识），然后再按
+<em>index</em> 分类</mark></p>
+<h3 id="interpretation-of-inductive-families">Interpretation of
+Inductive families</h3>
+<p>类型解释为</p>
+<p><span class="math display">\[
+[\![P(is)]\!]\rho = \mathcal{IF}(\Phi_P)([\![is]\!]\rho)
+\]</span></p>
+<p><mark>（注意由于 <span class="math inline">\([\![is]\!]\rho\)</span>
+在不同的 assignment <span class="math inline">\(\rho\)</span>
+有可能是不同的指称， 因此 <span
+class="math inline">\([\![P(is)]\!]\rho\)</span> 亦然；这跟简单的
+Inductive type <span class="math inline">\([\![P]\!]\)</span>
+不一样：<span class="math inline">\([\![P]\!]\rho =
+[\![P]\!]\)</span>）</mark></p>
+<p>其中</p>
+<p><span class="math display">\[
+\begin{split}
+\Phi_P = \underset{i}{\LARGE \cup} \{ &amp; \frac{{\Large \cup}_{k} \;
+\{ \langle [\![qs_{ik}[xs, zs]]\!]_{xs \; zs}^{us \; ws}, v_k(ws)
+\rangle | ws \in [\![Hs_{ik}[xs]]\!]_{xs}^{us} \} }
+                                             { \langle
+[\![ps_i[xs]]\!]_{xs}^{us}, \langle | intro_i |, us, (v_k)_k \rangle
+\rangle } | \\
+                                      &amp; us \in [\![Gs_i]\!], \\
+                                      &amp; (v_k \in
+[\![Hs_{ik}[xs]]\!]_{xs}^{us} \rightarrow \textcolor{blue}{U})_k \}
+\end{split}
+\]</span></p>
+<p>类似于前面 Inductive type，选取 <span
+class="math inline">\(U\)</span> 为某个 <span
+class="math inline">\(V_\alpha\)</span> 使得 <span
+class="math inline">\(\Phi_P\)</span> 是 <span
+class="math inline">\([\![Is]\!] \times U\)</span> 上的 <em>rule
+set</em></p>
+<p>精简 <em>rule set</em> 应当如</p>
+<p><span class="math display">\[
+\begin{split}
+\Theta_P = \underset{i}{\LARGE \cup} \{ &amp; \frac{{\Large \cup}_{k} \;
+\{ \langle [\![qs_{ik}[xs, zs]]\!]_{xs \; zs}^{us \; ws}, v_k(ws)
+\rangle | ws \in [\![Hs_{ik}[xs]]\!]_{xs}^{us} \} }
+                                             { \langle
+[\![ps_i[xs]]\!]_{xs}^{us}, \langle | intro_i |, us, (v_k)_k \rangle
+\rangle } | \\
+                                      &amp; us \in [\![Gs_i]\!], \\
+                                      &amp; (v_k \in \underset{(ws \in
+[\![Hs_{ik}[xs]]\!]_{xs}^{us})}{\Large \Pi}
+\textcolor{blue}{[\![P(qs_{ik}[xs, zs])]\!]_{xs \; zs}^{us \; ws}} )_k
+\}
+\end{split}
+\]</span></p>
+<p><mark>这是因为要求 <em>premisses</em> 中所有 <span
+class="math inline">\(\langle [\![qs_{ik}[xs, zs]]\!]_{xs \; zs}^{us \;
+ws}, v_k(ws) \rangle \in \mathcal{I}(\Phi_P)\)</span>，也就是 <span
+class="math inline">\(v_k(ws) \in \mathcal{IF}(\Phi_P)([\![qs_{ik}[xs,
+zs]]\!]_{xs \; zs}^{us \; ws}) = [\![P(qs_ik[xs, zs])]\!]_{xs \; zs}^{us
+\; ws}\)</span></mark></p>
+<p>元素的解释跟 Inductive type 里是一样的：</p>
+<p><span class="math display">\[
+[\![intro_i(as, (b_k)_k)]\!]\rho = \langle |intro_i|, [\![as]\!]\rho,
+([\![b_k]\!]\rho)_k \rangle
+\]</span></p>
+<h3 id="soundness-of-inference-rules-1">Soundness of inference
+rules</h3>
+<p>Formation rule：<span
+class="math inline">\(\mathcal{IF}(\Phi_P)\)</span> 是以 <span
+class="math inline">\([\![Is]\!]\)</span> 为 <em>index</em>
+的一族集合，而前提表示对所有 <span class="math inline">\(\rho\)</span>
+都有 <span class="math inline">\([\![is]\!]\rho \in
+[\![Is]\!]\)</span>， 故对所有 <span class="math inline">\(\rho\)</span>
+都有 <span class="math inline">\([\![P(is)]\!]\rho =
+\mathcal{IF}(\Phi_P)([\![is]\!]\rho)\)</span> 都是一个集合</p>
+<p>Introduction rule：</p>
+<p>前提表示，对所有的 <span class="math inline">\(\rho \in
+[\![\Gamma]\!]\)</span>，有：</p>
+<ul>
+<li><span class="math inline">\(us = [\![as]\!]\rho \in [\![Gs_i]\!]\rho
+= [\![Gs_i]\!]\)</span></li>
+<li><span class="math inline">\(v_k = [\![b_k]\!]\rho \in [\![\Pi
+zs::Hs_{ik}[as].P(qs_{ik}[as, zs])]\!]\rho_{as}^{us} = \underset{ws \in
+[\![Hs_{ik}[as]]\!]_{as}^{us}}{\Large \Pi} [\![P(qs_{ik}[as,
+zs])]\!]_{as \; zs}^{us \; ws}\)</span></li>
+</ul>
+<p>因此对于所有 <span class="math inline">\(k\)</span> 下，对每一个
+<span class="math inline">\(ws \in
+[\![Hs_{ik}[as]]\!]_{as}^{us}\)</span>，有</p>
+<p><span class="math display">\[
+\langle [\![qs_{ik}[as, zs]]\!]_{as \; zs}^{us \; ws}, v_k(ws) \rangle
+\in \mathcal{I}(\Phi_P)
+\]</span></p>
+<p>由 <span class="math inline">\(\Phi_P-closed\)</span> 得</p>
+<p><span class="math display">\[
+\langle [\![ps_i[as]]\!]_{as}^{us}, \langle |intro_i|, us, (v_k)_k
+\rangle \rangle \in \mathcal{I}(\Phi_P)
+\]</span></p>
+<p>也就是</p>
+<p><span class="math display">\[
+\langle |intro_i|, us, (v_k)_k \rangle \in [\![P(ps_i[as])]\!]_{as}^{us}
+\]</span></p>
+<h2
+id="eliminationcomputation-rule-for-inductive-families">Elimination/Computation
+Rule for Inductive families</h2>
+<p>类型族的 Elimination Rule：</p>
+<p><span class="math display">\[
+\frac{
+  \Gamma, is::Is, z : P(is) \vdash C[is, z] \; type
+  \qquad
+  (\Gamma \vdash d_i : D_i)_i
+} {
+  \Gamma \vdash f : \underset{(is::Is)}{\Large \Pi}
+\underset{(z:P(is))}{\Large \Pi} C[is, z]
+} \; \tiny{P-elim}
+\]</span></p>
+<p>其中 <span class="math inline">\(C[is, z]\)</span> 是可能依赖于 <span
+class="math inline">\(is::Is\)</span> 和 <span
+class="math inline">\(z:P(is)\)</span> 的类型，而 <span
+class="math inline">\(D_i\)</span> 是：</p>
+<p><span class="math display">\[
+\newcommand{\xs}{\textcolor{blue}{xs}}
+\newcommand{\yk}{\textcolor{red}{y_k}}
+\newcommand{\ykx}{\textcolor{green}{y&#39;_k}}
+\newcommand{\zs}{\textcolor{orange}{zs}}
+\newcommand{\zsx}{\textcolor{purple}{zs&#39;}}
+\begin{split}
+     &amp; {\Large \Pi} \xs :: Gs_i . \\
+( \; &amp; {\Large \Pi} \yk  : (\Pi \zs::Hs_{ik}[\xs] . P(qs_{ik}[\xs,
+\zs])) . \\
+     &amp; {\Large \Pi} \ykx : (\Pi \zsx::Hs_{ik}[\xs] . C[qs_{ik}[\xs,
+\zsx], y_k(\zsx)]) . \; )_k \\
+     &amp; C[ps_i[\xs], intro_i(\xs, (\yk)_k)]
+\end{split}
+\]</span></p>
+<p>且满足下面的 Computation rule：</p>
+<p><span class="math display">\[
+\newcommand{\as}{\textcolor{blue}{as}}
+\newcommand{\bk}{\textcolor{red}{b_k}}
+\newcommand{\zs}{\textcolor{orange}{zs}}
+\newcommand{\zsx}{\textcolor{purple}{zs&#39;}}
+\frac{
+  \Gamma \vdash \as::Gs_i \qquad (\Gamma \vdash \bk: {\large
+\Pi}_{(\zs:Hs_{ik}[\as])} P(qs_{ik}[\as, \zs]) )_k
+} {
+  \begin{split}
+  \Gamma \vdash \; &amp; f(ps_i[\as], intro_i(\as, (\bk)_k)) = \\
+                   &amp; d_i(\as, (\; \bk,
+\lambda(\zsx::Hs_{ik}[\as]).f(qs_{ik}[\as, \zsx], \bk(\zsx)) \;)_k) : \\
+                   &amp; C[ps_i[\as], intro_i(\as, (\bk)_k)]
+  \end{split}
+} \; \tiny{P-comp_i}
+\]</span></p>
+<h3 id="interpretation-of-eliminationcomputation-rule-1">Interpretation
+of Elimination/Computation Rule</h3>
+<p>令</p>
+<p><span class="math display">\[
+[\![f(is)]\!]\rho = \mathcal{IF}(\Psi_f)([\![is]\!]\rho)
+\]</span></p>
+<p>其中</p>
+<p><span class="math display">\[
+\newcommand{\us}{\textcolor{blue}{us}}
+\newcommand{\xs}{\textcolor{blue}{xs}}
+\newcommand{\vk}{\textcolor{red}{v_k}}
+\newcommand{\yk}{\textcolor{red}{y_k}}
+\newcommand{\vkx}{\textcolor{green}{v&#39;_k}}
+\newcommand{\ws}{\textcolor{orange}{ws}}
+\newcommand{\zs}{\textcolor{orange}{zs}}
+\newcommand{\Hsik}{[\![Hs_{ik}[\xs]]\!]^{\us}_{\xs}}
+\begin{split}
+  \Psi_f = \underset{i}{\bigcup} \{
+    &amp; \frac
+      {\bigcup_k \{ \langle [\![qs_{ik}[\xs, \zs]]\!]_{\xs \; \zs}^{\us
+\; \ws}, \langle \vk(\ws), \vkx(\ws) \rangle \rangle | \ws \in \Hsik \}
+}
+      {\langle [\![ps_i[\xs]]\!]_{\xs}^{us}, \langle \langle |intro_i|,
+\us, (\vk)_k \rangle, [\![d_i]\!](\us, (\vk, \vkx)_k) \rangle \rangle} |
+\\
+    &amp; \us \in [\![Gs_i]\!], \\
+    &amp; (\vk \in \underset{(\ws \in \Hsik)}{\Large \Pi}
+[\![P(qs_{ik}[\xs, \zs])]\!]_{\xs \; \zs}^{\us \; \ws}, \\
+    &amp; \vkx \in \underset{(\ws \in \Hsik)}{\Large \Pi}
+[\![C[qs_{ik}[\xs, \zs], \yk(\zs)]]\!]_{\xs \; \zs \; \yk}^{\us \; \ws
+\; \vk} )_k \}
+\end{split}
+\]</span></p>
+<p>首先 <span class="math inline">\(\Psi_f\)</span> 是 <span
+class="math inline">\({\Large \Sigma}_{us \in [\![Is]\!]} {\Large
+\Sigma}_{p \in [\![P(is)]\!]_{is}^{us}} [\![C[is, z]]\!]_{is \; z}^{us
+\; p}\)</span> 上的 <em>rule set</em></p>
+<p>其次，同样用 <span class="math inline">\(\Theta_P-closed\)</span>
+可以证明对于每一个 <span class="math inline">\(\langle us, p \rangle \in
+\mathcal{I}(\Phi_P)\)</span>，存在唯一 <span
+class="math inline">\(\langle us, \langle p, c \rangle \rangle \in
+\mathcal{I}(\Psi_f)\)</span>，所以对每一个 <span
+class="math inline">\(us\)</span> 而言 <span
+class="math inline">\([\![f(is)]\!]_{is}^{us}\)</span> 都是一个函数</p>
+<h2 id="ref">Ref</h2>
+<ul>
+<li><a href="https://www.cse.chalmers.se/~peterd/papers/ESSLLI94.pdf"
+class="uri">https://www.cse.chalmers.se/~peterd/papers/ESSLLI94.pdf</a></li>
+<li><a
+href="https://lawrencecpaulson.github.io/papers/Aczel-Inductive-Defs.pdf"
+class="uri">https://lawrencecpaulson.github.io/papers/Aczel-Inductive-Defs.pdf</a></li>
+<li><a
+href="http://www.danielgratzer.com/courses/type-theory-s-2024/lecture-notes.pdf"
+class="uri">http://www.danielgratzer.com/courses/type-theory-s-2024/lecture-notes.pdf</a></li>
+</ul>
+<section id="footnotes" class="footnotes footnotes-end-of-document"
+role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1"><p>recursion principle 其实就是 non-dependent 的
+eliminator，而 induction principle 则是 dependent 的 eliminator；见 HoTT
+book 1.5<a href="#fnref1" class="footnote-back"
+role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+</article>
+<!--main article end-->
+
+</body>
+</html>
