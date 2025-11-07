@@ -8,6 +8,9 @@
   <meta name="dcterms.date" content="2022-01-13" />
   <title>Chapter 2: First-Order Logic and Model Theory (2.1~2.2)</title>
   <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     html {
       color: #1a1a1a;
       background-color: #fdfdfd;
@@ -109,8 +112,8 @@
      overflow: visible;
     }
     hr {
-      background-color: #1a1a1a;
       border: none;
+      border-top: 1px solid #1a1a1a;
       height: 1px;
       margin: 1em 0;
     }
@@ -446,7 +449,7 @@
 <dl>
 <dt>symbols</dt>
 <dd>
-<p>一阶符号包括以下这些</p>
+一阶符号包括以下这些
 <ul>
 <li>变量（Individual variables）: <span class="math inline">\(x_1, x_2,
 ..., x_n, ...\)</span></li>
@@ -467,7 +470,7 @@ class="math inline">\(\forall\)</span></li>
 <dl>
 <dt>Term</dt>
 <dd>
-<p>项（Term）定义为</p>
+项（Term）定义为
 <ol type="1">
 <li>常量变量都是项</li>
 <li>如果 <span class="math inline">\(f_n^m\)</span> 是一个函数符号，而
@@ -488,7 +491,7 @@ class="math inline">\(A_n^m(t_1, t_2, ..., t_m)\)</span>
 </dd>
 <dt>wffs</dt>
 <dd>
-<p>合式公式定义为</p>
+合式公式定义为
 <ol type="1">
 <li>所有原子式都是合式公式</li>
 <li>如果 <span class="math inline">\(B\)</span> 和 <span
@@ -561,8 +564,8 @@ Language）</p>
 <dl>
 <dt>First order language</dt>
 <dd>
-<p>一个一阶语言 <span class="math inline">\(\mathcal{L}\)</span>
-包含以下语法符号</p>
+一个一阶语言 <span class="math inline">\(\mathcal{L}\)</span>
+包含以下语法符号
 <ol type="1">
 <li>命题联接符 <span class="math inline">\(\neg\)</span> 和 <span
 class="math inline">\(\Rightarrow\)</span> 以及全称量词 <span
@@ -589,10 +592,10 @@ constant），</p>
 <dl>
 <dt>Interpretation</dt>
 <dd>
-<p>一个一阶语言 <span class="math inline">\(\mathcal{L}\)</span>
+一个一阶语言 <span class="math inline">\(\mathcal{L}\)</span>
 的语义解释（interpretation）<a href="#fn1" class="footnote-ref"
 id="fnref1" role="doc-noteref"><sup>1</sup></a> <span
-class="math inline">\(M\)</span>包括如下这些</p>
+class="math inline">\(M\)</span>包括如下这些
 <ol type="1">
 <li>一个非空集合 <span
 class="math inline">\(D\)</span>，称为该解释的论域（domain）</li>
@@ -631,11 +634,11 @@ class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
 <dl>
 <dt><span class="math inline">\(s^{ * }(t)\)</span></dt>
 <dd>
-<p>若 <span class="math inline">\(s\)</span> 是一个 denumerable
+若 <span class="math inline">\(s\)</span> 是一个 denumerable
 sequence，即 <span class="math inline">\(s(i): Uint \rightarrow
 D\)</span> <a href="#fn3" class="footnote-ref" id="fnref3"
 role="doc-noteref"><sup>3</sup></a>，定义 <span
-class="math inline">\(s^{ * }(t): Term \rightarrow D\)</span> 为</p>
+class="math inline">\(s^{ * }(t): Term \rightarrow D\)</span> 为
 <ul>
 <li>若 <span class="math inline">\(t\)</span> 是变量 <span
 class="math inline">\(x_j\)</span>，则 <span class="math inline">\(s^{ *
@@ -659,9 +662,9 @@ class="math inline">\(D\)</span> 中的元素的操作</p>
 <dl>
 <dt>Satisfiability</dt>
 <dd>
-<p>现在定义可满足性：对于一个合式公式 <span
+现在定义可满足性：对于一个合式公式 <span
 class="math inline">\(B\)</span> 和一个 sequence <span
-class="math inline">\(s\)</span> 来说</p>
+class="math inline">\(s\)</span> 来说
 <ol type="1">
 <li>如果 <span class="math inline">\(B\)</span> 是一个原子式 <span
 class="math inline">\(A_k^n(t_1, ..., t_n)\)</span>，则当且仅当 <span
@@ -693,9 +696,9 @@ role="doc-noteref"><sup>4</sup></a></li>
 <dl>
 <dt>Truth/Falsity</dt>
 <dd>
-<p>现在定义真/假性：在一个解释 <span class="math inline">\(M\)</span>
+现在定义真/假性：在一个解释 <span class="math inline">\(M\)</span>
 下，令 <span class="math inline">\(\Sigma\)</span> 为所有 <span
-class="math inline">\(s\)</span> 的集合</p>
+class="math inline">\(s\)</span> 的集合
 <ol type="1">
 <li>当且仅当 <span class="math inline">\(\Sigma\)</span> 中任意一个
 <span class="math inline">\(s\)</span> 都满足 <span
