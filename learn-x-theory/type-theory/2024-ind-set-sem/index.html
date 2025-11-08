@@ -665,9 +665,8 @@ class="math inline">\(w\)</span></li>
 </ul>
 <p><mark>所以所有 <span class="math inline">\(\Phi-closed\)</span>
 的交集 <span class="math inline">\(\mathcal{I}(\Phi)\)</span>
-是一个最小的 <span class="math inline">\(\Phi-closed\)</span> 集合 <a
-href="#fn3" class="footnote-ref" id="fnref3"
-role="doc-noteref"><sup>3</sup></a>，是所有 <span
+是一个最小的 <span class="math inline">\(\Phi-closed\)</span>
+集合（有可能是空集），是所有 <span
 class="math inline">\(\Phi-closed\)</span> 集合的子集，例如：<span
 class="math inline">\(\mathcal{I}(\Phi) \subseteq
 Concl(\Phi)\)</span></mark></p>
@@ -779,14 +778,13 @@ class="math inline">\(\mathcal{I}(\Phi)\)</span>
 \rightarrow P)_k}{\Gamma \vdash intro_i(as, (b_k)_k) : P} \;
 \tiny{P-intro_i}
 \]</span></p>
-<p><mark>其中 telescope <span class="math inline">\(Gs_i\)</span> <a
-href="#fn4" class="footnote-ref" id="fnref4"
-role="doc-noteref"><sup>4</sup></a> 不依赖于上下文，而 <a
-href="../2023-ind-form/">arity</a> <span
-class="math inline">\(Hs_{ik}[as]\)</span> <a href="#fn5"
-class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>
-则依赖于 <span class="math inline">\(as\)</span></mark>， 也就是对于任意
-<span class="math inline">\(\rho \in [\![\Gamma]\!]\)</span>：</p>
+<p><mark>其中 telescope <span class="math inline">\(Gs_i\)</span>
+不依赖于上下文，而 <a href="../2023-ind-form/">arity</a> <span
+class="math inline">\(Hs_{ik}[as]\)</span> 则依赖于 <span
+class="math inline">\(as\)</span></mark> <a href="#fn3"
+class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>，
+也就是对于任意 <span class="math inline">\(\rho \in
+[\![\Gamma]\!]\)</span>：</p>
 <ul>
 <li><span class="math inline">\([\![Gs_i]\!]\rho = [\![Gs_i]\!]\)</span>
 即 <span class="math inline">\(\rho\)</span> 的改变并不会改变其所指</li>
@@ -861,8 +859,8 @@ class="math inline">\(U\)</span> 上的元素都可以作为 <em>premisses</em>�
 = \mathcal{I}(\Phi_P)\)</span> 确立下来后， 这个 <em>rule set</em>
 实际上可以替换为只保留 <em>premisses</em> 是 <span
 class="math inline">\([\![P]\!]\)</span> 子集的规则的 <em>rule set</em>:
-<a href="#fn6" class="footnote-ref" id="fnref6"
-role="doc-noteref"><sup>6</sup></a></p>
+<a href="#fn4" class="footnote-ref" id="fnref4"
+role="doc-noteref"><sup>4</sup></a></p>
 <p><span class="math display">\[
 \newcommand{\hlP}{\textcolor{blue}{[\![P]\!]}}
 \Theta_P = \underset{i}{\LARGE \cup} \{ \frac{{\Large \cup}_{k} \;
@@ -879,9 +877,9 @@ class="math inline">\(\Phi_P\)</span> 是其上的 rule set 呢？由于
 premisses 已经是 <span class="math inline">\(U\)</span>
 的子集了，我们只需要保证 <span class="math inline">\(\langle |intro_i|,
 us, (v_k)_k \rangle \in U\)</span> 即可；文章里令 <span
-class="math inline">\(U = V_\alpha\)</span> <a href="#fn7"
-class="footnote-ref" id="fnref7"
-role="doc-noteref"><sup>7</sup></a>，即第 <span
+class="math inline">\(U = V_\alpha\)</span> <a href="#fn5"
+class="footnote-ref" id="fnref5"
+role="doc-noteref"><sup>5</sup></a>，即第 <span
 class="math inline">\(\alpha\)</span> 层的 <a
 href="https://en.wikipedia.org/wiki/Von_Neumann_universe">Von Neumann
 集合层级</a>，且满足：</p>
@@ -988,23 +986,18 @@ href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 href="https://en.wikipedia.org/wiki/Graph_of_a_function"
 class="uri">https://en.wikipedia.org/wiki/Graph_of_a_function</a><a
 href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p><span class="math inline">\(\mathcal{I}(\Phi)\)</span>
-有可能是空集<a href="#fnref3" class="footnote-back"
-role="doc-backlink">↩︎</a></p></li>
-<li id="fn4"><p>相当于 <span class="math inline">\(\Gamma \vdash
-a_1:G_{i1} \qquad ... \qquad \Gamma \vdash a_n:G_{in}[a_1, ...,
-a_{n-1}]\)</span><a href="#fnref4" class="footnote-back"
-role="doc-backlink">↩︎</a></p></li>
-<li id="fn5"><p>这里 <span class="math inline">\(Hs_{ik}[as]\)</span>
-感觉应该理解为一个(复合)类型 e.g. <span
-class="math inline">\(\Sigma\)</span><a href="#fnref5"
+<li id="fn3"><p><span class="math inline">\(Gs_i\)</span> 相当于 <span
+class="math inline">\(\Gamma \vdash a_1:G_{i1} \qquad ... \qquad \Gamma
+\vdash a_n:G_{in}[a_1, ..., a_{n-1}]\)</span>， 而 <span
+class="math inline">\(Hs_{ik}[as]\)</span> 感觉应该理解为一个(复合)类型
+e.g. <span class="math inline">\(\Sigma\)</span><a href="#fnref3"
 class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn6"><p>因为 <span class="math inline">\(v_k \in
+<li id="fn4"><p>因为 <span class="math inline">\(v_k \in
 [\![Hs_{ik}[xs]]\!]_{xs}^{us} \rightarrow U \land range(v_k) \subseteq
 [\![P]\!]\)</span> 当且仅当 <span class="math inline">\(v_k \in
 [\![Hs_{ik}[xs]]\!]_{xs}^{us} \rightarrow [\![P]\!]\)</span><a
-href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn7"><p>补充一些定义：</p>
+href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>补充一些定义：</p>
 <p>序数 <a
 href="https://plato.stanford.edu/entries/set-theory/basic-set-theory.html#Ord">Ordinal
 Number</a> 可以是</p>
@@ -1065,7 +1058,7 @@ class="math inline">\(V_\beta\)</span> 的的幂集（所有子集的集合）�
 class="math inline">\(V_{\lambda} := \underset{\beta &lt;
 \lambda}{\Large \cup}V_\beta\)</span></li>
 </ul>
-<p>注意每一层级也都包含所有低层级集合里的所有元素<a href="#fnref7"
+<p>注意每一层级也都包含所有低层级集合里的所有元素<a href="#fnref5"
 class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
