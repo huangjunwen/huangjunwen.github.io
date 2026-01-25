@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="HJW" />
+  <meta name="dcterms.date" content="2025-12-20" />
+  <title>03. Effective Computability</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <!-- latex css begin -->
+  <!--<link href="/assets/latex.css/style.min.css" rel="stylesheet" />-->
+  <link href="../../../assets/latex.css/style.css" rel="stylesheet" />
+  <style>
+  /* fixes for mathjax */
+  .MathJax[display] {
+    overflow-x: auto;
+    overflow-y: hidden;
+    max-width: 100%;
+    padding-top: 0.25em;
+    padding-bottom: 0.25em;
+  }
+  /* fixes for latex.css */
+  .date {
+    text-align: center;
+  }
+
+  div.sourceCode {
+    background: var(--pre-bg-color);
+    border-radius: 10px;
+  }
+
+  dl dd {
+    text-align: left;
+  }
+
+  #footnotes {
+    margin-top: 1em;
+  }
+
+  #footnotes hr:first-child {
+    display: none;
+  }
+  </style>
+  <!-- latex css end -->
+
+  <!-- venobox begin -->
+  <link rel="stylesheet" href="../../../assets/venobox/dist/venobox.min.css" />
+  <script src="../../../assets/venobox/dist/venobox.min.js"></script>
+  <script>
+    window.addEventListener("load", (ev) => {
+      document.querySelectorAll('img').forEach((img) => {
+        const a = document.createElement("a")
+        a.href = '#'
+        a.setAttribute('data-href', img.src)
+        a.classList.add('images')
+        img.replaceWith(a)
+        a.appendChild(img)
+      })
+      new VenoBox({
+        selector: '.images',
+        fitView: true,
+      })
+    })
+  </script>
+  <!-- venobox end -->
+
+  <!-- layout begin -->
+  <style>
+  #sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    max-width: 400px;
+    width: 80%;
+    height: 100%;
+    padding: 2rem;
+    background-color: #eee;
+    box-shadow: 0 10px 20px -4px #000;
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #ccc #eee;
+    scrollbar-gutter: stable;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-100%);
+    transition: opacity 0.3s ease, visibility 0.2s ease, transform 0.3s ease;
+  }
+  #sidebar.show {
+    pointer-events: all;
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+  }
+  #sidebar_toggler {
+    position: fixed;
+    top: 4vh;
+    right: 3vw;
+    z-index: 1000;
+    width: 2.8rem;
+    height: 2.4rem;
+    padding: 0.5rem;
+    border: solid #999 0.1rem;
+    border-radius: 0.4rem;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+    overflow: hidden;
+  }
+
+  #sidebar_toggler span {
+    background-color: #999;
+    width: 100%;
+    height: 0.2rem;
+    transition: all 0.3s ease;
+    pointer-events: none;
+  }
+  nav span {
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    /*white-space: pre-wrap;*/
+    width: 90%;
+  }
+  nav li:before {
+    content: '';
+  }
+  nav span:before {
+    content: "\25CF";
+    margin-right: 8px;
+  }
+  nav .caret {
+    cursor: pointer;
+    user-select: none; /* Prevent text selection */
+  }
+  nav .caret::before {
+    content: "\25B6";
+    color: black;
+    display: inline-block;
+    margin-right: 6px;
+  }
+  nav .caret-down::before {
+    transform: rotate(90deg);
+  }
+  nav .collapse {
+    display: none;
+  }
+  nav .bold {
+    font-weight: bolder;
+  }
+  </style>
+  <script>
+    window.addEventListener("load", (ev) => {
+      /* setup sidebar */
+      // https://www.cssscript.com/demo/responsive-sidebar-nav-hamburger/
+      const sidebar = document.querySelector('#sidebar')
+      const sidebarToggler = document.querySelector('#sidebar_toggler')
+
+      sidebarToggler.addEventListener('click', () => {
+        sidebar.classList.toggle('show')
+      });
+
+      const keywords = document.querySelector('meta[name="keywords"]')
+      if (keywords && keywords.content.includes('showSidebar')) {
+        sidebar.classList.add('show')
+      }
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          sidebar.classList.remove('show')
+        }
+      })
+
+      window.addEventListener('click', (e) => {
+        if (!sidebar.contains(e.target) && !sidebarToggler.contains(e.target)) {
+          sidebar.classList.remove('show')
+        }
+      });
+
+      /* load urls */
+      const root2PageDir = "/notes-about-x/an-introduction-to-godels-theorems/03-effective-computability"
+      const page2RootDir = "../../.."
+      const sideNavLinks = document.querySelector('#side_navlinks');
+
+      function isPrefixPath(pathPrefix, path) {
+        const pp = pathPrefix.split("/").filter((e) => e)
+        const p = path.split("/").filter((e) => e)
+        return pp.every((e, i) => {
+          return i < p.length && p[i] == e
+        })
+      }
+
+      function buildSideLink(li, node) {
+        // span contains the text and link (if provided)
+        const span = li.appendChild(document.createElement("span"))
+        if (node.url) {
+          const a = span.appendChild(document.createElement("a"))
+          a.href = page2RootDir + node.url
+          a.textContent = node.text
+        } else {
+          span.textContent = node.text
+        }
+        span.setAttribute("title", node.text)
+        if (isPrefixPath(node.path, root2PageDir)) {
+          span.classList.add("bold")
+        }
+
+        if (node.children.length > 0) {
+          // if has children, then add caret and append a nested <ul> for children
+          span.classList.add("caret")
+          const ul = li.appendChild(document.createElement("ul"))
+          ul.classList.add("nested")
+          // do not collapse containing dir
+          if (isPrefixPath(node.path, root2PageDir)) {
+            span.classList.add("caret-down")
+          } else {
+            ul.classList.add("collapse")
+          }
+          node.children.forEach((child) => {
+            const l = ul.appendChild(document.createElement("li"))
+            buildSideLink(l, child)
+          })
+        }
+      }
+
+      async function loadSideLinks() {
+        const resp = await fetch("../../../urls.json")
+        const data = await resp.json()
+        // console.log(data)
+        const root = sideNavLinks.appendChild(document.createElement("ul"))
+        data.children.forEach((child) => {
+          buildSideLink(root.appendChild(document.createElement("li")), child)
+        })
+
+        const toggler = root.getElementsByClassName("caret")
+        for (let i=0; i<toggler.length; i++) {
+          toggler[i].addEventListener("click", function () {
+            this.parentElement.querySelector(".nested").classList.toggle("collapse")
+            this.classList.toggle("caret-down")
+            return false
+          })
+        }
+      }
+
+      loadSideLinks()
+    })
+  </script>
+  <!-- layout end -->
+  <script
+  src="../../../assets/mathjax/es5/tex-chtml-full.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<!-- sidebar begin -->
+<aside id="sidebar">
+  <div class="sidebar_content sidebar_head">
+    <h1>Content</h1>
+  </div>
+  <div class="sidebar_content sidebar_body">
+    <nav id="side_navlinks" class="side_navlinks">
+      <!--<ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Services</a></li>
+        <li><a href="#">Portfolio</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>-->
+    </nav>
+  </div>
+</aside>
+<div id="sidebar_toggler">
+  <span></span>
+  <span></span>
+  <span></span>
+</div>
+<!-- sidebar end -->
+
+<!--main article begin-->
+<article>
+<header id="title-block-header">
+<h1 class="title">03. Effective Computability</h1>
+<p class="author">HJW</p>
+<p class="date">2025-12-20</p>
+</header>
+<h2 id="effectively-computable-functions">3.1 Effectively computable
+functions</h2>
+<blockquote>
+<p>一个全函数（<em>total function</em>）<span class="math inline">\(f :
+\Delta \rightarrow \Gamma\)</span>
+是<strong>有效可计算的</strong>（<em>effectively
+computable</em>），如果存在一个算法能在<strong>有限</strong>的步数之内对任意输入给出输出</p>
+</blockquote>
+<p>这里的算法是指</p>
+<ul>
+<li>一组确定的指令序列</li>
+<li>每一步的指令都是完全清晰确定，且能够被有限的计算单元（机器）所执行的</li>
+<li>不需要依赖任何模棱两可的主观判断或想象直觉之类</li>
+<li>不依赖外部信息</li>
+<li>不依赖随机方法</li>
+</ul>
+<p>至于具体执行的机器？并不关心，这里有效（<em>effective</em>）并不是指现实中的可行；关键是只要是<strong>有限</strong>步数的指令，原则上就可以由一台足够强大的确定性计算机执行，即使所需时间以及资源远超现实，但它……<mark>还是有限的</mark></p>
+<p>那为啥要关注如此超现实的概念呢？因为后面我们会看到，即使在如此极端的定义下，仍然有一些数值函数是<strong>不可有效计算的</strong></p>
+<p>虽然我们不再关心资源上的局限，但还有个问题：不同架构（<em>architecture</em>）的计算机会否对什么可计算有所影响呢？答案是不会，详细解释见后面章节（<em>Turing’s
+Thesis</em>）；换而言之，特别地</p>
+<blockquote>
+<p><mark>能被有效计算的数值函数就是那些能被图灵机所计算的函数</mark></p>
+</blockquote>
+<p>由于平时我们所用的许多通用语言（例如
+C++/Python）同样是图灵完备的，也就是说用这些语言在不考虑资源限制下同样能实现所有能被有效计算的数值函数</p>
+<h2 id="effectively-decidable-properties-and-sets">3.2 Effectively
+decidable properties and sets</h2>
+<blockquote>
+<p>一个属性/关系被称为<strong>有效可判断</strong>（<em>effectively
+decidable</em>）的，
+当且仅当存在一个程序能在有限步内作出判断某个对象是否具有该属性（关系类似）</p>
+</blockquote>
+<p>对于我们所感兴趣的数值属性/数值关系，显然</p>
+<blockquote>
+<p>一个数值属性/数值关系是有效可判断的，如果其特征函数（<em>characteristic
+function</em>），例如 <span class="math inline">\(C_P : \mathbb{N}
+\rightarrow \{0, 1\}\)</span> 和 <span class="math inline">\(C_R :
+\mathbb{N} \times \mathbb{N} \rightarrow \{0, 1\}\)</span>
+是<strong>有效可计算的</strong></p>
+</blockquote>
+<p>同理，对于集合来说</p>
+<blockquote>
+<p>一个集合 <span class="math inline">\(\Sigma\)</span>
+是<strong>有效可判断的</strong>，当且仅当存在一个程序能在有限步内判断某个
+object 是否属于 <span class="math inline">\(\Sigma\)</span></p>
+</blockquote>
+<p>对于数值集合，显然</p>
+<blockquote>
+<p>一个集合 <span class="math inline">\(\Sigma \subseteq
+\mathbb{N}\)</span> 是有效可判断的，当且仅当特征函数 <span
+class="math inline">\(C_\Sigma : \mathbb{N} \rightarrow \{0,
+1\}\)</span> （<span class="math inline">\(C_\Sigma(n) = 0\)</span> 表示
+<span class="math inline">\(n \in \Sigma\)</span>)
+是<strong>有效可计算的</strong></p>
+</blockquote>
+<p>两个小定理</p>
+<p><em><strong>Theorem 3.1
+有限自然数集合都是有效可判断的</strong></em></p>
+<p>因为集合是有限的，所以只需要一个简单的暴力枚举程序就可以了</p>
+<p><em><strong>Theorem 3.2 如果 <span
+class="math inline">\(\Sigma\)</span> 是有效可判断的，则它的补集 <span
+class="math inline">\(\bar{\Sigma}\)</span>
+也是有效可判断的</strong></em></p>
+<p>将输出翻转即可</p>
+<h2 id="effective-enumerability">3.3 Effective enumerability</h2>
+<blockquote>
+<p>一个集合 <span class="math inline">\(\Sigma\)</span>
+是<strong>可枚举</strong>（<em>enumerable</em>）的，当且仅当存在一个满射函数（<em>surjective
+function</em>）<span class="math inline">\(f : \mathbb{N} \rightarrow
+\Sigma\)</span> 去枚举它的元素</p>
+<p>如果 <span class="math inline">\(f\)</span> 还是有效可计算的话，则称
+<span class="math inline">\(\Sigma\)</span>
+是<strong>有效可枚举的</strong>（<em>effectively enumerable</em>）简称
+e. e.</p>
+<p>除此之外还有个特例，如果 <span class="math inline">\(\Sigma\)</span>
+是空集的话，则也是（有效）可枚举的</p>
+</blockquote>
+<p>直觉上有效可枚举是比有效可判断要弱的，后者对于是否 <span
+class="math inline">\(s \in \Sigma\)</span>
+可以在有限步里给出答案；而前者却无法保证，例如我们可以一直 <span
+class="math inline">\(f(0), f(1), ....\)</span> 地枚举下去，如果某个
+<span class="math inline">\(f(n) = s\)</span> 则可以确认 <span
+class="math inline">\(s \in
+\Sigma\)</span>，但如果一直不出现则无法确认究竟是枚举得不够还是 <span
+class="math inline">\(s \notin \Sigma\)</span>，没有上限</p>
+<p><em><strong>Theorem 3.3
+有效可判断的数值集合是有效可枚举的</strong></em></p>
+<div class="proof">
+<p>空集的证明是 trivial 的</p>
+<p>现在假设 <span class="math inline">\(s \in
+\Sigma\)</span>，且存在有效可计算的 <span class="math inline">\(f :
+\mathbb{N} \rightarrow \{0, 1\}\)</span> 判断任意 <span
+class="math inline">\(n\)</span> 是否属于 <span
+class="math inline">\(\Sigma\)</span></p>
+<p>于是我们可以令</p>
+<p><span class="math display">\[
+g(n) =
+\begin{cases}
+n, \; \text{if} \; f(n) = 0 \\
+s, \; \text{if} \; f(n) = 1 \\
+\end{cases}
+\]</span></p>
+<p>显然 <span class="math inline">\(g\)</span> 是有效可计算的且其 domain
+是 <span class="math inline">\(\Sigma\)</span></p>
+</div>
+<p><em><strong>Theorem 3.4 如果数值集合 <span
+class="math inline">\(\Sigma\)</span> 以及其补集 <span
+class="math inline">\(\bar{\Sigma}\)</span> 都是有效可枚举的话，则 <span
+class="math inline">\(\Sigma\)</span> 是有效可判断的</strong></em></p>
+<div class="proof">
+<p>假设 <span class="math inline">\(\Sigma\)</span> 和 <span
+class="math inline">\(\bar{\Sigma}\)</span> 的有效可枚举函数分别是 <span
+class="math inline">\(f\)</span> 和 <span
+class="math inline">\(\bar{f}\)</span></p>
+<p>如果要判断 <span class="math inline">\(s\)</span> 是否属于 <span
+class="math inline">\(\Sigma\)</span>，可以逐次计算 <span
+class="math inline">\(f(0), \bar{f}(0), f(1), \bar{f}(1),
+...\)</span>，则 <span class="math inline">\(s\)</span>
+必定在<mark>有限</mark>次之内出现，如果是某个 <span
+class="math inline">\(f(n) = s\)</span> 则 <span class="math inline">\(s
+\in \Sigma\)</span>，否则 <span class="math inline">\(\bar{f}(n) =
+s\)</span> 则 <span class="math inline">\(s \notin \Sigma\)</span></p>
+</div>
+<p>上面的定理还不能说明存在有效可枚举但<mark>不是</mark>有效可判断的集合，还需要引入新的定义</p>
+<h2 id="another-way-of-defining-e.e.-sets-of-numbers">3.4 Another way of
+defining e.e. sets of numbers</h2>
+<p>我们说 <span class="math inline">\(f : \mathbb{N} \rightarrow
+\mathbb{N}\)</span> 是有效可计算的，如果存在一个算法 <span
+class="math inline">\(\Pi\)</span>
+对于任意输入都能有效计算出结果，但不是所有的算法都这样：有些算法会卡住或者陷入无限循环，有些则能对部分输入有效计算出结果</p>
+<blockquote>
+<p>一个算法 <span class="math inline">\(\Pi\)</span>
+的数值域（<em>numerical domain</em>）是指这样的一个数值集合，<span
+class="math inline">\(n\)</span> 属于它，当且仅当 <span
+class="math inline">\(\Pi\)</span> 以它为输入能有效得计算得出结果</p>
+</blockquote>
+<p><mark>这相当于有效可计算的 partial
+函数，有效可计算的全函数是其特例</mark>；一个非常有趣的事实是：</p>
+<p><em><strong>Theorem 3.5 数值集合 <span
+class="math inline">\(W\)</span>
+是有效可枚举的当且仅当它是某个算法的数值域</strong></em></p>
+<div class="proof">
+<p>假设 <span class="math inline">\(W\)</span> 是有效可枚举的</p>
+<ul>
+<li>若是空集，则它是一个无限循环算法的数值域</li>
+<li>若非空集，则存在值域为 <span class="math inline">\(W\)</span>
+的有效可计算函数 <span class="math inline">\(f : \mathbb{N} \rightarrow
+\mathbb{N}\)</span>
+<ul>
+<li>设计算法 <span class="math inline">\(\Pi\)</span> 如下，对于输入
+<span class="math inline">\(s\)</span>，依次计算 <span
+class="math inline">\(f(0), f(1), ...\)</span> 直到某个 <span
+class="math inline">\(f(n)\)</span> 输出 <span
+class="math inline">\(s\)</span> 时停下
+<ul>
+<li>因此如果 <span class="math inline">\(s \in W\)</span>
+最终会停下，否则它会一直循环下去</li>
+</ul></li>
+</ul></li>
+</ul>
+<p>反方向，假设 <span class="math inline">\(W\)</span> 是某个算法 <span
+class="math inline">\(\Pi\)</span> 的数值域</p>
+<ul>
+<li>若是空集，trivial effective enumerable</li>
+<li>否则至少存在 <span class="math inline">\(s \in W\)</span>
+<ul>
+<li>回忆之前章节，存在<mark>双射</mark>函数 <span
+class="math inline">\(g : \mathbb{N} \rightarrow \mathbb{N} \times
+\mathbb{N}\)</span>（且是有效可计算的）</li>
+<li>设计 <span class="math inline">\(f\)</span> 如下，对于输入 <span
+class="math inline">\(n\)</span>，首先计算 <span
+class="math inline">\((t, m) = g(n)\)</span> ，然后给算法 <span
+class="math inline">\(\Pi\)</span> 输入 <span
+class="math inline">\(t\)</span> 并且执行 <span
+class="math inline">\(m\)</span> 步，假如算法给出结果则返回 <span
+class="math inline">\(t\)</span>，否则返回 <span
+class="math inline">\(s\)</span>
+<ul>
+<li>如果 <span class="math inline">\(t \in W\)</span> ，则存在有限步
+<span class="math inline">\(m\)</span> 使得算法执行完毕，于是 <span
+class="math inline">\(f(g^{-1}(t, m))\)</span> 会返回 <span
+class="math inline">\(t\)</span></li>
+<li>如果 <span class="math inline">\(t \notin W\)</span> ，则对任意
+<span class="math inline">\(m\)</span> 算法都无法执行完毕，于是 <span
+class="math inline">\(f(g^{-1}(t, m))\)</span> 会返回 <span
+class="math inline">\(s\)</span></li>
+</ul></li>
+</ul></li>
+</ul>
+</div>
+<p>同样地，我们在后面的章节（<em>Turing’s
+Thesis</em>）会讨论到，现在直接当结论用：</p>
+<blockquote>
+<p>数值函数 <span class="math inline">\(f\)</span> （可能是 partial
+的？）如果可以用一个算法 <span class="math inline">\(\Pi\)</span>
+来计算，则这个算法可以用任何通用语言来实现</p>
+</blockquote>
+<p><mark>而一个通用语言能实现的所有算法是可枚举的</mark>，因为程序只是字符串而已，可以按照字母顺序把长度为
+1 的字符串枚举完，再枚举长度为 2
+的字符串……然后只保留合法的程序（当然这些程序大部分都是垃圾），记这些为
+<span class="math inline">\(\Pi_1, \Pi_2, ...\)</span> 以及对应数值域为
+<span class="math inline">\(W_1, W_2, ...\)</span></p>
+<p>我们马上可以得出结论</p>
+<p><em><strong>Theorem 3.6 <mark>有效</mark>可枚举的数值集的集合 <span
+class="math inline">\(W\)</span> 本身是可枚举的</strong></em></p>
+<p>因为可以令 <span class="math inline">\(f : \mathbb{N} \rightarrow
+W\)</span> 为 <span class="math inline">\(f(n) = W_n\)</span>
+来枚举所有的有效可枚举的集合</p>
+<p>然后，我们可以得出一个重要的推论</p>
+<p><em><strong>Theorem 3.6
+<mark>有些数值集合是不可有效枚举的，当然也就不可有效判定</mark></strong></em></p>
+<div class="proof">
+<p>因为 <span class="math inline">\(\mathbb{N}\)</span> 的幂集 <span
+class="math inline">\(P\)</span> –
+也就是所有数值集合的集合是不可枚举的，而有效可枚举数值集的集合 <span
+class="math inline">\(W\)</span> 是可枚举的，且 <span
+class="math inline">\(W \subseteq P\)</span> ，故必定有集合在 <span
+class="math inline">\(P\)</span> 中而不在 <span
+class="math inline">\(W\)</span> 中，也就是不可有效枚举</p>
+</div>
+</article>
+<!--main article end-->
+
+</body>
+</html>

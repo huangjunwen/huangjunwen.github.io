@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="HJW/GLM-4.7" />
+  <meta name="dcterms.date" content="2026-01-20" />
+  <title>Form of Induction Type</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <!-- latex css begin -->
+  <!--<link href="/assets/latex.css/style.min.css" rel="stylesheet" />-->
+  <link href="../../../assets/latex.css/style.css" rel="stylesheet" />
+  <style>
+  /* fixes for mathjax */
+  .MathJax[display] {
+    overflow-x: auto;
+    overflow-y: hidden;
+    max-width: 100%;
+    padding-top: 0.25em;
+    padding-bottom: 0.25em;
+  }
+  /* fixes for latex.css */
+  .date {
+    text-align: center;
+  }
+
+  div.sourceCode {
+    background: var(--pre-bg-color);
+    border-radius: 10px;
+  }
+
+  dl dd {
+    text-align: left;
+  }
+
+  #footnotes {
+    margin-top: 1em;
+  }
+
+  #footnotes hr:first-child {
+    display: none;
+  }
+  </style>
+  <!-- latex css end -->
+
+  <!-- venobox begin -->
+  <link rel="stylesheet" href="../../../assets/venobox/dist/venobox.min.css" />
+  <script src="../../../assets/venobox/dist/venobox.min.js"></script>
+  <script>
+    window.addEventListener("load", (ev) => {
+      document.querySelectorAll('img').forEach((img) => {
+        const a = document.createElement("a")
+        a.href = '#'
+        a.setAttribute('data-href', img.src)
+        a.classList.add('images')
+        img.replaceWith(a)
+        a.appendChild(img)
+      })
+      new VenoBox({
+        selector: '.images',
+        fitView: true,
+      })
+    })
+  </script>
+  <!-- venobox end -->
+
+  <!-- layout begin -->
+  <style>
+  #sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    max-width: 400px;
+    width: 80%;
+    height: 100%;
+    padding: 2rem;
+    background-color: #eee;
+    box-shadow: 0 10px 20px -4px #000;
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #ccc #eee;
+    scrollbar-gutter: stable;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-100%);
+    transition: opacity 0.3s ease, visibility 0.2s ease, transform 0.3s ease;
+  }
+  #sidebar.show {
+    pointer-events: all;
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+  }
+  #sidebar_toggler {
+    position: fixed;
+    top: 4vh;
+    right: 3vw;
+    z-index: 1000;
+    width: 2.8rem;
+    height: 2.4rem;
+    padding: 0.5rem;
+    border: solid #999 0.1rem;
+    border-radius: 0.4rem;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+    overflow: hidden;
+  }
+
+  #sidebar_toggler span {
+    background-color: #999;
+    width: 100%;
+    height: 0.2rem;
+    transition: all 0.3s ease;
+    pointer-events: none;
+  }
+  nav span {
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    /*white-space: pre-wrap;*/
+    width: 90%;
+  }
+  nav li:before {
+    content: '';
+  }
+  nav span:before {
+    content: "\25CF";
+    margin-right: 8px;
+  }
+  nav .caret {
+    cursor: pointer;
+    user-select: none; /* Prevent text selection */
+  }
+  nav .caret::before {
+    content: "\25B6";
+    color: black;
+    display: inline-block;
+    margin-right: 6px;
+  }
+  nav .caret-down::before {
+    transform: rotate(90deg);
+  }
+  nav .collapse {
+    display: none;
+  }
+  nav .bold {
+    font-weight: bolder;
+  }
+  </style>
+  <script>
+    window.addEventListener("load", (ev) => {
+      /* setup sidebar */
+      // https://www.cssscript.com/demo/responsive-sidebar-nav-hamburger/
+      const sidebar = document.querySelector('#sidebar')
+      const sidebarToggler = document.querySelector('#sidebar_toggler')
+
+      sidebarToggler.addEventListener('click', () => {
+        sidebar.classList.toggle('show')
+      });
+
+      const keywords = document.querySelector('meta[name="keywords"]')
+      if (keywords && keywords.content.includes('showSidebar')) {
+        sidebar.classList.add('show')
+      }
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          sidebar.classList.remove('show')
+        }
+      })
+
+      window.addEventListener('click', (e) => {
+        if (!sidebar.contains(e.target) && !sidebarToggler.contains(e.target)) {
+          sidebar.classList.remove('show')
+        }
+      });
+
+      /* load urls */
+      const root2PageDir = "/learn-x-theory/type-theory/2023-ind-form"
+      const page2RootDir = "../../.."
+      const sideNavLinks = document.querySelector('#side_navlinks');
+
+      function isPrefixPath(pathPrefix, path) {
+        const pp = pathPrefix.split("/").filter((e) => e)
+        const p = path.split("/").filter((e) => e)
+        return pp.every((e, i) => {
+          return i < p.length && p[i] == e
+        })
+      }
+
+      function buildSideLink(li, node) {
+        // span contains the text and link (if provided)
+        const span = li.appendChild(document.createElement("span"))
+        if (node.url) {
+          const a = span.appendChild(document.createElement("a"))
+          a.href = page2RootDir + node.url
+          a.textContent = node.text
+        } else {
+          span.textContent = node.text
+        }
+        span.setAttribute("title", node.text)
+        if (isPrefixPath(node.path, root2PageDir)) {
+          span.classList.add("bold")
+        }
+
+        if (node.children.length > 0) {
+          // if has children, then add caret and append a nested <ul> for children
+          span.classList.add("caret")
+          const ul = li.appendChild(document.createElement("ul"))
+          ul.classList.add("nested")
+          // do not collapse containing dir
+          if (isPrefixPath(node.path, root2PageDir)) {
+            span.classList.add("caret-down")
+          } else {
+            ul.classList.add("collapse")
+          }
+          node.children.forEach((child) => {
+            const l = ul.appendChild(document.createElement("li"))
+            buildSideLink(l, child)
+          })
+        }
+      }
+
+      async function loadSideLinks() {
+        const resp = await fetch("../../../urls.json")
+        const data = await resp.json()
+        // console.log(data)
+        const root = sideNavLinks.appendChild(document.createElement("ul"))
+        data.children.forEach((child) => {
+          buildSideLink(root.appendChild(document.createElement("li")), child)
+        })
+
+        const toggler = root.getElementsByClassName("caret")
+        for (let i=0; i<toggler.length; i++) {
+          toggler[i].addEventListener("click", function () {
+            this.parentElement.querySelector(".nested").classList.toggle("collapse")
+            this.classList.toggle("caret-down")
+            return false
+          })
+        }
+      }
+
+      loadSideLinks()
+    })
+  </script>
+  <!-- layout end -->
+</head>
+<body>
+<!-- sidebar begin -->
+<aside id="sidebar">
+  <div class="sidebar_content sidebar_head">
+    <h1>Content</h1>
+  </div>
+  <div class="sidebar_content sidebar_body">
+    <nav id="side_navlinks" class="side_navlinks">
+      <!--<ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Services</a></li>
+        <li><a href="#">Portfolio</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>-->
+    </nav>
+  </div>
+</aside>
+<div id="sidebar_toggler">
+  <span></span>
+  <span></span>
+  <span></span>
+</div>
+<!-- sidebar end -->
+
+<!--main article begin-->
+<article>
+<header id="title-block-header">
+<h1 class="title">Form of Induction Type</h1>
+<p class="author">HJW/GLM-4.7</p>
+<p class="date">2026-01-20</p>
+</header>
+<p>以 Agda (Coq 类似) 为例总结 Inductive Type 的一般形式 <a href="#fn1"
+class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<h2 id="总览四个规则">总览：四个规则</h2>
+<p>Inductive Type 由四个规则组成：</p>
+<table>
+<colgroup>
+<col style="width: 27%" />
+<col style="width: 27%" />
+<col style="width: 45%" />
+</colgroup>
+<thead>
+<tr>
+<th>规则</th>
+<th>含义</th>
+<th>Agda 体现</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Formation</strong></td>
+<td>类型如何构成</td>
+<td><code>data T ... where</code> 定义</td>
+</tr>
+<tr>
+<td><strong>Introduction</strong></td>
+<td>如何构造元素</td>
+<td><code>c : ... → T</code> constructors</td>
+</tr>
+<tr>
+<td><strong>Elimination</strong></td>
+<td>如何使用元素</td>
+<td>由 constructors 决定的 induction principle</td>
+</tr>
+<tr>
+<td><strong>Computation</strong></td>
+<td>如何归约</td>
+<td>pattern matching 的计算规则</td>
+</tr>
+</tbody>
+</table>
+<p><strong>核心关系</strong>：</p>
+<ul>
+<li><strong>Introduction Rules</strong>（Constructors）→
+定义类型的内部结构</li>
+<li><strong>Elimination Rules</strong>（Induction Principle）→
+映射到其他类型，<strong>保持同样结构</strong></li>
+<li>Induction Principle 的形式完全由 Constructors 决定</li>
+</ul>
+<h2 id="general-form">General Form</h2>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode agda"><code class="sourceCode agda"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> T <span class="ot">(</span>p₁ <span class="ot">:</span> P₁<span class="ot">)</span> <span class="ot">...</span> <span class="ot">(</span>pₖ <span class="ot">:</span> Pₖ<span class="ot">)</span> <span class="ot">:</span> <span class="ot">(</span>i₁ <span class="ot">:</span> I₁<span class="ot">)</span> <span class="ot">→</span> <span class="ot">...</span> <span class="ot">→</span> <span class="ot">(</span>iⱼ <span class="ot">:</span> Iⱼ<span class="ot">)</span> <span class="ot">→</span> <span class="dt">Set</span> l <span class="kw">where</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  c <span class="ot">:</span> <span class="ot">(</span>a₁ <span class="ot">:</span> A₁<span class="ot">)</span> <span class="ot">→</span> <span class="ot">...</span> <span class="ot">→</span> <span class="ot">(</span>aₘ <span class="ot">:</span> Aₘ<span class="ot">)</span> <span class="ot">→</span> T p₁ <span class="ot">...</span> pₖ t₁  <span class="ot">...</span> tⱼ</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="ot">...</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">-- Aₓ can be either:</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">--   1. Non inductive and does not mention `T` at all</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">--   2. Or inductive in form</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">--        `(b₁ : B₁) → ... → (bₙ : Bₙ) → T q₁ ... qₖ s₁  ... sⱼ`</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">--      Where `T` must not occur in any `Bₙ`</span></span></code></pre></div>
+<p><strong>说明</strong>：</p>
+<ul>
+<li><code>data ... where</code> 定义类型本身，相当于 <strong>Formation
+Rule</strong>
+<ul>
+<li><code>(p₁ : P₁) ... (pₖ : Pₖ)</code> 是
+<strong>parameters</strong>：整个类型共享的参数，所有 constructors
+必须具有相同的 parameters</li>
+<li><code>(i₁ : I₁) → ... → (iⱼ : Iⱼ)</code> 是
+<strong>indices</strong>：type family 的索引，不同 constructors
+可以产生不同的 indices</li>
+<li>Parameters 可视为特殊
+indices，因为一致而被提取到前面，影响整体行为；不一致的 index 表达 type
+family 内 terms 的复杂关系</li>
+</ul></li>
+<li><code>c</code> 是 <strong>constructors</strong>，相当于
+<strong>Introduction Rules</strong>
+<ul>
+<li>每个构造必须包含 <code>T p₁ ... pₖ t₁ ... tⱼ</code>
+作为返回类型</li>
+<li>参数 <code>Aₓ</code> 必须满足 <strong>Strict
+Positivity</strong>：类型 <code>T</code> 只能出现在箭头右边</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode agda"><code class="sourceCode agda"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> Bad <span class="ot">:</span> <span class="dt">Set</span> <span class="kw">where</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  bad <span class="ot">:</span> <span class="ot">(</span>Bad <span class="ot">→</span> Bad<span class="ot">)</span> <span class="ot">→</span> Bad</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">--     A     B      C</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- A is in a negative position, B and C are OK</span></span></code></pre></div>
+<h2 id="explanation">Explanation</h2>
+<h3 id="为什么需要-strict-positivity">为什么需要 Strict
+Positivity？</h3>
+<p>将 constructor
+看作代数运算：<code>c : (A -&gt; T) -&gt; T</code>，其中 <code>A</code>
+是 arity（参数数量）。</p>
+<ul>
+<li>常量：<code>unit -&gt; T</code></li>
+<li>一元：<code>T -&gt; T</code> =
+<code>(unit -&gt; T) -&gt; T</code></li>
+<li>二元：<code>T -&gt; T -&gt; T</code> =
+<code>bool -&gt; T -&gt; T</code>（两个元素）</li>
+<li>无穷：<code>(nat -&gt; T) -&gt; T</code></li>
+</ul>
+<p><strong>关键问题</strong>：arity <code>A</code> 必须在 <code>T</code>
+定义之前确定。</p>
+<p>如果允许 <code>(T -&gt; T) -&gt; T</code>，则： - “有多少个参数？” →
+“<code>T</code>-个”（未定义） -
+即使存在不动点解，也会<strong>破坏归纳原理</strong> <a href="#fn2"
+class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<p>因此 Strict Positivity
+保证：类型只能出现在<strong>箭头右边</strong>（positive
+position），作为”输出”而非”输入”。</p>
+<h2 id="induction-principle">Induction Principle</h2>
+<p>Elimination Rule 由 Introduction
+Rules（Constructors）决定，Computation Rule 定义归约行为。</p>
+<p><strong>核心思想</strong>：Constructors 定义类型的内部结构；Induction
+Principle 将其映射到其他类型，<strong>保持相同结构</strong>。</p>
+<h3 id="四个例子的对比">四个例子的对比</h3>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>Parameter</th>
+<th>Index</th>
+<th>Constructors</th>
+<th>Induction Principle 特点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ℕ</td>
+<td>无</td>
+<td>无</td>
+<td>Z, S</td>
+<td>简单递归</td>
+</tr>
+<tr>
+<td>Fin</td>
+<td>无</td>
+<td>ℕ</td>
+<td>FZ, FS</td>
+<td>依赖索引，<code>Fin Z</code> 空</td>
+</tr>
+<tr>
+<td>Id</td>
+<td>A</td>
+<td>A</td>
+<td>refl</td>
+<td>参数 + 索引，单构造</td>
+</tr>
+<tr>
+<td>T</td>
+<td>无</td>
+<td>无</td>
+<td>T0, T1</td>
+<td>无穷参数</td>
+</tr>
+</tbody>
+</table>
+<h3 id="模板如何从-constructor-推导-induction-principle">模板：如何从
+Constructor 推导 Induction Principle</h3>
+<p>对于每个 constructor <code>c : ... → T</code>：</p>
+<ol type="1">
+<li><strong>确定结论类型</strong>：<code>(parameters) → (indices) → P</code>（<code>P</code>
+的类型由构造结果决定）</li>
+<li><strong>为每个构造提供证明方法</strong>：
+<ul>
+<li>若 <code>c</code> 非递归：直接提供 <code>P (c ...)</code></li>
+<li>若 <code>c</code> 递归：提供
+<code>... → P (recursion_args) → P (c ...)</code></li>
+</ul></li>
+<li><strong>Computation Rule</strong>：递归调用获取
+<code>P (recursion_args)</code></li>
+</ol>
+<hr />
+<h3 id="natural-number">Natural Number</h3>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode agda"><code class="sourceCode agda"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> ℕ <span class="ot">:</span> <span class="dt">Set</span> <span class="kw">where</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    Z <span class="ot">:</span> ℕ</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    S <span class="ot">:</span> ℕ <span class="ot">→</span> ℕ</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>ℕ-ind <span class="ot">:</span> <span class="ot">(</span>P <span class="ot">:</span> ℕ <span class="ot">→</span> <span class="dt">Set</span><span class="ot">)</span> <span class="ot">→</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>        P Z <span class="ot">→</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>        <span class="ot">((</span>n <span class="ot">:</span> ℕ<span class="ot">)</span> <span class="ot">→</span> P n <span class="ot">→</span> P <span class="ot">(</span>S n<span class="ot">))</span> <span class="ot">→</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>        <span class="ot">(</span>n <span class="ot">:</span> ℕ<span class="ot">)</span> <span class="ot">→</span> P n</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>ℕ-ind p pz ps Z <span class="ot">=</span> pz</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>ℕ-ind p pz ps <span class="ot">(</span>S n<span class="ot">)</span> <span class="ot">=</span> ps n <span class="ot">(</span>ℕ-ind p pz ps n<span class="ot">)</span></span></code></pre></div>
+<p><img src="nat-ind.excalidraw.png" /></p>
+<p><strong>结论</strong>：<code>(n : ℕ) → P n</code></p>
+<p><strong>构造对应</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>Constructor</th>
+<th>非递归</th>
+<th>递归</th>
+<th>Induction 参数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Z</code></td>
+<td>✓</td>
+<td>✗</td>
+<td><code>pz : P Z</code></td>
+</tr>
+<tr>
+<td><code>S n</code></td>
+<td>✗</td>
+<td>✓</td>
+<td><code>ps : (n : ℕ) → P n → P (S n)</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Computation</strong>：<code>ℕ-ind p pz ps (S n) = ps n (ℕ-ind p pz ps n)</code></p>
+<hr />
+<h3 id="fin">Fin</h3>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode agda"><code class="sourceCode agda"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> Fin <span class="ot">:</span> ℕ <span class="ot">→</span> <span class="dt">Set</span> <span class="kw">where</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    FZ <span class="ot">:</span> <span class="ot">(</span>n <span class="ot">:</span> ℕ<span class="ot">)</span> <span class="ot">→</span> Fin <span class="ot">(</span>S n<span class="ot">)</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    FS <span class="ot">:</span> <span class="ot">(</span>n <span class="ot">:</span> ℕ<span class="ot">)</span> <span class="ot">→</span> Fin n <span class="ot">→</span> Fin <span class="ot">(</span>S n<span class="ot">)</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>Fin-ind <span class="ot">:</span> <span class="ot">(</span>P <span class="ot">:</span> <span class="ot">(</span>n <span class="ot">:</span> ℕ<span class="ot">)</span> <span class="ot">→</span> Fin n <span class="ot">→</span> <span class="dt">Set</span><span class="ot">)</span> <span class="ot">→</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>          <span class="ot">((</span>n <span class="ot">:</span> ℕ<span class="ot">)</span> <span class="ot">→</span> P <span class="ot">(</span>S n<span class="ot">)</span> <span class="ot">(</span>FZ n<span class="ot">))</span> <span class="ot">→</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>          <span class="ot">((</span>n <span class="ot">:</span> ℕ<span class="ot">)</span> <span class="ot">→</span> <span class="ot">(</span>f <span class="ot">:</span> Fin n<span class="ot">)</span> <span class="ot">→</span> P n f <span class="ot">→</span> P <span class="ot">(</span>S n<span class="ot">)</span> <span class="ot">(</span>FS n f<span class="ot">))</span> <span class="ot">→</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>          <span class="ot">(</span>n <span class="ot">:</span> ℕ<span class="ot">)</span> <span class="ot">→</span> <span class="ot">(</span>f <span class="ot">:</span> Fin n<span class="ot">)</span> <span class="ot">→</span> P n f</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>Fin-ind p pz ps <span class="ot">.(</span>S n<span class="ot">)</span> <span class="ot">(</span>FZ n<span class="ot">)</span> <span class="ot">=</span> pz n</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>Fin-ind p pz ps <span class="ot">.(</span>S n<span class="ot">)</span> <span class="ot">(</span>FS n f<span class="ot">)</span> <span class="ot">=</span> ps n f <span class="ot">(</span>Fin-ind p pz ps n f<span class="ot">)</span></span></code></pre></div>
+<p><img src="fin-ind.excalidraw.png" /></p>
+<p><strong>结论</strong>：<code>(n : ℕ) → (f : Fin n) → P n f</code></p>
+<p><strong>构造对应</strong>：</p>
+<table>
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 21%" />
+<col style="width: 14%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Constructor</th>
+<th>非递归</th>
+<th>递归</th>
+<th>Induction 参数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FZ n</code></td>
+<td>✓</td>
+<td>✗</td>
+<td><code>pz : (n : ℕ) → P (S n) (FZ n)</code></td>
+</tr>
+<tr>
+<td><code>FS n f</code></td>
+<td>✗</td>
+<td>✓</td>
+<td><code>ps : (n : ℕ) → (f : Fin n) → P n f → P (S n) (FS n f)</code></td>
+</tr>
+</tbody>
+</table>
+<p>注意：没有 <code>Fin Z</code> 的构造（空集）</p>
+<hr />
+<h3 id="id">Id</h3>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode agda"><code class="sourceCode agda"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> Id <span class="ot">{</span>A <span class="ot">:</span> <span class="dt">Set</span><span class="ot">}</span> <span class="ot">(</span>a <span class="ot">:</span> A<span class="ot">)</span> <span class="ot">:</span> A <span class="ot">→</span> <span class="dt">Set</span> <span class="kw">where</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    refl <span class="ot">:</span> Id a a</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>Id-ind <span class="ot">:</span> <span class="ot">{</span>A <span class="ot">:</span> <span class="dt">Set</span><span class="ot">}</span> <span class="ot">(</span>a <span class="ot">:</span> A<span class="ot">)</span> <span class="ot">(</span>P <span class="ot">:</span> <span class="ot">(</span>x <span class="ot">:</span> A<span class="ot">)</span> <span class="ot">→</span> Id a x <span class="ot">→</span> <span class="dt">Set</span><span class="ot">)</span> <span class="ot">→</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>         P a refl <span class="ot">→</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>         <span class="ot">(</span>x <span class="ot">:</span> A<span class="ot">)</span> <span class="ot">→</span> <span class="ot">(</span>e <span class="ot">:</span> Id a x<span class="ot">)</span> <span class="ot">→</span> P x e</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>Id-ind a p r <span class="ot">.</span>a refl <span class="ot">=</span> r</span></code></pre></div>
+<p><strong>结论</strong>：<code>(x : A) → (e : Id a x) → P x e</code></p>
+<p>Parameter <code>a</code> 被提取到前面（一致），index <code>x</code>
+变化。</p>
+<p><strong>构造对应</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>Constructor</th>
+<th>非递归</th>
+<th>递归</th>
+<th>Induction 参数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>refl</code></td>
+<td>✓</td>
+<td>✗</td>
+<td><code>r : P a refl</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="t无穷参数">T（无穷参数）</h3>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode agda"><code class="sourceCode agda"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> T <span class="ot">:</span> <span class="dt">Set</span> <span class="kw">where</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    T0 <span class="ot">:</span> T</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    T1 <span class="ot">:</span> <span class="ot">(</span>ℕ <span class="ot">→</span> T<span class="ot">)</span> <span class="ot">→</span> T</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>T-ind <span class="ot">:</span> <span class="ot">(</span>P <span class="ot">:</span> T <span class="ot">→</span> <span class="dt">Set</span><span class="ot">)</span> <span class="ot">→</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>        P T0 <span class="ot">→</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>        <span class="ot">((</span>f <span class="ot">:</span> ℕ <span class="ot">→</span> T<span class="ot">)</span> <span class="ot">→</span> <span class="ot">((</span>n <span class="ot">:</span> ℕ<span class="ot">)</span> <span class="ot">→</span> P <span class="ot">(</span>f n<span class="ot">))</span> <span class="ot">→</span> P <span class="ot">(</span>T1 f<span class="ot">))</span> <span class="ot">→</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>        <span class="ot">(</span>t <span class="ot">:</span> T<span class="ot">)</span> <span class="ot">→</span> P t</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>T-ind p t0 t1 T0 <span class="ot">=</span> t0</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>T-ind p t0 t1 <span class="ot">(</span>T1 f<span class="ot">)</span> <span class="ot">=</span> t1 f <span class="ot">(λ(</span>n <span class="ot">:</span> ℕ<span class="ot">)</span> <span class="ot">→</span> T-ind p t0 t1 <span class="ot">(</span>f n<span class="ot">))</span></span></code></pre></div>
+<p><strong>结论</strong>：<code>(t : T) → P t</code></p>
+<p><strong>构造对应</strong>：</p>
+<table>
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 21%" />
+<col style="width: 14%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>Constructor</th>
+<th>非递归</th>
+<th>递归</th>
+<th>Induction 参数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>T0</code></td>
+<td>✓</td>
+<td>✗</td>
+<td><code>t0 : P T0</code></td>
+</tr>
+<tr>
+<td><code>T1 f</code></td>
+<td>✗</td>
+<td>✓</td>
+<td><code>t1 : (f : ℕ → T) → ((n : ℕ) → P (f n)) → P (T1 f)</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>T1 f</code> 由无穷多个 <code>f 0</code>, <code>f 1</code>, …
+构造，因此需要 <code>(n : ℕ) → P (f n)</code> 作为参数。</p>
+<hr />
+<h3 id="coq-equivalent">Coq equivalent</h3>
+<p>Agda 不自动生成 induction principle，用 Coq 的
+<code>Check xxx_ind</code> 验证 <a href="#fn3" class="footnote-ref"
+id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
+<h2 id="总结parameters-vs-indices">总结：Parameters vs Indices</h2>
+<p>需要所有 constructors 共享同一个类型参数？ → YES: 使用 Parameter →
+NO: 使用 Index</p>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>Parameter</th>
+<th>Index</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>一致性</td>
+<td>所有 constructors 共享</td>
+<td>不同 constructors 可不同</td>
+</tr>
+<tr>
+<td>位置</td>
+<td>提取到类型定义前面</td>
+<td>作为 type family 索引</td>
+</tr>
+<tr>
+<td>用途</td>
+<td>控制整体行为</td>
+<td>表达 terms 之间关系</td>
+</tr>
+<tr>
+<td>视作</td>
+<td>特殊的 index</td>
+<td>标准的 index</td>
+</tr>
+</tbody>
+</table>
+<p><strong>示例</strong>：</p>
+<ul>
+<li><code>Id {A : Set} (a : A) : A → Set</code>：<code>a</code> 是
+parameter（固定），<code>x</code> 是 index（变化）</li>
+<li><code>Fin : ℕ → Set</code>：<code>n</code> 是
+index（不同构造产生不同 <code>n</code>）</li>
+</ul>
+<h2 id="term-in-type">Term in Type</h2>
+<p>(updated @ 2024)</p>
+<p><strong>问题</strong>：类型中的元素是否仅由 constructor 构造？</p>
+<p><strong>答案</strong>：未必。上述规则是<strong>形式定义</strong>，满足规则的模型可能包含无法直接构造的元素。</p>
+<p>例如：自由群只有一个生成器，但并非所有群元素都是生成器 <a href="#fn4"
+class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> <a
+href="#fn5" class="footnote-ref" id="fnref5"
+role="doc-noteref"><sup>5</sup></a></p>
+<blockquote>
+<p>just like in order to define a group homomorphism out of free group
+on one generator you only need to say what happens to generator. It
+doesn’t mean that every element of group is generator</p>
+</blockquote>
+<section id="footnotes" class="footnotes footnotes-end-of-document"
+role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1"><p><a
+href="https://agda.readthedocs.io/en/v2.6.0.1/language/data-types.html#id2"
+class="uri">https://agda.readthedocs.io/en/v2.6.0.1/language/data-types.html#id2</a><a
+href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p><a href="https://cs.stackexchange.com/a/55674/155579"
+class="uri">https://cs.stackexchange.com/a/55674/155579</a><a
+href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><pre class="coq"><code>Inductive N : Type :=
+| Z : N
+| S : N -&gt; N
+.
+
+Check N_ind.
+(*
+N_ind :
+  forall P : N -&gt; Prop,
+  P Z -&gt;
+  (forall n : N, P n -&gt; P (S n)) -&gt;
+  forall n : N, P n
+*)
+
+Inductive Fin : N -&gt; Type :=
+| FZ : forall n : N, Fin (S n)
+| FS : forall n : N, Fin n -&gt; Fin (S n)
+.
+
+Check Fin_ind.
+(*
+Fin_ind :
+  forall P : forall n : N, Fin n -&gt; Prop,
+  (forall n : N, P (S n) (FZ n)) -&gt;
+  (forall (n : N) (f0 : Fin n), P n f0 -&gt; P (S n) (FS n f0)) -&gt;
+  forall (n : N) (f1 : Fin n), P n f1
+*)
+
+Inductive Id {A : Type} (a : A) : A -&gt; Type :=
+| refl : Id a a
+.
+
+Check Id_ind.
+(*
+Id_ind :
+  forall (A : Type) (a : A) (P : forall a0 : A, Id a a0 -&gt; Prop),
+  P a (refl a) -&gt;
+  forall (y : A) (i : Id a y), P y i
+*)
+
+Inductive T : Type :=
+| T0 : T
+| T1 : (N -&gt; T) -&gt; T
+.
+
+Check T_ind.
+(*
+T_ind :
+  forall P : T -&gt; Prop,
+  P T0 -&gt;
+  (forall t : N -&gt; T, (forall n : N, P (t n)) -&gt; P (T1 t)) -&gt;
+  forall t : T, P t
+*)</code></pre>
+<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></li>
+<li id="fn4"><p><a
+href="https://math.stackexchange.com/questions/4950274/how-to-interpret-the-induction-principle-of-identity-type-j-rule"
+class="uri">https://math.stackexchange.com/questions/4950274/how-to-interpret-the-induction-principle-of-identity-type-j-rule</a><a
+href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p><a
+href="https://github.com/HoTT/book/issues/460#issuecomment-23364295"
+class="uri">https://github.com/HoTT/book/issues/460#issuecomment-23364295</a><a
+href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+</article>
+<!--main article end-->
+
+</body>
+</html>
