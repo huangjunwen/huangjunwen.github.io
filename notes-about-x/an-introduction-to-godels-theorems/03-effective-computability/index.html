@@ -459,217 +459,232 @@ functions</h2>
 是<strong>有效可计算的</strong>（<em>effectively
 computable</em>），如果存在一个算法能在<strong>有限</strong>的步数之内对任意输入给出输出</p>
 </blockquote>
-<p>这里的算法是指</p>
+<p>算法需满足：</p>
 <ul>
-<li>一组确定的指令序列</li>
-<li>每一步的指令都是完全清晰确定，且能够被有限的计算单元（机器）所执行的</li>
-<li>不需要依赖任何模棱两可的主观判断或想象直觉之类</li>
+<li>确定的指令序列</li>
+<li>每步指令完全清晰，有限计算单元（机器）可执行</li>
+<li>不依赖模棱两可的主观判断或想象直觉</li>
 <li>不依赖外部信息</li>
 <li>不依赖随机方法</li>
 </ul>
-<p>至于具体执行的机器？并不关心，这里有效（<em>effective</em>）并不是指现实中的可行；关键是只要是<strong>有限</strong>步数的指令，原则上就可以由一台足够强大的确定性计算机执行，即使所需时间以及资源远超现实，但它……<mark>还是有限的</mark></p>
-<p>那为啥要关注如此超现实的概念呢？因为后面我们会看到，即使在如此极端的定义下，仍然有一些数值函数是<strong>不可有效计算的</strong></p>
-<p>虽然我们不再关心资源上的局限，但还有个问题：不同架构（<em>architecture</em>）的计算机会否对什么可计算有所影响呢？答案是不会，详细解释见后面章节（<em>Turing’s
-Thesis</em>）；换而言之，特别地</p>
+<p>具体执行机器无关紧要。“有效”（<em>effective</em>）不指现实可行性，仅要求：<strong>有限</strong>步指令原则上可由足够强大的确定性计算机执行，即使时间/资源远超现实——<mark>但仍是有限的</mark></p>
+<p>关注此超现实概念的原因：即便在此极端定义下，仍有数值函数<strong>不可有效计算</strong></p>
+<p>不同架构（<em>architecture</em>）是否影响可计算性？答案是否定的。详见后文（<em>Turing’s
+Thesis</em>）。特别地：</p>
 <blockquote>
 <p><mark>能被有效计算的数值函数就是那些能被图灵机所计算的函数</mark></p>
 </blockquote>
-<p>由于平时我们所用的许多通用语言（例如
-C++/Python）同样是图灵完备的，也就是说用这些语言在不考虑资源限制下同样能实现所有能被有效计算的数值函数</p>
+<p>日常通用语言（如
+C++/Python）图灵完备，即：忽略资源限制下，这些语言可实现所有能被有效计算的数值函数</p>
 <h2 id="effectively-decidable-properties-and-sets">3.2 Effectively
 decidable properties and sets</h2>
 <blockquote>
-<p>一个属性/关系被称为<strong>有效可判断</strong>（<em>effectively
-decidable</em>）的，
-当且仅当存在一个程序能在有限步内作出判断某个对象是否具有该属性（关系类似）</p>
+<p>属性/关系<strong>有效可判断</strong>（<em>effectively
+decidable</em>）<span class="math inline">\(\Leftrightarrow\)</span>
+存在程序能在有限步内判定对象是否具有该属性（关系同理）</p>
 </blockquote>
-<p>对于我们所感兴趣的数值属性/数值关系，显然</p>
+<p>数值属性/关系的可判断性等价于特征函数的可计算性：</p>
 <blockquote>
-<p>一个数值属性/数值关系是有效可判断的，如果其特征函数（<em>characteristic
-function</em>），例如 <span class="math inline">\(C_P : \mathbb{N}
-\rightarrow \{0, 1\}\)</span> 和 <span class="math inline">\(C_R :
-\mathbb{N} \times \mathbb{N} \rightarrow \{0, 1\}\)</span>
-是<strong>有效可计算的</strong></p>
+<p>数值属性/数值关系有效可判断 <span
+class="math inline">\(\Leftrightarrow\)</span> 特征函数 <span
+class="math inline">\(C_P : \mathbb{N} \rightarrow \{0, 1\}\)</span> 或
+<span class="math inline">\(C_R : \mathbb{N} \times \mathbb{N}
+\rightarrow \{0, 1\}\)</span> <strong>有效可计算</strong></p>
 </blockquote>
-<p>同理，对于集合来说</p>
+<p>集合的可判断性同理：</p>
 <blockquote>
-<p>一个集合 <span class="math inline">\(\Sigma\)</span>
-是<strong>有效可判断的</strong>，当且仅当存在一个程序能在有限步内判断某个
-object 是否属于 <span class="math inline">\(\Sigma\)</span></p>
+<p>集合 <span class="math inline">\(\Sigma\)</span>
+<strong>有效可判断</strong> <span
+class="math inline">\(\Leftrightarrow\)</span>
+程序能在有限步内判断对象是否属于 <span
+class="math inline">\(\Sigma\)</span></p>
 </blockquote>
-<p>对于数值集合，显然</p>
+<p>数值集合特别地：</p>
 <blockquote>
-<p>一个集合 <span class="math inline">\(\Sigma \subseteq
-\mathbb{N}\)</span> 是有效可判断的，当且仅当特征函数 <span
-class="math inline">\(C_\Sigma : \mathbb{N} \rightarrow \{0,
-1\}\)</span> （<span class="math inline">\(C_\Sigma(n) = 0\)</span> 表示
-<span class="math inline">\(n \in \Sigma\)</span>)
-是<strong>有效可计算的</strong></p>
+<p><span class="math inline">\(\Sigma \subseteq \mathbb{N}\)</span>
+有效可判断 <span class="math inline">\(\Leftrightarrow\)</span> 特征函数
+<span class="math inline">\(C_\Sigma : \mathbb{N} \rightarrow \{0,
+1\}\)</span> <strong>有效可计算</strong>（<span
+class="math inline">\(C_\Sigma(n) = 0\)</span> 表示 <span
+class="math inline">\(n \in \Sigma\)</span>）</p>
 </blockquote>
 <p>两个小定理</p>
 <p><em><strong>Theorem 3.1
 有限自然数集合都是有效可判断的</strong></em></p>
-<p>因为集合是有限的，所以只需要一个简单的暴力枚举程序就可以了</p>
+<p>有限集可暴力枚举验证</p>
 <p><em><strong>Theorem 3.2 如果 <span
 class="math inline">\(\Sigma\)</span> 是有效可判断的，则它的补集 <span
 class="math inline">\(\bar{\Sigma}\)</span>
 也是有效可判断的</strong></em></p>
-<p>将输出翻转即可</p>
+<p>将特征函数输出翻转（<span class="math inline">\(0 \leftrightarrow
+1\)</span>）</p>
 <h2 id="effective-enumerability">3.3 Effective enumerability</h2>
 <blockquote>
-<p>一个集合 <span class="math inline">\(\Sigma\)</span>
-是<strong>可枚举</strong>（<em>enumerable</em>）的，当且仅当存在一个满射函数（<em>surjective
-function</em>）<span class="math inline">\(f : \mathbb{N} \rightarrow
-\Sigma\)</span> 去枚举它的元素</p>
-<p>如果 <span class="math inline">\(f\)</span> 还是有效可计算的话，则称
-<span class="math inline">\(\Sigma\)</span>
-是<strong>有效可枚举的</strong>（<em>effectively enumerable</em>）简称
-e. e.</p>
-<p>除此之外还有个特例，如果 <span class="math inline">\(\Sigma\)</span>
-是空集的话，则也是（有效）可枚举的</p>
+<p>集合 <span class="math inline">\(\Sigma\)</span>
+<strong>可枚举</strong>（<em>enumerable</em>）<span
+class="math inline">\(\Leftrightarrow\)</span> 存在满射 <span
+class="math inline">\(f : \mathbb{N} \rightarrow \Sigma\)</span></p>
+<p>若 <span class="math inline">\(f\)</span> 有效可计算，则称 <span
+class="math inline">\(\Sigma\)</span>
+<strong>有效可枚举</strong>（<em>effectively enumerable</em>, e.e.）</p>
+<p>注意：<span class="math inline">\(\emptyset\)</span>
+也是（有效）可枚举的</p>
 </blockquote>
-<p>直觉上有效可枚举是比有效可判断要弱的，后者对于是否 <span
-class="math inline">\(s \in \Sigma\)</span>
-可以在有限步里给出答案；而前者却无法保证，例如我们可以一直 <span
-class="math inline">\(f(0), f(1), ....\)</span> 地枚举下去，如果某个
-<span class="math inline">\(f(n) = s\)</span> 则可以确认 <span
-class="math inline">\(s \in
-\Sigma\)</span>，但如果一直不出现则无法确认究竟是枚举得不够还是 <span
-class="math inline">\(s \notin \Sigma\)</span>，没有上限</p>
+<p><strong>有效可枚举弱于有效可判断</strong>：后者对 <span
+class="math inline">\(\forall s\)</span> 可在有限步内判定 <span
+class="math inline">\(s \in \Sigma\)</span>；前者无法保证——枚举 <span
+class="math inline">\(f(0), f(1), \dots\)</span> 时，若 <span
+class="math inline">\(\exists n: f(n) = s\)</span> 则确认 <span
+class="math inline">\(s \in \Sigma\)</span>，但若 <span
+class="math inline">\(s\)</span> 从未出现，无法区分“枚举不足”还是 “<span
+class="math inline">\(s \notin \Sigma\)</span>”</p>
 <p><em><strong>Theorem 3.3
 有效可判断的数值集合是有效可枚举的</strong></em></p>
 <div class="proof">
-<p>空集的证明是 trivial 的</p>
-<p>现在假设 <span class="math inline">\(s \in
-\Sigma\)</span>，且存在有效可计算的 <span class="math inline">\(f :
-\mathbb{N} \rightarrow \{0, 1\}\)</span> 判断任意 <span
-class="math inline">\(n\)</span> 是否属于 <span
-class="math inline">\(\Sigma\)</span></p>
-<p>于是我们可以令</p>
+<p>空集平凡可枚举</p>
+<p>设 <span class="math inline">\(\Sigma \neq \emptyset\)</span>，<span
+class="math inline">\(\exists s \in
+\Sigma\)</span>，且存在有效可计算函数 <span class="math inline">\(f :
+\mathbb{N} \rightarrow \{0, 1\}\)</span> 判断 <span
+class="math inline">\(n \in \Sigma\)</span></p>
+<p>构造 <span class="math inline">\(g : \mathbb{N} \rightarrow
+\Sigma\)</span> 如下：</p>
 <p><span class="math display">\[
 g(n) =
 \begin{cases}
-n, \; \text{if} \; f(n) = 0 \\
-s, \; \text{if} \; f(n) = 1 \\
+n, &amp; \text{if } f(n) = 0 \\
+s, &amp; \text{if } f(n) = 1
 \end{cases}
 \]</span></p>
-<p>显然 <span class="math inline">\(g\)</span> 是有效可计算的且其 domain
-是 <span class="math inline">\(\Sigma\)</span></p>
+<p><span class="math inline">\(g\)</span> 有效可计算且值域为 <span
+class="math inline">\(\Sigma\)</span>，故 <span
+class="math inline">\(\Sigma\)</span> 有效可枚举</p>
 </div>
 <p><em><strong>Theorem 3.4 如果数值集合 <span
 class="math inline">\(\Sigma\)</span> 以及其补集 <span
 class="math inline">\(\bar{\Sigma}\)</span> 都是有效可枚举的话，则 <span
 class="math inline">\(\Sigma\)</span> 是有效可判断的</strong></em></p>
 <div class="proof">
-<p>假设 <span class="math inline">\(\Sigma\)</span> 和 <span
-class="math inline">\(\bar{\Sigma}\)</span> 的有效可枚举函数分别是 <span
-class="math inline">\(f\)</span> 和 <span
+<p>设 <span class="math inline">\(\Sigma\)</span>、<span
+class="math inline">\(\bar{\Sigma}\)</span> 的有效可枚举函数分别为 <span
+class="math inline">\(f\)</span>、<span
 class="math inline">\(\bar{f}\)</span></p>
-<p>如果要判断 <span class="math inline">\(s\)</span> 是否属于 <span
-class="math inline">\(\Sigma\)</span>，可以逐次计算 <span
-class="math inline">\(f(0), \bar{f}(0), f(1), \bar{f}(1),
-...\)</span>，则 <span class="math inline">\(s\)</span>
-必定在<mark>有限</mark>次之内出现，如果是某个 <span
-class="math inline">\(f(n) = s\)</span> 则 <span class="math inline">\(s
-\in \Sigma\)</span>，否则 <span class="math inline">\(\bar{f}(n) =
-s\)</span> 则 <span class="math inline">\(s \notin \Sigma\)</span></p>
+<p>判定 <span class="math inline">\(s \in \Sigma\)</span>：交错计算
+<span class="math inline">\(f(0), \bar{f}(0), f(1), \bar{f}(1),
+\dots\)</span>，<span class="math inline">\(s\)</span>
+必在<mark>有限</mark>步内出现：</p>
+<ul>
+<li>若 <span class="math inline">\(\exists n: f(n) = s\)</span>，则
+<span class="math inline">\(s \in \Sigma\)</span></li>
+<li>若 <span class="math inline">\(\exists n: \bar{f}(n) =
+s\)</span>，则 <span class="math inline">\(s \notin \Sigma\)</span></li>
+</ul>
+<p>算法必终止，故 <span class="math inline">\(\Sigma\)</span>
+有效可判断</p>
 </div>
-<p>上面的定理还不能说明存在有效可枚举但<mark>不是</mark>有效可判断的集合，还需要引入新的定义</p>
+<p>上面的定理还不能说明存在有效可枚举但<mark>不是</mark>有效可判断的集合，需引入新定义</p>
 <h2 id="another-way-of-defining-e.e.-sets-of-numbers">3.4 Another way of
 defining e.e. sets of numbers</h2>
-<p>我们说 <span class="math inline">\(f : \mathbb{N} \rightarrow
-\mathbb{N}\)</span> 是有效可计算的，如果存在一个算法 <span
+<p><span class="math inline">\(f : \mathbb{N} \rightarrow
+\mathbb{N}\)</span> 有效可计算指存在算法 <span
 class="math inline">\(\Pi\)</span>
-对于任意输入都能有效计算出结果，但不是所有的算法都这样：有些算法会卡住或者陷入无限循环，有些则能对部分输入有效计算出结果</p>
+对任意输入输出结果。但一般而言一个算法未必如此：有些会陷入无限循环，有些仅对部分输入输出结果</p>
 <blockquote>
-<p>一个算法 <span class="math inline">\(\Pi\)</span>
-的数值域（<em>numerical domain</em>）是指这样的一个数值集合，<span
-class="math inline">\(n\)</span> 属于它，当且仅当 <span
-class="math inline">\(\Pi\)</span> 以它为输入能有效得计算得出结果</p>
+<p>算法 <span class="math inline">\(\Pi\)</span>
+的<strong>数值域</strong>（<em>numerical domain</em>）指所有能被 <span
+class="math inline">\(\Pi\)</span> 有效计算得出结果的输入集合</p>
 </blockquote>
-<p><mark>这相当于有效可计算的 partial
-函数，有效可计算的全函数是其特例</mark>；一个非常有趣的事实是：</p>
+<p><mark>这等价于有效可计算的部分函数；有效可计算的全函数是其特例</mark>。一个有趣事实：</p>
 <p><em><strong>Theorem 3.5 数值集合 <span
 class="math inline">\(W\)</span>
 是有效可枚举的当且仅当它是某个算法的数值域</strong></em></p>
 <div class="proof">
-<p>假设 <span class="math inline">\(W\)</span> 是有效可枚举的</p>
+<p><strong><span class="math inline">\(\Rightarrow\)</span></strong>：设
+<span class="math inline">\(W\)</span> 有效可枚举</p>
 <ul>
-<li>若是空集，则它是一个无限循环算法的数值域</li>
-<li>若非空集，则存在值域为 <span class="math inline">\(W\)</span>
-的有效可计算函数 <span class="math inline">\(f : \mathbb{N} \rightarrow
-\mathbb{N}\)</span>
+<li><span class="math inline">\(W =
+\emptyset\)</span>：取无限循环算法，其数值域为 <span
+class="math inline">\(\emptyset\)</span></li>
+<li><span class="math inline">\(W \neq
+\emptyset\)</span>：存在有效可计算函数 <span class="math inline">\(f :
+\mathbb{N} \rightarrow W\)</span>
 <ul>
-<li>设计算法 <span class="math inline">\(\Pi\)</span> 如下，对于输入
-<span class="math inline">\(s\)</span>，依次计算 <span
-class="math inline">\(f(0), f(1), ...\)</span> 直到某个 <span
-class="math inline">\(f(n)\)</span> 输出 <span
-class="math inline">\(s\)</span> 时停下
+<li>构造算法 <span class="math inline">\(\Pi\)</span>：对输入 <span
+class="math inline">\(s\)</span>，依次计算 <span
+class="math inline">\(f(0), f(1), \dots\)</span> 直至某 <span
+class="math inline">\(f(n) = s\)</span> 时停止
 <ul>
-<li>因此如果 <span class="math inline">\(s \in W\)</span>
-最终会停下，否则它会一直循环下去</li>
+<li>若 <span class="math inline">\(s \in W\)</span>，<span
+class="math inline">\(\Pi\)</span> 终止</li>
+<li>若 <span class="math inline">\(s \notin W\)</span>，<span
+class="math inline">\(\Pi\)</span> 无限循环</li>
 </ul></li>
 </ul></li>
 </ul>
-<p>反方向，假设 <span class="math inline">\(W\)</span> 是某个算法 <span
+<p>故 <span class="math inline">\(\Pi\)</span> 的数值域为 <span
+class="math inline">\(W\)</span></p>
+<p><strong><span class="math inline">\(\Leftarrow\)</span></strong>：设
+<span class="math inline">\(W\)</span> 是算法 <span
 class="math inline">\(\Pi\)</span> 的数值域</p>
 <ul>
-<li>若是空集，trivial effective enumerable</li>
-<li>否则至少存在 <span class="math inline">\(s \in W\)</span>
+<li><span class="math inline">\(W = \emptyset\)</span>：平凡可枚举</li>
+<li><span class="math inline">\(W \neq \emptyset\)</span>：<span
+class="math inline">\(\exists s \in
+W\)</span>。由前文知，存在有效可计算双射 <span class="math inline">\(g :
+\mathbb{N} \rightarrow \mathbb{N} \times \mathbb{N}\)</span>
 <ul>
-<li>回忆之前章节，存在<mark>双射</mark>函数 <span
-class="math inline">\(g : \mathbb{N} \rightarrow \mathbb{N} \times
-\mathbb{N}\)</span>（且是有效可计算的）</li>
-<li>设计 <span class="math inline">\(f\)</span> 如下，对于输入 <span
-class="math inline">\(n\)</span>，首先计算 <span
-class="math inline">\((t, m) = g(n)\)</span> ，然后给算法 <span
-class="math inline">\(\Pi\)</span> 输入 <span
-class="math inline">\(t\)</span> 并且执行 <span
-class="math inline">\(m\)</span> 步，假如算法给出结果则返回 <span
+<li>构造 <span class="math inline">\(f : \mathbb{N} \rightarrow
+W\)</span>：对输入 <span class="math inline">\(n\)</span>，计算 <span
+class="math inline">\((t, m) = g(n)\)</span>，执行 <span
+class="math inline">\(\Pi(t)\)</span> 共 <span
+class="math inline">\(m\)</span> 步，若输出结果则返回 <span
 class="math inline">\(t\)</span>，否则返回 <span
 class="math inline">\(s\)</span>
 <ul>
-<li>如果 <span class="math inline">\(t \in W\)</span> ，则存在有限步
-<span class="math inline">\(m\)</span> 使得算法执行完毕，于是 <span
-class="math inline">\(f(g^{-1}(t, m))\)</span> 会返回 <span
-class="math inline">\(t\)</span></li>
-<li>如果 <span class="math inline">\(t \notin W\)</span> ，则对任意
-<span class="math inline">\(m\)</span> 算法都无法执行完毕，于是 <span
-class="math inline">\(f(g^{-1}(t, m))\)</span> 会返回 <span
-class="math inline">\(s\)</span></li>
+<li>若 <span class="math inline">\(t \in W\)</span>，存在有限 <span
+class="math inline">\(m\)</span> 使 <span
+class="math inline">\(\Pi(t)\)</span> 终止，于是存在 <span
+class="math inline">\(n=g^{-1}(t, m)\)</span> 使得则 <span
+class="math inline">\(f(n) = t\)</span></li>
+<li>若 <span class="math inline">\(t \notin W\)</span>，不存在 <span
+class="math inline">\(m\)</span> 使得 <span
+class="math inline">\(\Pi(t)\)</span> 终止，于是不存在 <span
+class="math inline">\(n = g^{-1}(t, m)\)</span> 使得 <span
+class="math inline">\(f(n) = t\)</span></li>
 </ul></li>
 </ul></li>
 </ul>
+<p><span class="math inline">\(f\)</span> 的值域为 <span
+class="math inline">\(W\)</span>，故 <span
+class="math inline">\(W\)</span> 有效可枚举</p>
 </div>
-<p>同样地，我们在后面的章节（<em>Turing’s
-Thesis</em>）会讨论到，现在直接当结论用：</p>
+<p>后文（<em>Turing’s Thesis</em>）将证明，现先作为结论使用：</p>
 <blockquote>
-<p>数值函数 <span class="math inline">\(f\)</span> （可能是 partial
-的？）如果可以用一个算法 <span class="math inline">\(\Pi\)</span>
-来计算，则这个算法可以用任何通用语言来实现</p>
+<p>若数值函数 <span
+class="math inline">\(f\)</span>（可能为部分函数）可被算法 <span
+class="math inline">\(\Pi\)</span> 计算，则 <span
+class="math inline">\(\Pi\)</span> 可用任何通用语言实现</p>
 </blockquote>
-<p><mark>而一个通用语言能实现的所有算法是可枚举的</mark>，因为程序只是字符串而已，可以按照字母顺序把长度为
-1 的字符串枚举完，再枚举长度为 2
-的字符串……然后只保留合法的程序（当然这些程序大部分都是垃圾），记这些为
-<span class="math inline">\(\Pi_1, \Pi_2, ...\)</span> 以及对应数值域为
-<span class="math inline">\(W_1, W_2, ...\)</span></p>
-<p>我们马上可以得出结论</p>
-<p><em><strong>Theorem 3.6 <mark>有效</mark>可枚举的数值集的集合 <span
-class="math inline">\(W\)</span> 本身是可枚举的</strong></em></p>
-<p>因为可以令 <span class="math inline">\(f : \mathbb{N} \rightarrow
-W\)</span> 为 <span class="math inline">\(f(n) = W_n\)</span>
-来枚举所有的有效可枚举的集合</p>
-<p>然后，我们可以得出一个重要的推论</p>
-<p><em><strong>Theorem 3.6
-<mark>有些数值集合是不可有效枚举的，当然也就不可有效判定</mark></strong></em></p>
+<p><mark>通用语言能实现的算法可枚举</mark>：程序即字符串，按长度+字典序枚举所有合法程序（记为
+<span class="math inline">\(\Pi_1, \Pi_2, \dots\)</span>），对应数值域为
+<span class="math inline">\(W_1, W_2, \dots\)</span></p>
+<p><strong>结论</strong>：</p>
+<p><em><strong>Theorem 3.6 <mark>有效</mark>可枚举数值集的集合 <span
+class="math inline">\(W\)</span> 可枚举</strong></em></p>
+<p><strong>证明</strong>：令 <span class="math inline">\(f : \mathbb{N}
+\rightarrow W\)</span> 为 <span class="math inline">\(f(n) =
+W_n\)</span> 即可。</p>
+<p><strong>推论</strong>：</p>
+<p><em><strong>Theorem 3.7
+<mark>存在不可有效枚举的数值集合（故亦不可有效判定）</mark></strong></em></p>
 <div class="proof">
-<p>因为 <span class="math inline">\(\mathbb{N}\)</span> 的幂集 <span
-class="math inline">\(P\)</span> –
-也就是所有数值集合的集合是不可枚举的，而有效可枚举数值集的集合 <span
-class="math inline">\(W\)</span> 是可枚举的，且 <span
-class="math inline">\(W \subseteq P\)</span> ，故必定有集合在 <span
-class="math inline">\(P\)</span> 中而不在 <span
-class="math inline">\(W\)</span> 中，也就是不可有效枚举</p>
+<p><span class="math inline">\(\mathbb{N}\)</span> 的幂集 <span
+class="math inline">\(\mathcal{P}(\mathbb{N})\)</span>（全体数值集合）不可枚举，而有效可枚举数值集的集合
+<span class="math inline">\(W\)</span> 可枚举。因 <span
+class="math inline">\(W \subseteq \mathcal{P}(\mathbb{N})\)</span>，故
+<span class="math inline">\(\exists S \in \mathcal{P}(\mathbb{N})
+\setminus W\)</span>，即 <span class="math inline">\(S\)</span>
+不可有效枚举。</p>
 </div>
 </article>
 <!--main article end-->
