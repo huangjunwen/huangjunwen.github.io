@@ -399,6 +399,11 @@
         sidebar.classList.add('show')
       }
 
+      // auto-open sidebar if URL hash contains sidebar=true
+      if (window.location.hash.includes('show-sidebar')) {
+        sidebar.classList.add('show')
+      }
+
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
           sidebar.classList.remove('show')
@@ -430,10 +435,15 @@
         if (node.url) {
           const a = span.appendChild(document.createElement("a"))
           a.href = page2RootDir + node.url
+          if (node.children.length > 0) {
+            // show sidebar if chlidren > 0
+            a.href += "#show-sidebar"
+          }
           a.textContent = node.text
         } else {
           span.textContent = node.text
         }
+
         span.setAttribute("title", node.text)
         if (isPrefixPath(node.path, root2PageDir)) {
           span.classList.add("bold")
